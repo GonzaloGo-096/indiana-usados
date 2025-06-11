@@ -1,59 +1,160 @@
-import React from 'react'
-import InfiniteScroll from 'react-infinite-scroll-component'
+import React, { useRef, useCallback, memo } from 'react'
 import { CardAuto } from './cardAuto'
 import { ListAutosSkeleton } from './skeletons/ListAutosSkeleton'
 import { useGetCars } from '../hooks/useGetCars'
+import '../styles/listAutos.css'
+
+// Componente de error memoizado
+const ErrorMessage = memo(({ message, onRetry }) => (
+    <div className="list-autos__error">
+        <div className="list-autos__error-content">
+            <h3>¡Ups! Algo salió mal</h3>
+            <p>{message}</p>    
+            {onRetry && (
+                <button 
+                    onClick={onRetry}
+                    className="btn btn-primary mt-3"
+                >
+                    Reintentar
+                </button>
+            )}
+        </div>
+    </div>
+))
 
 export const ListAutos = () => {
-    const { autos, loadMore, hasNextPage, isLoading, isError, error, isFetchingNextPage } = useGetCars()
+    const { 
+        autos, 
+        loadMore, 
+        hasNextPage, 
+        isLoading, 
+        isError, 
+        error, 
+        isFetchingNextPage,
+        refetch
+    } = useGetCars()
 
-    if (isLoading) {
+    const observer = useRef()
+    
+    // Función para manejar la carga
+    const handleLoadMore = useCallback(() => {
+        if (!isError && hasNextPage) {
+            setTimeout(() => {
+                if (!isError && hasNextPage) {
+                    loadMore()
+                }
+            }, 100)
+        }
+    }, [isError, hasNextPage, loadMore])
+
+    const lastElementRef = useCallback(node => {
+        // Desconectar observer existente si existe
+        if (observer.current) {
+            observer.current.disconnect()
+        }
+
+        // Si no hay nodo o no debemos observar, salir
+        if (!node || isLoading || isFetchingNextPage || isError || !hasNextPage) {
+            return
+        }
+        
+        // Crear nuevo observer
+        observer.current = new IntersectionObserver(
+            entries => {
+                if (entries[0].isIntersecting) {
+                    handleLoadMore()
+                }
+            },
+            {
+                rootMargin: '300px',
+                threshold: 0.1
+            }
+        )
+        
+        observer.current.observe(node)
+        return null // Explícitamente indicamos que la función completó su tarea
+    }, [isLoading, isFetchingNextPage, isError, hasNextPage, handleLoadMore])
+
+    // Función para manejar el reintento
+    const handleRetry = useCallback(() => {
+        refetch()
+        if (autos.length > 0) {
+            loadMore()
+        }
+    }, [refetch, loadMore, autos.length])
+
+    // Guard clauses para estados de carga y error
+    if (isLoading && !autos.length) {
         return <ListAutosSkeleton cantidad={6} />
     }
 
-    if (isError) {
+    if (isError && !autos.length) {
         return (
-            <div className="text-center text-danger py-5">
-                <h3>Error al cargar los vehículos</h3>
-                <p>{error?.message || 'Error desconocido'}</p>
-            </div>
+            <ErrorMessage 
+                message={error?.message || 'Error al cargar los vehículos'} 
+                onRetry={handleRetry}
+            />
         )
     }
 
     if (!autos.length) {
         return (
-            <div className="text-center py-5">
-                <h3>No hay vehículos disponibles</h3>
-                <p>Por favor, intente más tarde</p>
+            <div className="list-autos__empty">
+                <div className="list-autos__empty-content">
+                    <h3>No hay vehículos disponibles</h3>
+                    <p>Por favor, intente más tarde</p>
+                    <button 
+                        onClick={handleRetry}
+                        className="btn btn-primary mt-3"
+                    >
+                        Actualizar
+                    </button>
+                </div>
             </div>
         )
     }
 
+    // Renderizado principal
     return (
-        <InfiniteScroll
-            dataLength={autos.length}
-            next={loadMore}
-            hasMore={hasNextPage}
-            loader={
-                <div className="py-3">
-                    <ListAutosSkeleton cantidad={3} />
+        <div className="list-autos">
+            {isError && (
+                <div className="list-autos__error-banner">
+                    <ErrorMessage 
+                        message={error?.message || 'Error al cargar más vehículos'} 
+                        onRetry={handleRetry}
+                    />
                 </div>
-            }
-            endMessage={
-                <div className="text-center py-3">
-                    <p className="text-muted">No hay más vehículos para mostrar</p>
-                </div>
-            }
-            scrollThreshold="80%"
-            style={{ overflow: 'visible' }}
-        >
-            <div className="row g-4">
-                {autos.map(auto => (
-                    <div key={auto.id} className="col-12 col-md-6 col-lg-4">
+            )}
+
+            <div className="list-autos__grid">
+                {autos.map((auto, index) => (
+                    <div 
+                        key={auto.id} 
+                        className="list-autos__card-wrapper"
+                        ref={index === autos.length - 1 ? lastElementRef : null}
+                    >
                         <CardAuto auto={auto} />
                     </div>
                 ))}
             </div>
-        </InfiniteScroll>
+            
+            <div className={`list-autos__loading-container ${isFetchingNextPage ? 'loading' : ''}`}>
+                {isFetchingNextPage && (
+                    <ListAutosSkeleton cantidad={3} />
+                )}
+                
+                {!hasNextPage && autos.length > 0 && (
+                    <div className="list-autos__end-message">
+                        <p>No hay más vehículos para mostrar</p>
+                        <button 
+                            onClick={handleRetry}
+                            className="btn btn-outline-primary mt-2"
+                        >
+                            Actualizar lista
+                        </button>
+                    </div>
+                )}
+            </div>
+        </div>
     )
 }

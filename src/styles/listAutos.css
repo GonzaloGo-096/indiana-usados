@@ -1,0 +1,97 @@
+.list-autos {
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.list-autos__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    min-height: 200px;
+}
+
+.list-autos__card-wrapper {
+    min-height: 400px;
+    transition: all 0.3s ease-in-out;
+}
+
+.list-autos__loading-container {
+    min-height: 200px;
+    transition: min-height 0.3s ease-in-out;
+}
+
+.list-autos__end-message {
+    text-align: center;
+    padding: 2rem 0;
+    color: #6c757d;
+}
+
+/* Estilos para manejo de errores */
+.list-autos__error,
+.list-autos__empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.list-autos__error-content,
+.list-autos__empty-content {
+    max-width: 500px;
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.list-autos__error h3,
+.list-autos__empty h3 {
+    color: #dc3545;
+    margin-bottom: 1rem;
+}
+
+.list-autos__error-banner {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 4px;
+    color: #856404;
+}
+
+.list-autos__error-banner .list-autos__error-content {
+    box-shadow: none;
+    padding: 0;
+    background: none;
+}
+
+.list-autos__error-banner h3 {
+    color: #856404;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .list-autos__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .list-autos__grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .list-autos__card-wrapper {
+        min-height: 350px;
+    }
+
+    .list-autos__error,
+    .list-autos__empty {
+        min-height: 300px;
+        padding: 1rem;
+    }
+} 

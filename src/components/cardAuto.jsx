@@ -1,12 +1,11 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
-import img from '..//assets/auto1.jpg'  // Importar la imagen
+import img from '../assets/auto1.jpg'
+import '../styles/cardAuto.css'
 
-export const CardAuto = ({auto}) => {
-    // Validar que auto exista
+export const CardAuto = memo(({auto}) => {
     if (!auto) return null;
 
-    // Extraer datos con valores por defecto
     const {
         id,
         marca = 'Sin marca',
@@ -17,21 +16,39 @@ export const CardAuto = ({auto}) => {
     } = auto;
 
     return (
-        <div className="card h-100 shadow-sm">
-            <img src={img} className="card-img-top" alt={marca} />
-            <div className="card-body">
-                <h5 className="card-title">{marca + " " + modelo}</h5>
-                <p className="card-text">{precio}</p>
-                <p className="card-text">{año}</p>
-                <p className="card-text">{kms}</p>
+        <div className="card card-auto shadow-sm">
+            <div className="card-auto__image-container">
+                <img 
+                    src={img} 
+                    className="card-auto__image" 
+                    alt={`${marca} ${modelo}`}
+                    loading="lazy"
+                />
             </div>
-            <div className="card-footer bg-transparent border-0">
+            <div className="card-auto__body">
+                <h5 className="card-auto__title">{marca} {modelo}</h5>
+                <div className="card-auto__details">
+                    <div className="card-auto__detail">
+                        <span className="card-auto__label">Precio:</span>
+                        <span>{precio}</span>
+                    </div>
+                    <div className="card-auto__detail">
+                        <span className="card-auto__label">Año:</span>
+                        <span>{año}</span>
+                    </div>
+                    <div className="card-auto__detail">
+                        <span className="card-auto__label">Kilómetros:</span>
+                        <span>{kms}</span>
+                    </div>
+                </div>
+            </div>
+            <div className="card-auto__footer">
                 <Link 
                     to={`/vehiculo/${id}`} 
-                    className="btn btn-primary w-100">
+                    className="btn btn-primary card-auto__button">
                     Ver más
                 </Link>
             </div>
         </div>
     )
-}
+})

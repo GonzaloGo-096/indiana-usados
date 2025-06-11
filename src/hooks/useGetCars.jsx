@@ -13,21 +13,35 @@ export const useGetCars = () => {
         error
     } = useInfiniteQuery({
         queryKey: [queryKeys.autos],
-        queryFn: ({ pageParam = 1 }) => autoService.getAutos({ pageParam }),
+        queryFn: async ({ pageParam = 1 }) => {
+            console.log('Fetching page:', pageParam);
+            const result = await autoService.getAutos({ pageParam });
+            console.log('API Response:', result);
+            return result;
+        },
         initialPageParam: 1,
-        getNextPageParam: (lastPage) => lastPage?.nextPage,
+        getNextPageParam: (lastPage) => {
+            console.log('Last page:', lastPage);
+            return lastPage?.nextPage;
+        },
         staleTime: 1000 * 60 * 5, // 5 minutos
         cacheTime: 1000 * 60 * 30, // 30 minutos
         refetchOnWindowFocus: false,
         retry: 1,
-        select: (data) => ({
-            ...data,
-            autos: data.pages.flatMap(page => page?.items || [])
-        })
+        select: (data) => {
+            console.log('Select data:', data);
+            const result = {
+                ...data,
+                autos: data.pages.flatMap(page => page?.items || [])
+            };
+            console.log('Transformed data:', result);
+            return result;
+        }
     });
 
     const loadMore = useCallback(() => {
         if (hasNextPage && !isFetchingNextPage) {
+            console.log('Loading more...');
             fetchNextPage();
         }
     }, [hasNextPage, isFetchingNextPage, fetchNextPage]);

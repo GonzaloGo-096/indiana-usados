@@ -1,0 +1,75 @@
+.card-auto {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card-auto:hover {
+    transform: translateY(-5px);
+}
+
+.card-auto__image-container {
+    position: relative;
+    padding-top: 56.25%; /* Aspect ratio 16:9 */
+    overflow: hidden;
+    background-color: #f8f9fa; /* Color de fondo mientras carga la imagen */
+}
+
+.card-auto__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card-auto:hover .card-auto__image {
+    transform: scale(1.05);
+}
+
+.card-auto__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1rem;
+}
+
+.card-auto__title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.card-auto__details {
+    margin-top: auto;
+}
+
+.card-auto__detail {
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-auto__label {
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.card-auto__footer {
+    padding: 1rem;
+    background: transparent;
+    border: none;
+}
+
+.card-auto__button {
+    width: 100%;
+    transition: all 0.2s ease-in-out;
+}
+
+.card-auto__button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+} 
