@@ -2,7 +2,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Dashboard from '../pages/admin/Dashboard'
 
-const AdminLayout = () => (
+const AdminRoutes = () => (
     <div className="container-fluid py-4">
         <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -12,4 +12,4 @@ const AdminLayout = () => (
     </div>
 )
 
-export default AdminLayout 
+export default AdminRoutes 

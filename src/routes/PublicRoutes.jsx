@@ -7,7 +7,7 @@ import Vehiculos from '../pages/Vehiculos'
 import VehiculoDetalle from '../pages/VehiculoDetalle'
 import Nosotros from '../pages/Nosotros'
 
-const PublicLayout = () => (
+const PublicRoutes = () => (
     <>
         <Nav />
         <main className="flex-grow-1">
@@ -22,4 +22,4 @@ const PublicLayout = () => (
     </>
 )
 
-export default PublicLayout 
+export default PublicRoutes 

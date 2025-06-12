@@ -4,9 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './App.css'
 import { Navigate } from 'react-router-dom'
 
-// Layouts
-import PublicLayout from './layouts/PublicLayout'
-import AdminLayout from './layouts/AdminLayout'
+// Routes
+import PublicRoutes from './routes/PublicRoutes'
+import AdminRoutes from './routes/AdminRoutes'
 
 // Componentes de autenticación
 import { RequireAuth } from './components/auth/RequireAuth'
@@ -24,7 +24,7 @@ function App() {
                 <div className="d-flex flex-column min-vh-100">
                     <Routes>
                         {/* Rutas públicas */}
-                        <Route path="/*" element={<PublicLayout />} />
+                        <Route path="/*" element={<PublicRoutes />} />
 
                         {/* Ruta de login */}
                         <Route path="/admin/login" element={<Login />} />
@@ -32,7 +32,7 @@ function App() {
                         {/* Rutas protegidas del admin */}
                         <Route path="/admin/*" element={
                             <RequireAuth>
-                                <AdminLayout />
+                                <AdminRoutes />
                             </RequireAuth>
                         } />
 
