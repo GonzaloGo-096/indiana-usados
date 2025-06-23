@@ -76,7 +76,7 @@ const Dashboard = () => {
                                     <td>{auto.id}</td>
                                     <td>{auto.marca}</td>
                                     <td>{auto.modelo}</td>
-                                    <td>{auto.anio}</td>
+                                    <td>{auto.año}</td>
                                     <td>${auto.precio?.toLocaleString()}</td>
                                     <td>
                                         <span className={`badge ${auto.estado === 'disponible' ? 'bg-success' : 'bg-warning'}`}>
