@@ -1,5 +1,5 @@
 import React from 'react'
-import { ListAutos } from '../components/ListAutos'
+import { ListAutos } from '../components/business/ListAutos'
 import { useLoaderData } from 'react-router-dom'
 // export const loadAutos =async () =>{
 // const response = await fetch('http://localhost:3000/autos')

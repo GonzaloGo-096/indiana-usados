@@ -1,11 +1,12 @@
 import React, { useRef, useCallback, memo } from 'react'
 import { CardAuto } from './cardAuto'
-import { ListAutosSkeleton } from './skeletons/ListAutosSkeleton'
-import { useGetCars } from '../hooks/useGetCars'
-import '../styles/listAutos.css'
+import { ListAutosSkeleton } from '../skeletons/ListAutosSkeleton'
+import { useGetCars } from '../../hooks/useGetCars'
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver'
+import '../../styles/listAutos.css'
 
-// Componente de error memoizado
-const ErrorMessage = memo(({ message, onRetry }) => (
+// Componente de error
+const ErrorMessage = ({ message, onRetry }) => (
     <div className="list-autos__error">
         <div className="list-autos__error-content">
             <h3>¡Ups! Algo salió mal</h3>
@@ -20,7 +21,7 @@ const ErrorMessage = memo(({ message, onRetry }) => (
             )}
         </div>
     </div>
-))
+)
 
 export const ListAutos = () => {
     const { 
@@ -34,8 +35,6 @@ export const ListAutos = () => {
         refetch
     } = useGetCars()
 
-    const observer = useRef()
-    
     // Función para manejar la carga
     const handleLoadMore = useCallback(() => {
         if (!isError && hasNextPage) {
@@ -47,33 +46,10 @@ export const ListAutos = () => {
         }
     }, [isError, hasNextPage, loadMore])
 
-    const lastElementRef = useCallback(node => {
-        // Desconectar observer existente si existe
-        if (observer.current) {
-            observer.current.disconnect()
-        }
-
-        // Si no hay nodo o no debemos observar, salir
-        if (!node || isLoading || isFetchingNextPage || isError || !hasNextPage) {
-            return
-        }
-        
-        // Crear nuevo observer
-        observer.current = new IntersectionObserver(
-            entries => {
-                if (entries[0].isIntersecting) {
-                    handleLoadMore()
-                }
-            },
-            {
-                rootMargin: '300px',
-                threshold: 0.1
-            }
-        )
-        
-        observer.current.observe(node)
-        return null // Explícitamente indicamos que la función completó su tarea
-    }, [isLoading, isFetchingNextPage, isError, hasNextPage, handleLoadMore])
+    // Hook personalizado para intersection observer
+    const lastElementRef = useIntersectionObserver(handleLoadMore, {
+        enabled: !isLoading && !isFetchingNextPage && !isError && hasNextPage
+    })
 
     // Función para manejar el reintento
     const handleRetry = useCallback(() => {

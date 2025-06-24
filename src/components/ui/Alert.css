@@ -1,0 +1,64 @@
+/* Base del alert */
+.alert {
+    padding: var(--spacing-md);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height);
+}
+
+/* Variantes usando variables CSS */
+.alert-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: var(--text-white);
+}
+
+.alert-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    color: var(--text-white);
+}
+
+.alert-warning {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+    color: var(--text-dark);
+}
+
+.alert-info {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+    color: var(--text-white);
+}
+
+.alert-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-white);
+}
+
+/* Alert descartable */
+.alert-dismissible {
+    padding-right: var(--spacing-xl);
+    position: relative;
+}
+
+.btn-close {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: var(--transition-normal);
+}
+
+.btn-close:hover {
+    opacity: 1;
+} 

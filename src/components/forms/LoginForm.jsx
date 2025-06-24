@@ -1,6 +1,6 @@
 import React from 'react'
 import { useForm } from '../../hooks/useForm'
-import { FormInput } from '../common/FormInput'
+import { FormInput } from '../ui/FormInput'
 
 const LoginForm = ({ onSubmit, isSubmitting, errors: externalErrors }) => {
     const { 

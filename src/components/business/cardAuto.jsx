@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
-import img from '../assets/auto1.jpg'
-import '../styles/cardAuto.css'
+import img from '../../assets/auto1.jpg'
+import '../../styles/cardAuto.css'
 
 export const CardAuto = memo(({auto}) => {
     if (!auto) return null;

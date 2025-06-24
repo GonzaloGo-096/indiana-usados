@@ -1,9 +1,6 @@
-/* Reset básico */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Importar estilos base */
+@import './styles/variables.css';
+@import './styles/reset.css';
 
 /* Estilos generales */
 html, body {
@@ -45,36 +42,18 @@ h1, h2, h3 {
 /* Enlaces */
 a {
   text-decoration: none;
-  color: #007bff;
+  color: var(--primary-color);
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: #0056b3;
-}
-
-/* Botones */
-.btn {
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
+  color: var(--primary-hover);
 }
 
 /* Ajustes específicos para las tarjetas */
 .card {
   border: none;
-  transition: transform 0.2s ease-in-out;
+  transition: var(--transition-normal);
 }
 
 .card:hover {
@@ -91,7 +70,7 @@ main {
 /* Ajustes para el navbar */
 .navbar {
   width: 100%;
-  padding: 1rem 2rem;
+  padding: var(--spacing-md) var(--spacing-xl);
 }
 
 /* Imágenes responsivas */
