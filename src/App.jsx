@@ -1,8 +1,19 @@
+/**
+ * App.jsx - Componente principal de la aplicación
+ * 
+ * Configuración:
+ * - React Router
+ * - Rutas públicas y admin
+ * - Autenticación
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import './App.css'
 import { Navigate } from 'react-router-dom'
+import './App.module.css'
 
 // Routes
 import PublicRoutes from './routes/PublicRoutes'
@@ -14,34 +25,29 @@ import { RequireAuth } from './components/auth/RequireAuth'
 // Páginas del admin
 import Login from './pages/admin/Login'
 
-// Crear una nueva instancia de QueryClient
-const queryClient = new QueryClient()
-
 function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <Router>
-                <div className="d-flex flex-column min-vh-100">
-                    <Routes>
-                        {/* Rutas públicas */}
-                        <Route path="/*" element={<PublicRoutes />} />
+        <Router>
+            <div className="app">
+                <Routes>
+                    {/* Rutas públicas */}
+                    <Route path="/*" element={<PublicRoutes />} />
 
-                        {/* Ruta de login */}
-                        <Route path="/admin/login" element={<Login />} />
+                    {/* Ruta de login */}
+                    <Route path="/admin/login" element={<Login />} />
 
-                        {/* Rutas protegidas del admin */}
-                        <Route path="/admin/*" element={
-                            <RequireAuth>
-                                <AdminRoutes />
-                            </RequireAuth>
-                        } />
+                    {/* Rutas protegidas del admin */}
+                    <Route path="/admin/*" element={
+                        <RequireAuth>
+                            <AdminRoutes />
+                        </RequireAuth>
+                    } />
 
-                        {/* Ruta por defecto */}
-                        <Route path="*" element={<Navigate to="/" />} />
-                    </Routes>
-                </div>
-            </Router>
-        </QueryClientProvider>
+                    {/* Ruta por defecto */}
+                    <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+            </div>
+        </Router>
     )
 }
 

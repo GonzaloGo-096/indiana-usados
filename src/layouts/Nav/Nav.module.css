@@ -1,0 +1,213 @@
+/**
+ * Nav.module.css - Estilos para el componente de navegación
+ * 
+ * Características:
+ * - Diseño responsive
+ * - Menú hamburguesa para mobile
+ * - Estados activos
+ * - Transiciones suaves
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.navbar {
+  background-color: var(--color-nav-background);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  border-bottom: 1px solid var(--color-nav-background-dark);
+}
+
+.container {
+  max-width: var(--breakpoint-xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+
+.brand {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-nav-text);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.brand:hover {
+  color: var(--color-nav-text-hover);
+}
+
+.mobileMenu {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  z-index: 1001;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  width: 24px;
+  height: 18px;
+  justify-content: space-between;
+}
+
+.line {
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-nav-text);
+  transition: all var(--transition-fast);
+  transform-origin: center;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.navList {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: var(--spacing-xl);
+}
+
+.navItem {
+  margin: 0;
+  position: relative;
+}
+
+.navItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: calc(-1 * var(--spacing-lg));
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 20px;
+  background-color: var(--color-nav-text);
+  opacity: 0.3;
+}
+
+.navLink {
+  color: var(--color-nav-text);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.navLink:hover {
+  color: var(--color-nav-text-hover);
+  background-color: var(--color-nav-background-light);
+}
+
+.navLink.active {
+  color: var(--color-nav-text-hover);
+  background-color: var(--color-nav-background-light);
+}
+
+.navLink.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: var(--color-nav-text-hover);
+  border-radius: 1px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mobileMenu {
+    display: block;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-nav-background);
+    transform: translateX(-100%);
+    transition: transform var(--transition-medium);
+    z-index: 1000;
+  }
+
+  .nav.open {
+    transform: translateX(0);
+  }
+
+  .navList {
+    flex-direction: column;
+    gap: 0;
+    padding: 80px var(--spacing-md) var(--spacing-md);
+    height: 100%;
+    justify-content: flex-start;
+  }
+
+  .navItem {
+    width: 100%;
+  }
+
+  .navItem::after {
+    display: none;
+  }
+
+  .navLink {
+    display: block;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-lg);
+  }
+
+  .navLink:hover {
+    background-color: var(--color-nav-background-light);
+  }
+
+  .navLink.active {
+    background-color: var(--color-nav-background-light);
+  }
+
+  .navLink.active::after {
+    display: none;
+  }
+
+  /* Animación del hamburger */
+  .mobileMenu[aria-expanded="true"] .line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .mobileMenu[aria-expanded="true"] .line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobileMenu[aria-expanded="true"] .line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+}
+
+@media (min-width: 769px) {
+  .nav {
+    position: static;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    box-shadow: none;
+  }
+} 

@@ -1,0 +1,29 @@
+/**
+ * CardAutoSkeleton.module.css - Estilos para el skeleton de tarjeta de auto
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.card {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.body {
+  padding: var(--spacing-lg);
+}
+
+.footer {
+  padding: var(--spacing-lg);
+  background: transparent;
+  border: none;
+} 

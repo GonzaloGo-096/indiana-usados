@@ -1,0 +1,115 @@
+/**
+ * Alert.module.css - Estilos para el componente Alert
+ * 
+ * Características:
+ * - Múltiples variantes
+ * - Opción dismissible
+ * - Diseño responsive
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== ALERTA BASE ===== */
+.alert {
+    padding: var(--spacing-4);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    margin-bottom: var(--spacing-4);
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+}
+
+/* ===== VARIANTES ===== */
+.info {
+    background-color: var(--color-info-50);
+    border-color: var(--color-info-500);
+    color: var(--color-info-600);
+}
+
+.success {
+    background-color: var(--color-success-50);
+    border-color: var(--color-success-500);
+    color: var(--color-success-600);
+}
+
+.warning {
+    background-color: var(--color-warning-50);
+    border-color: var(--color-warning-500);
+    color: var(--color-warning-600);
+}
+
+.error {
+    background-color: var(--color-error-50);
+    border-color: var(--color-error-500);
+    color: var(--color-error-600);
+}
+
+/* ===== DISMISSIBLE ===== */
+.dismissible {
+    padding-right: var(--spacing-12);
+}
+
+.closeButton {
+    position: absolute;
+    top: var(--spacing-3);
+    right: var(--spacing-3);
+    background: none;
+    border: none;
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+    transition: opacity var(--transition-normal);
+    padding: var(--spacing-1);
+    border-radius: 4px;
+    line-height: 1;
+}
+
+.closeButton:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.closeButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px currentColor;
+}
+
+/* ===== CONTENIDO ===== */
+.alert > * {
+    margin: 0;
+}
+
+.alert h3 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-2);
+}
+
+.alert p {
+    margin-bottom: var(--spacing-3);
+    line-height: var(--line-height-relaxed);
+}
+
+.alert p:last-child {
+    margin-bottom: 0;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .alert {
+        padding: var(--spacing-3);
+    }
+    
+    .dismissible {
+        padding-right: var(--spacing-10);
+    }
+    
+    .closeButton {
+        top: var(--spacing-2);
+        right: var(--spacing-2);
+    }
+} 

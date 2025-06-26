@@ -1,0 +1,168 @@
+/**
+ * ListAutos.module.css - Estilos para el componente ListAutos
+ * 
+ * Características:
+ * - Grid responsive (3 columnas desktop, 2 tablet, 1 mobile)
+ * - Estados de error y vacío
+ * - Animaciones suaves
+ * - Diseño mobile-first
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.container {
+    min-height: 100vh;
+    padding: var(--spacing-8) 0;
+}
+
+/* ===== GRID DE VEHÍCULOS ===== */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Mobile first */
+    gap: var(--spacing-8);
+    min-height: 200px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-4);
+}
+
+/* Tablet: 2 columnas */
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-6);
+    }
+}
+
+/* Desktop: 3 columnas */
+@media (min-width: 1200px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-8);
+    }
+}
+
+/* ===== WRAPPER DE TARJETAS ===== */
+.cardWrapper {
+    min-height: 400px;
+    transition: all var(--transition-normal);
+}
+
+/* Ajuste para mobile */
+@media (max-width: 768px) {
+    .cardWrapper {
+        min-height: 350px;
+    }
+}
+
+/* ===== CONTENEDOR DE CARGA ===== */
+.loadingContainer {
+    min-height: 200px;
+    transition: min-height var(--transition-normal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-8) 0;
+}
+
+.loading {
+    min-height: 300px;
+}
+
+/* ===== MENSAJE DE FIN DE LISTA ===== */
+.endMessage {
+    text-align: center;
+    padding: var(--spacing-8) 0;
+    color: var(--color-neutral-600);
+}
+
+.endMessage p {
+    margin-bottom: var(--spacing-4);
+    font-size: var(--font-size-lg);
+}
+
+/* ===== ESTADOS DE ERROR Y VACÍO ===== */
+.error,
+.empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    padding: var(--spacing-8);
+    text-align: center;
+}
+
+.errorContent,
+.emptyContent {
+    max-width: 500px;
+    padding: var(--spacing-8);
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.error h3,
+.empty h3 {
+    color: var(--color-error-500);
+    margin-bottom: var(--spacing-4);
+    font-size: var(--font-size-xl);
+}
+
+.error p,
+.empty p {
+    color: var(--color-neutral-600);
+    margin-bottom: var(--spacing-4);
+    line-height: var(--line-height-relaxed);
+}
+
+/* ===== BANNER DE ERROR ===== */
+.errorBanner {
+    margin-bottom: var(--spacing-8);
+    padding: var(--spacing-4);
+    background-color: var(--color-warning-50);
+    border: 1px solid var(--color-warning-500);
+    border-radius: 8px;
+    color: var(--color-warning-600);
+}
+
+.errorBanner .errorContent {
+    box-shadow: none;
+    padding: 0;
+    background: none;
+}
+
+.errorBanner h3 {
+    color: var(--color-warning-600);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-2);
+}
+
+/* ===== BOTONES ===== */
+.retryButton {
+    margin-top: var(--spacing-4);
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-4) 0;
+    }
+    
+    .error,
+    .empty {
+        min-height: 300px;
+        padding: var(--spacing-4);
+    }
+    
+    .errorContent,
+    .emptyContent {
+        padding: var(--spacing-6);
+    }
+    
+    .errorBanner {
+        margin-bottom: var(--spacing-6);
+        padding: var(--spacing-3);
+    }
+} 

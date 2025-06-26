@@ -1,0 +1,77 @@
+/**
+ * DetalleSkeleton.module.css - Estilos para el skeleton de detalle
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.container {
+  max-width: var(--breakpoint-xl);
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: start;
+}
+
+.imageSection {
+  position: relative;
+}
+
+.imageCard {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.detailsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.detailsCard {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-xl);
+}
+
+.tablesContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.tableSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .tablesContainer {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .detailsCard {
+    padding: var(--spacing-lg);
+  }
+} 

@@ -1,0 +1,12 @@
+/**
+ * App.module.css - Estilos para el componente App
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+} 

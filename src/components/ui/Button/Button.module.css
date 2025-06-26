@@ -1,0 +1,109 @@
+/**
+ * Button.module.css - Estilos para el componente Button
+ * 
+ * Características:
+ * - Múltiples variantes
+ * - Estados hover y disabled
+ * - Diseño responsive
+ * - Accesibilidad
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== BOTÓN BASE ===== */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--font-family-primary);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* ===== VARIANTES ===== */
+.primary {
+    background-color: var(--color-primary-500);
+    color: white;
+}
+
+.primary:hover:not(.disabled) {
+    background-color: var(--color-primary-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.secondary {
+    background-color: var(--color-neutral-200);
+    color: var(--color-neutral-800);
+}
+
+.secondary:hover:not(.disabled) {
+    background-color: var(--color-neutral-300);
+    transform: translateY(-1px);
+}
+
+.outline {
+    background-color: transparent;
+    border: 2px solid var(--color-primary-500);
+    color: var(--color-primary-500);
+}
+
+.outline:hover:not(.disabled) {
+    background-color: var(--color-primary-500);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* ===== TAMAÑOS ===== */
+.small {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-sm);
+    min-height: 32px;
+}
+
+.medium {
+    padding: var(--spacing-3) var(--spacing-4);
+    font-size: var(--font-size-base);
+    min-height: 40px;
+}
+
+.large {
+    padding: var(--spacing-4) var(--spacing-6);
+    font-size: var(--font-size-lg);
+    min-height: 48px;
+}
+
+/* ===== ESTADOS ===== */
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .large {
+        padding: var(--spacing-3) var(--spacing-5);
+        font-size: var(--font-size-base);
+        min-height: 44px;
+    }
+} 

@@ -1,0 +1,212 @@
+/**
+ * Footer.module.css - Estilos para el componente de pie de página
+ * 
+ * Características:
+ * - Diseño responsive
+ * - Secciones organizadas
+ * - Información de contacto
+ * - Enlaces útiles
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.footer {
+  background-color: var(--color-neutral-700);
+  color: var(--color-footer-text);
+  padding: var(--spacing-12) 0 var(--spacing-8);
+  margin-top: auto;
+}
+
+.container {
+  max-width: var(--breakpoint-xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-8);
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-12);
+  margin-bottom: var(--spacing-12);
+  flex-wrap: wrap;
+}
+
+.section {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-footer-text);
+  margin-bottom: var(--spacing-6);
+  position: relative;
+}
+
+.title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background-color: var(--color-footer-textHover);
+  border-radius: 1px;
+}
+
+.description {
+  color: var(--color-footer-textSecondary);
+  line-height: var(--line-height-normal);
+  margin: 0;
+  opacity: 0.9;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  transition: all 0.3s ease-in-out;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-6);
+  color: var(--color-footer-textSecondary);
+  margin: 0;
+  transition: opacity var(--transition-fast);
+  opacity: 0.9;
+}
+
+.contactItem:hover {
+  opacity: 1;
+  color: var(--color-footer-text);
+}
+
+.icon {
+  font-size: var(--font-size-base);
+  width: 20px;
+  text-align: center;
+}
+
+.linkList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.linkItem {
+  margin: 0;
+}
+
+.link {
+  color: var(--color-footer-textSecondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  display: inline-block;
+  padding: var(--spacing-1) 0;
+  position: relative;
+  opacity: 0.9;
+}
+
+.link:hover {
+  opacity: 1;
+  color: var(--color-footer-textHover);
+  transform: translateX(4px);
+}
+
+.link::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 2px;
+  background-color: var(--color-footer-textHover);
+  transition: width var(--transition-fast);
+}
+
+.link:hover::before {
+  width: 8px;
+}
+
+.bottom {
+  border-top: 1px solid var(--color-footer-backgroundDark);
+  padding-top: var(--spacing-8);
+  text-align: center;
+}
+
+.copyright {
+  color: var(--color-footer-textSecondary);
+  margin: 0;
+  font-size: var(--font-size-sm);
+  opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer {
+    padding: var(--spacing-8) 0 var(--spacing-6);
+  }
+
+  .content {
+    flex-direction: column;
+    gap: var(--spacing-8);
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .section {
+    min-width: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .description {
+    text-align: center;
+    max-width: 100%;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .title::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .contactItem {
+    justify-content: center;
+  }
+
+  .linkList {
+    align-items: center;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .content {
+    gap: var(--spacing-8);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .section {
+    min-width: 200px;
+  }
+
+  .description {
+    transition: all 0.3s ease-in-out;
+  }
+} 
