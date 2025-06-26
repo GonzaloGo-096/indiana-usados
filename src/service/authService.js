@@ -43,16 +43,39 @@ const getAuthHeaders = () => {
   return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
+// Función mock temporal para desarrollo (sin backend)
+const mockLogin = async (credentials) => {
+  // Simular delay de red
+  await new Promise(resolve => setTimeout(resolve, 500))
+  
+  // Credenciales hardcodeadas para desarrollo
+  if (credentials.usuario === 'admin' && credentials.contraseña === 'admin123') {
+    return {
+      success: true,
+      data: {
+        token: 'mock_jwt_token_' + Date.now(),
+        user: {
+          id: 1,
+          username: 'admin',
+          email: 'admin@indiana.com',
+          role: 'admin'
+        }
+      }
+    }
+  } else {
+    throw new Error('Credenciales inválidas')
+  }
+}
+
 /**
  * Servicios de autenticación
  */
 export const authService = {
   // Login
   login: async (credentials) => {
-    return apiRequest(AUTH_CONFIG.api.endpoints.login, {
-      method: 'POST',
-      body: JSON.stringify(credentials)
-    })
+    // Para desarrollo, usar mock login
+    // Cuando tengas backend, cambiar por: return apiRequest(AUTH_CONFIG.api.endpoints.login, {...})
+    return mockLogin(credentials)
   },
 
   // Logout
@@ -60,10 +83,9 @@ export const authService = {
     const token = localStorage.getItem(AUTH_CONFIG.storage.tokenKey)
     if (token) {
       try {
-        await apiRequest(AUTH_CONFIG.api.endpoints.logout, {
-          method: 'POST',
-          headers: getAuthHeaders()
-        })
+        // Para desarrollo, solo limpiar localStorage
+        // Cuando tengas backend, descomentar: await apiRequest(AUTH_CONFIG.api.endpoints.logout, {...})
+        console.log('Logout exitoso')
       } catch (error) {
         console.error('Error during logout API call:', error)
       }

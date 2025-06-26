@@ -20,11 +20,13 @@ export const useAuth = () => {
       const userData = localStorage.getItem(AUTH_CONFIG.storage.userKey)
 
       if (token && userData) {
-        // Para un sistema simple, solo verificamos que exista el token
+        // Para desarrollo, solo verificamos que exista el token
         setUser(JSON.parse(userData))
         setIsAuthenticated(true)
       } else {
-        logout()
+        // No está autenticado
+        setUser(null)
+        setIsAuthenticated(false)
       }
     } catch (error) {
       console.error('Error checking auth status:', error)

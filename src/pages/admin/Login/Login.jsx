@@ -27,12 +27,18 @@ const Login = () => {
     const handleSubmit = async (values) => {
         setErrors({})
         
+        console.log('Intentando login con:', values)
+        
         // Usar el hook de autenticación
         const result = await login(values)
         
+        console.log('Resultado del login:', result)
+        
         if (result.success) {
+            console.log('Login exitoso, redirigiendo...')
             navigate(AUTH_CONFIG.routes.dashboard)
         } else {
+            console.log('Error en login:', result.error)
             setErrors({
                 usuario: result.error || 'Error de autenticación',
                 contraseña: result.error || 'Error de autenticación',
@@ -47,7 +53,9 @@ const Login = () => {
                 <div className={styles.content}>
                     <div className={styles.card}>
                         <div className={styles.cardBody}>
-                            <div>Cargando...</div>
+                            <div style={{ textAlign: 'center', fontSize: '18px', color: '#666' }}>
+                                Verificando sesión...
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -61,6 +69,9 @@ const Login = () => {
                 <div className={styles.card}>
                     <div className={styles.cardBody}>
                         <h2 className={styles.title}>Iniciar Sesión</h2>
+                        <p style={{ textAlign: 'center', marginBottom: '20px', color: '#666', fontSize: '14px' }}>
+                            Usuario: admin | Contraseña: admin123
+                        </p>
                         <LoginForm 
                             onSubmit={handleSubmit} 
                             isSubmitting={isLoading} 

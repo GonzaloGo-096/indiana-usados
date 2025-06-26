@@ -10,7 +10,7 @@ Sistema de autenticación simple y profesional para uso interno con pocas person
 ```javascript
 export const AUTH_CONFIG = {
   api: {
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001/api',
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
     endpoints: {
       login: '/auth/login',
       logout: '/auth/logout'
@@ -172,8 +172,10 @@ Authorization: Bearer <token>
 
 Crear archivo `.env`:
 ```env
-REACT_APP_API_URL=http://localhost:3001/api
+VITE_API_URL=http://localhost:3001/api
 ```
+
+**Nota importante**: En Vite, las variables de entorno deben comenzar con `VITE_` para ser accesibles en el frontend.
 
 ## Características del Sistema Simplificado
 

@@ -12,12 +12,20 @@ export const RequireAuth = ({ children }) => {
                 display: 'flex', 
                 justifyContent: 'center', 
                 alignItems: 'center', 
-                height: '100vh' 
+                height: '100vh',
+                fontSize: '18px',
+                color: '#666'
             }}>
-                <div>Cargando...</div>
+                <div>Verificando autenticación...</div>
             </div>
         )
     }
 
-    return isAuthenticated ? children : <Navigate to={AUTH_CONFIG.routes.login} replace />
+    // Si está autenticado, mostrar el contenido
+    if (isAuthenticated) {
+        return children
+    }
+
+    // Si no está autenticado, redirigir al login
+    return <Navigate to={AUTH_CONFIG.routes.login} replace />
 } 
