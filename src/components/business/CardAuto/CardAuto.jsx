@@ -15,6 +15,8 @@ import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../../ui/Button'
 import styles from './CardAuto.module.css'
+// Importar imagen por defecto
+import defaultCarImage from '../../../assets/auto1.jpg'
 
 /**
  * Componente CardAuto
@@ -45,7 +47,7 @@ export const CardAuto = memo(({ auto }) => {
             {/* Contenedor de imagen */}
             <div className={styles.imageContainer}>
                 <img 
-                    src={auto.imagen || '/placeholder-car.jpg'} 
+                    src={auto.imagen || defaultCarImage} 
                     className={styles.image} 
                     alt={`${marca} ${modelo}`}
                     loading="lazy"
