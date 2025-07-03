@@ -163,19 +163,20 @@
 }
 
 .table th {
-  background-color: var(--color-neutral-50);
+  background-color: var(--color-white);
   font-weight: var(--font-weight-semibold);
   color: var(--color-neutral-700);
   padding: var(--spacing-md);
   text-align: left;
-  border-bottom: 1px solid var(--color-neutral-200);
+  border-bottom: 2px solid var(--color-neutral-200);
   white-space: nowrap;
 }
 
 .table td {
   padding: var(--spacing-md);
-  border-bottom: 1px solid var(--color-neutral-100);
+  border-bottom: 1px solid var(--color-neutral-200);
   color: var(--color-neutral-700);
+  background-color: var(--color-white);
 }
 
 .table tbody tr:hover {

@@ -60,18 +60,22 @@ export const CardAuto = memo(({ auto }) => {
                 
                 {/* Detalles del vehículo */}
                 <div className={styles.details}>
-                    <div className={styles.detail}>
-                        <span className={styles.label}>Precio:</span>
-                        <span className={styles.value}>{precio}</span>
-                    </div>
-                    <div className={styles.detail}>
-                        <span className={styles.label}>Año:</span>
-                        <span className={styles.value}>{año}</span>
-                    </div>
-                    <div className={styles.detail}>
-                        <span className={styles.label}>Kilómetros:</span>
-                        <span className={styles.value}>{kms}</span>
-                    </div>
+                    <table className={styles.table}>
+                        <tbody>
+                            <tr>
+                                <th>Precio</th>
+                                <td>{precio}</td>
+                            </tr>
+                            <tr>
+                                <th>Año</th>
+                                <td>{año}</td>
+                            </tr>
+                            <tr>
+                                <th>Kilómetros</th>
+                                <td>{kms}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             

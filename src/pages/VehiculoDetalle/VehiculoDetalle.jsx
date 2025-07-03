@@ -85,19 +85,19 @@ const VehiculoDetalle = () => {
             </div>
             
             <div className={styles.content}>
-                <div className={styles.imageSection}>
-                    <img 
-                        src={img} 
-                        alt={`${marca} ${modelo}`}
-                        className={styles.image}
-                    />
-                </div>
-                
-                <div className={styles.detailsSection}>
-                    <h2 className={styles.title}>{marca} {modelo}</h2>
-                    
-                    <div className={styles.card}>
-                        <div className={styles.cardBody}>
+                <div className={styles.card}>
+                    <div className={styles.cardContent}>
+                        <div className={styles.imageSection}>
+                            <img 
+                                src={img} 
+                                alt={`${marca} ${modelo}`}
+                                className={styles.image}
+                            />
+                        </div>
+                        
+                        <div className={styles.detailsSection}>
+                            <h2 className={styles.title}>{marca} {modelo}</h2>
+                            
                             <div className={styles.tablesContainer}>
                                 <div className={styles.tableSection}>
                                     <table className={styles.table}>
