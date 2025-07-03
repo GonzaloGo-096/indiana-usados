@@ -11,6 +11,43 @@
  * @version 1.0.0
  */
 
+/* ===== VARIABLES CSS ===== */
+:root {
+  /* Colores primarios */
+  --color-primary-100: #bbdefb;
+  --color-primary-300: #64b5f6;
+  --color-primary-500: #007bff;
+  --color-primary-600: #0056b3;
+  --color-primary-700: #004085;
+  --color-primary-900: #001f3f;
+
+  /* Colores de error */
+  --color-error-100: #f5c6cb;
+  --color-error-500: #dc3545;
+  --color-error-600: #c82333;
+  --color-error-700: #a71e2a;
+
+  /* Colores neutros */
+  --color-neutral-50: #f8f9fa;
+  --color-neutral-100: #f1f3f4;
+  --color-neutral-200: #e9ecef;
+  --color-neutral-300: #dadce0;
+  --color-neutral-400: #ced4da;
+  --color-neutral-500: #9aa0a6;
+  --color-neutral-600: #80868b;
+  --color-neutral-700: #5f6368;
+  --color-neutral-800: #282525;
+  --color-neutral-900: #202124;
+
+  /* Colores de éxito y warning */
+  --color-success-500: #28a745;
+  --color-warning-500: #ffc107;
+
+  /* Colores base */
+  --color-white: #ffffff;
+  --color-black: #000000;
+}
+
 /* ===== RESET BÁSICO ===== */
 * {
   box-sizing: border-box;

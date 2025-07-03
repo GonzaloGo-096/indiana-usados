@@ -17,6 +17,22 @@
     padding: var(--spacing-8) 0;
 }
 
+/* ===== SECCIÓN DE FILTROS ===== */
+.filterSection {
+    margin-bottom: var(--spacing-xl);
+    padding: 0 var(--spacing-4);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Ocultar filtro en mobile (se usa el drawer) */
+@media (max-width: 768px) {
+    .filterSection {
+        display: none;
+    }
+}
+
 /* ===== GRID DE VEHÍCULOS ===== */
 .grid {
     display: grid;

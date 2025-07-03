@@ -6,7 +6,7 @@
  */
 
 import React from 'react'
-import { ListAutos } from '../../components/business/ListAutos'
+import { ListAutosContainer } from '../../components/business/ListAutos'
 import styles from './Vehiculos.module.css'
 
 const Vehiculos = () => {
@@ -14,7 +14,7 @@ const Vehiculos = () => {
         <div className={styles.container}>
             <div className={styles.content}>
                 <h1 className={styles.title}>Vehículos Disponibles</h1>
-                <ListAutos />
+                <ListAutosContainer />
             </div>
         </div>
     )

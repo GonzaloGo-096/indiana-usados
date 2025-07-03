@@ -1,0 +1,112 @@
+/**
+ * FilterButton.module.css - Estilos para el botón flotante de filtros
+ * 
+ * Botón flotante que se muestra solo en dispositivos móviles
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.filterButton {
+  position: fixed;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+  background: var(--color-primary-500);
+  color: var(--color-white);
+  border: none;
+  border-radius: 50px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: all var(--transition-fast);
+  z-index: var(--z-fixed);
+  min-width: 120px;
+  justify-content: center;
+}
+
+.filterButton:hover:not(:disabled) {
+  background: var(--color-primary-600);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+.filterButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.filterButton:disabled {
+  background: var(--color-neutral-400);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.filterButton:focus {
+  outline: 2px solid var(--color-primary-300);
+  outline-offset: 2px;
+}
+
+.filterIcon {
+  flex-shrink: 0;
+}
+
+.buttonText {
+  font-weight: var(--font-weight-medium);
+}
+
+.badge {
+  background: var(--color-error-500);
+  color: var(--color-white);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  animation: pulse 2s infinite;
+}
+
+/* Animación para el badge */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Solo mostrar en mobile */
+@media (min-width: 769px) {
+  .filterButton {
+    display: none;
+  }
+}
+
+/* Responsive para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .filterButton {
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    min-width: 100px;
+    font-size: var(--font-size-sm);
+  }
+
+  .filterIcon {
+    width: 16px;
+    height: 16px;
+  }
+} 

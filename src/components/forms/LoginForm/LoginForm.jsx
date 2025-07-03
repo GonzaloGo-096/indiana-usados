@@ -1,61 +1,77 @@
 /**
  * LoginForm - Formulario de inicio de sesión
  * 
+ * Migrado a React Hook Form para mantener consistencia con el resto del proyecto
+ * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-import React from 'react'
-import { useForm } from '../../../hooks/useForm'
-import { FormInput } from '../../ui/FormInput'
+import React, { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import styles from './LoginForm.module.css'
 
 const LoginForm = ({ onSubmit, isSubmitting, errors: externalErrors }) => {
     const { 
-        values, 
-        errors: formErrors, 
-        handleChange, 
-        handleSubmit,
-        setErrors 
-    } = useForm({ 
-        usuario: '', 
-        contraseña: '' 
+        register, 
+        handleSubmit, 
+        formState: { errors: formErrors },
+        setError,
+        clearErrors
+    } = useForm({
+        defaultValues: {
+            usuario: '',
+            contraseña: ''
+        }
     })
 
     // Si hay errores externos, los mostramos
-    React.useEffect(() => {
+    useEffect(() => {
         if (externalErrors) {
-            setErrors(externalErrors)
+            Object.entries(externalErrors).forEach(([field, message]) => {
+                setError(field, { type: 'server', message })
+            })
+        } else {
+            // Limpiar errores externos cuando no hay
+            clearErrors()
         }
-    }, [externalErrors, setErrors])
+    }, [externalErrors, setError, clearErrors])
 
     // Combinamos errores del formulario con errores externos
-    const errors = { ...formErrors, ...externalErrors }
-
-    const onFormSubmit = (e) => {
-        handleSubmit(e, onSubmit)
-    }
+    const errors = { ...formErrors.errors, ...externalErrors }
 
     return (
-        <form onSubmit={onFormSubmit} className={styles.form}>
-            <FormInput
-                label="Usuario"
-                type="text"
-                name="usuario"
-                value={values.usuario}
-                onChange={handleChange}
-                error={errors.usuario}
-                required
-            />
-            <FormInput
-                label="Contraseña"
-                type="password"
-                name="contraseña"
-                value={values.contraseña}
-                onChange={handleChange}
-                error={errors.contraseña}
-                required
-            />
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+            <div className={styles.formGroup}>
+                <label className={styles.label}>Usuario</label>
+                <input
+                    type="text"
+                    {...register('usuario', {
+                        required: 'El usuario es requerido'
+                    })}
+                    className={styles.input}
+                    disabled={isSubmitting}
+                />
+                {errors.usuario && (
+                    <span className={styles.error}>{errors.usuario.message}</span>
+                )}
+            </div>
+
+            <div className={styles.formGroup}>
+                <label className={styles.label}>Contraseña</label>
+                <input
+                    type="password"
+                    {...register('contraseña', {
+                        required: 'La contraseña es requerida'
+                    })}
+                    className={styles.input}
+                    disabled={isSubmitting}
+                />
+                {errors.contraseña && (
+                    <span className={styles.error}>{errors.contraseña.message}</span>
+                )}
+            </div>
+
             <button 
                 type="submit" 
                 className={styles.submitButton}

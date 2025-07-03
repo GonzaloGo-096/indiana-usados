@@ -68,7 +68,7 @@ const Dashboard = () => {
                     <Link to="/admin/vehiculos/nuevo" className={styles.primaryButton}>
                         Agregar Vehículo
                     </Link>
-                    <button onClick={handleLogout} className={styles.logoutButton}>
+                    <button onClick={handleLogout} className={styles.logoutButton} type="button">
                         Cerrar Sesión
                     </button>
                 </div>

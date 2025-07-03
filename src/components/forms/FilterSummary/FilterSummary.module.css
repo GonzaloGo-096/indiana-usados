@@ -1,0 +1,134 @@
+/**
+ * FilterSummary.module.css - Estilos para el resumen de filtros activos
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.summary {
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.summaryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.summaryTitle {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-neutral-700);
+  margin: 0;
+}
+
+.clearAllButton {
+  background: none;
+  border: none;
+  color: var(--color-primary-600);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.clearAllButton:hover:not(:disabled) {
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+
+.clearAllButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.filtersList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.filterTag {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--border-radius-full);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-neutral-700);
+  transition: all var(--transition-fast);
+}
+
+.filterTag:hover {
+  border-color: var(--color-neutral-400);
+  box-shadow: var(--shadow-sm);
+}
+
+.filterLabel {
+  font-weight: var(--font-weight-medium);
+}
+
+.removeFilter {
+  background: none;
+  border: none;
+  color: var(--color-neutral-500);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.removeFilter:hover:not(:disabled) {
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-700);
+}
+
+.removeFilter:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .summary {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .summaryHeader {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: stretch;
+  }
+
+  .summaryTitle {
+    text-align: center;
+  }
+
+  .clearAllButton {
+    width: 100%;
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+
+  .filtersList {
+    gap: var(--spacing-xs);
+  }
+
+  .filterTag {
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-xs);
+  }
+} 

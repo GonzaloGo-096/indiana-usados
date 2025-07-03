@@ -18,6 +18,7 @@ export { breakpoints } from './breakpoints'
 export const cssVariables = `
   :root {
     /* Colores primarios (reducido) */
+    --color-primary-50: #e3f2fd;
     --color-primary-100: #bbdefb;
     --color-primary-300: #64b5f6;
     --color-primary-500: #007bff;
@@ -51,8 +52,12 @@ export const cssVariables = `
     --color-info-700: #0f6674;
     
     /* Colores neutros (reducido) */
+    --color-white: #ffffff;
+    --color-neutral-50: #f8f9fa;
     --color-neutral-100: #f1f3f4;
+    --color-neutral-200: #e8eaed;
     --color-neutral-300: #dadce0;
+    --color-neutral-400: #bdc1c6;
     --color-neutral-500: #9aa0a6;
     --color-neutral-600: #80868b;
     --color-neutral-700: #5f6368;
@@ -64,12 +69,6 @@ export const cssVariables = `
     --color-nav-text: #ecf0f1;
     --color-nav-text-hover: #3498db;
     
-    /* Colores del footer (simplificado) - Actualizado a azul */
-    --color-footer-background: #1e3a8a;
-    --color-footer-background-dark: #1e40af;
-    --color-footer-text: #ffffff;
-    --color-footer-text-secondary: #e5e7eb;
-    --color-footer-text-hover: #60a5fa;
     
     /* Tipografía (simplificado) */
     --font-family-primary: Arial, sans-serif;
@@ -113,6 +112,11 @@ export const cssVariables = `
     --spacing-32: 8rem;
     --spacing-40: 10rem;
     --spacing-48: 12rem;
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
     
     /* Sombras (simplificado) */
     --shadow-none: none;
@@ -133,6 +137,14 @@ export const cssVariables = `
     --breakpoint-lg: 992px;
     --breakpoint-xl: 1200px;
     --breakpoint-2xl: 1400px;
+    
+    /* Border radius */
+    --border-radius-sm: 0.375rem;
+    --border-radius: 0.5rem;
+    --border-radius-lg: 0.75rem;
+    --border-radius-xl: 1rem;
+    --border-radius-2xl: 1.5rem;
+    --border-radius-full: 9999px;
     
     /* Z-index */
     --z-dropdown: 1000;

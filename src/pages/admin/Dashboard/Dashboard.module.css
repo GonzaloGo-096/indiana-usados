@@ -42,13 +42,17 @@
 .primaryButton {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   padding: var(--spacing-md) var(--spacing-lg);
   background-color: var(--color-primary-500);
   color: var(--color-white);
   text-decoration: none;
   border-radius: var(--border-radius-sm);
   font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
   transition: all var(--transition-fast);
+  min-width: 140px;
+  height: 44px;
 }
 
 .primaryButton:hover {
@@ -76,19 +80,31 @@
 .logoutButton {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   padding: var(--spacing-md) var(--spacing-lg);
   background-color: var(--color-error-500);
   color: var(--color-white);
   border: none;
   border-radius: var(--border-radius-sm);
   font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
   cursor: pointer;
   transition: all var(--transition-fast);
+  min-width: 140px;
+  height: 44px;
+  text-decoration: none;
+  outline: none;
 }
 
-.logoutButton:hover {
+.logoutButton:hover,
+.logoutButton:focus,
+.logoutButton:active {
   background-color: var(--color-error-600);
   transform: translateY(-1px);
+  color: var(--color-white);
+  text-decoration: none;
+  border: none;
+  outline: none;
 }
 
 .content {
