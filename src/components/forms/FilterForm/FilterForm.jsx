@@ -18,34 +18,62 @@ import {
 } from '../../../constants/filterOptions'
 import styles from './FilterForm.module.css'
 
-const FilterForm = forwardRef(({ onFiltersChange, isSubmitting = false, showClearButtonAtBottom = false }, ref) => {
+const FilterForm = forwardRef(({ 
+    onFiltersChange, 
+    isSubmitting = false, 
+    showClearButtonAtBottom = false, 
+    initialValues,
+    variant = 'desktop' // 'desktop' | 'mobile'
+}, ref) => {
     // Configuración inicial de React Hook Form
     const { 
         register, 
         handleSubmit, 
         watch, 
         reset, 
+        setValue,
         formState: { errors } 
     } = useForm({
-        defaultValues: DEFAULT_FILTER_VALUES
+        defaultValues: initialValues || DEFAULT_FILTER_VALUES
     })
+
+    // Sincronizar con valores externos cuando cambien
+    React.useEffect(() => {
+        if (initialValues && Object.keys(initialValues).length > 0) {
+            // Solo actualizar si los valores son diferentes
+            const currentValues = watch()
+            const hasChanges = Object.entries(initialValues).some(([key, value]) => 
+                currentValues[key] !== value
+            )
+            
+            if (hasChanges) {
+                Object.entries(initialValues).forEach(([key, value]) => {
+                    setValue(key, value, { shouldValidate: false, shouldDirty: false })
+                })
+            }
+        }
+    }, [initialValues, setValue, watch])
 
     // Observar cambios en todos los campos inmediatamente
     const watchedValues = watch((data) => {
-        // Callback que se ejecuta automáticamente cuando cambian los valores
         onFiltersChange(data)
     })
 
-    // Función para limpiar todos los filtros usando reset() de React Hook Form
+    // Función para limpiar todos los filtros
     const handleClearFilters = () => {
-        reset() // Esto limpia el formulario y actualiza el estado interno
-        // No necesitamos llamar onFiltersChange({}) porque reset() ya actualiza watchedValues
+        reset()
     }
 
-    // Exponer la función reset para uso externo
+    // Exponer funciones para uso externo
     useImperativeHandle(ref, () => ({
-        reset: handleClearFilters
-    }), [])
+        reset: handleClearFilters,
+        setValues: (values) => {
+            Object.entries(values).forEach(([key, value]) => {
+                setValue(key, value)
+            })
+        },
+        getValues: () => watchedValues
+    }), [setValue, watchedValues])
 
     // Función para manejar el submit
     const onSubmit = (data) => {
@@ -60,7 +88,7 @@ const FilterForm = forwardRef(({ onFiltersChange, isSubmitting = false, showClea
     const { marcas, combustibles, transmisiones, colores } = FILTER_OPTIONS
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.filterForm}>
+        <form onSubmit={handleSubmit(onSubmit)} className={`${styles.filterForm} ${styles[variant]}`}>
             {/* Header solo si el botón va arriba */}
             {!showClearButtonAtBottom && (
                 <div className={styles.formHeader}>

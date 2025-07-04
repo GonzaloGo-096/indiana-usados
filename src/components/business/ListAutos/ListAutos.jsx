@@ -12,6 +12,7 @@
  */
 
 import React, { memo } from 'react'
+import { useFilterContext } from '../../../contexts/FilterContext'
 import FilterForm from '../../forms/FilterForm'
 import FilterDrawer from '../../forms/FilterDrawer'
 import FilterButton from '../../forms/FilterButton'
@@ -26,9 +27,6 @@ import styles from './ListAutos.module.css'
 const ListAutos = memo(({
     // Datos
     autos,
-    currentFilters,
-    activeFiltersCount,
-    queryParams,
     
     // Estados
     isLoading,
@@ -36,18 +34,29 @@ const ListAutos = memo(({
     error,
     isFetchingNextPage,
     hasNextPage,
-    isSubmitting,
-    isDrawerOpen,
     
     // Acciones
-    onFiltersChange,
-    onOpenDrawer,
-    onCloseDrawer,
-    onClearFilter,
-    onClearAllFilters,
     onRetry,
     onLoadMore
 }) => {
+    // ===== CONTEXT =====
+    const {
+        // Estado responsive
+        isMobile,
+        isDrawerOpen,
+        
+        // Estado de filtros
+        currentFilters,
+        isSubmitting,
+        activeFiltersCount,
+        
+        // Acciones
+        handleFiltersChange,
+        clearFilter,
+        clearAllFilters,
+        openDrawer,
+        closeDrawer
+    } = useFilterContext()
     return (
         <div className={styles.container}>
             {/* ===== SISTEMA DE FILTROS ===== */}
@@ -55,22 +64,24 @@ const ListAutos = memo(({
             {/* Filtro visible en desktop */}
             <div className={styles.filterSection}>
                 <FilterForm 
-                    onFiltersChange={onFiltersChange}
+                    variant="desktop"
+                    initialValues={currentFilters}
+                    onFiltersChange={handleFiltersChange}
                     isSubmitting={isSubmitting}
                 />
                 
                 {/* Resumen de filtros activos */}
                 <FilterSummary 
                     activeFilters={currentFilters}
-                    onClearFilter={onClearFilter}
-                    onClearAll={onClearAllFilters}
+                    onClearFilter={clearFilter}
+                    onClearAll={clearAllFilters}
                     isSubmitting={isSubmitting}
                 />
             </div>
 
             {/* Botón flotante para mobile */}
             <FilterButton 
-                onClick={onOpenDrawer}
+                onClick={openDrawer}
                 activeFiltersCount={activeFiltersCount}
                 isSubmitting={isSubmitting}
             />
@@ -78,9 +89,10 @@ const ListAutos = memo(({
             {/* Drawer para mobile */}
             <FilterDrawer 
                 isOpen={isDrawerOpen}
-                onClose={onCloseDrawer}
-                onFiltersChange={onFiltersChange}
+                onClose={closeDrawer}
+                onFiltersChange={handleFiltersChange}
                 isSubmitting={isSubmitting}
+                initialValues={currentFilters}
             />
 
             {/* ===== GRID DE VEHÍCULOS ===== */}

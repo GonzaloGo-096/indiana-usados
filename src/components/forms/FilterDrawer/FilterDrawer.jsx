@@ -16,7 +16,8 @@ const FilterDrawer = ({
     isOpen, 
     onClose, 
     onFiltersChange, 
-    isSubmitting = false 
+    isSubmitting = false,
+    initialValues
 }) => {
     // Cerrar drawer con Escape
     useEffect(() => {
@@ -75,6 +76,8 @@ const FilterDrawer = ({
                 
                 <div className={styles.drawerContent}>
                     <FilterForm 
+                        variant="mobile"
+                        initialValues={initialValues}
                         onFiltersChange={onFiltersChange}
                         isSubmitting={isSubmitting}
                         showClearButtonAtBottom={true}

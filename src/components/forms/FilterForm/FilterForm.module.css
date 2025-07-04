@@ -11,9 +11,21 @@
   background: var(--color-white);
   border: 1px solid var(--color-neutral-300);
   border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
   width: 100%;
+}
+
+/* Variante Desktop */
+.desktop {
+  padding: var(--spacing-lg);
+}
+
+/* Variante Mobile */
+.mobile {
+  padding: var(--spacing-md);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .formHeader {
@@ -130,31 +142,29 @@
   margin-top: var(--spacing-xs);
 }
 
-/* Responsive */
+/* Responsive para variante desktop */
 @media (max-width: 768px) {
-  .filterForm {
+  .desktop {
     padding: var(--spacing-md);
   }
 
-  .formHeader {
+  .desktop .formHeader {
     flex-direction: column;
     gap: var(--spacing-md);
     align-items: stretch;
   }
 
-  .formTitle {
+  .desktop .formTitle {
     text-align: center;
     font-size: var(--font-size-lg);
   }
 
-  .formGrid {
+  .desktop .formGrid {
     grid-template-columns: 1fr;
     gap: var(--spacing-sm);
   }
 
-
-
-  .clearButton {
+  .desktop .clearButton {
     width: 100%;
     padding: var(--spacing-md);
     font-size: var(--font-size-base);
@@ -162,11 +172,11 @@
 }
 
 @media (max-width: 480px) {
-  .filterForm {
+  .desktop {
     padding: var(--spacing-sm);
   }
 
-  .formTitle {
+  .desktop .formTitle {
     font-size: var(--font-size-base);
   }
 }
