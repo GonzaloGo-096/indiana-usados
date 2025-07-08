@@ -55,20 +55,31 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    padding: var(--spacing-xl);
+    padding: var(--spacing-sm);
 }
 
 .title {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
     color: var(--color-neutral-800);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
     line-height: var(--line-height-tight);
+    text-align: center;
 }
 
 /* ===== DETALLES ===== */
 .details {
     margin-top: auto;
+}
+
+.tablesContainer {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: space-between;
+}
+
+.tableSection {
+    flex: 1;
 }
 
 .table {
@@ -81,17 +92,21 @@
     background-color: var(--color-white);
     font-weight: var(--font-weight-semibold);
     color: var(--color-neutral-700);
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-xs) 0.25rem var(--spacing-xs) 0;
     text-align: left;
     border-bottom: 2px solid var(--color-neutral-200);
     white-space: nowrap;
+    font-size: 0.8rem;
+    width: 32%;
 }
 
 .table td {
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-xs) 0 var(--spacing-xs) 0.25rem;
     border-bottom: 1px solid var(--color-neutral-200);
     color: var(--color-neutral-700);
     background-color: var(--color-white);
+    font-size: 0.8rem;
+    width: 68%;
 }
 
 .table tr:last-child th,
@@ -101,7 +116,7 @@
 
 /* ===== FOOTER ===== */
 .footer {
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
     border-top: 1px solid var(--color-neutral-200);
     background-color: var(--color-neutral-50);
 }
@@ -119,12 +134,12 @@
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
     .body {
-        padding: var(--spacing-lg);
+        padding: var(--spacing-sm);
     }
     
     .title {
         font-size: var(--font-size-lg);
-        margin-bottom: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
     }
     
     .footer {
@@ -134,7 +149,7 @@
 
 @media (max-width: 480px) {
     .body {
-        padding: var(--spacing-md);
+        padding: var(--spacing-xs);
     }
     
     .footer {

@@ -13,7 +13,7 @@
 import { useState, useCallback, useMemo, useRef } from 'react'
 
 export const useFilters = () => {
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [loadingSubmitting, setLoadingSubmitting] = useState(false)
     const timeoutRef = useRef(null)
 
     /**
@@ -30,10 +30,10 @@ export const useFilters = () => {
         }
         
         // Simular loading (en el futuro se conectaría con API)
-        setIsSubmitting(true)
+        setLoadingSubmitting(true)
         
         // Sin delay - respuesta inmediata
-        setIsSubmitting(false)
+        setLoadingSubmitting(false)
     }, [])
 
     /**
@@ -63,12 +63,12 @@ export const useFilters = () => {
 
     return {
         // Estado
-        isSubmitting,
+        loadingSubmitting,
         
         // Acciones
         handleFiltersChange,
         getQueryParams,
         getActiveFiltersCount,
-        setIsSubmitting
+        setLoadingSubmitting
     }
 } 

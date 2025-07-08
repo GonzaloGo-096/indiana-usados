@@ -13,7 +13,6 @@ const Vehiculos = () => {
     return (
         <div className={styles.container}>
             <div className={styles.content}>
-                <h1 className={styles.title}>Vehículos Disponibles</h1>
                 <ListAutosContainer />
             </div>
         </div>

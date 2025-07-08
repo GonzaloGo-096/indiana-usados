@@ -13,10 +13,13 @@
 
 import React, { memo } from 'react'
 import { useFilterContext } from '../../../contexts/FilterContext'
-import FilterForm from '../../forms/FilterForm'
-import FilterDrawer from '../../forms/FilterDrawer'
-import FilterButton from '../../forms/FilterButton'
-import FilterSummary from '../../forms/FilterSummary'
+import { useResponsiveContext } from '../../../contexts/ResponsiveContext'
+import { 
+    FilterForm, 
+    FilterDrawer, 
+    FilterButton, 
+    FilterSummary 
+} from '../../forms/filters'
 import AutosGrid from './AutosGrid'
 import styles from './ListAutos.module.css'
 
@@ -41,59 +44,73 @@ const ListAutos = memo(({
 }) => {
     // ===== CONTEXT =====
     const {
-        // Estado responsive
-        isMobile,
-        isDrawerOpen,
-        
         // Estado de filtros
         currentFilters,
         isSubmitting,
         activeFiltersCount,
         
-        // Acciones
+        // Acciones de filtros
         handleFiltersChange,
         clearFilter,
         clearAllFilters,
+    } = useFilterContext()
+
+    const {
+        // Estado responsive
+        isMobile,
+        isDrawerOpen,
+        
+        // Acciones responsive
         openDrawer,
         closeDrawer
-    } = useFilterContext()
+    } = useResponsiveContext()
+
+
     return (
         <div className={styles.container}>
             {/* ===== SISTEMA DE FILTROS ===== */}
             
             {/* Filtro visible en desktop */}
-            <div className={styles.filterSection}>
-                <FilterForm 
-                    variant="desktop"
-                    initialValues={currentFilters}
-                    onFiltersChange={handleFiltersChange}
-                    isSubmitting={isSubmitting}
-                />
-                
-                {/* Resumen de filtros activos */}
-                <FilterSummary 
-                    activeFilters={currentFilters}
-                    onClearFilter={clearFilter}
-                    onClearAll={clearAllFilters}
-                    isSubmitting={isSubmitting}
-                />
-            </div>
+            {!isMobile && (
+                <div className={styles.filterSection}>
+                    <FilterForm 
+                        variant="desktop"
+                        initialValues={currentFilters}
+                        onFiltersChange={handleFiltersChange}
+                        isSubmitting={isSubmitting}
+                    />
+                    
+                    {/* Resumen de filtros activos */}
+                    <FilterSummary 
+                        activeFilters={currentFilters}
+                        onClearFilter={clearFilter}
+                        onClearAll={clearAllFilters}
+                        isSubmitting={isSubmitting}
+                    />
+                </div>
+            )}
 
             {/* Botón flotante para mobile */}
-            <FilterButton 
-                onClick={openDrawer}
-                activeFiltersCount={activeFiltersCount}
-                isSubmitting={isSubmitting}
-            />
+            {isMobile && (
+                <FilterButton 
+                    onClick={openDrawer}
+                    activeFiltersCount={activeFiltersCount}
+                    isSubmitting={isSubmitting}
+                />
+            )}
+            
+
 
             {/* Drawer para mobile */}
-            <FilterDrawer 
-                isOpen={isDrawerOpen}
-                onClose={closeDrawer}
-                onFiltersChange={handleFiltersChange}
-                isSubmitting={isSubmitting}
-                initialValues={currentFilters}
-            />
+            {isMobile && (
+                <FilterDrawer 
+                    isOpen={isDrawerOpen}
+                    onClose={closeDrawer}
+                    onFiltersChange={handleFiltersChange}
+                    isSubmitting={isSubmitting}
+                    initialValues={currentFilters}
+                />
+            )}
 
             {/* ===== GRID DE VEHÍCULOS ===== */}
             <AutosGrid 

@@ -27,6 +27,9 @@ import defaultCarImage from '../../../assets/auto1.jpg'
  * @param {string} auto.precio - Precio del vehículo
  * @param {string} auto.año - Año del vehículo
  * @param {string} auto.kms - Kilometraje del vehículo
+ * @param {string} auto.caja - Tipo de caja del vehículo
+ * @param {string} auto.color - Color del vehículo
+ * @param {string} auto.categoria - Categoría del vehículo
  */
 export const CardAuto = memo(({ auto }) => {
     // Validación de props
@@ -39,7 +42,10 @@ export const CardAuto = memo(({ auto }) => {
         modelo = 'Sin modelo',
         precio = "Consultar",
         año = "Consultar",
-        kms = "Consultar"
+        kms = "Consultar",
+        caja = "Consultar",
+        color = "Consultar",
+        categoria = "Consultar"
     } = auto
 
     return (
@@ -60,22 +66,45 @@ export const CardAuto = memo(({ auto }) => {
                 
                 {/* Detalles del vehículo */}
                 <div className={styles.details}>
-                    <table className={styles.table}>
-                        <tbody>
-                            <tr>
-                                <th>Precio</th>
-                                <td>{precio}</td>
-                            </tr>
-                            <tr>
-                                <th>Año</th>
-                                <td>{año}</td>
-                            </tr>
-                            <tr>
-                                <th>Kilómetros</th>
-                                <td>{kms}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div className={styles.tablesContainer}>
+                        <div className={styles.tableSection}>
+                            <table className={styles.table}>
+                                <tbody>
+                                    <tr>
+                                        <th>Precio</th>
+                                        <td>{precio}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Año</th>
+                                        <td>{año}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Kilómetros</th>
+                                        <td>{kms}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div className={styles.tableSection}>
+                            <table className={styles.table}>
+                                <tbody>
+                                    <tr>
+                                        <th>Caja</th>
+                                        <td>{caja}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Color</th>
+                                        <td>{color}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Categoría</th>
+                                        <td>{categoria}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             

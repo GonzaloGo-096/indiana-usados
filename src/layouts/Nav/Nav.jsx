@@ -78,8 +78,32 @@ const Nav = () => {
                 Nosotros
               </Link>
             </li>
+            <li className={styles.navItem}>
+              <a 
+                className={`${styles.navLink} ${styles.externalLink} ${styles.mobileExternal}`}
+                href="https://peugeotindiana.com.ar/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMenu}
+              >
+                0 km ↗
+              </a>
+            </li>
           </ul>
         </div>
+        
+        <a 
+          className={`${styles.navLink} ${styles.externalLink} ${styles.desktopExternal}`}
+          href="https://peugeotindiana.com.ar/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          0 km ↗
+        </a>
+        
+
+        
+
       </div>
     </nav>
   )

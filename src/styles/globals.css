@@ -102,10 +102,10 @@ html, body {
 /* ===== RESPONSIVE UTILITIES ===== */
 @media (max-width: 768px) {
   .container {
-    padding: 0 var(--spacing-2);
+    padding: 0 var(--spacing-1);
   }
   
   .admin-container {
-    padding: var(--spacing-4) var(--spacing-2);
+    padding: var(--spacing-4) var(--spacing-1);
   }
 } 

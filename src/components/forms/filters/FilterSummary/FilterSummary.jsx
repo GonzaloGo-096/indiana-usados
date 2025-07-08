@@ -9,7 +9,7 @@
  */
 
 import React from 'react'
-import { getFilterLabel } from '../../../constants/filterOptions'
+import { getFilterLabel } from '../../../../constants'
 import styles from './FilterSummary.module.css'
 
 const FilterSummary = ({ 
@@ -30,7 +30,7 @@ const FilterSummary = ({
         <div className={styles.summary}>
             <div className={styles.summaryHeader}>
                 <h4 className={styles.summaryTitle}>
-                    Filtros aplicados ({filtersWithValues.length})
+                    Filtros seleccionados ({filtersWithValues.length})
                 </h4>
                 <button 
                     onClick={onClearAll}

@@ -75,6 +75,8 @@ export const ResponsiveProvider = ({ children }) => {
             width
         }
         
+
+        
         setScreenSize(newScreenSize)
         
         // Cerrar drawer automáticamente al cambiar a desktop
@@ -88,6 +90,7 @@ export const ResponsiveProvider = ({ children }) => {
     useEffect(() => {
         if (typeof window === 'undefined') return
         
+
         checkScreenSize()
         
         const handleResize = () => {

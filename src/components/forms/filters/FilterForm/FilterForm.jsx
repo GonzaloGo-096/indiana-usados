@@ -10,12 +10,12 @@
 
 import React, { forwardRef, useImperativeHandle } from 'react'
 import { useForm } from 'react-hook-form'
-import { FormInput } from '../../ui/FormInput'
+import { FormInput } from '../../../ui'
 import { 
     FILTER_OPTIONS, 
     DEFAULT_FILTER_VALUES, 
     generateYearOptions 
-} from '../../../constants/filterOptions'
+} from '../../../../constants'
 import styles from './FilterForm.module.css'
 
 const FilterForm = forwardRef(({ 
@@ -93,14 +93,23 @@ const FilterForm = forwardRef(({
             {!showClearButtonAtBottom && (
                 <div className={styles.formHeader}>
                     <h3 className={styles.formTitle}>Filtrar Vehículos</h3>
-                    <button 
-                        type="button" 
-                        onClick={handleClearFilters}
-                        className={styles.clearButton}
-                        disabled={isSubmitting}
-                    >
-                        Limpiar Filtros
-                    </button>
+                    <div>
+                        <button 
+                            type="button" 
+                            onClick={handleClearFilters}
+                            className={styles.clearButton}
+                            disabled={isSubmitting}
+                        >
+                            Limpiar Filtros
+                        </button>
+                        <button 
+                            type="submit"
+                            className={styles.applyButtonHeader}
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Aplicando...' : 'Aplicar Filtros'}
+                        </button>
+                    </div>
                 </div>
             )}
 
@@ -264,20 +273,9 @@ const FilterForm = forwardRef(({
                 </div>
             </div>
 
-            {/* Botón Aplicar Filtros en desktop */}
-            {!showClearButtonAtBottom && (
-                <div className={styles.desktopActions}>
-                    <button 
-                        type="submit"
-                        className={styles.applyButton}
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? 'Aplicando...' : 'Aplicar Filtros'}
-                    </button>
-                </div>
-            )}
 
-            {/* Botones de acción en mobile */}
+
+            {/* Botones para mobile */}
             {showClearButtonAtBottom && (
                 <div className={styles.actionButtons}>
                     <button 
@@ -287,7 +285,6 @@ const FilterForm = forwardRef(({
                     >
                         {isSubmitting ? 'Aplicando...' : 'Aplicar Filtros'}
                     </button>
-                    
                     <button 
                         type="button" 
                         onClick={handleClearFilters}
@@ -301,5 +298,7 @@ const FilterForm = forwardRef(({
         </form>
     )
 })
+
+FilterForm.displayName = 'FilterForm'
 
 export default FilterForm 

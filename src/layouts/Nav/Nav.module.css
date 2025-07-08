@@ -12,16 +12,16 @@
  */
 
 .navbar {
-  background-color: var(--color-nav-background);
+  background-color: #000000;
   box-shadow: var(--shadow-sm);
   position: sticky;
   top: 0;
   z-index: 1000;
   width: 100%;
-  border-bottom: 1px solid var(--color-nav-background-dark);
+  border-bottom: 1px solid #333333;
 }
 
-.container {
+  .container {
   max-width: var(--breakpoint-xl);
   margin: 0 auto;
   padding: 0 var(--spacing-md);
@@ -34,13 +34,14 @@
 .brand {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-nav-text);
+  color: #ffffff;
   text-decoration: none;
   transition: color var(--transition-fast);
+  justify-self: start;
 }
 
 .brand:hover {
-  color: var(--color-nav-text-hover);
+  color: #cccccc;
 }
 
 .mobileMenu {
@@ -63,7 +64,7 @@
 .line {
   width: 100%;
   height: 2px;
-  background-color: var(--color-nav-text);
+  background-color: #ffffff;
   transition: all var(--transition-fast);
   transform-origin: center;
 }
@@ -71,6 +72,9 @@
 .nav {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
 }
 
 .navList {
@@ -86,49 +90,75 @@
   position: relative;
 }
 
-.navItem:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  right: calc(-1 * var(--spacing-lg));
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1px;
-  height: 20px;
-  background-color: var(--color-nav-text);
-  opacity: 0.3;
-}
+/* Removed separator lines between nav items */
 
 .navLink {
-  color: var(--color-nav-text);
+  color: #ffffff;
   text-decoration: none;
   font-weight: var(--font-weight-medium);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  transition: all var(--transition-fast);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius-lg);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
 }
 
 .navLink:hover {
-  color: var(--color-nav-text-hover);
-  background-color: var(--color-nav-background-light);
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .navLink.active {
-  color: var(--color-nav-text-hover);
-  background-color: var(--color-nav-background-light);
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .navLink.active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 2px;
-  background-color: var(--color-nav-text-hover);
-  border-radius: 1px;
+  display: none;
 }
+
+/* Estilo especial para el enlace externo - estado normal invertido */
+.externalLink {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
+}
+
+.externalLink:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Estilos base para botones externos */
+.externalLink {
+  /* Estilos compartidos entre desktop y móvil */
+}
+
+/* Botón externo para desktop */
+.desktopExternal {
+  justify-self: end;
+}
+
+/* Botón externo para móvil */
+.mobileExternal {
+  /* Estilos específicos para móvil se definen en la media query */
+}
+
+
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -137,26 +167,34 @@
   }
 
   .nav {
-    position: fixed;
-    top: 0;
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
-    bottom: 0;
-    background-color: var(--color-nav-background);
-    transform: translateX(-100%);
-    transition: transform var(--transition-medium);
+    background-color: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transform: translateY(-10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-medium);
     z-index: 1000;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
   }
 
   .nav.open {
-    transform: translateX(0);
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
   }
 
   .navList {
     flex-direction: column;
     gap: 0;
-    padding: 80px var(--spacing-md) var(--spacing-md);
-    height: 100%;
+    padding: var(--spacing-md);
     justify-content: flex-start;
   }
 
@@ -168,20 +206,34 @@
     display: none;
   }
 
+  /* Ocultar botón de desktop en móvil con mayor especificidad */
+  .container .desktopExternal {
+    display: none;
+  }
+
+  /* Estilos para botón externo en móvil */
+  .mobileExternal {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: var(--spacing-sm);
+  }
+
   .navLink {
     display: block;
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius-sm);
     margin-bottom: var(--spacing-xs);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-base);
+    white-space: nowrap;
   }
 
   .navLink:hover {
-    background-color: var(--color-nav-background-light);
+    background-color: #333333;
   }
 
   .navLink.active {
-    background-color: var(--color-nav-background-light);
+    background-color: #333333;
   }
 
   .navLink.active::after {
@@ -202,12 +254,28 @@
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 768px) {
+  .container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--spacing-lg);
+  }
+  
   .nav {
     position: static;
     transform: none;
     opacity: 1;
     visibility: visible;
     box-shadow: none;
+  }
+
+  /* Mostrar botón de desktop */
+  .desktopExternal {
+    display: block;
+  }
+
+  /* Ocultar botón de móvil en desktop */
+  .mobileExternal {
+    display: none;
   }
 } 
