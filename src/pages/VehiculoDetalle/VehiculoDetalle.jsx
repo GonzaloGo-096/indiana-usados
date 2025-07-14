@@ -112,7 +112,7 @@ const VehiculoDetalle = () => {
                                             </tr>
                                             <tr>
                                                 <th>Kilometraje</th>
-                                                <td>{kms} km</td>
+                                                <td>{kms}</td>
                                             </tr>
                                         </tbody>
                                     </table>

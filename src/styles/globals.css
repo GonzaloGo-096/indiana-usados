@@ -60,7 +60,9 @@ html, body {
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
   color: var(--color-neutral-900);
-  background-color: var(--color-neutral-50);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 #root {

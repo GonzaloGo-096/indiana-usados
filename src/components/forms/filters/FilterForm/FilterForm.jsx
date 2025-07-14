@@ -122,7 +122,7 @@ const FilterForm = forwardRef(({
                         className={styles.select}
                         disabled={isSubmitting}
                     >
-                        <option value="">Todas las marcas</option>
+                        <option value="">--Seleccione--</option>
                         {marcas.map(marca => (
                             <option key={marca} value={marca}>{marca}</option>
                         ))}
@@ -137,7 +137,7 @@ const FilterForm = forwardRef(({
                         className={styles.select}
                         disabled={isSubmitting}
                     >
-                        <option value="">Cualquier año</option>
+                        <option value="">0</option>
                         {generateYearOptions().map(year => (
                             <option key={year} value={year}>{year}</option>
                         ))}
@@ -152,7 +152,7 @@ const FilterForm = forwardRef(({
                         className={styles.select}
                         disabled={isSubmitting}
                     >
-                        <option value="">Cualquier año</option>
+                        <option value="">--Hasta--</option>
                         {generateYearOptions().map(year => (
                             <option key={year} value={year}>{year}</option>
                         ))}
@@ -181,7 +181,7 @@ const FilterForm = forwardRef(({
                     <label className={styles.label}>Precio Hasta ($)</label>
                     <input
                         type="number"
-                        placeholder="Sin límite"
+                        placeholder="--Hasta--"
                         {...register('precioHasta', {
                             min: { value: 0, message: 'El precio debe ser mayor a 0' }
                         })}
@@ -201,7 +201,7 @@ const FilterForm = forwardRef(({
                         className={styles.select}
                         disabled={isSubmitting}
                     >
-                        <option value="">Todos los combustibles</option>
+                        <option value="">--Seleccione--</option>
                         {combustibles.map(combustible => (
                             <option key={combustible} value={combustible}>{combustible}</option>
                         ))}
@@ -216,7 +216,7 @@ const FilterForm = forwardRef(({
                         className={styles.select}
                         disabled={isSubmitting}
                     >
-                        <option value="">Todas las transmisiones</option>
+                        <option value="">--Seleccione--</option>
                         {transmisiones.map(transmision => (
                             <option key={transmision} value={transmision}>{transmision}</option>
                         ))}
@@ -225,7 +225,7 @@ const FilterForm = forwardRef(({
 
                 {/* Kilometraje Desde */}
                 <div className={styles.formGroup}>
-                    <label className={styles.label}>Kilometraje Desde (km)</label>
+                    <label className={styles.label}>Kms Desde</label>
                     <input
                         type="number"
                         placeholder="0"
@@ -242,10 +242,10 @@ const FilterForm = forwardRef(({
 
                 {/* Kilometraje Hasta */}
                 <div className={styles.formGroup}>
-                    <label className={styles.label}>Kilometraje Hasta (km)</label>
+                    <label className={styles.label}>Kms Hasta</label>
                     <input
                         type="number"
-                        placeholder="Sin límite"
+                        placeholder="--Hasta--"
                         {...register('kilometrajeHasta', {
                             min: { value: 0, message: 'El kilometraje debe ser mayor a 0' }
                         })}
@@ -265,7 +265,7 @@ const FilterForm = forwardRef(({
                         className={styles.select}
                         disabled={isSubmitting}
                     >
-                        <option value="">Todos los colores</option>
+                        <option value="">--Seleccione--</option>
                         {colores.map(color => (
                             <option key={color} value={color}>{color}</option>
                         ))}

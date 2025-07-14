@@ -14,6 +14,7 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styles from './Nav.module.css'
+import logo from '../../assets/indiana-nav-logo.png'
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -33,7 +34,7 @@ const Nav = () => {
     <nav className={styles.navbar}>
       <div className={styles.container}>
         <Link className={styles.brand} to="/" onClick={closeMenu}>
-          Indiana Usados
+          <img src={logo} alt="Indiana Usados" className={styles.logo} />
         </Link>
         
         <button 

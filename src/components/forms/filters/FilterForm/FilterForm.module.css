@@ -12,7 +12,9 @@
   border: 1px solid var(--color-neutral-300);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-sm);
-  width: 100%;
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 /* Variante Desktop */
@@ -99,14 +101,18 @@
 
 .formGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, auto);
   gap: var(--spacing-sm);
+  justify-items: center;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
+  align-items: center;
+  width: 100%;
 }
 
 .label {
@@ -114,6 +120,7 @@
   font-weight: var(--font-weight-medium);
   color: var(--color-neutral-700);
   margin-bottom: var(--spacing-xs);
+  text-align: center;
 }
 
 .select {
@@ -126,6 +133,28 @@
   color: var(--color-neutral-800);
   transition: all var(--transition-fast);
   cursor: pointer;
+}
+
+.select option {
+  color: var(--color-neutral-800);
+  font-size: var(--font-size-sm);
+}
+
+.select option[value=""] {
+  color: var(--color-neutral-400);
+  font-size: var(--font-size-xs);
+  font-style: italic;
+}
+
+.select option {
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.select option:first-child {
+  color: var(--color-neutral-400);
+  font-size: var(--font-size-xs);
+  font-style: italic;
 }
 
 .select:focus {
@@ -153,6 +182,32 @@
   background-color: var(--color-white);
   color: var(--color-neutral-800);
   transition: all var(--transition-fast);
+}
+
+.input::placeholder {
+  color: var(--color-neutral-400);
+  font-size: var(--font-size-xs);
+  font-style: italic;
+}
+
+/* Reducir ancho de inputs en desktop */
+@media (min-width: 768px) {
+  .input,
+  .select {
+    width: 90%;
+  }
+  
+  .formGrid {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: var(--spacing-sm);
+    justify-items: center;
+  }
+  
+  .filterForm {
+    width: 85%;
+    max-width: 700px;
+  }
 }
 
 .input:focus {
@@ -193,6 +248,11 @@
   .desktop .formGrid {
     grid-template-columns: 1fr;
     gap: var(--spacing-sm);
+    justify-items: stretch;
+  }
+  
+  .filterForm {
+    width: 95%;
   }
 
   .desktop .clearButton {

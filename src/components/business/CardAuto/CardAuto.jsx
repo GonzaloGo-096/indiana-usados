@@ -79,7 +79,7 @@ export const CardAuto = memo(({ auto }) => {
                                         <td>{año}</td>
                                     </tr>
                                     <tr>
-                                        <th>Kilómetros</th>
+                                        <th>Kms</th>
                                         <td>{kms}</td>
                                     </tr>
                                 </tbody>
@@ -111,7 +111,7 @@ export const CardAuto = memo(({ auto }) => {
             {/* Footer con botón */}
             <div className={styles.footer}>
                 <Link to={`/vehiculo/${id}`}>
-                    <Button variant="primary" className={styles.button}>
+                    <Button variant="glass" className={styles.button}>
                         Ver más
                     </Button>
                 </Link>
