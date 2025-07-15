@@ -1,21 +1,21 @@
 /**
  * Hooks - Exportaciones centralizadas
  * 
- * Agrupa todos los hooks relacionados con el sistema de filtros
- * para facilitar las importaciones
+ * Organización de hooks por categorías para facilitar las importaciones
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-// Hook principal del sistema de filtros
-export { useFilterSystem } from './useFilterSystem'
+// ===== HOOKS DE FILTROS =====
+export * from './filters'
 
-// Hook de notificaciones
-export { useFilterNotifications } from './useFilterNotifications'
+// ===== HOOKS DE AUTENTICACIÓN =====
+export { useAuth } from './useAuth'
+export { useAuthMutation } from './useAuthMutation'
 
-// Hook alternativo con composition pattern
-export { useFilterComposition } from './useFilterComposition'
+// ===== HOOKS DE DATOS =====
+export { useGetCars } from './useGetCars'
 
-// Hook simple sin React Query (para casos básicos)
-export { useSimpleFilter } from './useSimpleFilter' 
+// ===== HOOKS UTILITARIOS =====
+export { useIntersectionObserver } from './useIntersectionObserver' 

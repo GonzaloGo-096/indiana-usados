@@ -15,7 +15,7 @@
 
 import { useState, useCallback, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import autoService, { queryKeys } from '../service/service'
+import autoService, { queryKeys } from '../../services/service'
 import { useFilterNotifications } from './useFilterNotifications'
 
 export const useFilterSystem = () => {

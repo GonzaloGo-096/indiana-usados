@@ -6,7 +6,7 @@
  */
 
 import React from 'react'
-import LoginForm from '../../../components/forms/LoginForm'
+import LoginForm from '../../../components/auth/LoginForm'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../hooks/useAuth'
 import { AUTH_CONFIG } from '../../../config/auth'

@@ -11,7 +11,7 @@
  */
 
 import React, { createContext, useContext, useMemo } from 'react'
-import { useFilterSystem } from '../hooks/useFilterSystem'
+import { useFilterSystem } from '../hooks/filters/useFilterSystem'
 
 // Crear el contexto
 const FilterContext = createContext()

@@ -3,50 +3,12 @@
  * 
  * Características:
  * - Reset básico
- * - Variables CSS
  * - Utilidades globales
  * - Responsive base
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
-
-/* ===== VARIABLES CSS ===== */
-:root {
-  /* Colores primarios */
-  --color-primary-100: #bbdefb;
-  --color-primary-300: #64b5f6;
-  --color-primary-500: #007bff;
-  --color-primary-600: #0056b3;
-  --color-primary-700: #004085;
-  --color-primary-900: #001f3f;
-
-  /* Colores de error */
-  --color-error-100: #f5c6cb;
-  --color-error-500: #dc3545;
-  --color-error-600: #c82333;
-  --color-error-700: #a71e2a;
-
-  /* Colores neutros */
-  --color-neutral-50: #f8f9fa;
-  --color-neutral-100: #f1f3f4;
-  --color-neutral-200: #e9ecef;
-  --color-neutral-300: #dadce0;
-  --color-neutral-400: #ced4da;
-  --color-neutral-500: #9aa0a6;
-  --color-neutral-600: #80868b;
-  --color-neutral-700: #5f6368;
-  --color-neutral-800: #282525;
-  --color-neutral-900: #202124;
-
-  /* Colores de éxito y warning */
-  --color-success-500: #28a745;
-  --color-warning-500: #ffc107;
-
-  /* Colores base */
-  --color-white: #ffffff;
-  --color-black: #000000;
-}
 
 /* ===== RESET BÁSICO ===== */
 * {
@@ -56,10 +18,10 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-normal);
-  color: var(--color-neutral-900);
+  font-family: var(--font-family-primary, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: var(--font-size-base, 16px);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--color-neutral-900, #202124);
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   background-attachment: fixed;
   min-height: 100vh;
@@ -87,7 +49,7 @@ html, body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--spacing-4);
+  padding: 0 var(--spacing-md, 1rem);
 }
 
 .main-content {
@@ -96,18 +58,31 @@ html, body {
 }
 
 .admin-container {
-  padding: var(--spacing-6) var(--spacing-4);
+  padding: var(--spacing-lg, 1.5rem) var(--spacing-md, 1rem);
   max-width: 1400px;
   margin: 0 auto;
+}
+
+/* ===== TRANSICIONES GLOBALES ===== */
+:root {
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-medium: 0.5s ease;
+  --transition-slow: 0.8s ease;
+  
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
 }
 
 /* ===== RESPONSIVE UTILITIES ===== */
 @media (max-width: 768px) {
   .container {
-    padding: 0 var(--spacing-1);
+    padding: 0 var(--spacing-sm, 0.5rem);
   }
   
   .admin-container {
-    padding: var(--spacing-4) var(--spacing-1);
+    padding: var(--spacing-md, 1rem) var(--spacing-sm, 0.5rem);
   }
 } 

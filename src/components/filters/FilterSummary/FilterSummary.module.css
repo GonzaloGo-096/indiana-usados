@@ -6,7 +6,7 @@
  */
 
 .summary {
-  background: var(--color-neutral-50);
+  background: #ffffff;
   border: 1px solid var(--color-neutral-200);
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-md);
@@ -59,7 +59,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  background: var(--color-white);
+  background: #ffffff;
   border: 1px solid var(--color-neutral-300);
   border-radius: var(--border-radius-full);
   padding: var(--spacing-xs) var(--spacing-sm);

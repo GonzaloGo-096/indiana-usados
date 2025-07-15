@@ -12,7 +12,7 @@
 
 import { useReducer, useCallback, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import autoService, { queryKeys } from '../service/service'
+import autoService, { queryKeys } from '../../services/service'
 
 // ===== TIPOS DE ACCIONES =====
 const ACTIONS = {

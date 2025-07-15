@@ -9,7 +9,7 @@
  */
 
 import React from 'react'
-import { getFilterLabel } from '../../../../constants'
+import { getFilterLabel } from '../../../constants'
 import styles from './FilterSummary.module.css'
 
 const FilterSummary = ({ 

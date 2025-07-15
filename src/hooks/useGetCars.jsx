@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
-import autoService, { queryKeys } from "../service/service";
+import autoService, { queryKeys } from "../services/service";
 
 export const useGetCars = (filters = {}) => {
     // Generar queryKey dinámica basada en filtros

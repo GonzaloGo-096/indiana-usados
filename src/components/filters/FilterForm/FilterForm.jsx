@@ -14,7 +14,7 @@ import {
     FILTER_OPTIONS, 
     DEFAULT_FILTER_VALUES, 
     generateYearOptions 
-} from '../../../../constants'
+} from '../../../constants'
 import styles from './FilterForm.module.css'
 
 const FilterForm = forwardRef(({ 

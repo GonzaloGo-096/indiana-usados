@@ -19,7 +19,7 @@ import {
     FilterDrawer, 
     FilterButton, 
     FilterSummary 
-} from '../../forms/filters'
+} from '../../filters'
 import AutosGrid from './AutosGrid'
 import styles from './ListAutos.module.css'
 

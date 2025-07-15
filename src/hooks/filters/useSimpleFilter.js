@@ -11,7 +11,7 @@
  */
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import autoService from '../service/service'
+import autoService from '../../services/service'
 
 export const useSimpleFilter = () => {
     const [currentFilters, setCurrentFilters] = useState({})

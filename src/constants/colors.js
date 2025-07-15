@@ -37,8 +37,10 @@ export const colors = {
   },
   
   warning: {
+    50: '#fff3cd',
     100: '#ffeaa7',
     500: '#ffc107',
+    600: '#d39e00',
     700: '#b8860b',
   },
   

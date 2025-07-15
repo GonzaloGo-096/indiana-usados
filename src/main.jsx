@@ -13,7 +13,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import { cssVariables } from './design-tokens'
+import { cssVariables } from './constants'
 import './styles/globals.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
