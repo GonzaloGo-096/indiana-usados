@@ -5,10 +5,10 @@
  * - Layout y estructura visual
  * - Integración de componentes de filtros
  * - Renderizado del grid de autos
- * - NO maneja lógica de estado
+ * - Usa datos del FilterContext
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 5.0.0
  */
 
 import React, { memo } from 'react'
@@ -24,35 +24,29 @@ import AutosGrid from './AutosGrid'
 import styles from './ListAutos.module.css'
 
 /**
- * Componente de presentación puro
- * Recibe todas las props del contenedor y se enfoca solo en renderizar
+ * Componente de presentación que usa datos del FilterContext
  */
-const ListAutos = memo(({
-    // Datos
-    autos,
-    
-    // Estados
-    isLoading,
-    isError,
-    error,
-    isFetchingNextPage,
-    hasNextPage,
-    
-    // Acciones
-    onRetry,
-    onLoadMore
-}) => {
+const ListAutos = memo(() => {
     // ===== CONTEXT =====
     const {
         // Estado de filtros
         currentFilters,
-        isSubmitting,
+        pendingFilters,
         activeFiltersCount,
+        
+        // Datos
+        cars,
+        isLoading,
+        isError,
+        error,
+        isFiltering,
         
         // Acciones de filtros
         handleFiltersChange,
+        applyFilters,
         clearFilter,
         clearAllFilters,
+        refetch
     } = useFilterContext()
 
     const {
@@ -65,6 +59,10 @@ const ListAutos = memo(({
         closeDrawer
     } = useResponsiveContext()
 
+    // Manejar reintento
+    const handleRetry = () => {
+        refetch()
+    }
 
     return (
         <div className={styles.container}>
@@ -75,17 +73,20 @@ const ListAutos = memo(({
                 <div className={styles.filterSection}>
                     <FilterForm 
                         variant="desktop"
-                        initialValues={currentFilters}
+                        initialValues={pendingFilters}
                         onFiltersChange={handleFiltersChange}
-                        isSubmitting={isSubmitting}
+                        onApplyFilters={applyFilters}
+                        isLoading={isLoading}
+                        isFiltering={isFiltering}
+                        showApplyButton={true}
                     />
                     
                     {/* Resumen de filtros activos */}
                     <FilterSummary 
-                        activeFilters={currentFilters}
+                        pendingFilters={pendingFilters}
                         onClearFilter={clearFilter}
                         onClearAll={clearAllFilters}
-                        isSubmitting={isSubmitting}
+                        isSubmitting={isFiltering}
                     />
                 </div>
             )}
@@ -95,11 +96,9 @@ const ListAutos = memo(({
                 <FilterButton 
                     onClick={openDrawer}
                     activeFiltersCount={activeFiltersCount}
-                    isSubmitting={isSubmitting}
+                    isSubmitting={isFiltering}
                 />
             )}
-            
-
 
             {/* Drawer para mobile */}
             {isMobile && (
@@ -107,21 +106,19 @@ const ListAutos = memo(({
                     isOpen={isDrawerOpen}
                     onClose={closeDrawer}
                     onFiltersChange={handleFiltersChange}
-                    isSubmitting={isSubmitting}
-                    initialValues={currentFilters}
+                    onApplyFilters={applyFilters}
+                    isSubmitting={isFiltering}
+                    initialValues={pendingFilters}
                 />
             )}
 
             {/* ===== GRID DE VEHÍCULOS ===== */}
             <AutosGrid 
-                autos={autos}
+                autos={cars}
                 isLoading={isLoading}
                 isError={isError}
                 error={error}
-                isFetchingNextPage={isFetchingNextPage}
-                hasNextPage={hasNextPage}
-                onRetry={onRetry}
-                onLoadMore={onLoadMore}
+                onRetry={handleRetry}
             />
         </div>
     )

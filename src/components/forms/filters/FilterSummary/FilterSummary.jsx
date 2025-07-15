@@ -1,11 +1,11 @@
 /**
  * FilterSummary - Componente para mostrar resumen de filtros activos
  * 
- * Muestra los filtros que están actualmente aplicados
+ * Muestra los filtros que están actualmente configurados (pendientes)
  * Permite limpiar filtros individuales o todos
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import React from 'react'
@@ -13,13 +13,13 @@ import { getFilterLabel } from '../../../../constants'
 import styles from './FilterSummary.module.css'
 
 const FilterSummary = ({ 
-    activeFilters, 
+    pendingFilters, // Cambiado de activeFilters a pendingFilters
     onClearFilter, 
     onClearAll,
     isSubmitting = false 
 }) => {
     // Filtrar solo los filtros que tienen valor
-    const filtersWithValues = Object.entries(activeFilters || {}).filter(([key, value]) => value !== '')
+    const filtersWithValues = Object.entries(pendingFilters || {}).filter(([key, value]) => value !== '')
 
     // Si no hay filtros activos, no mostrar nada
     if (filtersWithValues.length === 0) {
@@ -71,7 +71,5 @@ const FilterSummary = ({
         </div>
     )
 }
-
-
 
 export default FilterSummary 

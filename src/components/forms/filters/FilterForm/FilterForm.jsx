@@ -2,15 +2,14 @@
  * FilterForm - Formulario de filtros para catálogo de vehículos
  * 
  * Utiliza React Hook Form para manejo eficiente del estado del formulario
- * Todos los campos son opcionales y se aplican automáticamente al cambiar
+ * Los filtros se aplican manualmente con botón
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 3.0.0
  */
 
 import React, { forwardRef, useImperativeHandle } from 'react'
 import { useForm } from 'react-hook-form'
-import { FormInput } from '../../../ui'
 import { 
     FILTER_OPTIONS, 
     DEFAULT_FILTER_VALUES, 
@@ -20,18 +19,21 @@ import styles from './FilterForm.module.css'
 
 const FilterForm = forwardRef(({ 
     onFiltersChange, 
-    isSubmitting = false, 
+    onApplyFilters,
+    isLoading = false, 
+    isFiltering = false,
     showClearButtonAtBottom = false, 
+    showApplyButton = true,
     initialValues,
     variant = 'desktop' // 'desktop' | 'mobile'
 }, ref) => {
     // Configuración inicial de React Hook Form
     const { 
         register, 
-        handleSubmit, 
         watch, 
         reset, 
         setValue,
+        handleSubmit,
         formState: { errors } 
     } = useForm({
         defaultValues: initialValues || DEFAULT_FILTER_VALUES
@@ -54,14 +56,20 @@ const FilterForm = forwardRef(({
         }
     }, [initialValues, setValue, watch])
 
-    // Observar cambios en todos los campos inmediatamente
+    // Observar cambios en todos los campos
     const watchedValues = watch((data) => {
-        onFiltersChange(data)
+        onFiltersChange(data) // Solo actualiza estado pendiente
     })
 
     // Función para limpiar todos los filtros
     const handleClearFilters = () => {
-        reset()
+        reset(DEFAULT_FILTER_VALUES)
+        onFiltersChange(DEFAULT_FILTER_VALUES)
+    }
+
+    // Función para aplicar filtros
+    const handleApplyFilters = (data) => {
+        onApplyFilters(data)
     }
 
     // Exponer funciones para uso externo
@@ -75,40 +83,33 @@ const FilterForm = forwardRef(({
         getValues: () => watchedValues
     }), [setValue, watchedValues])
 
-    // Función para manejar el submit
-    const onSubmit = (data) => {
-        console.log('Filtros aplicados:', data)
-        onFiltersChange(data)
-        // Aquí en el futuro se conectaría con la API
-        // const queryParams = getQueryParams(data)
-        // refetch({ queryParams })
-    }
-
     // Obtener opciones desde constantes
     const { marcas, combustibles, transmisiones, colores } = FILTER_OPTIONS
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={`${styles.filterForm} ${styles[variant]}`}>
+        <form onSubmit={handleSubmit(handleApplyFilters)} className={`${styles.filterForm} ${styles[variant]}`}>
             {/* Header solo si el botón va arriba */}
             {!showClearButtonAtBottom && (
                 <div className={styles.formHeader}>
                     <h3 className={styles.formTitle}>Filtrar Vehículos</h3>
-                    <div>
+                    <div className={styles.headerButtons}>
                         <button 
                             type="button" 
                             onClick={handleClearFilters}
                             className={styles.clearButton}
-                            disabled={isSubmitting}
+                            disabled={isLoading || isFiltering}
                         >
                             Limpiar Filtros
                         </button>
-                        <button 
-                            type="submit"
-                            className={styles.applyButtonHeader}
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting ? 'Aplicando...' : 'Aplicar Filtros'}
-                        </button>
+                        {showApplyButton && (
+                            <button 
+                                type="submit"
+                                className={styles.applyButtonHeader}
+                                disabled={isLoading || isFiltering}
+                            >
+                                {isFiltering ? 'Aplicando...' : 'Aplicar Filtros'}
+                            </button>
+                        )}
                     </div>
                 </div>
             )}
@@ -120,7 +121,7 @@ const FilterForm = forwardRef(({
                     <select 
                         {...register('marca')}
                         className={styles.select}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     >
                         <option value="">--Seleccione--</option>
                         {marcas.map(marca => (
@@ -135,7 +136,7 @@ const FilterForm = forwardRef(({
                     <select 
                         {...register('añoDesde')}
                         className={styles.select}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     >
                         <option value="">0</option>
                         {generateYearOptions().map(year => (
@@ -150,7 +151,7 @@ const FilterForm = forwardRef(({
                     <select 
                         {...register('añoHasta')}
                         className={styles.select}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     >
                         <option value="">--Hasta--</option>
                         {generateYearOptions().map(year => (
@@ -169,7 +170,7 @@ const FilterForm = forwardRef(({
                             min: { value: 0, message: 'El precio debe ser mayor a 0' }
                         })}
                         className={styles.input}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     />
                     {errors.precioDesde && (
                         <span className={styles.error}>{errors.precioDesde.message}</span>
@@ -186,7 +187,7 @@ const FilterForm = forwardRef(({
                             min: { value: 0, message: 'El precio debe ser mayor a 0' }
                         })}
                         className={styles.input}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     />
                     {errors.precioHasta && (
                         <span className={styles.error}>{errors.precioHasta.message}</span>
@@ -199,7 +200,7 @@ const FilterForm = forwardRef(({
                     <select 
                         {...register('combustible')}
                         className={styles.select}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     >
                         <option value="">--Seleccione--</option>
                         {combustibles.map(combustible => (
@@ -214,7 +215,7 @@ const FilterForm = forwardRef(({
                     <select 
                         {...register('transmision')}
                         className={styles.select}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     >
                         <option value="">--Seleccione--</option>
                         {transmisiones.map(transmision => (
@@ -233,7 +234,7 @@ const FilterForm = forwardRef(({
                             min: { value: 0, message: 'El kilometraje debe ser mayor a 0' }
                         })}
                         className={styles.input}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     />
                     {errors.kilometrajeDesde && (
                         <span className={styles.error}>{errors.kilometrajeDesde.message}</span>
@@ -250,7 +251,7 @@ const FilterForm = forwardRef(({
                             min: { value: 0, message: 'El kilometraje debe ser mayor a 0' }
                         })}
                         className={styles.input}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     />
                     {errors.kilometrajeHasta && (
                         <span className={styles.error}>{errors.kilometrajeHasta.message}</span>
@@ -263,7 +264,7 @@ const FilterForm = forwardRef(({
                     <select 
                         {...register('color')}
                         className={styles.select}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     >
                         <option value="">--Seleccione--</option>
                         {colores.map(color => (
@@ -273,23 +274,21 @@ const FilterForm = forwardRef(({
                 </div>
             </div>
 
-
-
             {/* Botones para mobile */}
             {showClearButtonAtBottom && (
                 <div className={styles.actionButtons}>
                     <button 
                         type="submit"
                         className={styles.applyButton}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     >
-                        {isSubmitting ? 'Aplicando...' : 'Aplicar Filtros'}
+                        {isFiltering ? 'Aplicando...' : 'Aplicar Filtros'}
                     </button>
                     <button 
                         type="button" 
                         onClick={handleClearFilters}
                         className={styles.clearButtonBottom}
-                        disabled={isSubmitting}
+                        disabled={isLoading || isFiltering}
                     >
                         Limpiar Filtros
                     </button>

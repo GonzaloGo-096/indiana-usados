@@ -1,31 +1,20 @@
 /**
- * FilterContext - Contexto simplificado para manejo de filtros
+ * FilterContext - Contexto optimizado usando hook personalizado
  * 
  * Responsabilidades:
- * - Estado de filtros
- * - Acciones básicas de filtros
- * - Integración con hook externo
+ * - Proporcionar datos del sistema de filtros
+ * - Mantener compatibilidad con componentes existentes
+ * - Optimización de performance con memoización
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 9.0.0
  */
 
-import React, { createContext, useContext, useState, useCallback, useMemo } from 'react'
-import { useFilters } from '../hooks/useFilters'
+import React, { createContext, useContext, useMemo } from 'react'
+import { useFilterSystem } from '../hooks/useFilterSystem'
 
-// Crear el contexto con valores por defecto
-const FilterContext = createContext({
-    // Estado de filtros
-    currentFilters: {},
-    isSubmitting: false,
-    activeFiltersCount: 0,
-    queryParams: {},
-    
-    // Acciones de filtros
-    handleFiltersChange: () => {},
-    clearFilter: () => {},
-    clearAllFilters: () => {},
-})
+// Crear el contexto
+const FilterContext = createContext()
 
 // Hook personalizado para usar el contexto
 export const useFilterContext = () => {
@@ -36,72 +25,13 @@ export const useFilterContext = () => {
     return context
 }
 
-// Provider del contexto
+// Provider del contexto optimizado
 export const FilterProvider = ({ children }) => {
-    // ===== ESTADO DE FILTROS =====
-    const [currentFilters, setCurrentFilters] = useState({})
-
-    // ===== HOOKS EXTERNOS =====
-    const {
-        isSubmitting,
-        handleFiltersChange: handleFiltersChangeFromHook,
-        getQueryParams,
-        getActiveFiltersCount
-    } = useFilters()
-
-    // ===== ACCIONES DE FILTROS =====
+    // Usar el hook personalizado
+    const filterSystem = useFilterSystem()
     
-    const handleFiltersChange = useCallback((filters) => {
-        setCurrentFilters(filters)
-        handleFiltersChangeFromHook(filters)
-    }, [handleFiltersChangeFromHook])
-
-    const clearFilter = useCallback((filterKey) => {
-        const newFilters = { ...currentFilters }
-        delete newFilters[filterKey]
-        setCurrentFilters(newFilters)
-        handleFiltersChangeFromHook(newFilters)
-    }, [currentFilters, handleFiltersChangeFromHook])
-
-    const clearAllFilters = useCallback(() => {
-        setCurrentFilters({})
-        handleFiltersChangeFromHook({})
-    }, [handleFiltersChangeFromHook])
-
-    // ===== VALORES DERIVADOS =====
-    
-    const activeFiltersCount = useMemo(() => 
-        getActiveFiltersCount(currentFilters), 
-        [currentFilters, getActiveFiltersCount]
-    )
-    
-    const queryParams = useMemo(() => 
-        getQueryParams(currentFilters), 
-        [currentFilters, getQueryParams]
-    )
-
-    // ===== VALOR DEL CONTEXTO =====
-    
-    const contextValue = useMemo(() => ({
-        // Estado de filtros
-        currentFilters,
-        isSubmitting,
-        activeFiltersCount,
-        queryParams,
-        
-        // Acciones de filtros
-        handleFiltersChange,
-        clearFilter,
-        clearAllFilters,
-    }), [
-        currentFilters,
-        isSubmitting,
-        activeFiltersCount,
-        queryParams,
-        handleFiltersChange,
-        clearFilter,
-        clearAllFilters,
-    ])
+    // Memoizar el valor del contexto para evitar re-renders innecesarios
+    const contextValue = useMemo(() => filterSystem, [filterSystem])
 
     return (
         <FilterContext.Provider value={contextValue}>
@@ -110,4 +40,5 @@ export const FilterProvider = ({ children }) => {
     )
 }
 
-export default FilterContext 
+// Exportar el contexto para uso directo si es necesario
+export { FilterContext } 

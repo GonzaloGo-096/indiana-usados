@@ -5,7 +5,7 @@
  * Incluye overlay para cerrar al hacer clic fuera del drawer
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 3.0.0
  */
 
 import React, { useEffect } from 'react'
@@ -16,6 +16,7 @@ const FilterDrawer = ({
     isOpen, 
     onClose, 
     onFiltersChange, 
+    onApplyFilters,
     isSubmitting = false,
     initialValues
 }) => {
@@ -79,8 +80,11 @@ const FilterDrawer = ({
                         variant="mobile"
                         initialValues={initialValues}
                         onFiltersChange={onFiltersChange}
-                        isSubmitting={isSubmitting}
+                        onApplyFilters={onApplyFilters}
+                        isLoading={false}
+                        isFiltering={isSubmitting}
                         showClearButtonAtBottom={true}
+                        showApplyButton={true}
                     />
                 </div>
             </div>

@@ -1,20 +1,18 @@
 /**
- * AutosGrid - Componente para mostrar el grid de vehículos con infinite scroll
+ * AutosGrid - Componente para mostrar el grid de vehículos
  * 
  * Responsabilidades:
  * - Renderizado del grid de autos
- * - Infinite scroll con Intersection Observer
  * - Estados de carga y error del grid
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-import React, { useCallback } from 'react'
+import React from 'react'
 import { CardAuto } from '../CardAuto'
 import { Button } from '../../ui/Button'
 import { ListAutosSkeleton } from '../../skeletons/ListAutosSkeleton'
-import { useIntersectionObserver } from '../../../hooks/useIntersectionObserver'
 import { Alert } from '../../ui/Alert'
 import styles from './ListAutos.module.css'
 
@@ -44,31 +42,8 @@ const AutosGrid = ({
     isLoading, 
     isError, 
     error, 
-    isFetchingNextPage, 
-    hasNextPage, 
-    onRetry, 
-    onLoadMore 
+    onRetry
 }) => {
-    /**
-     * Función para manejar la carga de más elementos
-     */
-    const handleLoadMore = useCallback(() => {
-        if (!isError && hasNextPage) {
-            setTimeout(() => {
-                if (!isError && hasNextPage) {
-                    onLoadMore()
-                }
-            }, 100)
-        }
-    }, [isError, hasNextPage, onLoadMore])
-
-    /**
-     * Hook personalizado para intersection observer
-     */
-    const lastElementRef = useIntersectionObserver(handleLoadMore, {
-        enabled: !isLoading && !isFetchingNextPage && !isError && hasNextPage
-    })
-
     // ===== GUARD CLAUSES - Estados de carga y error =====
     
     // Estado de carga inicial
@@ -92,7 +67,7 @@ const AutosGrid = ({
             <div className={styles.empty}>
                 <div className={styles.emptyContent}>
                     <h3>No hay vehículos disponibles</h3>
-                    <p>Por favor, intente más tarde</p>
+                    <p>Intente ajustar los filtros o vuelva más tarde</p>
                     <Button 
                         onClick={onRetry}
                         variant="primary"
@@ -113,8 +88,8 @@ const AutosGrid = ({
             {isError && (
                 <div className={styles.errorBanner}>
                     <Alert variant="warning">
-                        <h3>Error al cargar más vehículos</h3>
-                        <p>{error?.message || 'Error al cargar más vehículos'}</p>
+                        <h3>Error al cargar vehículos</h3>
+                        <p>{error?.message || 'Error al cargar los vehículos'}</p>
                         <Button 
                             onClick={onRetry}
                             variant="outline"
@@ -128,39 +103,29 @@ const AutosGrid = ({
 
             {/* Grid de vehículos */}
             <div className={styles.grid}>
-                {autos.map((auto, index) => (
+                {autos.map((auto) => (
                     <div 
                         key={auto.id} 
                         className={styles.cardWrapper}
-                        // Intersection Observer en el último elemento
-                        ref={index === autos.length - 1 ? lastElementRef : null}
                     >
                         <CardAuto auto={auto} />
                     </div>
                 ))}
             </div>
             
-            {/* Contenedor de carga y fin de lista */}
-            <div className={`${styles.loadingContainer} ${isFetchingNextPage ? styles.loading : ''}`}>
-                {/* Skeleton mientras carga más elementos */}
-                {isFetchingNextPage && (
-                    <ListAutosSkeleton cantidad={3} />
-                )}
-                
-                {/* Mensaje de fin de lista */}
-                {!hasNextPage && autos.length > 0 && (
-                    <div className={styles.endMessage}>
-                        <p>No hay más vehículos para mostrar</p>
-                        <Button 
-                            onClick={onRetry}
-                            variant="outline"
-                            className={styles.retryButton}
-                        >
-                            Actualizar lista
-                        </Button>
-                    </div>
-                )}
-            </div>
+            {/* Mensaje de fin de lista */}
+            {autos.length > 0 && (
+                <div className={styles.endMessage}>
+                    <p>Mostrando {autos.length} vehículo{autos.length !== 1 ? 's' : ''}</p>
+                    <Button 
+                        onClick={onRetry}
+                        variant="outline"
+                        className={styles.retryButton}
+                    >
+                        Actualizar lista
+                    </Button>
+                </div>
+            )}
         </>
     )
 }
