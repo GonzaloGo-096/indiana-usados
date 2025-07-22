@@ -72,20 +72,23 @@
 }
 
 .cardContent {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-xl);
-  align-items: start;
+  align-items: center;
   padding: var(--spacing-xl);
 }
 
 .imageSection {
   position: relative;
+  width: 100%;
+  max-width: 600px; /* Limitar el ancho máximo de la imagen */
 }
 
 .image {
   width: 100%;
   max-height: 400px;
+  min-height: 300px; /* Altura mínima para evitar imágenes muy pequeñas */
   object-fit: cover;
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
@@ -98,6 +101,7 @@
   gap: var(--spacing-lg);
   align-items: center;
   text-align: center;
+  width: 100%;
 }
 
 .title {
@@ -296,46 +300,103 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .container {
-    padding: var(--spacing-md) var(--spacing-sm);
+  .card {
+    border-radius: 14px;
   }
-
-  .content {
-    gap: var(--spacing-lg);
+  
+  .image {
+    min-height: 250px; /* Altura mínima para mobile */
+    max-width: 100%; /* Asegurar que no se desborde */
   }
-
+  
+  .imageSection {
+    max-width: 100%; /* Asegurar que no se desborde en mobile */
+  }
+  
   .cardContent {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
-    padding: var(--spacing-lg);
+    padding: calc(var(--spacing-xl) * 0.8);
+    gap: calc(var(--spacing-xl) * 0.8);
   }
-
-  .tablesContainer {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
-  }
-
+  
   .title {
-    font-size: var(--font-size-2xl);
+    font-size: calc(var(--font-size-3xl) * 0.9);
+    margin-bottom: calc(var(--spacing-lg) * 0.8);
   }
-
-  .contactButtons {
-    flex-direction: column;
-    gap: var(--spacing-sm);
+  
+  .tablesContainer {
+    gap: calc(var(--spacing-lg) * 0.8);
+    margin-bottom: calc(var(--spacing-lg) * 0.8);
   }
-
+  
+  .table th,
+  .table td {
+    padding: calc(var(--spacing-sm) * 0.8) calc(var(--spacing-md) * 0.8);
+    font-size: 0.9rem;
+  }
+  
   .contactButton {
-    width: 100%;
-    padding: var(--spacing-md);
+    min-width: 110px;
+    padding: calc(var(--spacing-sm) * 0.8) calc(var(--spacing-md) * 0.8);
+  }
+  
+  .contactButton svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .content {
-    gap: var(--spacing-lg);
+    gap: calc(var(--spacing-xl) * 0.9);
   }
 
   .tablesContainer {
-    gap: var(--spacing-md);
+    gap: calc(var(--spacing-lg) * 0.9);
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    border-radius: 12px;
+  }
+  
+  .image {
+    min-height: 200px; /* Altura mínima para móvil pequeño */
+    max-width: 100%; /* Asegurar que no se desborde */
+  }
+  
+  .imageSection {
+    max-width: 100%; /* Asegurar que no se desborde en móvil pequeño */
+  }
+  
+  .cardContent {
+    padding: calc(var(--spacing-xl) * 0.7);
+    gap: calc(var(--spacing-xl) * 0.7);
+  }
+  
+  .title {
+    font-size: calc(var(--font-size-3xl) * 0.8);
+    margin-bottom: calc(var(--spacing-lg) * 0.7);
+  }
+  
+  .tablesContainer {
+    gap: calc(var(--spacing-lg) * 0.7);
+    margin-bottom: calc(var(--spacing-lg) * 0.7);
+  }
+  
+  .table th,
+  .table td {
+    padding: calc(var(--spacing-sm) * 0.7) calc(var(--spacing-md) * 0.7);
+    font-size: 0.85rem;
+  }
+  
+  .contactButton {
+    min-width: 100px;
+    padding: calc(var(--spacing-sm) * 0.7) calc(var(--spacing-md) * 0.7);
+  }
+  
+  .contactButton svg {
+    width: 16px;
+    height: 16px;
   }
 } 

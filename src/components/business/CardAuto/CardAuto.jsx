@@ -18,6 +18,14 @@ import styles from './CardAuto.module.css'
 // Importar imagen por defecto
 import defaultCarImage from '../../../assets/auto1.jpg'
 
+// Función helper para mostrar "-" cuando el valor esté vacío
+const formatValue = (value) => {
+  if (!value || value === '' || value === 'null' || value === 'undefined') {
+    return '-'
+  }
+  return value
+}
+
 /**
  * Componente CardAuto
  * @param {Object} auto - Objeto con información del vehículo
@@ -38,14 +46,14 @@ export const CardAuto = memo(({ auto }) => {
     // Extraer datos con valores por defecto
     const {
         id,
-        marca = 'Sin marca',
-        modelo = 'Sin modelo',
-        precio = "Consultar",
-        año = "Consultar",
-        kms = "Consultar",
-        caja = "Consultar",
-        color = "Consultar",
-        categoria = "Consultar"
+        marca = '',
+        modelo = '',
+        precio = '',
+        año = '',
+        kms = '',
+        caja = '',
+        color = '',
+        categoria = ''
     } = auto
 
     return (
@@ -55,14 +63,16 @@ export const CardAuto = memo(({ auto }) => {
                 <img 
                     src={auto.imagen || defaultCarImage} 
                     className={styles.image} 
-                    alt={`${marca} ${modelo}`}
+                    alt={`${formatValue(marca)} ${formatValue(modelo)}`}
                     loading="lazy"
                 />
             </div>
             
             {/* Cuerpo de la tarjeta */}
             <div className={styles.body}>
-                <h5 className={styles.title}>{marca} {modelo}</h5>
+                <h5 className={styles.title}>
+                    {formatValue(marca)} {formatValue(modelo)}
+                </h5>
                 
                 {/* Detalles del vehículo */}
                 <div className={styles.details}>
@@ -72,15 +82,15 @@ export const CardAuto = memo(({ auto }) => {
                                 <tbody>
                                     <tr>
                                         <th>Precio</th>
-                                        <td>{precio}</td>
+                                        <td>{precio ? `$${precio}` : '-'}</td>
                                     </tr>
                                     <tr>
                                         <th>Año</th>
-                                        <td>{año}</td>
+                                        <td>{formatValue(año)}</td>
                                     </tr>
                                     <tr>
                                         <th>Kms</th>
-                                        <td>{kms}</td>
+                                        <td>{formatValue(kms)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -91,15 +101,15 @@ export const CardAuto = memo(({ auto }) => {
                                 <tbody>
                                     <tr>
                                         <th>Caja</th>
-                                        <td>{caja}</td>
+                                        <td>{formatValue(caja)}</td>
                                     </tr>
                                     <tr>
                                         <th>Color</th>
-                                        <td>{color}</td>
+                                        <td>{formatValue(color)}</td>
                                     </tr>
                                     <tr>
                                         <th>Categoría</th>
-                                        <td>{categoria}</td>
+                                        <td>{formatValue(categoria)}</td>
                                     </tr>
                                 </tbody>
                             </table>

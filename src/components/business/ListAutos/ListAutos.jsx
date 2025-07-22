@@ -1,14 +1,15 @@
 /**
- * ListAutos - Componente de presentación para lista de vehículos
+ * ListAutos - Componente principal para lista de vehículos
  * 
  * Responsabilidades:
  * - Layout y estructura visual
  * - Integración de componentes de filtros
  * - Renderizado del grid de autos
  * - Usa datos del FilterContext
+ * - Paginación infinita con scroll automático
  * 
  * @author Indiana Usados
- * @version 5.0.0
+ * @version 7.0.0
  */
 
 import React, { memo } from 'react'
@@ -24,7 +25,7 @@ import AutosGrid from './AutosGrid'
 import styles from './ListAutos.module.css'
 
 /**
- * Componente de presentación que usa datos del FilterContext
+ * Componente principal que usa datos del FilterContext
  */
 const ListAutos = memo(() => {
     // ===== CONTEXT =====
@@ -40,6 +41,11 @@ const ListAutos = memo(() => {
         isError,
         error,
         isFiltering,
+        
+        // Paginación
+        loadMore,
+        hasNextPage,
+        isFetchingNextPage,
         
         // Acciones de filtros
         handleFiltersChange,
@@ -64,21 +70,24 @@ const ListAutos = memo(() => {
         refetch()
     }
 
+    // Manejar carga de más vehículos
+    const handleLoadMore = () => {
+        loadMore()
+    }
+
+    // ===== RENDERIZADO =====
+    
     return (
         <div className={styles.container}>
-            {/* ===== SISTEMA DE FILTROS ===== */}
-            
-            {/* Filtro visible en desktop */}
+            {/* ===== FILTROS DESKTOP ===== */}
             {!isMobile && (
-                <div className={styles.filterSection}>
+                <div className={styles.filtersDesktop}>
                     <FilterForm 
-                        variant="desktop"
-                        initialValues={pendingFilters}
                         onFiltersChange={handleFiltersChange}
                         onApplyFilters={applyFilters}
                         isLoading={isLoading}
                         isFiltering={isFiltering}
-                        showApplyButton={true}
+                        initialValues={currentFilters}
                     />
                     
                     {/* Resumen de filtros activos */}
@@ -91,24 +100,39 @@ const ListAutos = memo(() => {
                 </div>
             )}
 
-            {/* Botón flotante para mobile */}
+            {/* ===== FILTROS MOBILE ===== */}
             {isMobile && (
-                <FilterButton 
-                    onClick={openDrawer}
-                    activeFiltersCount={activeFiltersCount}
-                    isSubmitting={isFiltering}
-                />
+                <>
+                    <FilterButton 
+                        onClick={openDrawer}
+                        activeFiltersCount={activeFiltersCount}
+                    />
+                    
+                    <FilterDrawer 
+                        isOpen={isDrawerOpen}
+                        onClose={closeDrawer}
+                    >
+                        <FilterForm 
+                            onFiltersChange={handleFiltersChange}
+                            onApplyFilters={applyFilters}
+                            isLoading={isLoading}
+                            isFiltering={isFiltering}
+                            initialValues={currentFilters}
+                            variant="mobile"
+                            showApplyButton={true}
+                            showClearButtonAtBottom={true}
+                        />
+                    </FilterDrawer>
+                </>
             )}
 
-            {/* Drawer para mobile */}
-            {isMobile && (
-                <FilterDrawer 
-                    isOpen={isDrawerOpen}
-                    onClose={closeDrawer}
-                    onFiltersChange={handleFiltersChange}
-                    onApplyFilters={applyFilters}
+            {/* ===== RESUMEN DE FILTROS ===== */}
+            {activeFiltersCount > 0 && (
+                <FilterSummary 
+                    pendingFilters={pendingFilters}
+                    onClearFilter={clearFilter}
+                    onClearAll={clearAllFilters}
                     isSubmitting={isFiltering}
-                    initialValues={pendingFilters}
                 />
             )}
 
@@ -119,6 +143,10 @@ const ListAutos = memo(() => {
                 isError={isError}
                 error={error}
                 onRetry={handleRetry}
+                // Props de paginación
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                onLoadMore={handleLoadMore}
             />
         </div>
     )

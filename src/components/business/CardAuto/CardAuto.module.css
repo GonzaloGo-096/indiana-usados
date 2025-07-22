@@ -53,6 +53,7 @@
     padding-top: 56.25%; /* Aspect ratio 16:9 */
     overflow: hidden;
     background-color: var(--color-neutral-100);
+    min-height: 200px; /* Altura mínima para evitar imágenes muy pequeñas */
 }
 
 .image {
@@ -175,26 +176,69 @@
 
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
+    .card {
+        border-radius: 14px;
+    }
+    
+    .imageContainer {
+        min-height: 180px; /* Altura mínima para mobile */
+    }
+    
     .body {
-        padding: var(--spacing-sm);
+        padding: calc(var(--spacing-sm) * 0.8);
+        padding-top: calc(var(--spacing-xs) * 0.8);
     }
     
     .title {
-        font-size: var(--font-size-lg);
-        margin-bottom: var(--spacing-sm);
+        font-size: calc(var(--font-size-lg) * 0.9);
+        margin-bottom: calc(var(--spacing-md) * 0.8);
+    }
+    
+    .table th,
+    .table td {
+        font-size: 0.75rem;
+        padding: calc(var(--spacing-xs) * 0.8) 0.2rem calc(var(--spacing-xs) * 0.8) 0;
+    }
+    
+    .table td {
+        padding: calc(var(--spacing-xs) * 0.8) 0 calc(var(--spacing-xs) * 0.8) 0.2rem;
     }
     
     .footer {
-        padding: var(--spacing-lg);
+        padding: calc(var(--spacing-lg) * 0.8);
     }
 }
 
 @media (max-width: 480px) {
+    .card {
+        border-radius: 12px;
+    }
+    
+    .imageContainer {
+        min-height: 160px; /* Altura mínima para móvil pequeño */
+    }
+    
     .body {
-        padding: var(--spacing-xs);
+        padding: calc(var(--spacing-sm) * 0.7);
+        padding-top: calc(var(--spacing-xs) * 0.7);
+    }
+    
+    .title {
+        font-size: calc(var(--font-size-lg) * 0.8);
+        margin-bottom: calc(var(--spacing-md) * 0.7);
+    }
+    
+    .table th,
+    .table td {
+        font-size: 0.7rem;
+        padding: calc(var(--spacing-xs) * 0.7) 0.15rem calc(var(--spacing-xs) * 0.7) 0;
+    }
+    
+    .table td {
+        padding: calc(var(--spacing-xs) * 0.7) 0 calc(var(--spacing-xs) * 0.7) 0.15rem;
     }
     
     .footer {
-        padding: var(--spacing-md);
+        padding: calc(var(--spacing-lg) * 0.7);
     }
 } 

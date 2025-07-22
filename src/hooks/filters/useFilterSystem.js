@@ -8,13 +8,14 @@
  * - Sin duplicación de lógica
  * - Manejo mejorado de errores
  * - Notificaciones de feedback
+ * - Paginación infinita
  * 
  * @author Indiana Usados
- * @version 7.0.0
+ * @version 8.0.0
  */
 
 import { useState, useCallback, useMemo } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import autoService, { queryKeys } from '../../services/service'
 import { useFilterNotifications } from './useFilterNotifications'
 
@@ -26,31 +27,62 @@ export const useFilterSystem = () => {
     const [currentFilters, setCurrentFilters] = useState({})
     const [pendingFilters, setPendingFilters] = useState({})
 
-    // ===== QUERY ÚNICA CON FILTROS DINÁMICOS =====
+    // ===== QUERY INFINITA CON FILTROS DINÁMICOS =====
     const {
-        data: cars,
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
         isLoading,
         isError,
         error,
         refetch
-    } = useQuery({
+    } = useInfiniteQuery({
         queryKey: [queryKeys.autos, 'list', currentFilters],
-        queryFn: async () => {
+        queryFn: async ({ pageParam = 1 }) => {
             try {
+                console.log('Fetching page:', pageParam, 'with filters:', currentFilters);
+                
+                // Convertir filtros a query params
+                const queryParams = new URLSearchParams();
+                Object.entries(currentFilters).forEach(([key, value]) => {
+                    if (value && value !== '') {
+                        queryParams.append(key, value);
+                    }
+                });
+                
                 const result = await autoService.getAutos({ 
-                    pageParam: 1, 
-                    filters: currentFilters 
-                })
-                return result.items || []
+                    pageParam,
+                    filters: queryParams.toString()
+                });
+                console.log('API Response:', result);
+                return result;
             } catch (error) {
                 console.error('Error al cargar vehículos:', error)
                 notifications.showErrorNotification(`Error al cargar vehículos: ${error.message}`)
                 throw new Error(`Error al cargar vehículos: ${error.message}`)
             }
         },
+        initialPageParam: 1,
+        getNextPageParam: (lastPage) => {
+            console.log('Last page:', lastPage);
+            return lastPage?.nextPage;
+        },
         staleTime: 1000 * 60 * 5,
         cacheTime: 1000 * 60 * 30,
-    })
+        refetchOnWindowFocus: false,
+        retry: 1,
+        keepPreviousData: true,
+        select: (data) => {
+            console.log('Select data:', data);
+            const result = {
+                ...data,
+                autos: data.pages.flatMap(page => page?.items || [])
+            };
+            console.log('Transformed data:', result);
+            return result;
+        }
+    });
 
     // ===== MUTATION PARA APLICAR FILTROS =====
     const applyFiltersMutation = useMutation({
@@ -91,6 +123,14 @@ export const useFilterSystem = () => {
         }
     })
 
+    // ===== FUNCIÓN PARA CARGAR MÁS =====
+    const loadMore = useCallback(() => {
+        if (hasNextPage && !isFetchingNextPage) {
+            console.log('Loading more...');
+            fetchNextPage();
+        }
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
     // ===== VALORES DERIVADOS =====
     const activeFiltersCount = useMemo(() => {
         return Object.values(currentFilters).filter(value => 
@@ -115,11 +155,13 @@ export const useFilterSystem = () => {
         )
         
         if (hasValidFilters) {
-            applyFiltersMutation.mutate(pendingFilters)
+            setCurrentFilters(pendingFilters)
+            notifications.showSuccessNotification('Filtros aplicados correctamente.')
         } else {
-            notifications.showInfoNotification('No hay filtros para aplicar.')
+            setCurrentFilters({})
+            notifications.showInfoNotification('Filtros limpiados. Mostrando todos los vehículos.')
         }
-    }, [pendingFilters, applyFiltersMutation, notifications])
+    }, [pendingFilters, notifications])
 
     const clearFilter = useCallback((filterKey) => {
         const newPendingFilters = { ...pendingFilters }
@@ -147,11 +189,16 @@ export const useFilterSystem = () => {
         hasActiveFilters,
         
         // Datos
-        cars: cars || [],
+        cars: data?.autos || [],
         isLoading: isLoading || applyFiltersMutation.isPending,
         isError,
         error,
         isFiltering: applyFiltersMutation.isPending,
+        
+        // Paginación
+        loadMore,
+        hasNextPage,
+        isFetchingNextPage,
         
         // Acciones
         handleFiltersChange,

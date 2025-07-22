@@ -1,18 +1,22 @@
 /**
- * Configuración de autenticación simplificada
+ * Configuración de autenticación para backend Node.js
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 export const AUTH_CONFIG = {
   // Configuración de API
   api: {
+    // URL del backend - cambiar según el entorno
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
     endpoints: {
       login: '/auth/login',
-      logout: '/auth/logout'
-    }
+      logout: '/auth/logout',
+      verify: '/auth/verify' // Opcional para verificar token
+    },
+    // Timeout para requests (en ms)
+    timeout: 10000
   },
   
   // Configuración de localStorage
@@ -26,5 +30,16 @@ export const AUTH_CONFIG = {
     login: '/admin/login',
     dashboard: '/admin',
     home: '/'
+  },
+
+  // Configuración de desarrollo
+  development: {
+    // Habilitar modo mock cuando no hay backend
+    enableMock: import.meta.env.VITE_ENABLE_MOCK === 'true' || !import.meta.env.VITE_API_URL,
+    // Credenciales de desarrollo
+    mockCredentials: {
+      usuario: 'admin',
+      contraseña: 'admin123'
+    }
   }
 } 

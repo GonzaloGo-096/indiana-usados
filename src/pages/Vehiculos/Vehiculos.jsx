@@ -6,14 +6,14 @@
  */
 
 import React from 'react'
-import { ListAutosContainer } from '../../components/business/ListAutos'
+import { ListAutos } from '../../components/business/ListAutos'
 import styles from './Vehiculos.module.css'
 
 const Vehiculos = () => {
     return (
         <div className={styles.container}>
             <div className={styles.content}>
-                <ListAutosContainer />
+                <ListAutos />
             </div>
         </div>
     )

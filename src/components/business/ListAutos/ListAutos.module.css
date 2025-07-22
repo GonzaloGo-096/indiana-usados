@@ -160,6 +160,46 @@
     margin-top: var(--spacing-4);
 }
 
+/* ===== SCROLL INFINITO ===== */
+.scrollTrigger {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: var(--spacing-8);
+}
+
+.loadingMore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-3);
+    margin-top: var(--spacing-6);
+    padding: var(--spacing-4);
+    color: var(--color-neutral-600);
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-neutral-300);
+    border-top: 2px solid var(--color-primary-500);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.noMoreResults {
+    margin-top: var(--spacing-6);
+    padding: var(--spacing-4);
+    color: var(--color-neutral-500);
+    font-style: italic;
+}
+
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
     .container {

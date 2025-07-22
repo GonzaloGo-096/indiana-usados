@@ -4,9 +4,10 @@
  * Responsabilidades:
  * - Renderizado del grid de autos
  * - Estados de carga y error del grid
+ * - Paginación infinita con scroll automático
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 4.0.0
  */
 
 import React from 'react'
@@ -14,6 +15,7 @@ import { CardAuto } from '../CardAuto'
 import { Button } from '../../ui/Button'
 import { ListAutosSkeleton } from '../../skeletons/ListAutosSkeleton'
 import { Alert } from '../../ui/Alert'
+import { useIntersectionObserver } from '../../../hooks/useIntersectionObserver'
 import styles from './ListAutos.module.css'
 
 /**
@@ -42,8 +44,27 @@ const AutosGrid = ({
     isLoading, 
     isError, 
     error, 
-    onRetry
+    onRetry,
+    // Props para paginación
+    hasNextPage = false,
+    isFetchingNextPage = false,
+    onLoadMore = null
 }) => {
+    // ===== INTERSECTION OBSERVER PARA SCROLL INFINITO =====
+    const loadMoreRef = useIntersectionObserver(
+        () => {
+            if (hasNextPage && !isFetchingNextPage && onLoadMore) {
+                console.log('🔄 Intersection Observer triggered - Loading more vehicles')
+                onLoadMore()
+            }
+        },
+        {
+            enabled: hasNextPage && !isFetchingNextPage,
+            rootMargin: '200px', // Cargar cuando esté a 200px del final
+            threshold: 0.1
+        }
+    )
+
     // ===== GUARD CLAUSES - Estados de carga y error =====
     
     // Estado de carga inicial
@@ -113,10 +134,26 @@ const AutosGrid = ({
                 ))}
             </div>
             
-            {/* Mensaje de fin de lista */}
-            {autos.length > 0 && (
-                <div className={styles.endMessage}>
-                    <p>Mostrando {autos.length} vehículo{autos.length !== 1 ? 's' : ''}</p>
+            {/* Elemento trigger para scroll infinito */}
+            {hasNextPage && (
+                <div 
+                    ref={loadMoreRef}
+                    className={styles.scrollTrigger}
+                >
+                    {/* Indicador de carga para paginación */}
+                    {isFetchingNextPage && (
+                        <div className={styles.loadingMore}>
+                            <div className={styles.spinner}></div>
+                            <span>Cargando más vehículos...</span>
+                        </div>
+                    )}
+                </div>
+            )}
+            
+            {/* Mensaje cuando no hay más páginas */}
+            {!hasNextPage && autos.length > 0 && (
+                <div className={styles.noMoreResults}>
+                    <p>No hay más vehículos para mostrar</p>
                     <Button 
                         onClick={onRetry}
                         variant="outline"

@@ -26,6 +26,14 @@ const WhatsAppIcon = () => (
   </svg>
 )
 
+// Función helper para mostrar "-" cuando el valor esté vacío
+const formatValue = (value) => {
+  if (!value || value === '' || value === 'null' || value === 'undefined') {
+    return '-'
+  }
+  return value
+}
+
 const VehiculoDetalle = () => {
     const { id } = useParams()
 
@@ -78,15 +86,15 @@ const VehiculoDetalle = () => {
 
     // Extraer datos con valores por defecto
     const {
-        marca = 'Sin marca',
-        modelo = 'Sin modelo', 
-        precio = 'Consultar',
-        año = 'Sin año',
-        color = 'Sin color',
-        combustible = 'Sin combustible',
-        categoria = 'Sin categoría',
-        detalle = 'Sin detalles',
-        kms = 'Sin kilometraje',
+        marca = '',
+        modelo = '', 
+        precio = '',
+        año = '',
+        color = '',
+        combustible = '',
+        categoria = '',
+        detalle = '',
+        kms = '',
     } = auto;
 
     return (
@@ -103,13 +111,15 @@ const VehiculoDetalle = () => {
                         <div className={styles.imageSection}>
                             <img 
                                 src={img} 
-                                alt={`${marca} ${modelo}`}
+                                alt={`${formatValue(marca)} ${formatValue(modelo)}`}
                                 className={styles.image}
                             />
                         </div>
                         
                         <div className={styles.detailsSection}>
-                            <h2 className={styles.title}>{marca} {modelo}</h2>
+                            <h2 className={styles.title}>
+                                {formatValue(marca)} {formatValue(modelo)}
+                            </h2>
                             
                             <div className={styles.tablesContainer}>
                                 <div className={styles.tableSection}>
@@ -117,15 +127,15 @@ const VehiculoDetalle = () => {
                                         <tbody>
                                             <tr>
                                                 <th>Precio</th>
-                                                <td>${precio}</td>
+                                                <td>{precio ? `$${precio}` : '-'}</td>
                                             </tr>
                                             <tr>
                                                 <th>Año</th>
-                                                <td>{año}</td>
+                                                <td>{formatValue(año)}</td>
                                             </tr>
                                             <tr>
                                                 <th>Kms</th>
-                                                <td>{kms}</td>
+                                                <td>{formatValue(kms)}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -136,15 +146,15 @@ const VehiculoDetalle = () => {
                                         <tbody>
                                             <tr>
                                                 <th>Combustible</th>
-                                                <td>{combustible}</td>
+                                                <td>{formatValue(combustible)}</td>
                                             </tr>
                                             <tr>
                                                 <th>Color</th>
-                                                <td>{color}</td>
+                                                <td>{formatValue(color)}</td>
                                             </tr>
                                             <tr>
                                                 <th>Categoría</th>
-                                                <td>{categoria}</td>
+                                                <td>{formatValue(categoria)}</td>
                                             </tr>
                                         </tbody>
                                     </table>
