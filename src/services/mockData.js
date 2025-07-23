@@ -4,10 +4,10 @@
  * Simula una API que maneja filtros correctamente
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-// Datos mock de vehículos
+// Datos mock de vehículos con múltiples imágenes
 const mockVehicles = [
     {
         id: 1,
@@ -18,7 +18,17 @@ const mockVehicles = [
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 50000,
-        color: "Blanco"
+        color: "Blanco",
+        categoria: "Sedán",
+        caja: "Automática",
+        detalle: "Vehículo en excelente estado, único dueño, mantenimiento al día",
+        imagen: "/src/assets/auto1.jpg",
+        imagenes: [
+            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop"
+        ]
     },
     {
         id: 2,
@@ -29,7 +39,16 @@ const mockVehicles = [
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 30000,
-        color: "Negro"
+        color: "Negro",
+        categoria: "Sedán",
+        caja: "Automática",
+        detalle: "Vehículo premium, equipamiento completo, garantía extendida",
+        imagen: "/src/assets/auto1.jpg",
+        imagenes: [
+            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop"
+        ]
     },
     {
         id: 3,
@@ -40,7 +59,15 @@ const mockVehicles = [
         combustible: "Gasolina",
         transmision: "Manual",
         kilometraje: 70000,
-        color: "Azul"
+        color: "Azul",
+        categoria: "Sedán",
+        caja: "Manual",
+        detalle: "Vehículo deportivo, bien mantenido, ideal para ciudad",
+        imagen: "/src/assets/auto1.jpg",
+        imagenes: [
+            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop"
+        ]
     },
     {
         id: 4,
@@ -51,7 +78,18 @@ const mockVehicles = [
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 45000,
-        color: "Gris"
+        color: "Gris",
+        categoria: "Sedán",
+        caja: "Automática",
+        detalle: "Vehículo familiar, espacioso y confortable",
+        imagen: "/src/assets/auto1.jpg",
+        imagenes: [
+            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&h=600&fit=crop"
+        ]
     },
     {
         id: 5,
@@ -62,7 +100,15 @@ const mockVehicles = [
         combustible: "Gasolina",
         transmision: "Manual",
         kilometraje: 80000,
-        color: "Rojo"
+        color: "Rojo",
+        categoria: "Hatchback",
+        caja: "Manual",
+        detalle: "Vehículo económico, perfecto para uso diario",
+        imagen: "/src/assets/auto1.jpg",
+        imagenes: [
+            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop"
+        ]
     },
     {
         id: 6,
@@ -73,7 +119,17 @@ const mockVehicles = [
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 15000,
-        color: "Negro"
+        color: "Negro",
+        categoria: "Deportivo",
+        caja: "Automática",
+        detalle: "Vehículo deportivo de alto rendimiento, estado impecable",
+        imagen: "/src/assets/auto1.jpg",
+        imagenes: [
+            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop"
+        ]
     },
     {
         id: 7,
@@ -84,7 +140,15 @@ const mockVehicles = [
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 60000,
-        color: "Blanco"
+        color: "Blanco",
+        categoria: "Sedán",
+        caja: "Automática",
+        detalle: "Vehículo confiable, bajo consumo de combustible",
+        imagen: "/src/assets/auto1.jpg",
+        imagenes: [
+            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop"
+        ]
     },
     {
         id: 8,
@@ -95,7 +159,16 @@ const mockVehicles = [
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 40000,
-        color: "Azul"
+        color: "Azul",
+        categoria: "Sedán",
+        caja: "Automática",
+        detalle: "Vehículo elegante, perfecto para viajes largos",
+        imagen: "/src/assets/auto1.jpg",
+        imagenes: [
+            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop"
+        ]
     }
 ]
 

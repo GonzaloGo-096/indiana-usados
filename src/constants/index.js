@@ -148,5 +148,14 @@ export const cssVariables = `
     --shadow-md: ${shadows.md};
     --shadow-lg: ${shadows.lg};
     --shadow-xl: ${shadows.xl};
+    
+    /* ===== Z-INDEX ===== */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
   }
 ` 

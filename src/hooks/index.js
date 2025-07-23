@@ -16,6 +16,7 @@ export { useAuthMutation } from './useAuthMutation'
 
 // ===== HOOKS DE DATOS =====
 export { useGetCars } from './useGetCars'
+export { useAutoDetail } from './useAutoDetail'
 
 // ===== HOOKS UTILITARIOS =====
 export { useIntersectionObserver } from './useIntersectionObserver' 

@@ -7,22 +7,20 @@
 
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useGetCars } from '../../../hooks/useGetCars'
+import { useQuery } from '@tanstack/react-query'
+import autoService from '../../../services/service'
 import { AUTH_CONFIG } from '../../../config/auth'
 import styles from './Dashboard.module.css'
 
 const Dashboard = () => {
     const navigate = useNavigate()
-    const { 
-        autos, 
-        loadMore, 
-        hasNextPage, 
-        isLoading, 
-        isError, 
-        error, 
-        isFetchingNextPage,
-        refetch
-    } = useGetCars()
+    const { data, isLoading, isError, error, refetch } = useQuery({
+        queryKey: ['admin-all-autos'],
+        queryFn: () => autoService.getAutos({ all: true }),
+        staleTime: 1000 * 60 * 5,
+        cacheTime: 1000 * 60 * 30,
+    })
+    const autos = data?.items || []
 
     const handleLogout = () => {
         localStorage.removeItem(AUTH_CONFIG.storage.key)
@@ -81,38 +79,40 @@ const Dashboard = () => {
                         <table className={styles.table}>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Marca</th>
-                                    <th>Modelo</th>
-                                    <th>Año</th>
-                                    <th>Precio</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
+                                    <th className={styles.centeredHeader}>ID</th>
+                                    <th className={styles.centeredHeader}>Marca</th>
+                                    <th className={styles.centeredHeader}>Modelo</th>
+                                    <th className={styles.centeredHeader}>Año</th>
+                                    <th className={styles.centeredHeader}>Kms</th>
+                                    <th className={styles.centeredHeader}>Precio</th>
+                                    <th className={styles.centeredHeader}>Estado</th>
+                                    <th className={styles.centeredHeader}>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {autos.map(auto => (
                                     <tr key={auto.id}>
-                                        <td>{auto.id}</td>
-                                        <td>{auto.marca}</td>
-                                        <td>{auto.modelo}</td>
-                                        <td>{auto.año}</td>
-                                        <td>${auto.precio?.toLocaleString()}</td>
-                                        <td>
+                                        <td className={styles.centeredCell}>{auto.id}</td>
+                                        <td className={styles.centeredCell}>{auto.marca}</td>
+                                        <td className={styles.centeredCell}>{auto.modelo}</td>
+                                        <td className={styles.centeredCell}>{auto.año}</td>
+                                        <td className={styles.centeredCell}>{auto.kilometraje?.toLocaleString() ?? '-'}</td>
+                                        <td className={styles.centeredCell}>${auto.precio?.toLocaleString()}</td>
+                                        <td className={styles.centeredCell}>
                                             <span className={`${styles.badge} ${auto.activo ? styles.badgeSuccess : styles.badgeWarning}`}>
                                                 {auto.activo ? 'Activo' : 'Pausado'}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td className={styles.centeredCell}>
                                             <div className={styles.buttonGroup}>
                                                 <Link 
                                                     to={`/admin/vehiculos/${auto.id}/editar`}
-                                                    className={styles.outlineButton}
+                                                    className={`${styles.outlineButton} ${styles.smallButton}`}
                                                 >
                                                     Editar
                                                 </Link>
                                                 <button 
-                                                    className={`${styles.outlineButton} ${styles.dangerButton}`}
+                                                    className={`${styles.outlineButton} ${styles.dangerButton} ${styles.smallButton}`}
                                                     onClick={() => {/* TODO: Implementar eliminación */}}
                                                 >
                                                     Eliminar
@@ -124,19 +124,6 @@ const Dashboard = () => {
                             </tbody>
                         </table>
                     </div>
-                    
-                    {/* Botón para cargar más vehículos si hay más páginas */}
-                    {hasNextPage && (
-                        <div className={styles.loadMore}>
-                            <button 
-                                onClick={loadMore}
-                                disabled={isFetchingNextPage}
-                                className={styles.loadMoreButton}
-                            >
-                                {isFetchingNextPage ? 'Cargando...' : 'Cargar más vehículos'}
-                            </button>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>

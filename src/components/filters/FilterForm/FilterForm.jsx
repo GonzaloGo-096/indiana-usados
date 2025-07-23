@@ -8,7 +8,7 @@
  * @version 3.0.0
  */
 
-import React, { forwardRef, useImperativeHandle } from 'react'
+import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { 
     FILTER_OPTIONS, 
@@ -25,7 +25,8 @@ const FilterForm = forwardRef(({
     showClearButtonAtBottom = false, 
     showApplyButton = true,
     initialValues,
-    variant = 'desktop' // 'desktop' | 'mobile'
+    variant = 'desktop', // 'desktop' | 'mobile'
+    filterSummary
 }, ref) => {
     // Configuración inicial de React Hook Form
     const { 
@@ -80,14 +81,130 @@ const FilterForm = forwardRef(({
                 setValue(key, value)
             })
         },
-        getValues: () => watchedValues
+        getValues: () => watchedValues,
+        clearField: (key) => setValue(key, '')
     }), [setValue, watchedValues])
 
     // Obtener opciones desde constantes
     const { marcas, combustibles, transmisiones, colores } = FILTER_OPTIONS
 
+    // Estado para dropdown de marcas
+    const [isMarcaOpen, setIsMarcaOpen] = useState(false);
+    const marcaRef = useRef();
+    const marcasSeleccionadas = watch('marca') || [];
+
+    // Manejar selección de marcas
+    const handleMarcaChange = (marca) => {
+        let nuevas;
+        if (marcasSeleccionadas.includes(marca)) {
+            nuevas = marcasSeleccionadas.filter(m => m !== marca);
+        } else {
+            nuevas = [...marcasSeleccionadas, marca];
+        }
+        setValue('marca', nuevas);
+        onFiltersChange({ ...watch(), marca: nuevas });
+    };
+
+    // Cerrar dropdown al hacer click fuera
+    React.useEffect(() => {
+        function handleClickOutside(event) {
+            if (marcaRef.current && !marcaRef.current.contains(event.target)) {
+                setIsMarcaOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    // Estado y lógica para Combustible
+    const [isCombustibleOpen, setIsCombustibleOpen] = useState(false);
+    const combustibleRef = useRef();
+    const combustiblesSeleccionados = watch('combustible') || [];
+    const handleCombustibleChange = (combustible) => {
+        let nuevas;
+        if (combustiblesSeleccionados.includes(combustible)) {
+            nuevas = combustiblesSeleccionados.filter(c => c !== combustible);
+        } else {
+            nuevas = [...combustiblesSeleccionados, combustible];
+        }
+        setValue('combustible', nuevas);
+        onFiltersChange({ ...watch(), combustible: nuevas });
+    };
+    React.useEffect(() => {
+        function handleClickOutside(event) {
+            if (combustibleRef.current && !combustibleRef.current.contains(event.target)) {
+                setIsCombustibleOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    // Estado y lógica para Transmisión
+    const [isTransmisionOpen, setIsTransmisionOpen] = useState(false);
+    const transmisionRef = useRef();
+    const transmisionesSeleccionadas = watch('transmision') || [];
+    const handleTransmisionChange = (transmision) => {
+        let nuevas;
+        if (transmisionesSeleccionadas.includes(transmision)) {
+            nuevas = transmisionesSeleccionadas.filter(t => t !== transmision);
+        } else {
+            nuevas = [...transmisionesSeleccionadas, transmision];
+        }
+        setValue('transmision', nuevas);
+        onFiltersChange({ ...watch(), transmision: nuevas });
+    };
+    React.useEffect(() => {
+        function handleClickOutside(event) {
+            if (transmisionRef.current && !transmisionRef.current.contains(event.target)) {
+                setIsTransmisionOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    // Estado y lógica para Color
+    const [isColorOpen, setIsColorOpen] = useState(false);
+    const colorRef = useRef();
+    const coloresSeleccionados = watch('color') || [];
+    const handleColorChange = (color) => {
+        let nuevas;
+        if (coloresSeleccionados.includes(color)) {
+            nuevas = coloresSeleccionados.filter(c => c !== color);
+        } else {
+            nuevas = [...coloresSeleccionados, color];
+        }
+        setValue('color', nuevas);
+        onFiltersChange({ ...watch(), color: nuevas });
+    };
+    React.useEffect(() => {
+        function handleClickOutside(event) {
+            if (colorRef.current && !colorRef.current.contains(event.target)) {
+                setIsColorOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
         <form onSubmit={handleSubmit(handleApplyFilters)} className={`${styles.filterForm} ${styles[variant]}`}>
+            {/* FilterSummary integrado arriba del formulario en mobile */}
+            {filterSummary && variant === 'mobile' && (
+                <div style={{ marginBottom: 8 }}>
+                    {filterSummary}
+                </div>
+            )}
+
             {/* Header solo si el botón va arriba */}
             {!showClearButtonAtBottom && (
                 <div className={styles.formHeader}>
@@ -115,162 +232,220 @@ const FilterForm = forwardRef(({
             )}
 
             <div className={styles.formGrid}>
-                {/* Marca */}
-                <div className={styles.formGroup}>
+                {/* Marca (dropdown custom con checkboxes) */}
+                <div className={styles.formGroup} ref={marcaRef}>
                     <label className={styles.label}>Marca</label>
-                    <select 
-                        {...register('marca')}
-                        className={styles.select}
-                        disabled={isLoading || isFiltering}
-                    >
-                        <option value="">--Seleccione--</option>
-                        {marcas.map(marca => (
-                            <option key={marca} value={marca}>{marca}</option>
-                        ))}
-                    </select>
+                    <div className={styles.dropdownMulti}>
+                        <div
+                            className={styles.dropdownMultiInput}
+                            tabIndex={0}
+                            onClick={() => setIsMarcaOpen((open) => !open)}
+                        >
+                            <span>--Seleccione--</span>
+                            <span className={styles.dropdownArrow}>&#9660;</span>
+                        </div>
+                        {isMarcaOpen && (
+                            <div className={styles.dropdownList}>
+                                {marcas.map(marca => (
+                                    <div key={marca} className={styles.dropdownOption}>
+                                        <input
+                                            type="checkbox"
+                                            className={styles.dropdownCheckbox}
+                                            checked={marcasSeleccionadas.includes(marca)}
+                                            onChange={() => handleMarcaChange(marca)}
+                                            id={`marca-${marca}`}
+                                        />
+                                        <label htmlFor={`marca-${marca}`}>{marca}</label>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
-                {/* Año Desde */}
+                {/* Año Desde (range) */}
                 <div className={styles.formGroup}>
                     <label className={styles.label}>Año Desde</label>
-                    <select 
+                    <input
+                        type="range"
+                        min="1990"
+                        max="2024"
+                        step="1"
+                        defaultValue="1990"
                         {...register('añoDesde')}
-                        className={styles.select}
+                        className={styles.input}
                         disabled={isLoading || isFiltering}
-                    >
-                        <option value="">0</option>
-                        {generateYearOptions().map(year => (
-                            <option key={year} value={year}>{year}</option>
-                        ))}
-                    </select>
+                    />
+                    <span>{watch('añoDesde') || '1990'}</span>
                 </div>
 
-                {/* Año Hasta */}
+                {/* Año Hasta (range) */}
                 <div className={styles.formGroup}>
                     <label className={styles.label}>Año Hasta</label>
-                    <select 
+                    <input
+                        type="range"
+                        min="1990"
+                        max="2024"
+                        step="1"
+                        defaultValue="2024"
                         {...register('añoHasta')}
-                        className={styles.select}
+                        className={styles.input}
                         disabled={isLoading || isFiltering}
-                    >
-                        <option value="">--Hasta--</option>
-                        {generateYearOptions().map(year => (
-                            <option key={year} value={year}>{year}</option>
-                        ))}
-                    </select>
+                    />
+                    <span>{watch('añoHasta') || '2024'}</span>
                 </div>
 
-                {/* Precio Desde */}
+                {/* Precio Desde (range) */}
                 <div className={styles.formGroup}>
                     <label className={styles.label}>Precio Desde ($)</label>
                     <input
-                        type="number"
-                        placeholder="0"
-                        {...register('precioDesde', {
-                            min: { value: 0, message: 'El precio debe ser mayor a 0' }
-                        })}
+                        type="range"
+                        min="0"
+                        max="10000000"
+                        step="10000"
+                        {...register('precioDesde')}
                         className={styles.input}
                         disabled={isLoading || isFiltering}
                     />
-                    {errors.precioDesde && (
-                        <span className={styles.error}>{errors.precioDesde.message}</span>
-                    )}
+                    <span>{watch('precioDesde') || '0'}</span>
                 </div>
 
-                {/* Precio Hasta */}
+                {/* Precio Hasta (range) */}
                 <div className={styles.formGroup}>
                     <label className={styles.label}>Precio Hasta ($)</label>
                     <input
-                        type="number"
-                        placeholder="--Hasta--"
-                        {...register('precioHasta', {
-                            min: { value: 0, message: 'El precio debe ser mayor a 0' }
-                        })}
+                        type="range"
+                        min="0"
+                        max="10000000"
+                        step="10000"
+                        {...register('precioHasta')}
                         className={styles.input}
                         disabled={isLoading || isFiltering}
                     />
-                    {errors.precioHasta && (
-                        <span className={styles.error}>{errors.precioHasta.message}</span>
-                    )}
+                    <span>{watch('precioHasta') || '10000000'}</span>
                 </div>
 
-                {/* Combustible */}
-                <div className={styles.formGroup}>
+                {/* Combustible (dropdown custom con checkboxes) */}
+                <div className={styles.formGroup} ref={combustibleRef}>
                     <label className={styles.label}>Combustible</label>
-                    <select 
-                        {...register('combustible')}
-                        className={styles.select}
-                        disabled={isLoading || isFiltering}
-                    >
-                        <option value="">--Seleccione--</option>
-                        {combustibles.map(combustible => (
-                            <option key={combustible} value={combustible}>{combustible}</option>
-                        ))}
-                    </select>
+                    <div className={styles.dropdownMulti}>
+                        <div
+                            className={styles.dropdownMultiInput}
+                            tabIndex={0}
+                            onClick={() => setIsCombustibleOpen((open) => !open)}
+                        >
+                            <span>--Seleccione--</span>
+                            <span className={styles.dropdownArrow}>&#9660;</span>
+                        </div>
+                        {isCombustibleOpen && (
+                            <div className={styles.dropdownList}>
+                                {combustibles.map(combustible => (
+                                    <div key={combustible} className={styles.dropdownOption}>
+                                        <input
+                                            type="checkbox"
+                                            className={styles.dropdownCheckbox}
+                                            checked={combustiblesSeleccionados.includes(combustible)}
+                                            onChange={() => handleCombustibleChange(combustible)}
+                                            id={`combustible-${combustible}`}
+                                        />
+                                        <label htmlFor={`combustible-${combustible}`}>{combustible}</label>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
-                {/* Transmisión */}
-                <div className={styles.formGroup}>
+                {/* Transmisión (dropdown custom con checkboxes) */}
+                <div className={styles.formGroup} ref={transmisionRef}>
                     <label className={styles.label}>Transmisión</label>
-                    <select 
-                        {...register('transmision')}
-                        className={styles.select}
-                        disabled={isLoading || isFiltering}
-                    >
-                        <option value="">--Seleccione--</option>
-                        {transmisiones.map(transmision => (
-                            <option key={transmision} value={transmision}>{transmision}</option>
-                        ))}
-                    </select>
+                    <div className={styles.dropdownMulti}>
+                        <div
+                            className={styles.dropdownMultiInput}
+                            tabIndex={0}
+                            onClick={() => setIsTransmisionOpen((open) => !open)}
+                        >
+                            <span>--Seleccione--</span>
+                            <span className={styles.dropdownArrow}>&#9660;</span>
+                        </div>
+                        {isTransmisionOpen && (
+                            <div className={styles.dropdownList}>
+                                {transmisiones.map(transmision => (
+                                    <div key={transmision} className={styles.dropdownOption}>
+                                        <input
+                                            type="checkbox"
+                                            className={styles.dropdownCheckbox}
+                                            checked={transmisionesSeleccionadas.includes(transmision)}
+                                            onChange={() => handleTransmisionChange(transmision)}
+                                            id={`transmision-${transmision}`}
+                                        />
+                                        <label htmlFor={`transmision-${transmision}`}>{transmision}</label>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
-                {/* Kilometraje Desde */}
+                {/* Color (dropdown custom con checkboxes) */}
+                <div className={styles.formGroup} ref={colorRef}>
+                    <label className={styles.label}>Color</label>
+                    <div className={styles.dropdownMulti}>
+                        <div
+                            className={styles.dropdownMultiInput}
+                            tabIndex={0}
+                            onClick={() => setIsColorOpen((open) => !open)}
+                        >
+                            <span>--Seleccione--</span>
+                            <span className={styles.dropdownArrow}>&#9660;</span>
+                        </div>
+                        {isColorOpen && (
+                            <div className={styles.dropdownList}>
+                                {colores.map(color => (
+                                    <div key={color} className={styles.dropdownOption}>
+                                        <input
+                                            type="checkbox"
+                                            className={styles.dropdownCheckbox}
+                                            checked={coloresSeleccionados.includes(color)}
+                                            onChange={() => handleColorChange(color)}
+                                            id={`color-${color}`}
+                                        />
+                                        <label htmlFor={`color-${color}`}>{color}</label>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Kilometraje Desde (range) */}
                 <div className={styles.formGroup}>
                     <label className={styles.label}>Kms Desde</label>
                     <input
-                        type="number"
-                        placeholder="0"
-                        {...register('kilometrajeDesde', {
-                            min: { value: 0, message: 'El kilometraje debe ser mayor a 0' }
-                        })}
+                        type="range"
+                        min="0"
+                        max="500000"
+                        step="1000"
+                        {...register('kilometrajeDesde')}
                         className={styles.input}
                         disabled={isLoading || isFiltering}
                     />
-                    {errors.kilometrajeDesde && (
-                        <span className={styles.error}>{errors.kilometrajeDesde.message}</span>
-                    )}
+                    <span>{watch('kilometrajeDesde') || '0'}</span>
                 </div>
 
-                {/* Kilometraje Hasta */}
+                {/* Kilometraje Hasta (range) */}
                 <div className={styles.formGroup}>
                     <label className={styles.label}>Kms Hasta</label>
                     <input
-                        type="number"
-                        placeholder="--Hasta--"
-                        {...register('kilometrajeHasta', {
-                            min: { value: 0, message: 'El kilometraje debe ser mayor a 0' }
-                        })}
+                        type="range"
+                        min="0"
+                        max="500000"
+                        step="1000"
+                        {...register('kilometrajeHasta')}
                         className={styles.input}
                         disabled={isLoading || isFiltering}
                     />
-                    {errors.kilometrajeHasta && (
-                        <span className={styles.error}>{errors.kilometrajeHasta.message}</span>
-                    )}
-                </div>
-
-                {/* Color */}
-                <div className={styles.formGroup}>
-                    <label className={styles.label}>Color</label>
-                    <select 
-                        {...register('color')}
-                        className={styles.select}
-                        disabled={isLoading || isFiltering}
-                    >
-                        <option value="">--Seleccione--</option>
-                        {colores.map(color => (
-                            <option key={color} value={color}>{color}</option>
-                        ))}
-                    </select>
+                    <span>{watch('kilometrajeHasta') || '500000'}</span>
                 </div>
             </div>
 
@@ -282,7 +457,17 @@ const FilterForm = forwardRef(({
                         className={styles.applyButton}
                         disabled={isLoading || isFiltering}
                     >
-                        {isFiltering ? 'Aplicando...' : 'Aplicar Filtros'}
+                        {isFiltering ? (
+                            <>
+                                <svg className={styles.spinner} width="20" height="20" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" strokeDasharray="31.416" strokeDashoffset="31.416">
+                                        <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
+                                        <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
+                                    </circle>
+                                </svg>
+                                Aplicando...
+                            </>
+                        ) : 'Aplicar Filtros'}
                     </button>
                     <button 
                         type="button" 
@@ -292,6 +477,13 @@ const FilterForm = forwardRef(({
                     >
                         Limpiar Filtros
                     </button>
+                </div>
+            )}
+
+            {/* FilterSummary integrado debajo de los botones solo en desktop */}
+            {filterSummary && variant !== 'mobile' && (
+                <div style={{ marginTop: 8 }}>
+                    {filterSummary}
                 </div>
             )}
         </form>

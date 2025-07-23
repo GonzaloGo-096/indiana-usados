@@ -1,103 +1,204 @@
 /**
- * filterUtils - Funciones utilitarias para manejo de filtros
+ * filterUtils.js - Utilidades centralizadas para filtros
  * 
  * Responsabilidades:
- * - Construir query parameters
- * - Validar filtros
- * - Transformar datos de filtros
+ * - Validación de filtros
+ * - Transformación de filtros para backend
+ * - Lógica de filtrado de vehículos
+ * - Constantes de filtros
  * 
  * @author Indiana Usados
  * @version 1.0.0
  */
 
-/**
- * Construye query parameters a partir de un objeto de filtros
- * @param {Object} filters - Objeto con filtros { marca: "Toyota", año: 2020 }
- * @returns {string} - Query string "marca=Toyota&año=2020"
- */
-export const buildQueryParams = (filters) => {
-    if (!filters || typeof filters !== 'object') {
-        return ''
-    }
-
-    const queryParams = new URLSearchParams()
-    
-    Object.entries(filters).forEach(([key, value]) => {
-        if (value && value !== '' && value !== null && value !== undefined) {
-            queryParams.append(key, value.toString())
-        }
-    })
-    
-    return queryParams.toString()
+// ===== CONSTANTES DE FILTROS =====
+export const FILTER_DEFAULTS = {
+    añoDesde: '1990',
+    añoHasta: '2024',
+    precioDesde: '0',
+    precioHasta: '10000000',
+    kilometrajeDesde: '0',
+    kilometrajeHasta: '500000'
 }
 
+export const FILTER_LABELS = {
+    marca: 'Marca',
+    añoDesde: 'Año desde',
+    añoHasta: 'Año hasta',
+    precioDesde: 'Precio desde',
+    precioHasta: 'Precio hasta',
+    combustible: 'Combustible',
+    transmision: 'Transmisión',
+    kilometrajeDesde: 'KM desde',
+    kilometrajeHasta: 'KM hasta',
+    color: 'Color'
+}
+
+// ===== VALIDACIÓN DE FILTROS =====
+
 /**
- * Valida si un objeto de filtros tiene valores válidos
- * @param {Object} filters - Objeto de filtros a validar
- * @returns {boolean} - true si tiene al menos un filtro válido
+ * Valida si un valor de filtro es válido
+ * @param {any} value - Valor a validar
+ * @returns {boolean} - Si el valor es válido
  */
-export const hasValidFilters = (filters) => {
-    if (!filters || typeof filters !== 'object') {
+export const isValidFilterValue = (value) => {
+    // Excluir valores vacíos, null, undefined
+    if (!value || value === '' || value === null || value === undefined) {
         return false
     }
     
-    return Object.values(filters).some(value => 
-        value && value !== '' && value !== null && value !== undefined
-    )
+    // Excluir valores numéricos 0
+    if (typeof value === 'number' && value === 0) {
+        return false
+    }
+    
+    // Excluir strings '0'
+    if (typeof value === 'string' && value === '0') {
+        return false
+    }
+    
+    // Excluir arrays vacíos
+    if (Array.isArray(value) && value.length === 0) {
+        return false
+    }
+    
+    // Excluir valores por defecto de ranges
+    if (typeof value === 'string') {
+        const defaults = Object.values(FILTER_DEFAULTS)
+        if (defaults.includes(value)) {
+            return false
+        }
+    }
+    
+    return true
 }
 
 /**
- * Cuenta el número de filtros activos
+ * Filtra un objeto de filtros para obtener solo los válidos
  * @param {Object} filters - Objeto de filtros
- * @returns {number} - Número de filtros con valores válidos
+ * @returns {Object} - Filtros válidos
  */
-export const countActiveFilters = (filters) => {
-    if (!filters || typeof filters !== 'object') {
-        return 0
-    }
-    
-    return Object.values(filters).filter(value => 
-        value && value !== '' && value !== null && value !== undefined
-    ).length
+export const getValidFilters = (filters) => {
+    return Object.entries(filters || {}).reduce((acc, [key, value]) => {
+        if (isValidFilterValue(value)) {
+            acc[key] = value
+        }
+        return acc
+    }, {})
 }
 
+// ===== TRANSFORMACIÓN PARA BACKEND =====
+
 /**
- * Limpia un objeto de filtros removiendo valores vacíos
- * @param {Object} filters - Objeto de filtros a limpiar
- * @returns {Object} - Objeto con solo filtros válidos
+ * Transforma filtros del frontend al formato del backend
+ * @param {Object} filters - Filtros del frontend
+ * @returns {Object} - Filtros para backend
  */
-export const cleanFilters = (filters) => {
-    if (!filters || typeof filters !== 'object') {
-        return {}
-    }
+export const transformFiltersToBackend = (filters) => {
+    const validFilters = getValidFilters(filters)
+    const backendFilters = {}
     
-    const cleaned = {}
-    
-    Object.entries(filters).forEach(([key, value]) => {
-        if (value && value !== '' && value !== null && value !== undefined) {
-            cleaned[key] = value
+    Object.entries(validFilters).forEach(([key, value]) => {
+        switch (key) {
+            case 'marca':
+                backendFilters.brand = value
+                break
+            case 'modelo':
+                backendFilters.model = value
+                break
+            case 'añoDesde':
+                backendFilters.yearFrom = parseInt(value)
+                break
+            case 'añoHasta':
+                backendFilters.yearTo = parseInt(value)
+                break
+            case 'precioDesde':
+                backendFilters.priceFrom = parseInt(value)
+                break
+            case 'precioHasta':
+                backendFilters.priceTo = parseInt(value)
+                break
+            case 'combustible':
+                backendFilters.fuel = value
+                break
+            case 'transmision':
+                backendFilters.transmission = value
+                break
+            case 'color':
+                backendFilters.color = value
+                break
+            default:
+                backendFilters[key] = value
         }
     })
     
-    return cleaned
+    return backendFilters
+}
+
+// ===== FILTRADO DE VEHÍCULOS =====
+
+/**
+ * Filtra vehículos según los filtros aplicados
+ * @param {Array} vehicles - Lista de vehículos
+ * @param {Object} filters - Filtros a aplicar
+ * @returns {Array} - Vehículos filtrados
+ */
+export const filterVehicles = (vehicles, filters) => {
+    if (!vehicles || !Array.isArray(vehicles)) return []
+    
+    const validFilters = getValidFilters(filters)
+    
+    if (Object.keys(validFilters).length === 0) {
+        return vehicles
+    }
+    
+    return vehicles.filter(vehicle => {
+        return Object.entries(validFilters).every(([key, value]) => {
+            switch (key) {
+                case 'marca':
+                    return vehicle.marca?.toLowerCase().includes(value.toLowerCase())
+                case 'modelo':
+                    return vehicle.modelo?.toLowerCase().includes(value.toLowerCase())
+                case 'añoDesde':
+                    return vehicle.año >= parseInt(value)
+                case 'añoHasta':
+                    return vehicle.año <= parseInt(value)
+                case 'precioDesde':
+                    return vehicle.precio >= parseInt(value)
+                case 'precioHasta':
+                    return vehicle.precio <= parseInt(value)
+                case 'combustible':
+                    return vehicle.combustible?.toLowerCase() === value.toLowerCase()
+                case 'transmision':
+                    return vehicle.transmision?.toLowerCase() === value.toLowerCase()
+                case 'color':
+                    return vehicle.color?.toLowerCase().includes(value.toLowerCase())
+                default:
+                    return vehicle[key]?.toString().toLowerCase().includes(value.toLowerCase())
+            }
+        })
+    })
+}
+
+// ===== UTILIDADES DE UI =====
+
+/**
+ * Obtiene la etiqueta legible de un filtro
+ * @param {string} key - Clave del filtro
+ * @returns {string} - Etiqueta legible
+ */
+export const getFilterLabel = (key) => {
+    return FILTER_LABELS[key] || key
 }
 
 /**
- * Compara dos objetos de filtros para ver si son iguales
- * @param {Object} filters1 - Primer objeto de filtros
- * @param {Object} filters2 - Segundo objeto de filtros
- * @returns {boolean} - true si son iguales
+ * Formatea el valor de un filtro para mostrar en UI
+ * @param {any} value - Valor del filtro
+ * @returns {string} - Valor formateado
  */
-export const areFiltersEqual = (filters1, filters2) => {
-    const clean1 = cleanFilters(filters1)
-    const clean2 = cleanFilters(filters2)
-    
-    const keys1 = Object.keys(clean1)
-    const keys2 = Object.keys(clean2)
-    
-    if (keys1.length !== keys2.length) {
-        return false
+export const formatFilterValue = (value) => {
+    if (Array.isArray(value)) {
+        return value.join(' ')
     }
-    
-    return keys1.every(key => clean1[key] === clean2[key])
+    return value?.toString() || ''
 } 

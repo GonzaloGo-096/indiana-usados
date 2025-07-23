@@ -2,97 +2,73 @@
  * FilterSummary.module.css - Estilos para el resumen de filtros activos
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 .summary {
-  background: #ffffff;
-  border: 1px solid var(--color-neutral-200);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
-}
-
-.summaryHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-sm);
-}
-
-.summaryTitle {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-neutral-700);
-  margin: 0;
-}
-
-.clearAllButton {
-  background: none;
+  background: #fff;
   border: none;
-  color: var(--color-primary-600);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  transition: all var(--transition-fast);
-}
-
-.clearAllButton:hover:not(:disabled) {
-  background: var(--color-primary-50);
-  color: var(--color-primary-700);
-}
-
-.clearAllButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  border-radius: 8px;
+  padding: 6px 0 2px 0;
+  margin: 8px 0 0 0;
+  box-shadow: none;
+  transition: none;
 }
 
 .filtersList {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-sm);
+  gap: 6px;
+  margin: 0;
+  padding: 0;
 }
 
 .filterTag {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
-  background: #ffffff;
-  border: 1px solid var(--color-neutral-300);
-  border-radius: var(--border-radius-full);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  font-size: var(--font-size-xs);
-  color: var(--color-neutral-700);
-  transition: all var(--transition-fast);
-}
-
-.filterTag:hover {
-  border-color: var(--color-neutral-400);
-  box-shadow: var(--shadow-sm);
+  gap: 4px;
+  background: var(--color-neutral-100, #ececec);
+  border: 1px solid var(--color-primary-200);
+  border-radius: 16px;
+  padding: 3px 10px;
+  font-size: 12px;
+  color: var(--color-primary-700);
+  font-weight: 800;
+  box-shadow: none;
 }
 
 .filterLabel {
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.filterLabel::before {
+  content: "✓";
+  color: var(--color-success-500);
+  font-weight: bold;
 }
 
 .removeFilter {
-  background: none;
+  background: var(--color-neutral-200);
   border: none;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-600);
   cursor: pointer;
   padding: 2px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-fast);
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
 }
 
 .removeFilter:hover:not(:disabled) {
-  background: var(--color-neutral-200);
-  color: var(--color-neutral-700);
+  background: var(--color-error-200);
+  color: var(--color-error-600);
+  transform: scale(1.1);
 }
 
 .removeFilter:disabled {
@@ -103,32 +79,51 @@
 /* Responsive */
 @media (max-width: 768px) {
   .summary {
-    padding: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
+    padding: 6px 0;
+    margin: 4px 0;
+    border-radius: 6px;
   }
 
   .summaryHeader {
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: 6px;
     align-items: stretch;
   }
 
   .summaryTitle {
     text-align: center;
+    justify-content: center;
   }
 
   .clearAllButton {
     width: 100%;
-    padding: var(--spacing-sm);
-    font-size: var(--font-size-sm);
+    padding: 6px;
+    font-size: 11px;
+    justify-content: center;
   }
 
   .filtersList {
-    gap: var(--spacing-xs);
+    gap: 4px;
   }
 
   .filterTag {
-    font-size: var(--font-size-xs);
-    padding: var(--spacing-xs);
+    font-size: 10px;
+    padding: 2px 6px;
   }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.summary {
+  animation: fadeIn 0.3s ease-out;
 } 

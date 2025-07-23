@@ -12,7 +12,7 @@
  * @version 7.0.0
  */
 
-import React, { memo } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import { useFilterContext } from '../../../contexts/FilterContext'
 import { useResponsiveContext } from '../../../contexts/ResponsiveContext'
 import { 
@@ -21,6 +21,7 @@ import {
     FilterButton, 
     FilterSummary 
 } from '../../filters'
+import { getValidFilters } from '../../../utils/filterUtils'
 import AutosGrid from './AutosGrid'
 import styles from './ListAutos.module.css'
 
@@ -32,38 +33,76 @@ const ListAutos = memo(() => {
     const {
         // Estado de filtros
         currentFilters,
-        pendingFilters,
         activeFiltersCount,
-        
-        // Datos
         cars,
         isLoading,
         isError,
         error,
         isFiltering,
-        
-        // Paginación
         loadMore,
         hasNextPage,
         isFetchingNextPage,
-        
-        // Acciones de filtros
-        handleFiltersChange,
         applyFilters,
-        clearFilter,
         clearAllFilters,
-        refetch
+        refetch,
+        setCurrentFilters
     } = useFilterContext()
 
     const {
-        // Estado responsive
         isMobile,
         isDrawerOpen,
-        
-        // Acciones responsive
         openDrawer,
         closeDrawer
     } = useResponsiveContext()
+
+    const formRef = useRef();
+    
+    // Función para limpiar filtros usando utilidades centralizadas
+    const cleanFilters = (filters) => {
+        return getValidFilters(filters);
+    };
+    
+    const [pendingFilters, setPendingFilters] = useState(cleanFilters(currentFilters));
+
+    // Actualizar pendingFilters cada vez que cambian los valores del formulario
+    const handleFiltersChange = (filters) => {
+        setPendingFilters(filters);
+    };
+
+    // Sincronizar pendingFilters cuando cambien los currentFilters
+    // Solo cuando no hay filtros pendientes activos
+    React.useEffect(() => {
+        if (currentFilters && Object.keys(currentFilters).length > 0) {
+            // Solo sincronizar si pendingFilters está vacío o es diferente
+            const hasPendingChanges = Object.keys(pendingFilters).length > 0;
+            const isDifferent = JSON.stringify(currentFilters) !== JSON.stringify(pendingFilters);
+            
+            if (!hasPendingChanges || isDifferent) {
+                // Limpiar valores vacíos o 0 antes de sincronizar
+                const cleanFilters = Object.entries(currentFilters).reduce((acc, [key, value]) => {
+                    if (value && value !== '' && value !== null && value !== undefined && value !== 0 && value !== '0') {
+                        acc[key] = value;
+                    }
+                    return acc;
+                }, {});
+                
+                setPendingFilters(cleanFilters);
+            }
+        }
+    }, [currentFilters, pendingFilters]);
+
+    // Función para limpiar un filtro individual usando el ref del formulario
+    const handleClearFilter = (key) => {
+        if (formRef.current && formRef.current.clearField) {
+            formRef.current.clearField(key);
+        }
+        // También limpiar del estado local
+        setPendingFilters(prev => {
+            const newFilters = { ...prev };
+            delete newFilters[key];
+            return newFilters;
+        });
+    };
 
     // Manejar reintento
     const handleRetry = () => {
@@ -82,58 +121,59 @@ const ListAutos = memo(() => {
             {/* ===== FILTROS DESKTOP ===== */}
             {!isMobile && (
                 <div className={styles.filtersDesktop}>
-                    <FilterForm 
-                        onFiltersChange={handleFiltersChange}
-                        onApplyFilters={applyFilters}
-                        isLoading={isLoading}
-                        isFiltering={isFiltering}
-                        initialValues={currentFilters}
-                    />
-                    
-                    {/* Resumen de filtros activos */}
-                    <FilterSummary 
-                        pendingFilters={pendingFilters}
-                        onClearFilter={clearFilter}
-                        onClearAll={clearAllFilters}
-                        isSubmitting={isFiltering}
-                    />
+                                            <FilterForm 
+                            ref={formRef}
+                            onFiltersChange={handleFiltersChange}
+                            onApplyFilters={applyFilters}
+                            isLoading={isLoading}
+                            isFiltering={isFiltering}
+                            initialValues={pendingFilters}
+                            filterSummary={
+                                <FilterSummary
+                                    pendingFilters={pendingFilters}
+                                    onClearFilter={handleClearFilter}
+                                    isSubmitting={isFiltering}
+                                />
+                            }
+                        />
                 </div>
             )}
 
             {/* ===== FILTROS MOBILE ===== */}
             {isMobile && (
                 <>
+                    {/* Botón flotante solo en mobile */}
                     <FilterButton 
                         onClick={openDrawer}
                         activeFiltersCount={activeFiltersCount}
+                        isSubmitting={isFiltering}
                     />
                     
+                    {/* Drawer solo en mobile */}
                     <FilterDrawer 
                         isOpen={isDrawerOpen}
                         onClose={closeDrawer}
                     >
                         <FilterForm 
+                            ref={formRef}
                             onFiltersChange={handleFiltersChange}
                             onApplyFilters={applyFilters}
                             isLoading={isLoading}
                             isFiltering={isFiltering}
-                            initialValues={currentFilters}
+                            initialValues={pendingFilters}
                             variant="mobile"
                             showApplyButton={true}
                             showClearButtonAtBottom={true}
+                            filterSummary={
+                                <FilterSummary
+                                    pendingFilters={pendingFilters}
+                                    onClearFilter={handleClearFilter}
+                                    isSubmitting={isFiltering}
+                                />
+                            }
                         />
                     </FilterDrawer>
                 </>
-            )}
-
-            {/* ===== RESUMEN DE FILTROS ===== */}
-            {activeFiltersCount > 0 && (
-                <FilterSummary 
-                    pendingFilters={pendingFilters}
-                    onClearFilter={clearFilter}
-                    onClearAll={clearAllFilters}
-                    isSubmitting={isFiltering}
-                />
             )}
 
             {/* ===== GRID DE VEHÍCULOS ===== */}

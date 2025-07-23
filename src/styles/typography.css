@@ -1,0 +1,118 @@
+/**
+ * Typography.css - Estilos de tipografía del manual de marca Indiana
+ * 
+ * Basado en el manual de marca pero adaptado a tamaños web
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== BLOQUES DE TEXTO Y PEQUEÑOS TITULARES ===== */
+.text-block-small {
+  font-family: var(--font-family-primary);
+  font-weight: 400; /* Regular */
+  font-size: var(--font-size-xs); /* 12px */
+  line-height: 1.375; /* 11pt interlineado */
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-block-medium {
+  font-family: var(--font-family-primary);
+  font-weight: 400; /* Regular */
+  font-size: var(--font-size-sm); /* 14px */
+  line-height: 1.286; /* 12pt interlineado */
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+/* ===== TITULARES Y SUB-TITULARES ===== */
+.heading-small {
+  font-family: var(--font-family-primary);
+  font-weight: 600; /* SemiBold */
+  font-size: var(--font-size-base); /* 16px */
+  line-height: 1.077; /* 14pt interlineado */
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+/* ===== SECCIONES Y SUB-LÍNEAS ===== */
+.section-title {
+  font-family: var(--font-family-display);
+  font-weight: 900; /* Black */
+  font-size: var(--font-size-xl); /* 20px */
+  line-height: 1; /* 20pt interlineado */
+  letter-spacing: var(--letter-spacing-tight);
+  text-transform: uppercase;
+}
+
+/* ===== GRANDES TÍTULOS Y TITULARES ===== */
+.heading-large {
+  font-family: var(--font-family-primary);
+  font-weight: 400; /* Regular */
+  font-size: var(--font-size-2xl); /* 24px */
+  line-height: 0.957; /* 22pt interlineado */
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+/* ===== TÍTULO MAYOR MARKETING ===== */
+.marketing-title {
+  font-family: var(--font-family-marketing);
+  font-weight: 700; /* Bold */
+  font-size: var(--font-size-6xl); /* 60px */
+  line-height: 1; /* 50pt interlineado */
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+/* ===== TIPOGRAFÍA INDIANA (BRAND) ===== */
+.brand-text {
+  font-family: var(--font-family-primary);
+  font-weight: 600; /* SemiBold */
+  font-size: var(--font-size-lg); /* 18px */
+  line-height: 1.2;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+/* ===== UTILIDADES ADICIONALES ===== */
+.text-condensed {
+  font-family: var(--font-family-primary);
+}
+
+.text-body {
+  font-family: var(--font-family-secondary);
+}
+
+.text-display {
+  font-family: var(--font-family-display);
+}
+
+.text-marketing {
+  font-family: var(--font-family-marketing);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .marketing-title {
+    font-size: var(--font-size-4xl); /* 36px */
+  }
+  
+  .heading-large {
+    font-size: var(--font-size-xl); /* 20px */
+  }
+  
+  .section-title {
+    font-size: var(--font-size-lg); /* 18px */
+  }
+}
+
+@media (max-width: 480px) {
+  .marketing-title {
+    font-size: var(--font-size-3xl); /* 30px */
+  }
+  
+  .heading-large {
+    font-size: var(--font-size-lg); /* 18px */
+  }
+  
+  .section-title {
+    font-size: var(--font-size-base); /* 16px */
+  }
+} 

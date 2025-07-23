@@ -9,7 +9,7 @@
  */
 
 import React from 'react'
-import { getFilterLabel } from '../../../constants'
+import { getFilterLabel, formatFilterValue, isValidFilterValue } from '../../../utils/filterUtils'
 import styles from './FilterSummary.module.css'
 
 const FilterSummary = ({ 
@@ -18,8 +18,11 @@ const FilterSummary = ({
     onClearAll,
     isSubmitting = false 
 }) => {
-    // Filtrar solo los filtros que tienen valor
-    const filtersWithValues = Object.entries(pendingFilters || {}).filter(([key, value]) => value !== '')
+
+    // Filtrar solo los filtros que tienen valor válido
+    const filtersWithValues = Object.entries(pendingFilters || {}).filter(([key, value]) => {
+        return isValidFilterValue(value)
+    })
 
     // Si no hay filtros activos, no mostrar nada
     if (filtersWithValues.length === 0) {
@@ -28,24 +31,11 @@ const FilterSummary = ({
 
     return (
         <div className={styles.summary}>
-            <div className={styles.summaryHeader}>
-                <h4 className={styles.summaryTitle}>
-                    Filtros seleccionados ({filtersWithValues.length})
-                </h4>
-                <button 
-                    onClick={onClearAll}
-                    className={styles.clearAllButton}
-                    disabled={isSubmitting}
-                >
-                    Limpiar todos
-                </button>
-            </div>
-            
             <div className={styles.filtersList}>
-                {filtersWithValues.map(([key, value]) => (
+                {filtersWithValues.map(([key, value], index) => (
                     <div key={key} className={styles.filterTag}>
                         <span className={styles.filterLabel}>
-                            {getFilterLabel(key)}: {value}
+                            {getFilterLabel(key)}: {formatFilterValue(value)}
                         </span>
                         <button 
                             onClick={() => onClearFilter(key)}

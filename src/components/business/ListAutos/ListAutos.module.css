@@ -17,6 +17,21 @@
     padding: var(--spacing-8) 0;
 }
 
+/* Ajustes para mobile */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-4) 0;
+    }
+}
+
+/* Separación extra entre filtros y autos en desktop */
+@media (min-width: 1200px) {
+    .filtersDesktop {
+        margin-top: var(--spacing-1);
+        margin-bottom: var(--spacing-8);
+    }
+}
+
 /* ===== SECCIÓN DE FILTROS ===== */
 .filterSection {
     margin-bottom: var(--spacing-xl);
@@ -42,6 +57,14 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-4);
+}
+
+/* Ajustes para mobile */
+@media (max-width: 768px) {
+    .grid {
+        gap: var(--spacing-4);
+        padding: 0 var(--spacing-2);
+    }
 }
 
 /* Tablet: 2 columnas */

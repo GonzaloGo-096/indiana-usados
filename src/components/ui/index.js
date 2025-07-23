@@ -5,10 +5,12 @@
  * para facilitar las importaciones
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 export { FormInput } from './FormInput'
 export { Button } from './Button'
 export { Modal } from './Modal'
-export { Alert } from './Alert' 
+export { Alert } from './Alert'
+export { ErrorState } from './ErrorState'
+export { ImageCarousel } from './ImageCarousel' 

@@ -15,6 +15,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { cssVariables } from './constants'
 import './styles/globals.css'
+import './styles/fonts.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // Inyectar variables CSS globales

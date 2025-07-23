@@ -1,1 +1,1 @@
-export { default } from './FilterForm' 
+export { default } from './FilterForm.jsx' 

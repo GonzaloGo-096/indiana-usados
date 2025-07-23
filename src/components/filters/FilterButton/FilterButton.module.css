@@ -9,24 +9,26 @@
 
 .filterButton {
   position: fixed;
-  bottom: var(--spacing-lg);
-  right: var(--spacing-lg);
+  bottom: var(--spacing-md);
+  right: var(--spacing-md);
   background: var(--color-primary-500);
   color: var(--color-white);
   border: none;
   border-radius: 50px;
-  padding: var(--spacing-md) var(--spacing-lg);
-  font-size: var(--font-size-base);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   box-shadow: var(--shadow-lg);
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
   transition: all var(--transition-fast);
-  z-index: var(--z-fixed);
-  min-width: 120px;
+  z-index: 9999;
+  min-width: 100px;
+  min-height: 40px; /* Más pequeño */
   justify-content: center;
+  touch-action: manipulation; /* Optimizar para touch */
 }
 
 .filterButton:hover:not(:disabled) {
@@ -101,10 +103,22 @@
     bottom: var(--spacing-md);
     right: var(--spacing-md);
     padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
     min-width: 100px;
+  }
+  
+  .buttonText {
     font-size: var(--font-size-sm);
   }
-
+  
+  .badge {
+    width: 18px;
+    height: 18px;
+    font-size: var(--font-size-xs);
+    top: -6px;
+    right: -6px;
+  }
+  
   .filterIcon {
     width: 16px;
     height: 16px;

@@ -1,0 +1,266 @@
+/**
+ * CardDetalle.module.css - Estilos para el componente CardDetalle
+ * 
+ * Características:
+ * - Diseño de tarjeta detallada
+ * - Layout de dos columnas (imagen + detalles)
+ * - Secciones organizadas de información
+ * - Botones de contacto
+ * - Responsive design
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== TARJETA PRINCIPAL ===== */
+.card {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 245, 245, 0.8) 50%, rgba(235, 235, 235, 0.7) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(245, 245, 245, 0.3) 50%, rgba(235, 235, 235, 0.2) 100%);
+    border-radius: 16px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ===== CONTENIDO DE LA TARJETA ===== */
+.cardContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+}
+
+/* ===== SECCIÓN DE CARRUSEL ===== */
+.imageSection {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: var(--color-neutral-100);
+    min-height: 300px;
+    width: 100%;
+}
+
+/* ===== SECCIÓN DE DETALLES ===== */
+.detailsSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-neutral-800);
+    margin-bottom: var(--spacing-lg);
+    line-height: var(--line-height-tight);
+    text-align: center;
+}
+
+/* ===== CONTENEDOR DE TABLAS ===== */
+.tablesContainer {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.tableSection {
+    flex: 1;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+}
+
+.table th {
+    text-align: center;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-weight: var(--font-weight-semibold);
+    color: black;
+    border-bottom: 1px solid var(--color-neutral-200);
+    background: linear-gradient(180deg, rgba(240, 240, 240, 0.8) 0%, rgba(230, 230, 230, 0.7) 100%);
+    border-radius: 8px 8px 0 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.table td {
+    text-align: center;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    color: black;
+    border-bottom: 1px solid var(--color-neutral-100);
+    font-weight: var(--font-weight-medium);
+    background: linear-gradient(180deg, rgba(235, 235, 235, 0.6) 0%, rgba(225, 225, 225, 0.5) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.table tr:last-child th,
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.table tr:hover th {
+    background: linear-gradient(180deg, rgba(250, 250, 250, 0.9) 0%, rgba(240, 240, 240, 0.8) 100%);
+}
+
+.table tr:hover td {
+    background: linear-gradient(180deg, rgba(245, 245, 245, 0.7) 0%, rgba(235, 235, 235, 0.6) 100%);
+}
+
+/* ===== DETALLES ADICIONALES ===== */
+.additionalDetails {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    border: 1px solid var(--color-neutral-200);
+    text-align: center;
+}
+
+.detailsTitle {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-neutral-800);
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+.detailsText {
+    font-size: var(--font-size-sm);
+    color: var(--color-neutral-700);
+    line-height: var(--line-height-relaxed);
+    text-align: center;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+/* ===== SECCIÓN DE CONTACTO ===== */
+.contactSection {
+    margin-top: auto;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-neutral-200);
+    text-align: center;
+}
+
+.contactTitle {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-neutral-800);
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+.contactButtons {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+.contactButton {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 245, 245, 0.8) 100%);
+    border: 1px solid var(--color-neutral-300);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-neutral-700);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    transition: all var(--transition-normal);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.contactButton:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(250, 250, 250, 0.9) 100%);
+    border-color: var(--color-neutral-400);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contactButton:active {
+    transform: translateY(0);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1024px) {
+    .cardContent {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .imageSection {
+        min-height: 250px;
+    }
+    
+    .tablesContainer {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+}
+
+@media (max-width: 768px) {
+    .card {
+        border-radius: 12px;
+    }
+    
+    .cardContent {
+        padding: var(--spacing-md);
+        gap: var(--spacing-sm);
+    }
+    
+    .title {
+        font-size: var(--font-size-lg);
+    }
+    
+    .contactButtons {
+        flex-direction: column;
+    }
+    
+    .contactButton {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .cardContent {
+        padding: var(--spacing-sm);
+    }
+    
+    .title {
+        font-size: var(--font-size-md);
+    }
+    
+    .table th,
+    .table td {
+        padding: var(--spacing-xs);
+        font-size: var(--font-size-xs);
+    }
+    
+    .contactButton {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: var(--font-size-xs);
+    }
+} 

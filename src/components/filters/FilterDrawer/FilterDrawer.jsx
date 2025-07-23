@@ -15,10 +15,7 @@ import styles from './FilterDrawer.module.css'
 const FilterDrawer = ({ 
     isOpen, 
     onClose, 
-    onFiltersChange, 
-    onApplyFilters,
-    isSubmitting = false,
-    initialValues
+    children
 }) => {
     // Cerrar drawer con Escape
     useEffect(() => {
@@ -30,13 +27,13 @@ const FilterDrawer = ({
 
         if (isOpen) {
             document.addEventListener('keydown', handleEscape)
-            // Prevenir scroll del body cuando el drawer está abierto
-            document.body.style.overflow = 'hidden'
+            // NO bloquear el scroll del body - permitir scroll normal
+            // document.body.style.overflow = 'hidden'
         }
 
         return () => {
             document.removeEventListener('keydown', handleEscape)
-            document.body.style.overflow = 'unset'
+            // document.body.style.overflow = 'unset'
         }
     }, [isOpen, onClose])
 
@@ -53,7 +50,7 @@ const FilterDrawer = ({
             />
             
             {/* Drawer */}
-            <div className={styles.drawer}>
+            <div className={styles.drawer} data-open={isOpen}>
                 <div className={styles.drawerHeader}>
                     <h2 className={styles.drawerTitle}>Filtrar Vehículos</h2>
                     <button 
@@ -76,16 +73,7 @@ const FilterDrawer = ({
                 </div>
                 
                 <div className={styles.drawerContent}>
-                    <FilterForm 
-                        variant="mobile"
-                        initialValues={initialValues}
-                        onFiltersChange={onFiltersChange}
-                        onApplyFilters={onApplyFilters}
-                        isLoading={false}
-                        isFiltering={isSubmitting}
-                        showClearButtonAtBottom={true}
-                        showApplyButton={true}
-                    />
+                    {children}
                 </div>
             </div>
         </>
