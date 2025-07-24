@@ -233,9 +233,9 @@ const FilterForm = forwardRef(({
 
             <div className={styles.formGrid}>
                 {/* Marca (dropdown custom con checkboxes) */}
-                <div className={styles.formGroup} ref={marcaRef}>
+                <div className={`${styles.formGroup} ${styles.dropdownGroup}`} ref={marcaRef}>
                     <label className={styles.label}>Marca</label>
-                    <div className={styles.dropdownMulti}>
+                    <div className={`${styles.dropdownMulti} ${styles.dropdownMarca}`}>
                         <div
                             className={styles.dropdownMultiInput}
                             tabIndex={0}
@@ -326,9 +326,9 @@ const FilterForm = forwardRef(({
                 </div>
 
                 {/* Combustible (dropdown custom con checkboxes) */}
-                <div className={styles.formGroup} ref={combustibleRef}>
+                <div className={`${styles.formGroup} ${styles.dropdownGroup}`} ref={combustibleRef}>
                     <label className={styles.label}>Combustible</label>
-                    <div className={styles.dropdownMulti}>
+                    <div className={`${styles.dropdownMulti} ${styles.dropdownCombustible}`}>
                         <div
                             className={styles.dropdownMultiInput}
                             tabIndex={0}
@@ -357,9 +357,9 @@ const FilterForm = forwardRef(({
                 </div>
 
                 {/* Transmisión (dropdown custom con checkboxes) */}
-                <div className={styles.formGroup} ref={transmisionRef}>
+                <div className={`${styles.formGroup} ${styles.dropdownGroup}`} ref={transmisionRef}>
                     <label className={styles.label}>Transmisión</label>
-                    <div className={styles.dropdownMulti}>
+                    <div className={`${styles.dropdownMulti} ${styles.dropdownTransmision}`}>
                         <div
                             className={styles.dropdownMultiInput}
                             tabIndex={0}
@@ -388,9 +388,9 @@ const FilterForm = forwardRef(({
                 </div>
 
                 {/* Color (dropdown custom con checkboxes) */}
-                <div className={styles.formGroup} ref={colorRef}>
+                <div className={`${styles.formGroup} ${styles.dropdownGroup}`} ref={colorRef}>
                     <label className={styles.label}>Color</label>
-                    <div className={styles.dropdownMulti}>
+                    <div className={`${styles.dropdownMulti} ${styles.dropdownColor}`}>
                         <div
                             className={styles.dropdownMultiInput}
                             tabIndex={0}

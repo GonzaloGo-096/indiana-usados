@@ -22,9 +22,8 @@ const mockVehicles = [
         categoria: "Sedán",
         caja: "Automática",
         detalle: "Vehículo en excelente estado, único dueño, mantenimiento al día",
-        imagen: "/src/assets/auto1.jpg",
+        imagen: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
         imagenes: [
-            "/src/assets/auto1.jpg",
             "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
             "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
             "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop"
@@ -43,11 +42,11 @@ const mockVehicles = [
         categoria: "Sedán",
         caja: "Automática",
         detalle: "Vehículo premium, equipamiento completo, garantía extendida",
-        imagen: "/src/assets/auto1.jpg",
+        imagen: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
         imagenes: [
-            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
             "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop"
+            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop"
         ]
     },
     {
@@ -63,9 +62,9 @@ const mockVehicles = [
         categoria: "Sedán",
         caja: "Manual",
         detalle: "Vehículo deportivo, bien mantenido, ideal para ciudad",
-        imagen: "/src/assets/auto1.jpg",
+        imagen: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
         imagenes: [
-            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
             "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop"
         ]
     },
@@ -82,13 +81,11 @@ const mockVehicles = [
         categoria: "Sedán",
         caja: "Automática",
         detalle: "Vehículo familiar, espacioso y confortable",
-        imagen: "/src/assets/auto1.jpg",
+        imagen: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
         imagenes: [
-            "/src/assets/auto1.jpg",
             "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
             "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
-            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
-            "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&h=600&fit=crop"
+            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop"
         ]
     },
     {
@@ -104,9 +101,9 @@ const mockVehicles = [
         categoria: "Hatchback",
         caja: "Manual",
         detalle: "Vehículo económico, perfecto para uso diario",
-        imagen: "/src/assets/auto1.jpg",
+        imagen: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
         imagenes: [
-            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
             "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop"
         ]
     },
@@ -123,12 +120,11 @@ const mockVehicles = [
         categoria: "Deportivo",
         caja: "Automática",
         detalle: "Vehículo deportivo de alto rendimiento, estado impecable",
-        imagen: "/src/assets/auto1.jpg",
+        imagen: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
         imagenes: [
-            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
             "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
-            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop"
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop"
         ]
     },
     {
@@ -144,10 +140,10 @@ const mockVehicles = [
         categoria: "Sedán",
         caja: "Automática",
         detalle: "Vehículo confiable, bajo consumo de combustible",
-        imagen: "/src/assets/auto1.jpg",
+        imagen: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
         imagenes: [
-            "/src/assets/auto1.jpg",
-            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop"
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop"
         ]
     },
     {
@@ -163,11 +159,11 @@ const mockVehicles = [
         categoria: "Sedán",
         caja: "Automática",
         detalle: "Vehículo elegante, perfecto para viajes largos",
-        imagen: "/src/assets/auto1.jpg",
+        imagen: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
         imagenes: [
-            "/src/assets/auto1.jpg",
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
             "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop"
+            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop"
         ]
     }
 ]

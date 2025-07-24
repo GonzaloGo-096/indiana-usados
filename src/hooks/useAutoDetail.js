@@ -18,8 +18,16 @@
  */
 
 import { useQuery } from '@tanstack/react-query'
-import { useMemo } from 'react'
+import { useMemo, useCallback } from 'react'
 import autoService, { queryKeys } from '../services/service'
+
+// Función helper memoizada para formatear valores
+const formatValue = (value) => {
+    if (!value || value === '' || value === 'null' || value === 'undefined') {
+        return '-'
+    }
+    return value
+}
 
 /**
  * Hook para obtener detalles de un vehículo específico
@@ -65,7 +73,7 @@ export const useAutoDetail = (id, options = {}) => {
         enabled: enabled && !!id
     })
 
-    // Datos formateados para la UI
+    // Datos formateados para la UI - OPTIMIZADO
     const formattedData = useMemo(() => {
         if (!auto) return null
 
@@ -85,19 +93,16 @@ export const useAutoDetail = (id, options = {}) => {
             imagenes = []
         } = auto
 
-        // Función helper para formatear valores
-        const formatValue = (value) => {
-            if (!value || value === '' || value === 'null' || value === 'undefined') {
-                return '-'
-            }
-            return value
-        }
+        // Formatear valores una sola vez
+        const marcaFormatted = formatValue(marca)
+        const modeloFormatted = formatValue(modelo)
+        const titulo = `${marcaFormatted} ${modeloFormatted}`
 
         return {
             // Datos básicos
             id: auto.id,
-            marca: formatValue(marca),
-            modelo: formatValue(modelo),
+            marca: marcaFormatted,
+            modelo: modeloFormatted,
             precio: precio ? `$${precio}` : '-',
             año: formatValue(año),
             color: formatValue(color),
@@ -110,17 +115,21 @@ export const useAutoDetail = (id, options = {}) => {
             imagenes: imagenes || [],
             
             // Datos calculados
-            titulo: `${formatValue(marca)} ${formatValue(modelo)}`,
-            altText: `${formatValue(marca)} ${formatValue(modelo)}`,
+            titulo,
+            altText: titulo,
             
             // Datos para contacto
             contactInfo: {
                 email: 'info@indianausados.com',
                 whatsapp: '5491112345678',
-                whatsappMessage: `Hola, me interesa el vehículo ${formatValue(marca)} ${formatValue(modelo)}`
+                whatsappMessage: `Hola, me interesa el vehículo ${titulo}`
             }
         }
     }, [auto])
+
+    // Estados memoizados para evitar recálculos
+    const hasData = useMemo(() => !!auto, [auto])
+    const hasFormattedData = useMemo(() => !!formattedData, [formattedData])
 
     return {
         // Datos
@@ -136,7 +145,7 @@ export const useAutoDetail = (id, options = {}) => {
         refetch,
         
         // Estados adicionales
-        hasData: !!auto,
-        hasFormattedData: !!formattedData
+        hasData,
+        hasFormattedData
     }
 } 

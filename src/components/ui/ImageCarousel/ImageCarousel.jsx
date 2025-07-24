@@ -13,7 +13,7 @@
  * @version 1.0.0
  */
 
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx'
 import defaultCarImage from '../../../assets/auto1.jpg'
 import styles from './ImageCarousel.module.css'
@@ -38,7 +38,7 @@ export const ImageCarousel = ({
 }) => {
     const [currentIndex, setCurrentIndex] = useState(0)
     
-    // Si no hay imágenes, usar imagen por defecto
+    // Si no hay imágenes, usar imagen por defecto - MEMOIZADO
     const allImages = useMemo(() => {
         if (!images || images.length === 0) {
             return [defaultCarImage]
@@ -46,42 +46,41 @@ export const ImageCarousel = ({
         return images
     }, [images])
 
-    // Función para ir a la imagen anterior
+    // Función para ir a la imagen anterior - MEMOIZADA
     const goToPrevious = useCallback(() => {
         setCurrentIndex((prevIndex) => 
             prevIndex === 0 ? allImages.length - 1 : prevIndex - 1
         )
     }, [allImages.length])
 
-    // Función para ir a la imagen siguiente
+    // Función para ir a la imagen siguiente - MEMOIZADA
     const goToNext = useCallback(() => {
         setCurrentIndex((prevIndex) => 
             prevIndex === allImages.length - 1 ? 0 : prevIndex + 1
         )
     }, [allImages.length])
 
-    // Función para ir a una imagen específica
+    // Función para ir a una imagen específica - MEMOIZADA
     const goToImage = useCallback((index) => {
         setCurrentIndex(index)
     }, [])
 
-    // AutoPlay effect
-    React.useEffect(() => {
-        if (!autoPlay) return
+    // AutoPlay effect - OPTIMIZADO
+    useEffect(() => {
+        if (!autoPlay || allImages.length <= 1) return
 
-        const interval = setInterval(() => {
-            goToNext()
-        }, autoPlayInterval)
-
+        const interval = setInterval(goToNext, autoPlayInterval)
         return () => clearInterval(interval)
-    }, [autoPlay, autoPlayInterval, goToNext])
+    }, [autoPlay, autoPlayInterval, goToNext, allImages.length])
 
-    // Navegación con teclado
-    React.useEffect(() => {
+    // Navegación con teclado - OPTIMIZADO
+    useEffect(() => {
         const handleKeyDown = (event) => {
             if (event.key === 'ArrowLeft') {
+                event.preventDefault()
                 goToPrevious()
             } else if (event.key === 'ArrowRight') {
+                event.preventDefault()
                 goToNext()
             }
         }
@@ -89,6 +88,16 @@ export const ImageCarousel = ({
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [goToPrevious, goToNext])
+
+    // Preload de imágenes para mejor rendimiento
+    useEffect(() => {
+        allImages.forEach((imageSrc) => {
+            if (imageSrc && imageSrc !== defaultCarImage) {
+                const img = new Image()
+                img.src = imageSrc
+            }
+        })
+    }, [allImages])
 
     return (
         <div className={styles.carouselContainer}>
@@ -99,6 +108,7 @@ export const ImageCarousel = ({
                     alt={`${altText} ${currentIndex + 1} de ${allImages.length}`}
                     className={styles.mainImage}
                     loading="lazy"
+                    decoding="async"
                 />
                 
                 {/* Flechas de navegación */}
@@ -108,6 +118,7 @@ export const ImageCarousel = ({
                             className={`${styles.arrow} ${styles.arrowLeft}`}
                             onClick={goToPrevious}
                             aria-label="Imagen anterior"
+                            type="button"
                         >
                             <ChevronLeftIcon />
                         </button>
@@ -115,6 +126,7 @@ export const ImageCarousel = ({
                             className={`${styles.arrow} ${styles.arrowRight}`}
                             onClick={goToNext}
                             aria-label="Imagen siguiente"
+                            type="button"
                         >
                             <ChevronRightIcon />
                         </button>
@@ -131,6 +143,7 @@ export const ImageCarousel = ({
                                 onClick={() => goToImage(index)}
                                 aria-label={`Ir a imagen ${index + 1}`}
                                 aria-current={index === currentIndex ? 'true' : 'false'}
+                                type="button"
                             />
                         ))}
                     </div>
@@ -147,12 +160,14 @@ export const ImageCarousel = ({
                                 className={`${styles.thumbnail} ${index === currentIndex ? styles.active : ''}`}
                                 onClick={() => goToImage(index)}
                                 aria-label={`Ver imagen ${index + 1}`}
+                                type="button"
                             >
                                 <img 
                                     src={image} 
                                     alt={`Miniatura ${index + 1}`}
                                     className={styles.thumbnailImage}
                                     loading="lazy"
+                                    decoding="async"
                                 />
                             </button>
                         ))}

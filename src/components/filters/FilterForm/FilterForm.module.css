@@ -15,6 +15,14 @@
   width: 90%;
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Crear contexto separado para inputs */
+.formGrid {
+  position: relative;
+  z-index: 1;
 }
 
 /* Variante Desktop */
@@ -78,7 +86,7 @@
   max-height: 120px; /* Más pequeño */
   font-size: var(--font-size-sm);
   border-radius: var(--border-radius-sm);
-  z-index: 10000;
+  z-index: 9999;
   position: absolute;
   top: 100%;
   left: 0;
@@ -237,6 +245,8 @@
   color: var(--color-neutral-700);
   margin-bottom: var(--spacing-xs);
   text-align: center;
+  position: relative;
+  z-index: -1;
 }
 
 .select {
@@ -249,6 +259,8 @@
   color: var(--color-neutral-800);
   transition: all var(--transition-fast);
   cursor: pointer;
+  position: relative;
+  z-index: -1;
 }
 
 .select option {
@@ -298,6 +310,20 @@
   background-color: #ffffff;
   color: var(--color-neutral-800);
   transition: all var(--transition-fast);
+  position: relative;
+  z-index: -1;
+}
+
+/* Asegurar que los inputs no interfieran con los dropdowns */
+.formGroup {
+  position: relative;
+  z-index: -1;
+}
+
+/* Grupo específico para dropdowns */
+.dropdownGroup {
+  position: relative;
+  z-index: auto;
 }
 
 .input::placeholder {
@@ -549,7 +575,7 @@
   transition: all var(--transition-fast);
   position: sticky;
   bottom: 0;
-  z-index: 2;
+  z-index: 5;
 }
 
 .clearButtonBottom:hover:not(:disabled) {
@@ -572,7 +598,7 @@
 .dropdownMulti {
   position: relative;
   width: 100%;
-  z-index: 1000;
+  z-index: 10;
 }
 
 .dropdownMultiInput {
@@ -620,7 +646,7 @@
   border: 1.5px solid var(--color-primary-100, #e0eaff);
   border-radius: 10px;
   box-shadow: 0 6px 24px 0 rgba(0,0,0,0.10), 0 1.5px 4px 0 rgba(0,0,0,0.06);
-  z-index: 10;
+  z-index: 9999;
   max-height: 180px;
   overflow-y: auto;
   margin-top: 2px;
@@ -628,6 +654,72 @@
   scrollbar-width: none; /* Firefox */
   animation: dropdownFadeIn 0.18s cubic-bezier(0.4,0,0.2,1);
   transition: box-shadow 0.18s cubic-bezier(0.4,0,0.2,1), border 0.18s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Z-index específicos para cada dropdown para evitar superposiciones */
+.dropdownMarca {
+  z-index: 10000;
+}
+
+.dropdownMarca .dropdownList {
+  z-index: 10000;
+}
+
+.dropdownCombustible {
+  z-index: 10001;
+}
+
+.dropdownCombustible .dropdownList {
+  z-index: 10001;
+}
+
+.dropdownTransmision {
+  z-index: 10002;
+}
+
+.dropdownTransmision .dropdownList {
+  z-index: 10002;
+}
+
+.dropdownColor {
+  z-index: 10003;
+}
+
+.dropdownColor .dropdownList {
+  z-index: 10003;
+}
+
+/* Z-index específicos para mobile */
+.mobile .dropdownMarca {
+  z-index: 10000;
+}
+
+.mobile .dropdownMarca .dropdownList {
+  z-index: 10000;
+}
+
+.mobile .dropdownCombustible {
+  z-index: 10001;
+}
+
+.mobile .dropdownCombustible .dropdownList {
+  z-index: 10001;
+}
+
+.mobile .dropdownTransmision {
+  z-index: 10002;
+}
+
+.mobile .dropdownTransmision .dropdownList {
+  z-index: 10002;
+}
+
+.mobile .dropdownColor {
+  z-index: 10003;
+}
+
+.mobile .dropdownColor .dropdownList {
+  z-index: 10003;
 }
 
 @keyframes dropdownFadeIn {
@@ -668,6 +760,8 @@
   accent-color: var(--color-primary-500);
   height: 4px;
   margin: 0;
+  position: relative;
+  z-index: -1;
 }
 
 .input[type=range]::-webkit-slider-thumb {

@@ -116,16 +116,18 @@ export const CardAuto = memo(({ auto }) => {
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            {/* Footer con botón */}
-            <div className={styles.footer}>
-                <Link to={`/vehiculo/${id}`}>
-                    <Button variant="glass" className={styles.button}>
-                        Ver más
-                    </Button>
-                </Link>
+                
+                {/* Footer con botón */}
+                <div className={styles.footer}>
+                    <Link to={`/vehiculo/${id}`}>
+                        <Button variant="glass" className={styles.button}>
+                            Ver más
+                        </Button>
+                    </Link>
+                </div>
             </div>
         </div>
     )
-}) 
+})
+
+CardAuto.displayName = 'CardAuto' 

@@ -19,4 +19,5 @@ export { useGetCars } from './useGetCars'
 export { useAutoDetail } from './useAutoDetail'
 
 // ===== HOOKS UTILITARIOS =====
-export { useIntersectionObserver } from './useIntersectionObserver' 
+export { useIntersectionObserver } from './useIntersectionObserver'
+export { useImageOptimization } from './useImageOptimization' 
