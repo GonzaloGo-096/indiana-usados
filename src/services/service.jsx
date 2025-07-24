@@ -18,6 +18,83 @@ const queryKeys = {
 }
 
 /**
+ * 🚀 NUEVA FUNCIÓN: Obtener vehículos con paginación real desde Postman mock
+ * @param {Object} params - Parámetros de la petición
+ * @param {number} params.page - Página actual (1, 2, 3...)
+ * @param {number} params.limit - Cantidad de autos por página
+ * @param {Object} params.filters - Objeto de filtros
+ * @returns {Promise<Object>} - Datos de vehículos con paginación
+ */
+const getVehiclesWithPagination = async ({ page = 1, limit = 6, filters = {} }) => {
+    try {
+        console.log('🌐 Petición a Postman mock con paginación:', { page, limit, filters })
+        
+        // Simular delay de red
+        await simulateNetworkDelay(300)
+        
+        // Filtrar vehículos según los filtros
+        let filteredVehicles = mockVehicles
+        
+        if (Object.keys(filters).length > 0) {
+            filteredVehicles = filterVehicles(mockVehicles, filters)
+            console.log(`📊 Vehículos filtrados: ${filteredVehicles.length} de ${mockVehicles.length}`)
+        }
+        
+        // Calcular paginación real
+        const total = filteredVehicles.length
+        const totalPages = Math.ceil(total / limit)
+        const startIndex = (page - 1) * limit
+        const endIndex = startIndex + limit
+        const items = filteredVehicles.slice(startIndex, endIndex)
+        
+        // Determinar si hay más páginas
+        const hasNextPage = page < totalPages
+        
+        console.log(`📄 Página ${page}/${totalPages}, mostrando ${items.length} autos`)
+        
+        return {
+            items: items,
+            total: total,
+            page: page,
+            limit: limit,
+            totalPages: totalPages,
+            hasNextPage: hasNextPage,
+            hasMore: hasNextPage, // Compatibilidad con código existente
+            nextPage: hasNextPage ? page + 1 : undefined
+        }
+    } catch (error) {
+        console.error('❌ Error en getVehiclesWithPagination:', error)
+        throw new Error(`No se pudieron cargar los vehículos: ${error.message}`)
+    }
+}
+
+/**
+ * 🔄 FUNCIÓN FUTURA: Para conectar con backend real
+ * Solo cambiar la URL cuando tengas el backend real
+ */
+const getVehiclesFromRealBackend = async ({ page = 1, limit = 6, filters = {} }) => {
+    try {
+        // Construir parámetros de query
+        const params = new URLSearchParams({
+            page: page.toString(),
+            limit: limit.toString(),
+            ...filters
+        })
+        
+        const response = await fetch(`${BASE_URL}/vehicles?${params}`)
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        
+        return response.json()
+    } catch (error) {
+        console.error('❌ Error en getVehiclesFromRealBackend:', error)
+        throw error
+    }
+}
+
+/**
  * Función para obtener autos con paginación y filtros (usando mock local)
  * @param {Object} params - Parámetros de la petición
  * @param {number} params.pageParam - Página actual
@@ -158,7 +235,9 @@ const autoService = {
     getAllVehicles, // Nueva función para obtener lista completa
     getAutoById,
     queryKeys,
-    ITEMS_PER_PAGE
+    ITEMS_PER_PAGE,
+    getVehiclesWithPagination, // Nueva función para paginación real
+    getVehiclesFromRealBackend // Nueva función para backend real
 }
 
 export { queryKeys }

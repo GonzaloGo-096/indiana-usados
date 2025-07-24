@@ -3,17 +3,17 @@
  * 
  * Responsabilidades:
  * - Manejar estado de filtros (pendientes y aplicados)
- * - Usar useGetCars para obtener datos
+ * - Usar useGetCars para obtener datos con paginación infinita
  * - Proporcionar acciones para manipular filtros
  * - Notificaciones de feedback
  * 
  * Arquitectura:
- * - useGetCars: Maneja la obtención de datos y paginación
+ * - useGetCars: Maneja la obtención de datos y paginación infinita
  * - useFilterSystem: Maneja el estado de filtros
  * - Separación clara de responsabilidades
  * 
  * @author Indiana Usados
- * @version 9.0.0
+ * @version 10.0.0 - Migrado a paginación infinita
  */
 
 import { useState, useCallback, useMemo } from 'react'
@@ -35,35 +35,28 @@ export const useFilterSystem = () => {
     const [currentFilters, setCurrentFilters] = useState({})
     const [pendingFilters, setPendingFilters] = useState({})
 
-    // ===== QUERY PRINCIPAL (LISTA COMPLETA) =====
+    // ===== QUERY PRINCIPAL CON PAGINACIÓN INFINITA =====
     const {
-        autos: allCars,
+        autos: cars,
         allVehicles,
         totalCount,
-        isLoading: isLoadingAll,
-        error: errorAll,
-        refetch: refetchAll
-    } = useGetCars({}, {
-        // Query principal siempre activa
+        filteredCount,
+        isLoading,
+        isError,
+        error,
+        loadMore,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        refetch,
+        currentPage,
+        totalPages
+    } = useGetCars(currentFilters, {
+        // Query principal con infinite scroll habilitado
         enabled: true,
+        useInfiniteScroll: true, // 🚀 HABILITAR PAGINACIÓN INFINITA
         staleTime: 1000 * 60 * 10, // 10 minutos
         cacheTime: 1000 * 60 * 60, // 1 hora
-    })
-
-    // ===== QUERY PARA RESULTADOS FILTRADOS =====
-    const {
-        data: filteredData,
-        isLoading: isLoadingFiltered,
-        error: errorFiltered,
-        refetch: refetchFiltered
-    } = useQuery({
-        queryKey: ['filtered-vehicles', currentFilters],
-        queryFn: () => autoService.applyFilters(currentFilters),
-        enabled: Object.keys(currentFilters).length > 0,
-        staleTime: 1000 * 60 * 5, // 5 minutos
-        cacheTime: 1000 * 60 * 30, // 30 minutos
-        retry: 1,
-        refetchOnWindowFocus: false
     })
 
     // ===== MUTATION PARA APLICAR FILTROS =====
@@ -94,163 +87,98 @@ export const useFilterSystem = () => {
             // 1. PRIMERO: Actualizar filtros aplicados
             setCurrentFilters(pendingFilters)
             
-            // 2. SEGUNDO: Actualizar cache con los datos filtrados del backend
-            queryClient.setQueryData(['filtered-vehicles', pendingFilters], result)
+            // 2. SEGUNDO: Invalidar cache para forzar nueva consulta con filtros
+            queryClient.invalidateQueries({ queryKey: ['vehicles-infinite'] })
             
-            // 3. TERCERO: Invalidación más agresiva - limpiar todo el cache relacionado
-            queryClient.invalidateQueries({ queryKey: ['all-vehicles'] })
-            queryClient.invalidateQueries({ queryKey: ['filtered-vehicles'] })
-            queryClient.removeQueries({ queryKey: ['all-vehicles'] })
-            
-            // 4. CUARTO: Forzar refetch inmediato
-            queryClient.refetchQueries({ queryKey: ['all-vehicles'] })
-            
-            // 5. QUINTO: Mostrar notificación de éxito
-            const filteredCount = result.filteredCount || result.items?.length || 0
-            const totalCount = result.totalCount || allVehicles?.length || 0
-            
-            if (filteredCount > 0) {
-                notifications.showSuccessNotification(
-                    `Filtros aplicados correctamente. ${filteredCount} de ${totalCount} vehículos encontrados.`
-                )
-            } else {
-                notifications.showInfoNotification('No se encontraron vehículos con los filtros aplicados.')
-            }
-            
-            console.log('✅ Flujo completado: POST → UI → Cache (Invalidación agresiva)')
+            // 3. TERCERO: Mostrar notificación de éxito
+            notifications.showSuccessNotification(
+                `Filtros aplicados: ${result.filteredCount || 0} vehículos encontrados`
+            )
         },
         onError: (error) => {
-            console.error('❌ Error en mutation de filtros:', error)
-            notifications.showErrorNotification(`Error al aplicar filtros: ${error.message}`)
+            console.error('❌ Error en mutation:', error)
+            notifications.showErrorNotification(`Error: ${error.message}`)
         }
     })
 
-    // ===== FUNCIÓN PARA TRANSFORMAR FILTROS =====
-    const transformFiltersToQueryParams = (filters) => {
-        return transformFiltersToBackend(filters)
-    }
+    // ===== ESTADOS COMPUTADOS =====
+    const isFiltering = applyFiltersMutation.isPending
+    const activeFiltersCount = Object.keys(currentFilters).length
 
-    // ===== ACCIONES DE FILTROS =====
+    // ===== FUNCIONES =====
     
     /**
-     * Actualizar filtros pendientes
-     * @param {Object} filters - Nuevos filtros a aplicar
+     * Aplicar filtros pendientes
      */
-    const handleFiltersChange = useCallback((filters) => {
-        setPendingFilters(filters)
-    }, [])
+    const applyFilters = useCallback(async () => {
+        if (Object.keys(pendingFilters).length === 0) {
+            notifications.showWarningNotification('No hay filtros para aplicar')
+            return
+        }
 
-
-
-    /**
-     * Aplicar filtros pendientes via POST al backend
-     */
-    const applyFilters = useCallback(() => {
-        // Verificar si hay filtros válidos para aplicar
-        const validFilters = getValidFilters(pendingFilters)
-
-        if (Object.keys(validFilters).length > 0) {
-            // Aplicar filtros via POST al backend
-            applyFiltersMutation.mutate(validFilters)
-        } else {
-            // Si no hay filtros válidos, limpiar todos
-            setCurrentFilters({})
-            setPendingFilters({})
-            notifications.showInfoNotification('Filtros limpiados. Mostrando todos los vehículos.')
+        try {
+            await applyFiltersMutation.mutateAsync(pendingFilters)
+        } catch (error) {
+            console.error('❌ Error al aplicar filtros:', error)
         }
     }, [pendingFilters, applyFiltersMutation, notifications])
-
-    /**
-     * Limpiar un filtro específico
-     * @param {string} filterKey - Clave del filtro a limpiar
-     */
-    const clearFilter = useCallback((filterKey) => {
-        const newPendingFilters = { ...pendingFilters }
-        delete newPendingFilters[filterKey]
-        setPendingFilters(newPendingFilters)
-        
-        const newCurrentFilters = { ...currentFilters }
-        delete newCurrentFilters[filterKey]
-        setCurrentFilters(newCurrentFilters)
-    }, [pendingFilters, currentFilters])
 
     /**
      * Limpiar todos los filtros
      */
     const clearAllFilters = useCallback(() => {
-        setPendingFilters({})
         setCurrentFilters({})
+        setPendingFilters({})
         
-        // Limpiar cache al limpiar filtros
-        queryClient.invalidateQueries({ queryKey: ['all-vehicles'] })
-        queryClient.invalidateQueries({ queryKey: ['filtered-vehicles'] })
+        // Invalidar cache para recargar sin filtros
+        queryClient.invalidateQueries({ queryKey: ['vehicles-infinite'] })
         
-        notifications.showInfoNotification('Filtros limpiados. Mostrando todos los vehículos.')
-    }, [notifications, queryClient])
+        notifications.showSuccessNotification('Filtros limpiados')
+    }, [queryClient, notifications])
 
-    // ===== DATOS A MOSTRAR =====
-    const cars = useMemo(() => {
-        // Si hay filtros aplicados, mostrar resultados filtrados
-        if (Object.keys(currentFilters).length > 0 && filteredData) {
-            return filteredData.items || []
-        }
-        // Si no hay filtros, mostrar lista completa
-        return allCars
-    }, [currentFilters, filteredData, allCars])
+    /**
+     * Actualizar filtros pendientes
+     */
+    const updatePendingFilters = useCallback((filters) => {
+        setPendingFilters(getValidFilters(filters))
+    }, [])
 
-    const filteredCount = useMemo(() => {
-        if (Object.keys(currentFilters).length > 0 && filteredData) {
-            return filteredData.filteredCount || filteredData.items?.length || 0
-        }
-        return allCars.length
-    }, [currentFilters, filteredData, allCars])
-
-    // ===== ESTADOS DE CARGA =====
-    const isLoading = isLoadingAll || isLoadingFiltered || applyFiltersMutation.isPending
-    const isError = errorAll || errorFiltered
-    const error = errorAll || errorFiltered
-
-    // ===== VALORES DERIVADOS =====
-    const activeFiltersCount = useMemo(() => {
-        return Object.keys(getValidFilters(currentFilters)).length
-    }, [currentFilters])
-
-    const hasActiveFilters = useMemo(() => {
-        return Object.keys(getValidFilters(currentFilters)).length > 0
-    }, [currentFilters])
+    // ===== TRANSFORMAR FILTROS PARA BACKEND =====
+    const transformFiltersToQueryParams = (filters) => {
+        const validFilters = getValidFilters(filters)
+        return transformFiltersToBackend(validFilters)
+    }
 
     return {
-        // ===== ESTADO DE FILTROS =====
-        currentFilters,
-        pendingFilters,
-        activeFiltersCount,
-        hasActiveFilters,
-        
-        // ===== DATOS DE VEHÍCULOS =====
-        cars,
-        allVehicles,
-        filteredCount,
+        // ===== DATOS =====
+        cars, // Lista de autos con paginación infinita
+        allVehicles, // Compatibilidad
         totalCount,
+        filteredCount,
+        
+        // ===== ESTADOS =====
         isLoading,
         isError,
         error,
-        isFiltering: applyFiltersMutation.isPending,
+        isFiltering,
         
-        // ===== DATOS DE FILTRADOS =====
-        filteredData,
-        isLoadingFiltered,
-        errorFiltered,
+        // ===== FILTROS =====
+        currentFilters,
+        pendingFilters,
+        activeFiltersCount,
         
-        // ===== ACCIONES =====
-        handleFiltersChange,
+        // ===== PAGINACIÓN INFINITA =====
+        loadMore,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        currentPage,
+        totalPages,
+        
+        // ===== FUNCIONES =====
         applyFilters,
-        clearFilter,
         clearAllFilters,
-        refetch: refetchAll,
-        refetchFiltered,
-        
-        // ===== FUNCIONES DE TEST =====
-        setCurrentFilters, // Exponer para test
-        transformFiltersToQueryParams, // Exponer para debug
+        setPendingFilters: updatePendingFilters,
+        refetch
     }
 } 
