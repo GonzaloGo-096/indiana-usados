@@ -8,7 +8,7 @@
  * @version 3.0.0
  */
 
-import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react'
+import React, { forwardRef, useImperativeHandle, useState, useRef, useCallback, memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { 
     FILTER_OPTIONS, 
@@ -17,7 +17,7 @@ import {
 } from '../../../constants'
 import styles from './FilterForm.module.css'
 
-const FilterForm = forwardRef(({ 
+const FilterForm = memo(forwardRef(({ 
     onFiltersChange, 
     onApplyFilters,
     isLoading = false, 
@@ -62,16 +62,18 @@ const FilterForm = forwardRef(({
         onFiltersChange(data) // Solo actualiza estado pendiente
     })
 
-    // Función para limpiar todos los filtros
-    const handleClearFilters = () => {
+    // ===== FUNCIONES MEMOIZADAS =====
+    
+    // Función para limpiar todos los filtros - MEMOIZADA
+    const handleClearFilters = useCallback(() => {
         reset(DEFAULT_FILTER_VALUES)
         onFiltersChange(DEFAULT_FILTER_VALUES)
-    }
+    }, [reset, onFiltersChange])
 
-    // Función para aplicar filtros
-    const handleApplyFilters = (data) => {
+    // Función para aplicar filtros - MEMOIZADA
+    const handleApplyFilters = useCallback((data) => {
         onApplyFilters(data)
-    }
+    }, [onApplyFilters])
 
     // Exponer funciones para uso externo
     useImperativeHandle(ref, () => ({
@@ -83,7 +85,7 @@ const FilterForm = forwardRef(({
         },
         getValues: () => watchedValues,
         clearField: (key) => setValue(key, '')
-    }), [setValue, watchedValues])
+    }), [setValue, watchedValues, handleClearFilters])
 
     // Obtener opciones desde constantes
     const { marcas, combustibles, transmisiones, colores } = FILTER_OPTIONS
@@ -93,8 +95,8 @@ const FilterForm = forwardRef(({
     const marcaRef = useRef();
     const marcasSeleccionadas = watch('marca') || [];
 
-    // Manejar selección de marcas
-    const handleMarcaChange = (marca) => {
+    // Manejar selección de marcas - MEMOIZADA
+    const handleMarcaChange = useCallback((marca) => {
         let nuevas;
         if (marcasSeleccionadas.includes(marca)) {
             nuevas = marcasSeleccionadas.filter(m => m !== marca);
@@ -103,9 +105,9 @@ const FilterForm = forwardRef(({
         }
         setValue('marca', nuevas);
         onFiltersChange({ ...watch(), marca: nuevas });
-    };
+    }, [marcasSeleccionadas, setValue, onFiltersChange, watch])
 
-    // Cerrar dropdown al hacer click fuera
+    // Cerrar dropdown al hacer clic fuera
     React.useEffect(() => {
         function handleClickOutside(event) {
             if (marcaRef.current && !marcaRef.current.contains(event.target)) {
@@ -118,11 +120,13 @@ const FilterForm = forwardRef(({
         };
     }, []);
 
-    // Estado y lógica para Combustible
+    // Estado para dropdown de combustibles
     const [isCombustibleOpen, setIsCombustibleOpen] = useState(false);
     const combustibleRef = useRef();
     const combustiblesSeleccionados = watch('combustible') || [];
-    const handleCombustibleChange = (combustible) => {
+
+    // Manejar selección de combustibles - MEMOIZADA
+    const handleCombustibleChange = useCallback((combustible) => {
         let nuevas;
         if (combustiblesSeleccionados.includes(combustible)) {
             nuevas = combustiblesSeleccionados.filter(c => c !== combustible);
@@ -131,7 +135,9 @@ const FilterForm = forwardRef(({
         }
         setValue('combustible', nuevas);
         onFiltersChange({ ...watch(), combustible: nuevas });
-    };
+    }, [combustiblesSeleccionados, setValue, onFiltersChange, watch])
+
+    // Cerrar dropdown al hacer clic fuera
     React.useEffect(() => {
         function handleClickOutside(event) {
             if (combustibleRef.current && !combustibleRef.current.contains(event.target)) {
@@ -144,11 +150,13 @@ const FilterForm = forwardRef(({
         };
     }, []);
 
-    // Estado y lógica para Transmisión
+    // Estado para dropdown de transmisiones
     const [isTransmisionOpen, setIsTransmisionOpen] = useState(false);
     const transmisionRef = useRef();
     const transmisionesSeleccionadas = watch('transmision') || [];
-    const handleTransmisionChange = (transmision) => {
+
+    // Manejar selección de transmisiones - MEMOIZADA
+    const handleTransmisionChange = useCallback((transmision) => {
         let nuevas;
         if (transmisionesSeleccionadas.includes(transmision)) {
             nuevas = transmisionesSeleccionadas.filter(t => t !== transmision);
@@ -157,7 +165,9 @@ const FilterForm = forwardRef(({
         }
         setValue('transmision', nuevas);
         onFiltersChange({ ...watch(), transmision: nuevas });
-    };
+    }, [transmisionesSeleccionadas, setValue, onFiltersChange, watch])
+
+    // Cerrar dropdown al hacer clic fuera
     React.useEffect(() => {
         function handleClickOutside(event) {
             if (transmisionRef.current && !transmisionRef.current.contains(event.target)) {
@@ -174,7 +184,9 @@ const FilterForm = forwardRef(({
     const [isColorOpen, setIsColorOpen] = useState(false);
     const colorRef = useRef();
     const coloresSeleccionados = watch('color') || [];
-    const handleColorChange = (color) => {
+    
+    // Manejar selección de colores - MEMOIZADA
+    const handleColorChange = useCallback((color) => {
         let nuevas;
         if (coloresSeleccionados.includes(color)) {
             nuevas = coloresSeleccionados.filter(c => c !== color);
@@ -183,7 +195,8 @@ const FilterForm = forwardRef(({
         }
         setValue('color', nuevas);
         onFiltersChange({ ...watch(), color: nuevas });
-    };
+    }, [coloresSeleccionados, setValue, onFiltersChange, watch])
+
     React.useEffect(() => {
         function handleClickOutside(event) {
             if (colorRef.current && !colorRef.current.contains(event.target)) {
@@ -205,31 +218,31 @@ const FilterForm = forwardRef(({
                 </div>
             )}
 
-            {/* Header solo si el botón va arriba */}
-            {!showClearButtonAtBottom && (
-                <div className={styles.formHeader}>
-                    <h3 className={styles.formTitle}>Filtrar Vehículos</h3>
-                    <div className={styles.headerButtons}>
+            {/* Header del formulario */}
+            <div className={styles.formHeader}>
+                <div>
+                    <h3 className={styles.formTitle}>Filtros</h3>
+                </div>
+                <div>
+                    <button 
+                        type="button" 
+                        onClick={handleClearFilters}
+                        className={styles.clearButton}
+                        disabled={isLoading || isFiltering}
+                    >
+                        Limpiar
+                    </button>
+                    {showApplyButton && (
                         <button 
-                            type="button" 
-                            onClick={handleClearFilters}
-                            className={styles.clearButton}
+                            type="submit"
+                            className={styles.applyButtonHeader}
                             disabled={isLoading || isFiltering}
                         >
-                            Limpiar Filtros
+                            Aplicar
                         </button>
-                        {showApplyButton && (
-                            <button 
-                                type="submit"
-                                className={styles.applyButtonHeader}
-                                disabled={isLoading || isFiltering}
-                            >
-                                {isFiltering ? 'Aplicando...' : 'Aplicar Filtros'}
-                            </button>
-                        )}
-                    </div>
+                    )}
                 </div>
-            )}
+            </div>
 
             <div className={styles.formGrid}>
                 {/* Marca (dropdown custom con checkboxes) */}
@@ -263,69 +276,7 @@ const FilterForm = forwardRef(({
                     </div>
                 </div>
 
-                {/* Año Desde (range) */}
-                <div className={styles.formGroup}>
-                    <label className={styles.label}>Año Desde</label>
-                    <input
-                        type="range"
-                        min="1990"
-                        max="2024"
-                        step="1"
-                        defaultValue="1990"
-                        {...register('añoDesde')}
-                        className={styles.input}
-                        disabled={isLoading || isFiltering}
-                    />
-                    <span>{watch('añoDesde') || '1990'}</span>
-                </div>
-
-                {/* Año Hasta (range) */}
-                <div className={styles.formGroup}>
-                    <label className={styles.label}>Año Hasta</label>
-                    <input
-                        type="range"
-                        min="1990"
-                        max="2024"
-                        step="1"
-                        defaultValue="2024"
-                        {...register('añoHasta')}
-                        className={styles.input}
-                        disabled={isLoading || isFiltering}
-                    />
-                    <span>{watch('añoHasta') || '2024'}</span>
-                </div>
-
-                {/* Precio Desde (range) */}
-                <div className={styles.formGroup}>
-                    <label className={styles.label}>Precio Desde ($)</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10000000"
-                        step="10000"
-                        {...register('precioDesde')}
-                        className={styles.input}
-                        disabled={isLoading || isFiltering}
-                    />
-                    <span>{watch('precioDesde') || '0'}</span>
-                </div>
-
-                {/* Precio Hasta (range) */}
-                <div className={styles.formGroup}>
-                    <label className={styles.label}>Precio Hasta ($)</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="10000000"
-                        step="10000"
-                        {...register('precioHasta')}
-                        className={styles.input}
-                        disabled={isLoading || isFiltering}
-                    />
-                    <span>{watch('precioHasta') || '10000000'}</span>
-                </div>
-
-                {/* Combustible (dropdown custom con checkboxes) */}
+                {/* Combustible */}
                 <div className={`${styles.formGroup} ${styles.dropdownGroup}`} ref={combustibleRef}>
                     <label className={styles.label}>Combustible</label>
                     <div className={`${styles.dropdownMulti} ${styles.dropdownCombustible}`}>
@@ -356,7 +307,7 @@ const FilterForm = forwardRef(({
                     </div>
                 </div>
 
-                {/* Transmisión (dropdown custom con checkboxes) */}
+                {/* Transmisión */}
                 <div className={`${styles.formGroup} ${styles.dropdownGroup}`} ref={transmisionRef}>
                     <label className={styles.label}>Transmisión</label>
                     <div className={`${styles.dropdownMulti} ${styles.dropdownTransmision}`}>
@@ -387,7 +338,7 @@ const FilterForm = forwardRef(({
                     </div>
                 </div>
 
-                {/* Color (dropdown custom con checkboxes) */}
+                {/* Color */}
                 <div className={`${styles.formGroup} ${styles.dropdownGroup}`} ref={colorRef}>
                     <label className={styles.label}>Color</label>
                     <div className={`${styles.dropdownMulti} ${styles.dropdownColor}`}>
@@ -418,34 +369,81 @@ const FilterForm = forwardRef(({
                     </div>
                 </div>
 
-                {/* Kilometraje Desde (range) */}
+                {/* Año desde */}
                 <div className={styles.formGroup}>
-                    <label className={styles.label}>Kms Desde</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="500000"
-                        step="1000"
-                        {...register('kilometrajeDesde')}
-                        className={styles.input}
-                        disabled={isLoading || isFiltering}
-                    />
-                    <span>{watch('kilometrajeDesde') || '0'}</span>
+                    <label className={styles.label}>Año desde</label>
+                    <select {...register('añoDesde')} className={styles.select}>
+                        <option value="">--Seleccione--</option>
+                        {generateYearOptions().map(year => (
+                            <option key={year} value={year}>{year}</option>
+                        ))}
+                    </select>
                 </div>
 
-                {/* Kilometraje Hasta (range) */}
+                {/* Año hasta */}
                 <div className={styles.formGroup}>
-                    <label className={styles.label}>Kms Hasta</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="500000"
-                        step="1000"
-                        {...register('kilometrajeHasta')}
+                    <label className={styles.label}>Año hasta</label>
+                    <select {...register('añoHasta')} className={styles.select}>
+                        <option value="">--Seleccione--</option>
+                        {generateYearOptions().map(year => (
+                            <option key={year} value={year}>{year}</option>
+                        ))}
+                    </select>
+                </div>
+
+                {/* Precio desde */}
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Precio desde</label>
+                    <input 
+                        type="number" 
+                        {...register('precioDesde')} 
                         className={styles.input}
-                        disabled={isLoading || isFiltering}
+                        placeholder="0"
                     />
-                    <span>{watch('kilometrajeHasta') || '500000'}</span>
+                </div>
+
+                {/* Precio hasta */}
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Precio hasta</label>
+                    <input 
+                        type="number" 
+                        {...register('precioHasta')} 
+                        className={styles.input}
+                        placeholder="999999"
+                    />
+                </div>
+
+                {/* Kilometraje desde */}
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Kms desde</label>
+                    <input 
+                        type="number" 
+                        {...register('kmsDesde')} 
+                        className={styles.input}
+                        placeholder="0"
+                    />
+                </div>
+
+                {/* Kilometraje hasta */}
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Kms hasta</label>
+                    <input 
+                        type="number" 
+                        {...register('kmsHasta')} 
+                        className={styles.input}
+                        placeholder="999999"
+                    />
+                </div>
+
+                {/* Modelo */}
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Modelo</label>
+                    <input 
+                        type="text" 
+                        {...register('modelo')} 
+                        className={styles.input}
+                        placeholder="Ej: Corolla"
+                    />
                 </div>
             </div>
 
@@ -488,7 +486,7 @@ const FilterForm = forwardRef(({
             )}
         </form>
     )
-})
+}))
 
 FilterForm.displayName = 'FilterForm'
 

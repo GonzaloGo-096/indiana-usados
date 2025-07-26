@@ -44,11 +44,7 @@
   gap: 2px;
 }
 
-.filterLabel::before {
-  content: "✓";
-  color: var(--color-success-500);
-  font-weight: bold;
-}
+/* Tilde verde eliminado para simplificar */
 
 .removeFilter {
   background: var(--color-neutral-200);

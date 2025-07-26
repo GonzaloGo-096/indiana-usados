@@ -57,7 +57,9 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
         combustible = '',
         detalle = '',
         imagen = '',
-        imagenes = []
+        imagenes = [],
+        version = '', // <-- Nuevo campo
+        cilindrada = '' // <-- Nuevo campo
     } = auto
 
     // Función helper para mostrar "-" cuando el valor esté vacío
@@ -121,6 +123,10 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                                         <th>Kms</th>
                                         <td>{formatValue(kms)}</td>
                                     </tr>
+                                    <tr>
+                                        <th>Versión</th>
+                                        <td>{formatValue(version)}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -139,6 +145,10 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                                     <tr>
                                         <th>Categoría</th>
                                         <td>{formatValue(categoria)}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cilindrada</th>
+                                        <td>{formatValue(cilindrada)}</td>
                                     </tr>
                                 </tbody>
                             </table>

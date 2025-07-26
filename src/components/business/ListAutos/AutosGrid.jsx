@@ -10,7 +10,7 @@
  * @version 4.0.0
  */
 
-import React from 'react'
+import React, { memo, useMemo } from 'react'
 import { CardAuto } from '../CardAuto'
 import { Button } from '../../ui/Button'
 import { ListAutosSkeleton } from '../../skeletons/ListAutosSkeleton'
@@ -21,7 +21,7 @@ import styles from './ListAutos.module.css'
 /**
  * Componente de error reutilizable
  */
-const ErrorMessage = ({ message, onRetry }) => (
+const ErrorMessage = memo(({ message, onRetry }) => (
     <div className={styles.error}>
         <div className={styles.errorContent}>
             <h3>¡Ups! Algo salió mal</h3>
@@ -37,9 +37,11 @@ const ErrorMessage = ({ message, onRetry }) => (
             )}
         </div>
     </div>
-)
+))
 
-const AutosGrid = ({ 
+ErrorMessage.displayName = 'ErrorMessage'
+
+const AutosGrid = memo(({ 
     autos, 
     isLoading, 
     isError, 
@@ -64,6 +66,81 @@ const AutosGrid = ({
             threshold: 0.1
         }
     )
+
+    // ===== MEMOIZACIÓN DE ELEMENTOS COSTOSOS =====
+    
+    // Memoizar el grid de autos para evitar re-renders innecesarios
+    const autosGrid = useMemo(() => (
+        <div className={styles.grid}>
+            {autos.map((auto) => (
+                <div 
+                    key={auto.id} 
+                    className={styles.cardWrapper}
+                >
+                    <CardAuto auto={auto} />
+                </div>
+            ))}
+        </div>
+    ), [autos]) // ✅ Solo se recalcula si cambia el array de autos
+
+    // Memoizar el banner de error
+    const errorBanner = useMemo(() => {
+        if (!isError) return null
+        
+        return (
+            <div className={styles.errorBanner}>
+                <Alert variant="warning">
+                    <h3>Error al cargar vehículos</h3>
+                    <p>{error?.message || 'Error al cargar los vehículos'}</p>
+                    <Button 
+                        onClick={onRetry}
+                        variant="outline"
+                        size="small"
+                    >
+                        Reintentar
+                    </Button>
+                </Alert>
+            </div>
+        )
+    }, [isError, error?.message, onRetry])
+
+    // Memoizar el trigger de scroll infinito
+    const scrollTrigger = useMemo(() => {
+        if (!hasNextPage) return null
+        
+        return (
+            <div 
+                ref={loadMoreRef}
+                className={styles.scrollTrigger}
+            >
+                {/* Indicador de carga para paginación */}
+                {isFetchingNextPage && (
+                    <div className={styles.loadingMore}>
+                        <div className={styles.spinner}></div>
+                        <span>Cargando más vehículos...</span>
+                    </div>
+                )}
+            </div>
+        )
+    }, [hasNextPage, isFetchingNextPage, loadMoreRef])
+
+    // Memoizar el mensaje de "no más resultados"
+    const noMoreResults = useMemo(() => {
+        if (hasNextPage || autos.length === 0) return null
+        
+        return (
+            <div className={styles.noMoreResults}>
+                <p>No hay más vehículos para mostrar</p>
+                <Button 
+                    onClick={onRetry}
+                    variant="outline"
+                    className={styles.retryButton}
+                >
+                    Actualizar lista
+                </Button>
+            </div>
+        )
+    }, [hasNextPage, autos.length, onRetry])
 
     // ===== GUARD CLAUSES - Estados de carga y error =====
     
@@ -106,65 +183,20 @@ const AutosGrid = ({
     return (
         <>
             {/* Banner de error para errores durante la carga */}
-            {isError && (
-                <div className={styles.errorBanner}>
-                    <Alert variant="warning">
-                        <h3>Error al cargar vehículos</h3>
-                        <p>{error?.message || 'Error al cargar los vehículos'}</p>
-                        <Button 
-                            onClick={onRetry}
-                            variant="outline"
-                            size="small"
-                        >
-                            Reintentar
-                        </Button>
-                    </Alert>
-                </div>
-            )}
+            {errorBanner}
 
             {/* Grid de vehículos */}
-            <div className={styles.grid}>
-                {autos.map((auto) => (
-                    <div 
-                        key={auto.id} 
-                        className={styles.cardWrapper}
-                    >
-                        <CardAuto auto={auto} />
-                    </div>
-                ))}
-            </div>
+            {autosGrid}
             
             {/* Elemento trigger para scroll infinito */}
-            {hasNextPage && (
-                <div 
-                    ref={loadMoreRef}
-                    className={styles.scrollTrigger}
-                >
-                    {/* Indicador de carga para paginación */}
-                    {isFetchingNextPage && (
-                        <div className={styles.loadingMore}>
-                            <div className={styles.spinner}></div>
-                            <span>Cargando más vehículos...</span>
-                        </div>
-                    )}
-                </div>
-            )}
+            {scrollTrigger}
             
             {/* Mensaje cuando no hay más páginas */}
-            {!hasNextPage && autos.length > 0 && (
-                <div className={styles.noMoreResults}>
-                    <p>No hay más vehículos para mostrar</p>
-                    <Button 
-                        onClick={onRetry}
-                        variant="outline"
-                        className={styles.retryButton}
-                    >
-                        Actualizar lista
-                    </Button>
-                </div>
-            )}
+            {noMoreResults}
         </>
     )
-}
+})
+
+AutosGrid.displayName = 'AutosGrid'
 
 export default AutosGrid 

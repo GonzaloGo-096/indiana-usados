@@ -17,8 +17,8 @@
     flex-direction: column;
     height: 100%;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 245, 245, 0.8) 50%, rgba(235, 235, 235, 0.7) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(12px); /* ✅ OPTIMIZADO: Reducido de 15px a 12px */
+    -webkit-backdrop-filter: blur(12px); /* ✅ OPTIMIZADO: Reducido de 15px a 12px */
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.3);
@@ -41,10 +41,10 @@
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 250, 250, 0.9) 50%, rgba(245, 245, 245, 0.8) 100%);
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+    /* transform: translateY(-4px); */
+    /* background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 250, 250, 0.9) 50%, rgba(245, 245, 245, 0.8) 100%); */
+    /* border: 1px solid rgba(0, 0, 0, 0.4); */
+    /* box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2); */
 }
 
 /* ===== CONTENEDOR DE IMAGEN ===== */
@@ -67,7 +67,7 @@
 }
 
 .card:hover .image {
-    transform: scale(1.05);
+    /* transform: scale(1.05); */
 }
 
 /* ===== CUERPO DE LA TARJETA ===== */
@@ -120,8 +120,8 @@
     white-space: nowrap;
     font-size: 0.8rem;
     width: 32%;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(6px); /* ✅ OPTIMIZADO: Reducido de 8px a 6px */
+    -webkit-backdrop-filter: blur(6px); /* ✅ OPTIMIZADO: Reducido de 8px a 6px */
     border-radius: 8px 0 0 8px;
 }
 
@@ -132,8 +132,8 @@
     background: linear-gradient(180deg, rgba(235, 235, 235, 0.6) 0%, rgba(225, 225, 225, 0.5) 100%);
     font-size: 0.8rem;
     width: 68%;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px); /* ✅ OPTIMIZADO: Reducido de 6px a 4px */
+    -webkit-backdrop-filter: blur(4px); /* ✅ OPTIMIZADO: Reducido de 6px a 4px */
     border-radius: 0 8px 8px 0;
     text-align: center;
 }
@@ -143,13 +143,13 @@
     border-bottom: none;
 }
 
-/* Efecto hover para las filas */
+/* Efecto hover para las filas - Simplificado */
 .table tr:hover th {
-    background: linear-gradient(180deg, rgba(250, 250, 250, 0.9) 0%, rgba(240, 240, 240, 0.8) 100%);
+    background: rgba(245, 245, 245, 0.8);
 }
 
 .table tr:hover td {
-    background: linear-gradient(180deg, rgba(245, 245, 245, 0.7) 0%, rgba(235, 235, 235, 0.6) 100%);
+    background: rgba(240, 240, 240, 0.6);
 }
 
 /* ===== FOOTER ===== */
@@ -157,21 +157,20 @@
     padding: var(--spacing-lg);
     border-top: 1px solid rgba(0, 0, 0, 0.2);
     background: linear-gradient(180deg, rgba(235, 235, 235, 0.8) 0%, rgba(245, 245, 245, 0.9) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px); /* ✅ OPTIMIZADO: Reducido de 10px a 8px */
+    -webkit-backdrop-filter: blur(8px); /* ✅ OPTIMIZADO: Reducido de 10px a 8px */
 }
 
 .button {
     width: 100%;
     transition: transform var(--transition-normal), box-shadow var(--transition-normal), background var(--transition-normal);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(10px); /* ✅ OPTIMIZADO: Reducido de 12px a 10px */
+    -webkit-backdrop-filter: blur(10px); /* ✅ OPTIMIZADO: Reducido de 12px a 10px */
 }
 
 .button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 250, 250, 0.9) 100%);
+    background: rgba(245, 245, 245, 0.9);
+    color: var(--color-neutral-800);
 }
 
 /* ===== RESPONSIVE ADJUSTMENTS ===== */

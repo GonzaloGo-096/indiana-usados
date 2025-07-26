@@ -26,6 +26,26 @@ const formatValue = (value) => {
   return value
 }
 
+// Función de comparación personalizada para memo
+const arePropsEqual = (prevProps, nextProps) => {
+  const prevAuto = prevProps.auto
+  const nextAuto = nextProps.auto
+  
+  // Comparar solo las propiedades que afectan el render
+  return (
+    prevAuto.id === nextAuto.id &&
+    prevAuto.marca === nextAuto.marca &&
+    prevAuto.modelo === nextAuto.modelo &&
+    prevAuto.precio === nextAuto.precio &&
+    prevAuto.año === nextAuto.año &&
+    prevAuto.kms === nextAuto.kms &&
+    prevAuto.caja === nextAuto.caja &&
+    prevAuto.color === nextAuto.color &&
+    prevAuto.categoria === nextAuto.categoria &&
+    prevAuto.imagen === nextAuto.imagen
+  )
+}
+
 /**
  * Componente CardAuto
  * @param {Object} auto - Objeto con información del vehículo
@@ -116,18 +136,22 @@ export const CardAuto = memo(({ auto }) => {
                         </div>
                     </div>
                 </div>
-                
-                {/* Footer con botón */}
-                <div className={styles.footer}>
-                    <Link to={`/vehiculo/${id}`}>
-                        <Button variant="glass" className={styles.button}>
-                            Ver más
-                        </Button>
-                    </Link>
-                </div>
+            </div>
+            
+            {/* Footer con botón */}
+            <div className={styles.footer}>
+                <Link to={`/vehiculo/${id}`}>
+                    <Button 
+                        variant="primary" 
+                        className={styles.button}
+                    >
+                        Ver más
+                    </Button>
+                </Link>
             </div>
         </div>
     )
-})
+}, arePropsEqual) // ✅ AGREGADO: Función de comparación personalizada
 
+// Agregar displayName para debugging
 CardAuto.displayName = 'CardAuto' 
