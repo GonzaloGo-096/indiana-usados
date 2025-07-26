@@ -23,7 +23,7 @@
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.3);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    transition: all var(--transition-normal);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal), background var(--transition-normal);
     position: relative;
 }
 
@@ -163,7 +163,7 @@
 
 .button {
     width: 100%;
-    transition: all var(--transition-normal);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal), background var(--transition-normal);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
 }
@@ -194,13 +194,13 @@
         margin-bottom: calc(var(--spacing-md) * 0.8);
     }
     
-    .table th,
-    .table td {
+    .table th {
         font-size: 0.75rem;
         padding: calc(var(--spacing-xs) * 0.8) 0.2rem calc(var(--spacing-xs) * 0.8) 0;
     }
     
     .table td {
+        font-size: 0.75rem;
         padding: calc(var(--spacing-xs) * 0.8) 0 calc(var(--spacing-xs) * 0.8) 0.2rem;
     }
     
@@ -228,13 +228,13 @@
         margin-bottom: calc(var(--spacing-md) * 0.7);
     }
     
-    .table th,
-    .table td {
+    .table th {
         font-size: 0.7rem;
         padding: calc(var(--spacing-xs) * 0.7) 0.15rem calc(var(--spacing-xs) * 0.7) 0;
     }
     
     .table td {
+        font-size: 0.7rem;
         padding: calc(var(--spacing-xs) * 0.7) 0 calc(var(--spacing-xs) * 0.7) 0.15rem;
     }
     

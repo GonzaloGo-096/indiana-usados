@@ -91,7 +91,7 @@
   cursor: pointer;
   padding: var(--spacing-sm);
   border-radius: var(--border-radius-sm);
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;

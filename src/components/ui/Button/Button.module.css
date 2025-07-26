@@ -23,7 +23,7 @@
     font-family: var(--font-family-primary);
     font-weight: var(--font-weight-medium);
     text-decoration: none;
-    transition: all var(--transition-normal);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal), background-color var(--transition-normal), color var(--transition-normal);
     position: relative;
     overflow: hidden;
 }
@@ -126,13 +126,13 @@
 .disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none !important;
-    box-shadow: none !important;
+    transform: none;
+    box-shadow: none;
 }
 
 .disabled:hover {
-    transform: none !important;
-    box-shadow: none !important;
+    transform: none;
+    box-shadow: none;
 }
 
 /* ===== RESPONSIVE ===== */
