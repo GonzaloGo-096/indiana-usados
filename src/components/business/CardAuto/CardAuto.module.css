@@ -111,7 +111,7 @@
 }
 
 .table th {
-    background: linear-gradient(180deg, rgba(240, 240, 240, 0.8) 0%, rgba(230, 230, 230, 0.7) 100%);
+    background: linear-gradient(180deg, rgba(245, 245, 245, 0.6) 0%, rgba(240, 240, 240, 0.5) 100%);
     font-weight: var(--font-weight-semibold);
     color: black;
     padding: var(--spacing-xs) 0.25rem var(--spacing-xs) 0;
@@ -129,7 +129,7 @@
     padding: var(--spacing-xs) 0 var(--spacing-xs) 0.25rem;
     border: none;
     color: black;
-    background: linear-gradient(180deg, rgba(235, 235, 235, 0.6) 0%, rgba(225, 225, 225, 0.5) 100%);
+    background: linear-gradient(180deg, rgba(250, 250, 250, 0.4) 0%, rgba(245, 245, 245, 0.3) 100%);
     font-size: 0.8rem;
     width: 68%;
     backdrop-filter: blur(4px); /* ✅ OPTIMIZADO: Reducido de 6px a 4px */
@@ -143,14 +143,14 @@
     border-bottom: none;
 }
 
-/* Efecto hover para las filas - Simplificado */
-.table tr:hover th {
+/* Efecto hover para las filas - ELIMINADO para optimización */
+/* .table tr:hover th {
     background: rgba(245, 245, 245, 0.8);
 }
 
 .table tr:hover td {
     background: rgba(240, 240, 240, 0.6);
-}
+} */
 
 /* ===== FOOTER ===== */
 .footer {
