@@ -86,7 +86,7 @@
 /* ===== WRAPPER DE TARJETAS ===== */
 .cardWrapper {
     min-height: 400px;
-    transition: all var(--transition-normal);
+    transition: box-shadow var(--transition-normal), transform var(--transition-normal); /* OPTIMIZADO */
 }
 
 /* Ajuste para mobile */

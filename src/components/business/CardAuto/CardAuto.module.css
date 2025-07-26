@@ -16,14 +16,14 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 245, 245, 0.8) 50%, rgba(235, 235, 235, 0.7) 100%);
+    background: rgba(255, 255, 255, 0.9); /* ✅ OPTIMIZADO: Simplificado de gradiente complejo */
     backdrop-filter: blur(12px); /* ✅ OPTIMIZADO: Reducido de 15px a 12px */
     -webkit-backdrop-filter: blur(12px); /* ✅ OPTIMIZADO: Reducido de 15px a 12px */
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal), background var(--transition-normal);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+    transition: background var(--transition-normal), box-shadow var(--transition-normal), border var(--transition-normal), color var(--transition-normal), transform var(--transition-normal);
     position: relative;
 }
 
@@ -34,7 +34,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(245, 245, 245, 0.3) 50%, rgba(235, 235, 235, 0.2) 100%);
+    background: rgba(255, 255, 255, 0.3); /* ✅ OPTIMIZADO: Simplificado de gradiente complejo */
     border-radius: 16px;
     pointer-events: none;
     z-index: -1;

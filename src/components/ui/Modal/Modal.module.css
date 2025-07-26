@@ -83,7 +83,7 @@
   border: none;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast); /* OPTIMIZADO */
   color: var(--color-neutral-600);
 }
 
