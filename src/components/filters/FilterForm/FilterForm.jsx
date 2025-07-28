@@ -435,16 +435,7 @@ const FilterForm = memo(forwardRef(({
                     />
                 </div>
 
-                {/* Modelo */}
-                <div className={styles.formGroup}>
-                    <label className={styles.label}>Modelo</label>
-                    <input 
-                        type="text" 
-                        {...register('modelo')} 
-                        className={styles.input}
-                        placeholder="Ej: Corolla"
-                    />
-                </div>
+
             </div>
 
             {/* Botones para mobile */}

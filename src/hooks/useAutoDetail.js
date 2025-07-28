@@ -20,6 +20,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useCallback } from 'react'
 import autoService, { queryKeys } from '../services/service'
+import vehiclesApi from '../api/vehiclesApi'
 
 // Función helper memoizada para formatear valores
 const formatValue = (value) => {
@@ -65,9 +66,19 @@ export const useAutoDetail = (id, options = {}) => {
         refetch
     } = useQuery({
         queryKey: queryKeys.auto(id),
-        queryFn: () => autoService.getAutoById(id),
+        queryFn: async () => {
+            // Intentar usar la nueva API primero
+            try {
+                console.log(`🔍 Intentando obtener vehículo ${id} desde backend real...`);
+                return await vehiclesApi.getVehicleById(id);
+            } catch (error) {
+                console.log(`⚠️ Fallback a mock data para vehículo ${id}:`, error.message);
+                // Fallback al servicio mock si la API real falla
+                return await autoService.getAutoById(id);
+            }
+        },
         staleTime,
-        cacheTime,
+        gcTime: cacheTime, // cacheTime fue renombrado a gcTime en v5
         retry,
         refetchOnWindowFocus,
         enabled: enabled && !!id

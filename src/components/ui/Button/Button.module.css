@@ -70,10 +70,10 @@
 /* ===== VARIANTE GLASSMORPHISM ===== */
 .glass {
   background: rgba(59, 130, 246, 0.85); /* ✅ OPTIMIZADO: Simplificado de gradiente complejo */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--color-white);
   backdrop-filter: blur(10px); /* ✅ OPTIMIZADO: Reducido de 15px a 10px */
   -webkit-backdrop-filter: blur(10px); /* ✅ OPTIMIZADO: Reducido de 15px a 10px */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-white);
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
 }
 

@@ -56,8 +56,18 @@ const AutosGrid = memo(({
     const loadMoreRef = useIntersectionObserver(
         () => {
             if (hasNextPage && !isFetchingNextPage && onLoadMore) {
-                console.log('🔄 Intersection Observer triggered - Loading more vehicles')
+                console.log('🔄 Intersection Observer triggered - Loading more vehicles', {
+                    hasNextPage,
+                    isFetchingNextPage,
+                    hasOnLoadMore: !!onLoadMore
+                })
                 onLoadMore()
+            } else {
+                console.log('🔄 Intersection Observer triggered but conditions not met', {
+                    hasNextPage,
+                    isFetchingNextPage,
+                    hasOnLoadMore: !!onLoadMore
+                })
             }
         },
         {

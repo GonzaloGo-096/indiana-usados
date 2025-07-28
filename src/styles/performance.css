@@ -1,0 +1,169 @@
+/**
+ * performance.css - Optimizaciones específicas para rendimiento
+ * 
+ * Este archivo contiene optimizaciones que mejoran el rendimiento
+ * sin afectar la estética visual de la aplicación
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== OPTIMIZACIONES DE RENDIMIENTO ===== */
+
+/* Optimización para elementos con backdrop-filter */
+.backdrop-blur {
+  will-change: backdrop-filter;
+  transform: translateZ(0); /* Fuerza composición por capas */
+}
+
+/* Optimización para elementos con transformaciones */
+.transform-optimized {
+  will-change: transform;
+  transform: translateZ(0); /* Fuerza composición por capas */
+}
+
+/* Optimización para elementos con opacidad */
+.opacity-optimized {
+  will-change: opacity;
+}
+
+/* Optimización para elementos con múltiples animaciones */
+.animation-optimized {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* ===== OPTIMIZACIONES PARA IMÁGENES ===== */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden; /* Evita parpadeo en transformaciones */
+}
+
+/* ===== OPTIMIZACIONES PARA SCROLL ===== */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* Mejor scroll en iOS */
+}
+
+/* ===== OPTIMIZACIONES PARA ELEMENTOS INTERACTIVOS ===== */
+.interactive {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== OPTIMIZACIONES PARA ANIMACIONES ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* ===== OPTIMIZACIONES PARA BACKDROP-FILTER ===== */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.backdrop-blur-md {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.backdrop-blur-lg {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ===== OPTIMIZACIONES PARA GRADIENTS ===== */
+.gradient-optimized {
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+  background-attachment: fixed; /* Evita recálculo en scroll */
+}
+
+/* ===== OPTIMIZACIONES PARA SHADOWS ===== */
+.shadow-optimized {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1)); /* Fallback para mejor rendimiento */
+}
+
+/* ===== OPTIMIZACIONES PARA RESPONSIVE ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== OPTIMIZACIONES PARA PRINT ===== */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
+/* ===== OPTIMIZACIONES PARA FOCUS ===== */
+.focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* ===== OPTIMIZACIONES PARA LOADING ===== */
+.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--color-neutral-300);
+  border-top-color: var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+} 

@@ -21,6 +21,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 import autoService, { queryKeys } from "../services/service";
 import { filterVehicles } from "../utils/filterUtils";
+import vehiclesApi from "../api/vehiclesApi";
 
 /**
  * Hook para obtener vehículos con paginación infinita
@@ -30,6 +31,8 @@ import { filterVehicles } from "../utils/filterUtils";
  * @param {boolean} options.enabled - Si la query debe ejecutarse
  * @param {number} options.staleTime - Tiempo en ms antes de considerar datos obsoletos
  * @param {number} options.cacheTime - Tiempo en ms para mantener en cache
+ * @param {number} options.limit - Número de elementos por página
+ * @param {boolean} options.useRealApi - Si usar API real o mock data
  * 
  * @returns {Object} - Objeto con datos y funciones del hook
  * @returns {Array} returns.autos - Lista de vehículos
@@ -47,86 +50,133 @@ export const useGetCars = (filters = {}, options = {}) => {
         staleTime = 1000 * 60 * 5, // 5 minutos
         cacheTime = 1000 * 60 * 30, // 30 minutos
         retry = 1,
-        refetchOnWindowFocus = false
+        refetchOnWindowFocus = false,
+        limit = 6,
+        useRealApi = false // Temporalmente solo mock data
     } = options;
 
-    // ===== QUERY PARA LISTA COMPLETA (CACHE) =====
+    // ===== QUERY INFINITA CON PAGINACIÓN REAL =====
     const {
-        data: allVehiclesData,
-        isLoading: isLoadingAll,
-        error: errorAll,
-        refetch: refetchAll
-    } = useQuery({
-        queryKey: ['all-vehicles'],
-        queryFn: () => autoService.getAllVehicles(),
-        staleTime: 1000 * 60 * 1, // 1 minuto (más fresco)
-        cacheTime: 1000 * 60 * 30, // 30 minutos
-        enabled: enabled,
-        retry: retry,
-        refetchOnWindowFocus: refetchOnWindowFocus
+        data,
+        error,
+        fetchNextPage,
+        hasNextPage,
+        isFetching,
+        isFetchingNextPage,
+        isLoading,
+        isError,
+        refetch,
+        remove
+    } = useInfiniteQuery({
+        queryKey: ['vehicles-infinite', { filters, limit }],
+        queryFn: async ({ pageParam = null }) => {
+            if (useRealApi) {
+                try {
+                    console.log('🔄 Intentando conectar con backend real...');
+                    
+                    // Si hay filtros, usar el endpoint de filtros
+                    if (Object.keys(filters).length > 0) {
+                        return await vehiclesApi.applyFilters(filters, {
+                            limit,
+                            cursor: pageParam
+                        });
+                    }
+                    
+                    // Si no hay filtros, usar el endpoint normal
+                    return await vehiclesApi.getVehicles({
+                        limit,
+                        cursor: pageParam,
+                        filters
+                    });
+                } catch (error) {
+                    console.log('⚠️ Fallback a mock data:', error.message);
+                    // Fallback al servicio mock si la API real falla
+                    return await autoService.getAutos({ filters, pageParam });
+                }
+            } else {
+                // Usar directamente mock data
+                return await autoService.getAutos({ filters, pageParam });
+            }
+        },
+        getNextPageParam: (lastPage) => {
+            return lastPage.nextCursor || undefined;
+        },
+        initialPageParam: null,
+        enabled,
+        staleTime,
+        gcTime: cacheTime,
+        retry,
+        refetchOnWindowFocus,
+        refetchOnMount: true,
+        refetchOnReconnect: true,
     });
 
-    // ===== FILTRAR DATOS DESDE CACHE =====
-    const filteredVehicles = useMemo(() => {
-        if (!allVehiclesData?.items) return [];
+    // ===== PROCESAR DATOS DE TODAS LAS PÁGINAS =====
+    const vehicles = useMemo(() => {
+        if (!data?.pages) return [];
         
-        return filterVehicles(allVehiclesData.items, filters);
-    }, [allVehiclesData?.items, filters]);
+        return data.pages.flatMap(page => page.data || page.items || []);
+    }, [data?.pages]);
 
-    // ===== PAGINACIÓN DE RESULTADOS FILTRADOS =====
-    const ITEMS_PER_PAGE = 6;
-    const totalPages = Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE);
-    
-    // Simular paginación infinita con los datos filtrados
-    const paginatedVehicles = useMemo(() => {
-        return filteredVehicles.slice(0, ITEMS_PER_PAGE);
-    }, [filteredVehicles]);
+    // ===== ESTADÍSTICAS =====
+    const totalVehicles = useMemo(() => {
+        if (!data?.pages?.length) return 0;
+        
+        const lastPage = data.pages[data.pages.length - 1];
+        return lastPage.total || vehicles.length;
+    }, [data?.pages, vehicles.length]);
 
-    // ===== ESTADOS DE CARGA =====
-    const isLoading = isLoadingAll;
-    const isError = !!errorAll;
-    const error = errorAll;
+    const totalPages = useMemo(() => {
+        return data?.pages?.length || 0;
+    }, [data?.pages]);
 
     // ===== FUNCIONES =====
     
     /**
-     * Función para cargar más vehículos (simulada)
-     * En el futuro, esto se conectará con paginación real del backend
+     * Función para cargar más vehículos
      */
     const loadMore = useCallback(() => {
-        console.log('⏭️ Load more - Implementación futura para paginación real');
-        // Por ahora, no hacemos nada ya que mostramos todos los filtrados
-    }, []);
+        if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+        }
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
     /**
      * Función para recargar datos
      */
-    const refetch = useCallback(() => {
-        return refetchAll();
-    }, [refetchAll]);
+    const reload = useCallback(() => {
+        remove(); // Limpiar cache
+        return refetch();
+    }, [remove, refetch]);
 
     return {
-        // Datos
-        autos: paginatedVehicles,
-        allVehicles: allVehiclesData?.items || [],
-        filteredCount: filteredVehicles.length,
-        totalCount: allVehiclesData?.total || 0,
+        // Datos (mantener compatibilidad con tu código existente)
+        autos: vehicles,
+        allVehicles: vehicles,
+        filteredCount: vehicles.length,
+        totalCount: totalVehicles,
         
         // Funciones
         loadMore,
         refetch,
+        reload,
         
-        // Estados de paginación (simulados)
-        hasNextPage: false, // Por ahora no hay paginación real
-        isFetchingNextPage: false,
+        // Estados de paginación
+        hasNextPage: hasNextPage || false,
+        isFetchingNextPage,
         
         // Estados de carga
         isLoading,
+        isFetching,
         isError,
         error,
         
         // Estados adicionales
         hasActiveFilters: Object.keys(filters).length > 0,
-        activeFiltersCount: Object.keys(filters).length
+        activeFiltersCount: Object.keys(filters).length,
+        
+        // Datos adicionales
+        totalPages,
+        totalVehicles
     };
 };

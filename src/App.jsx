@@ -29,6 +29,8 @@ import { RequireAuth } from './components/auth/RequireAuth'
 // Páginas del admin
 import Login from './pages/admin/Login'
 
+
+
 function App() {
     return (
         <ResponsiveProvider>
@@ -52,6 +54,8 @@ function App() {
                             {/* Ruta por defecto */}
                             <Route path="*" element={<Navigate to="/" />} />
                         </Routes>
+                        
+
                     </div>
                 </Router>
             </FilterProvider>

@@ -8,7 +8,7 @@
  * @version 2.0.0
  */
 
-import { generateCdnUrl } from '../services/cdnService'
+import { generateCdnUrl } from '../services/imageService'
 
 // Importar imagen por defecto (esto funciona en Vite)
 import defaultCarImage from '../assets/auto1.jpg'
