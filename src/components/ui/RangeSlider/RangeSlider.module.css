@@ -2,12 +2,14 @@
  * RangeSlider.module.css - Estilos para el componente de rango
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 .rangeSlider {
-  width: 100%;
+  width: 75%; /* Reducido en 25% */
   margin-bottom: var(--spacing-md);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .label {
@@ -16,6 +18,7 @@
   font-weight: var(--font-weight-medium);
   color: var(--color-neutral-700);
   margin-bottom: var(--spacing-sm);
+  text-align: center;
 }
 
 .container {
@@ -109,13 +112,12 @@
   justify-content: space-between;
   align-items: center;
   margin-top: var(--spacing-sm);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   color: var(--color-neutral-600);
 }
 
 .value {
   font-weight: var(--font-weight-medium);
-  color: var(--color-neutral-700);
 }
 
 .separator {
@@ -126,12 +128,11 @@
 /* Responsive */
 @media (max-width: 768px) {
   .rangeSlider {
-    margin-bottom: var(--spacing-sm);
+    width: 100%; /* En mobile usar ancho completo */
   }
   
   .label {
-    font-size: var(--font-size-xs);
-    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-base);
   }
   
   .track {
@@ -144,12 +145,12 @@
   }
   
   .values {
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-sm);
   }
   
   .tooltip {
-    font-size: 10px;
-    padding: 2px 6px;
+    font-size: var(--font-size-sm);
+    padding: 6px 10px;
   }
 }
 
@@ -165,6 +166,7 @@
   }
   
   .tooltip {
-    display: none;
+    font-size: var(--font-size-sm);
+    padding: 8px 12px;
   }
 } 

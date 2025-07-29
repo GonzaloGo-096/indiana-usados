@@ -9,7 +9,7 @@
  * - Paginación infinita con scroll automático
  * 
  * @author Indiana Usados
- * @version 10.0.0
+ * @version 10.1.0
  */
 
 import React, { memo, useState, useCallback } from 'react'
@@ -71,18 +71,29 @@ const ListAutos = memo(() => {
                 isLoading={isLoading || isFiltering}
             />
 
-            {/* ===== GRID DE VEHÍCULOS ===== */}
-            <div className={styles.content}>
-                <AutosGrid 
-                    autos={cars}
-                    isLoading={isLoading}
-                    isError={isError}
-                    error={error}
-                    onLoadMore={loadMore}
-                    hasNextPage={hasNextPage}
-                    isFetchingNextPage={isFetchingNextPage}
-                    onRetry={refetch}
-                />
+            {/* ===== CONTENEDOR DE LISTA CON TÍTULO ===== */}
+            <div className={styles.listContainer}>
+                {/* Línea vertical sutil */}
+                <div className={styles.verticalLine}></div>
+                
+                {/* Título principal */}
+                <div className={styles.titleSection}>
+                    <h1 className={styles.mainTitle}>Nuestros Usados</h1>
+                </div>
+
+                {/* ===== GRID DE VEHÍCULOS ===== */}
+                <div className={styles.content}>
+                    <AutosGrid 
+                        autos={cars}
+                        isLoading={isLoading}
+                        isError={isError}
+                        error={error}
+                        onLoadMore={loadMore}
+                        hasNextPage={hasNextPage}
+                        isFetchingNextPage={isFetchingNextPage}
+                        onRetry={refetch}
+                    />
+                </div>
             </div>
         </div>
     )

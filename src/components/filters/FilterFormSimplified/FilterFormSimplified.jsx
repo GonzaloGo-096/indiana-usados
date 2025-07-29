@@ -10,7 +10,7 @@
  * - Payload directo sin estado intermedio
  * 
  * @author Indiana Usados
- * @version 2.2.0
+ * @version 2.5.0
  */
 
 import React, { useCallback, useMemo } from 'react'
@@ -46,13 +46,12 @@ const FilterFormSimplified = React.memo(({
       marca: [],
       añoDesde: 1990,
       añoHasta: 2024,
-      precioDesde: 0,
-      precioHasta: 10000000,
+      precioDesde: 5000000,
+      precioHasta: 100000000,
       kilometrajeDesde: 0,
-      kilometrajeHasta: 500000,
+      kilometrajeHasta: 200000,
       combustible: [],
-      transmision: [],
-      color: []
+      transmision: []
     }
   })
 
@@ -100,13 +99,12 @@ const FilterFormSimplified = React.memo(({
       marca: [],
       añoDesde: 1990,
       añoHasta: 2024,
-      precioDesde: 0,
-      precioHasta: 10000000,
+      precioDesde: 5000000,
+      precioHasta: 100000000,
       kilometrajeDesde: 0,
-      kilometrajeHasta: 500000,
+      kilometrajeHasta: 200000,
       combustible: [],
-      transmision: [],
-      color: []
+      transmision: []
     })
   }, [reset])
 
@@ -122,13 +120,13 @@ const FilterFormSimplified = React.memo(({
   ], [watchedValues.añoDesde, watchedValues.añoHasta])
 
   const precioRange = useMemo(() => [
-    watchedValues.precioDesde || 0, 
-    watchedValues.precioHasta || 10000000
+    watchedValues.precioDesde || 5000000, 
+    watchedValues.precioHasta || 100000000
   ], [watchedValues.precioDesde, watchedValues.precioHasta])
 
   const kilometrajeRange = useMemo(() => [
     watchedValues.kilometrajeDesde || 0, 
-    watchedValues.kilometrajeHasta || 500000
+    watchedValues.kilometrajeHasta || 200000
   ], [watchedValues.kilometrajeDesde, watchedValues.kilometrajeHasta])
 
   // Handlers para rangos - MEMOIZADOS
@@ -158,10 +156,6 @@ const FilterFormSimplified = React.memo(({
 
   const handleTransmisionChange = useCallback((values) => {
     setValue('transmision', values)
-  }, [setValue])
-
-  const handleColorChange = useCallback((values) => {
-    setValue('color', values)
   }, [setValue])
 
   return (
@@ -195,108 +189,108 @@ const FilterFormSimplified = React.memo(({
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          {/* Marca */}
-          <div className={styles.formGroup}>
-            <MultiSelect
-              label="Marca"
-              options={FILTER_OPTIONS.marcas}
-              value={watchedValues.marca || []}
-              onChange={handleMarcaChange}
-              placeholder="Todas las marcas"
-            />
+          {/* Título del formulario con botones */}
+          <div className={styles.formTitle}>
+            <h3>Filtros de Búsqueda</h3>
+            <div className={styles.titleActions}>
+              <button 
+                type="submit" 
+                className={styles.applyButton}
+                disabled={isLoading || isSubmitting}
+              >
+                {isSubmitting ? 'Aplicando...' : 'Aplicar'}
+              </button>
+              
+              <button 
+                type="button" 
+                onClick={handleClear}
+                className={styles.clearButton}
+                disabled={isLoading || isSubmitting}
+              >
+                Limpiar
+              </button>
+            </div>
           </div>
 
-          {/* Año */}
-          <div className={styles.formGroup}>
-            <RangeSlider
-              label="Año"
-              min={1990}
-              max={2024}
-              step={1}
-              value={añoRange}
-              onChange={handleAñoChange}
-              formatValue={formatYear}
-            />
+          {/* SECCIÓN 1: RANGOS */}
+          <div className={styles.rangesSection}>
+            {/* Año */}
+            <div className={styles.formGroup}>
+              <RangeSlider
+                label="Año"
+                min={1990}
+                max={2024}
+                step={1}
+                value={añoRange}
+                onChange={handleAñoChange}
+                formatValue={formatYear}
+              />
+            </div>
+
+            {/* Precio */}
+            <div className={styles.formGroup}>
+              <RangeSlider
+                label="Precio"
+                min={5000000}
+                max={100000000}
+                step={1000000}
+                value={precioRange}
+                onChange={handlePrecioChange}
+                formatValue={formatPrice}
+              />
+            </div>
+
+            {/* Kilometraje */}
+            <div className={styles.formGroup}>
+              <RangeSlider
+                label="Kilometraje"
+                min={0}
+                max={200000}
+                step={5000}
+                value={kilometrajeRange}
+                onChange={handleKilometrajeChange}
+                formatValue={formatKms}
+              />
+            </div>
           </div>
 
-          {/* Precio */}
-          <div className={styles.formGroup}>
-            <RangeSlider
-              label="Precio"
-              min={0}
-              max={10000000}
-              step={100000}
-              value={precioRange}
-              onChange={handlePrecioChange}
-              formatValue={formatPrice}
-            />
+          {/* SECCIÓN 2: SELECTS */}
+          <div className={styles.selectsSection}>
+            {/* Marca */}
+            <div className={styles.formGroup}>
+              <MultiSelect
+                label="Marca"
+                options={FILTER_OPTIONS.marcas}
+                value={watchedValues.marca || []}
+                onChange={handleMarcaChange}
+                placeholder="Todas las marcas"
+              />
+            </div>
+
+            {/* Combustible */}
+            <div className={styles.formGroup}>
+              <MultiSelect
+                label="Combustible"
+                options={FILTER_OPTIONS.combustibles}
+                value={watchedValues.combustible || []}
+                onChange={handleCombustibleChange}
+                placeholder="Todos los combustibles"
+              />
+            </div>
+
+            {/* Transmisión */}
+            <div className={styles.formGroup}>
+              <MultiSelect
+                label="Transmisión"
+                options={FILTER_OPTIONS.transmisiones}
+                value={watchedValues.transmision || []}
+                onChange={handleTransmisionChange}
+                placeholder="Todas las transmisiones"
+              />
+            </div>
           </div>
 
-          {/* Kilometraje */}
-          <div className={styles.formGroup}>
-            <RangeSlider
-              label="Kilometraje"
-              min={0}
-              max={500000}
-              step={1000}
-              value={kilometrajeRange}
-              onChange={handleKilometrajeChange}
-              formatValue={formatKms}
-            />
-          </div>
 
-          {/* Combustible */}
-          <div className={styles.formGroup}>
-            <MultiSelect
-              label="Combustible"
-              options={FILTER_OPTIONS.combustibles}
-              value={watchedValues.combustible || []}
-              onChange={handleCombustibleChange}
-              placeholder="Todos los combustibles"
-            />
-          </div>
-
-          {/* Transmisión */}
-          <div className={styles.formGroup}>
-            <MultiSelect
-              label="Transmisión"
-              options={FILTER_OPTIONS.transmisiones}
-              value={watchedValues.transmision || []}
-              onChange={handleTransmisionChange}
-              placeholder="Todas las transmisiones"
-            />
-          </div>
-
-          {/* Color */}
-          <div className={styles.formGroup}>
-            <MultiSelect
-              label="Color"
-              options={FILTER_OPTIONS.colores}
-              value={watchedValues.color || []}
-              onChange={handleColorChange}
-              placeholder="Todos los colores"
-            />
-          </div>
-
-          {/* Botones de acción */}
-          <div className={styles.formActions}>
-            <button 
-              type="submit" 
-              className={styles.applyButton}
-              disabled={isLoading || isSubmitting}
-            >
-              {isSubmitting ? 'Aplicando...' : 'Aplicar Filtros'}
-            </button>
-            
-            <button 
-              type="button" 
-              onClick={handleClear}
-              className={styles.clearButton}
-              disabled={isLoading || isSubmitting}
-            >
-              Limpiar
-            </button>
-          </div>
         </form>
       </div>
     </div>

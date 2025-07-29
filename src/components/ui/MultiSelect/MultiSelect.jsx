@@ -1,13 +1,16 @@
 /**
- * MultiSelect - Componente de selección múltiple optimizado
+ * MultiSelect - Componente ultra simple y eficiente
  * 
- * Versión ultra simple y eficiente con optimizaciones de performance
+ * Principios: Simplicidad, Performance, Mantenibilidad
+ * - Sin over-engineering
+ * - Lógica mínima y clara
+ * - Performance optimizada sin complejidad
  * 
  * @author Indiana Usados
- * @version 1.2.0
+ * @version 3.0.0
  */
 
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
 import styles from './MultiSelect.module.css'
 
 const MultiSelect = React.memo(({
@@ -16,71 +19,95 @@ const MultiSelect = React.memo(({
   onChange,
   label,
   placeholder = "Seleccionar opciones",
-  className = ''
+  className = '',
+  disabled = false,
+  error = false,
+  required = false
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedValues, setSelectedValues] = useState(value)
   const dropdownRef = useRef(null)
 
-  // Sincronizar con props externas
+  // Validación simple y eficiente
+  const validOptions = useMemo(() => 
+    Array.isArray(options) ? options.filter(Boolean) : [], 
+    [options]
+  )
+
+  const validValue = useMemo(() => 
+    Array.isArray(value) ? value.filter(Boolean) : [], 
+    [value]
+  )
+
+  // Set para O(1) lookups - ÚNICA optimización crítica
+  const selectedSet = useMemo(() => new Set(validValue), [validValue])
+
+  // Click outside - Lógica simple
   useEffect(() => {
-    setSelectedValues(value)
-  }, [value])
+    if (!isOpen) return
 
-  // Memoizar event listener para evitar recreaciones
-  const handleClickOutside = useCallback((event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false)
-    }
-  }, [])
-
-  // Cerrar dropdown al hacer clic fuera - OPTIMIZADO
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false)
+      }
     }
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isOpen])
+
+  // Toggle option - Lógica ultra simple
+  const handleToggleOption = (option) => {
+    if (disabled) return
+
+    const newValues = selectedSet.has(option)
+      ? validValue.filter(val => val !== option)
+      : [...validValue, option]
+    
+    onChange?.(newValues)
+  }
+
+  // Toggle dropdown - Lógica simple
+  const handleToggleDropdown = () => {
+    if (disabled) return
+    setIsOpen(!isOpen)
+  }
+
+  // Keyboard navigation - Lógica simple
+  const handleKeyDown = (event) => {
+    if (disabled) return
+
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
+        event.preventDefault()
+        handleToggleDropdown()
+        break
+      case 'Escape':
+        setIsOpen(false)
+        break
     }
-  }, [isOpen, handleClickOutside])
-
-  // Manejar selección/deselección - OPTIMIZADO
-  const handleToggleOption = useCallback((option) => {
-    setSelectedValues(prev => {
-      const newValues = prev.includes(option)
-        ? prev.filter(val => val !== option)
-        : [...prev, option]
-      
-      onChange?.(newValues)
-      return newValues
-    })
-  }, [onChange])
-
-  // Memoizar opciones renderizadas
-  const renderedOptions = useMemo(() => (
-    options.map((option) => (
-      <label key={option} className={styles.option}>
-        <input
-          type="checkbox"
-          checked={selectedValues.includes(option)}
-          onChange={() => handleToggleOption(option)}
-          className={styles.checkbox}
-        />
-        <span className={styles.optionText}>{option}</span>
-      </label>
-    ))
-  ), [options, selectedValues, handleToggleOption])
+  }
 
   return (
     <div className={`${styles.multiSelect} ${className}`}>
-      {label && <label className={styles.label}>{label}</label>}
+      {label && (
+        <label className={styles.label}>
+          {label}
+          {required && <span className={styles.required}> *</span>}
+        </label>
+      )}
       
       <div className={styles.container} ref={dropdownRef}>
         <button
           type="button"
-          className={`${styles.trigger} ${isOpen ? styles.open : ''}`}
-          onClick={() => setIsOpen(!isOpen)}
+          className={`${styles.trigger} ${isOpen ? styles.open : ''} ${error ? styles.error : ''} ${disabled ? styles.disabled : ''}`}
+          onClick={handleToggleDropdown}
+          onKeyDown={handleKeyDown}
+          disabled={disabled}
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
+          aria-label={placeholder}
+          tabIndex={disabled ? -1 : 0}
         >
           <span className={styles.text}>{placeholder}</span>
           <svg 
@@ -91,19 +118,57 @@ const MultiSelect = React.memo(({
             fill="none" 
             stroke="currentColor" 
             strokeWidth="2"
+            aria-hidden="true"
           >
             <polyline points="6,9 12,15 18,9"></polyline>
           </svg>
         </button>
 
         {isOpen && (
-          <div className={styles.dropdown}>
+          <div 
+            className={styles.dropdown}
+            role="listbox"
+            aria-multiselectable="true"
+          >
             <div className={styles.options}>
-              {renderedOptions}
+              {validOptions.length > 0 ? (
+                validOptions.map((option) => (
+                  <label 
+                    key={option} 
+                    className={styles.option}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        handleToggleOption(option)
+                      }
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedSet.has(option)}
+                      onChange={() => handleToggleOption(option)}
+                      className={styles.checkbox}
+                      disabled={disabled}
+                    />
+                    <span className={styles.optionText}>{option}</span>
+                  </label>
+                ))
+              ) : (
+                <div className={styles.emptyState}>
+                  No hay opciones disponibles
+                </div>
+              )}
             </div>
           </div>
         )}
       </div>
+      
+      {error && (
+        <div className={styles.errorMessage}>
+          {error}
+        </div>
+      )}
     </div>
   )
 })
