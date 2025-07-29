@@ -25,10 +25,6 @@ const queryKeys = {
  */
 const getAutos = async ({ filters = {}, page = 1 } = {}) => {
     try {
-        console.log('🌐 Simulando petición al backend con filtros:', filters)
-        console.log('🔍 Filtros aplicados:', filters)
-        console.log('📄 Página solicitada:', page)
-        
         // Simular delay de red
         await simulateNetworkDelay(300)
         
@@ -37,7 +33,6 @@ const getAutos = async ({ filters = {}, page = 1 } = {}) => {
         
         if (Object.keys(filters).length > 0) {
             filteredVehicles = filterVehicles(mockVehicles, filters)
-            console.log(`📊 Vehículos filtrados: ${filteredVehicles.length} de ${mockVehicles.length}`)
         }
         
         // Simular paginación por páginas (compatible con backend real)
@@ -55,10 +50,7 @@ const getAutos = async ({ filters = {}, page = 1 } = {}) => {
             total: filteredVehicles.length,    // ✅ Total de elementos filtrados
             totalDocs: filteredVehicles.length, // ✅ Fallback para backend real
             currentPage: page,                 // ✅ Página actual
-            page: page,                        // ✅ Fallback para backend real
-            hasMore: endIndex < filteredVehicles.length,  // ✅ Mantener compatibilidad
-            nextCursor: null,                  // ✅ Mantener compatibilidad
-            cursor: null                       // ✅ Mantener compatibilidad
+            page: page                         // ✅ Fallback para backend real
         }
     } catch (error) {
         console.error('❌ Error en getAutos:', error)
@@ -76,9 +68,6 @@ const getAutos = async ({ filters = {}, page = 1 } = {}) => {
  */
 const applyFilters = async (filters, { page = 1, limit = 6 } = {}) => {
     try {
-        console.log('🚀 Aplicando filtros via POST:', filters)
-        console.log('📄 Página solicitada:', page)
-        
         // Simular petición POST al backend
         await simulateNetworkDelay(500)
         
@@ -106,12 +95,7 @@ const applyFilters = async (filters, { page = 1, limit = 6 } = {}) => {
             filteredCount: filteredVehicles.length,
             totalCount: mockVehicles.length,
             filters: filters,
-            timestamp: new Date().toISOString(),
-            
-            // ✅ FALLBACKS: Para compatibilidad total
-            hasMore: endIndex < filteredVehicles.length,
-            nextCursor: null,
-            cursor: null
+            timestamp: new Date().toISOString()
         }
     } catch (error) {
         console.error('❌ Error al aplicar filtros:', error)
@@ -125,8 +109,6 @@ const applyFilters = async (filters, { page = 1, limit = 6 } = {}) => {
  */
 const getAllVehicles = async () => {
     try {
-        console.log('📋 Obteniendo lista completa de vehículos')
-        
         // Simular petición GET al backend
         await simulateNetworkDelay(200)
         
@@ -152,8 +134,6 @@ const getAutoById = async (id) => {
     }
 
     try {
-        console.log(`🔍 Buscando vehículo con ID: ${id}`)
-        
         // Simular delay de red
         await simulateNetworkDelay(200)
         
@@ -164,7 +144,6 @@ const getAutoById = async (id) => {
             throw new Error('Auto no encontrado')
         }
         
-        console.log('📦 Vehículo encontrado:', vehicle)
         return vehicle
     } catch (error) {
         console.error(`Error al cargar auto ${id}:`, error)

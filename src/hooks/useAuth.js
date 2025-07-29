@@ -11,7 +11,7 @@ export const useAuth = () => {
   // Verificar autenticación al cargar
   useEffect(() => {
     checkAuthStatus()
-  }, [])
+  }, [checkAuthStatus])
 
   // Verificar si hay un token válido
   const checkAuthStatus = useCallback(async () => {
@@ -49,7 +49,7 @@ export const useAuth = () => {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [logout])
 
   // Función de login
   const login = useCallback(async (credentials) => {

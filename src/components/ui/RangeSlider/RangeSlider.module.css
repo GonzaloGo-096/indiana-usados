@@ -1,0 +1,170 @@
+/**
+ * RangeSlider.module.css - Estilos para el componente de rango
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.rangeSlider {
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+}
+
+.label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-neutral-700);
+  margin-bottom: var(--spacing-sm);
+}
+
+.container {
+  position: relative;
+}
+
+.track {
+  position: relative;
+  height: 6px;
+  background: var(--color-neutral-200);
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.range {
+  position: absolute;
+  height: 100%;
+  background: var(--color-primary-500);
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: var(--color-white);
+  border: 2px solid var(--color-primary-500);
+  border-radius: 50%;
+  cursor: grab;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.thumb:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.thumb.active {
+  transform: translate(-50%, -50%) scale(1.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: grabbing;
+}
+
+.thumbMin {
+  z-index: 3;
+}
+
+.thumbMax {
+  z-index: 3;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-neutral-800);
+  color: var(--color-white);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--color-neutral-800);
+}
+
+.thumb:hover .tooltip,
+.thumb.active .tooltip {
+  opacity: 1;
+}
+
+.values {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-600);
+}
+
+.value {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-neutral-700);
+}
+
+.separator {
+  color: var(--color-neutral-400);
+  margin: 0 var(--spacing-xs);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .rangeSlider {
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .label {
+    font-size: var(--font-size-xs);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .track {
+    height: 8px;
+  }
+  
+  .thumb {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .values {
+    font-size: var(--font-size-xs);
+  }
+  
+  .tooltip {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
+
+/* Touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .thumb {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .track {
+    height: 10px;
+  }
+  
+  .tooltip {
+    display: none;
+  }
+} 

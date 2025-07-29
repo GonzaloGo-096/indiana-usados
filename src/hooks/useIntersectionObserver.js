@@ -10,9 +10,6 @@ export const useIntersectionObserver = (callback, options = {}) => {
         }
         
         if (!node || !enabled) {
-            if (import.meta.env.DEV) {
-                console.log('🎯 Intersection Observer:', enabled ? 'Node not provided' : 'Disabled')
-            }
             return
         }
         
@@ -21,13 +18,6 @@ export const useIntersectionObserver = (callback, options = {}) => {
                 entries => {
                     const entry = entries[0]
                     if (entry.isIntersecting) {
-                        if (import.meta.env.DEV) {
-                            console.log('🎯 Intersection Observer triggered!', {
-                                isIntersecting: entry.isIntersecting,
-                                intersectionRatio: entry.intersectionRatio,
-                                boundingClientRect: entry.boundingClientRect
-                            })
-                        }
                         callback()
                     }
                 },
@@ -39,14 +29,6 @@ export const useIntersectionObserver = (callback, options = {}) => {
             )
             
             observer.current.observe(node)
-            
-            if (import.meta.env.DEV) {
-                console.log('🎯 Intersection Observer initialized with options:', {
-                    rootMargin: observerOptions.rootMargin || '300px',
-                    threshold: observerOptions.threshold || 0.1,
-                    enabled
-                })
-            }
         } catch (error) {
             console.error('❌ Error initializing Intersection Observer:', error)
         }
@@ -57,9 +39,6 @@ export const useIntersectionObserver = (callback, options = {}) => {
         return () => {
             if (observer.current) {
                 observer.current.disconnect()
-                if (import.meta.env.DEV) {
-                    console.log('🎯 Intersection Observer disconnected')
-                }
             }
         }
     }, [])

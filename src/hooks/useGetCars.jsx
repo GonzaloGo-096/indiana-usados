@@ -71,7 +71,6 @@ export const useGetCars = (filters = {}, options = {}) => {
         queryFn: async ({ pageParam = 1 }) => {
             if (useRealApi) {
                 try {
-                    console.log('🔄 Intentando conectar con backend real...');
                     
                     // Si hay filtros, usar el endpoint de filtros
                     if (Object.keys(filters).length > 0) {
@@ -88,7 +87,6 @@ export const useGetCars = (filters = {}, options = {}) => {
                         filters
                     });
                 } catch (error) {
-                    console.log('⚠️ Fallback a mock data:', error.message);
                     // Fallback al servicio mock si la API real falla
                     return await autoService.getAutos({ filters, page: pageParam });
                 }
@@ -112,9 +110,12 @@ export const useGetCars = (filters = {}, options = {}) => {
 
     // ===== PROCESAR DATOS DE TODAS LAS PÁGINAS =====
     const vehicles = useMemo(() => {
-        if (!data?.pages) return [];
+        if (!data?.pages) {
+            return [];
+        }
         
-        return data.pages.flatMap(page => page.data || page.items || []);
+        const allVehicles = data.pages.flatMap(page => page.data || page.items || []);
+        return allVehicles || [];
     }, [data?.pages]);
 
     // ===== ESTADÍSTICAS =====
@@ -149,8 +150,8 @@ export const useGetCars = (filters = {}, options = {}) => {
     }, [remove, refetch]);
 
     return {
-        // Datos principales (mantener compatibilidad)
-        autos: vehicles,
+        // Datos principales
+        autos: vehicles || [],
         
         // Funciones
         loadMore,
@@ -161,9 +162,8 @@ export const useGetCars = (filters = {}, options = {}) => {
         hasNextPage: hasNextPage || false,
         isFetchingNextPage,
         
-        // Estados de carga
+        // Estados de carga simplificados
         isLoading,
-        isFetching,
         isError,
         error,
         
@@ -171,13 +171,11 @@ export const useGetCars = (filters = {}, options = {}) => {
         hasActiveFilters: Object.keys(filters).length > 0,
         activeFiltersCount: Object.keys(filters).length,
         
-        // Datos adicionales (optimizados)
+        // Datos adicionales
         totalPages,
         totalVehicles,
-        
-        // ✅ OPTIMIZADO: Eliminar duplicaciones y mejorar lógica
-        filteredCount: vehicles.length,
+        filteredCount: vehicles?.length || 0,
         totalCount: totalVehicles,
-        allVehicles: vehicles // Mantener para compatibilidad
+        allVehicles: vehicles || []
     };
 };

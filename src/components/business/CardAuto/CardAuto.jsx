@@ -23,35 +23,16 @@ const arePropsEqual = (prevProps, nextProps) => {
   const prevAuto = prevProps.auto
   const nextAuto = nextProps.auto
   
-  // ✅ OPTIMIZADO: Comparación directa sin JSON.stringify
-  // Comparar propiedades básicas
-  if (
-    prevAuto.id !== nextAuto.id ||
-    prevAuto.marca !== nextAuto.marca ||
-    prevAuto.modelo !== nextAuto.modelo ||
-    prevAuto.precio !== nextAuto.precio ||
-    prevAuto.año !== nextAuto.año ||
-    prevAuto.kms !== nextAuto.kms ||
-    prevAuto.caja !== nextAuto.caja ||
-    prevAuto.color !== nextAuto.color ||
-    prevAuto.categoria !== nextAuto.categoria ||
-    prevAuto.imagen !== nextAuto.imagen
-  ) {
+  // ✅ OPTIMIZADO: Comparación directa de ID primero
+  if (prevAuto?.id !== nextAuto?.id) {
     return false
   }
   
-  // ✅ OPTIMIZADO: Comparar solo propiedades de imágenes específicas
-  const imageProps = ['fotoFrontal', 'fotoTrasera', 'fotoLateralIzquierda', 'fotoLateralDerecha', 'fotoInterior']
+  // ✅ OPTIMIZADO: Comparar solo propiedades críticas
+  const criticalProps = ['marca', 'modelo', 'precio', 'año', 'imagen']
   
-  for (const prop of imageProps) {
-    const prevImg = prevAuto[prop]
-    const nextImg = nextAuto[prop]
-    
-    // Comparar mostrar y url directamente
-    if (
-      prevImg?.mostrar !== nextImg?.mostrar ||
-      prevImg?.url !== nextImg?.url
-    ) {
+  for (const prop of criticalProps) {
+    if (prevAuto?.[prop] !== nextAuto?.[prop]) {
       return false
     }
   }

@@ -1,0 +1,325 @@
+/**
+ * FilterFormSimplified.module.css - Estilos CSS-only responsive
+ * 
+ * Maneja responsive sin JavaScript adicional
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.filterContainer {
+  position: relative;
+  width: 100%;
+}
+
+/* ===== BOTÓN MOBILE ===== */
+.filterButtonMobile {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--color-primary-600);
+  color: var(--color-white);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterButtonMobile:hover {
+  background: var(--color-primary-700);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+.filterButtonMobile:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.badge {
+  background: var(--color-error-500);
+  color: var(--color-white);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  margin-left: 4px;
+}
+
+/* ===== FORMULARIO ===== */
+.formWrapper {
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-md);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ===== HEADER MOBILE ===== */
+.formHeaderMobile {
+  display: none; /* Oculto por defecto */
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-neutral-300);
+  background: var(--color-white);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.formHeaderMobile h2 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-neutral-800);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: var(--color-neutral-600);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-800);
+}
+
+/* ===== FORMULARIO ===== */
+.form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.formGroup label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-neutral-700);
+}
+
+.select {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  background: var(--color-white);
+  transition: all 0.2s ease;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* ===== BOTONES DE ACCIÓN ===== */
+.formActions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.applyButton {
+  flex: 1;
+  background: var(--color-primary-600);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.applyButton:hover:not(:disabled) {
+  background: var(--color-primary-700);
+}
+
+.applyButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.clearButton {
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-700);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clearButton:hover:not(:disabled) {
+  background: var(--color-neutral-300);
+}
+
+.clearButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Desktop: Mostrar formulario inline, OCULTAR botón y drawer */
+@media (min-width: 769px) {
+  .filterButtonMobile {
+    display: none !important; /* Forzar ocultar en desktop */
+  }
+  
+  .formWrapper {
+    position: static;
+    transform: none;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--border-radius-lg);
+  }
+  
+  .form {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+  }
+  
+  .formActions {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+  
+  .applyButton,
+  .clearButton {
+    min-width: 150px;
+  }
+  
+  /* Ocultar overlay en desktop */
+  .open::before {
+    display: none !important;
+  }
+}
+
+/* Mobile: Mostrar botón flotante y drawer */
+@media (max-width: 768px) {
+  .filterButtonMobile {
+    display: flex;
+  }
+  
+  .formWrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 400px;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001;
+    border-radius: 0;
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+  }
+  
+  .open .formWrapper {
+    transform: translateX(0);
+  }
+  
+  .formHeaderMobile {
+    display: flex;
+  }
+  
+  .form {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    overflow-y: auto;
+    height: calc(100vh - 80px);
+  }
+  
+  .formActions {
+    position: sticky;
+    bottom: 0;
+    background: var(--color-white);
+    padding: var(--spacing-sm);
+    border-top: 1px solid var(--color-neutral-300);
+    margin-top: 0;
+  }
+  
+  .applyButton,
+  .clearButton {
+    flex: 1;
+    padding: var(--spacing-md);
+    font-size: var(--font-size-base);
+  }
+}
+
+/* Overlay para mobile */
+@media (max-width: 768px) {
+  .open::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .filterButtonMobile {
+    padding: 16px 24px;
+    font-size: var(--font-size-base);
+  }
+  
+  .form {
+    gap: var(--spacing-md);
+  }
+  
+  .select {
+    padding: var(--spacing-md);
+    font-size: var(--font-size-base);
+  }
+} 

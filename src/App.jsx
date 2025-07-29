@@ -7,17 +7,13 @@
  * - Autenticación
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Navigate } from 'react-router-dom'
 import './App.module.css'
-
-// Context
-import { FilterProvider } from './contexts/FilterContext'
-import { ResponsiveProvider } from './contexts/ResponsiveContext'
 
 // Routes
 import PublicRoutes from './routes/PublicRoutes'
@@ -29,37 +25,34 @@ import { RequireAuth } from './components/auth/RequireAuth'
 // Páginas del admin
 import Login from './pages/admin/Login'
 
-
-
 function App() {
     return (
-        <ResponsiveProvider>
-            <FilterProvider>
-                <Router>
-                    <div className="app">
-                        <Routes>
-                            {/* Rutas públicas */}
-                            <Route path="/*" element={<PublicRoutes />} />
+        <Router
+            future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true
+            }}
+        >
+            <div className="app">
+                <Routes>
+                    {/* Rutas públicas */}
+                    <Route path="/*" element={<PublicRoutes />} />
 
-                            {/* Ruta de login */}
-                            <Route path="/admin/login" element={<Login />} />
+                    {/* Ruta de login */}
+                    <Route path="/admin/login" element={<Login />} />
 
-                            {/* Rutas protegidas del admin */}
-                            <Route path="/admin/*" element={
-                                <RequireAuth>
-                                    <AdminRoutes />
-                                </RequireAuth>
-                            } />
+                    {/* Rutas protegidas del admin */}
+                    <Route path="/admin/*" element={
+                        <RequireAuth>
+                            <AdminRoutes />
+                        </RequireAuth>
+                    } />
 
-                            {/* Ruta por defecto */}
-                            <Route path="*" element={<Navigate to="/" />} />
-                        </Routes>
-                        
-
-                    </div>
-                </Router>
-            </FilterProvider>
-        </ResponsiveProvider>
+                    {/* Ruta por defecto */}
+                    <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+            </div>
+        </Router>
     )
 }
 

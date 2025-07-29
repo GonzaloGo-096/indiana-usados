@@ -1,14 +1,10 @@
 /**
- * Filtros - Exportaciones centralizadas
+ * Filtros - Exportaciones simplificadas
  * 
- * Agrupa todos los componentes relacionados con filtros
- * para facilitar las importaciones
+ * Solo exporta el nuevo sistema de filtros simplificado
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-export { default as FilterButton } from './FilterButton'
-export { default as FilterDrawer } from './FilterDrawer'
-export { default as FilterForm } from './FilterForm'
-export { default as FilterSummary } from './FilterSummary' 
+export { default as FilterFormSimplified } from './FilterFormSimplified/FilterFormSimplified' 

@@ -56,18 +56,7 @@ const AutosGrid = memo(({
     const loadMoreRef = useIntersectionObserver(
         () => {
             if (hasNextPage && !isFetchingNextPage && onLoadMore) {
-                console.log('🔄 Intersection Observer triggered - Loading more vehicles', {
-                    hasNextPage,
-                    isFetchingNextPage,
-                    hasOnLoadMore: !!onLoadMore
-                })
                 onLoadMore()
-            } else {
-                console.log('🔄 Intersection Observer triggered but conditions not met', {
-                    hasNextPage,
-                    isFetchingNextPage,
-                    hasOnLoadMore: !!onLoadMore
-                })
             }
         },
         {
@@ -82,7 +71,7 @@ const AutosGrid = memo(({
     // Memoizar el grid de autos para evitar re-renders innecesarios
     const autosGrid = useMemo(() => (
         <div className={styles.grid}>
-            {autos.map((auto) => (
+            {autos?.map((auto) => (
                 <div 
                     key={auto.id} 
                     className={styles.cardWrapper}
@@ -136,7 +125,7 @@ const AutosGrid = memo(({
 
     // Memoizar el mensaje de "no más resultados"
     const noMoreResults = useMemo(() => {
-        if (hasNextPage || autos.length === 0) return null
+        if (hasNextPage || !autos?.length) return null
         
         return (
             <div className={styles.noMoreResults}>
@@ -150,17 +139,17 @@ const AutosGrid = memo(({
                 </Button>
             </div>
         )
-    }, [hasNextPage, autos.length, onRetry])
+    }, [hasNextPage, autos?.length, onRetry])
 
     // ===== GUARD CLAUSES - Estados de carga y error =====
     
     // Estado de carga inicial
-    if (isLoading && !autos.length) {
+    if (isLoading && !autos?.length) {
         return <ListAutosSkeleton cantidad={6} />
     }
 
     // Estado de error inicial
-    if (isError && !autos.length) {
+    if (isError && !autos?.length) {
         return (
             <ErrorMessage 
                 message={error?.message || 'Error al cargar los vehículos'} 
@@ -170,7 +159,7 @@ const AutosGrid = memo(({
     }
 
     // Estado de lista vacía
-    if (!autos.length) {
+    if (!autos?.length) {
         return (
             <div className={styles.empty}>
                 <div className={styles.emptyContent}>
