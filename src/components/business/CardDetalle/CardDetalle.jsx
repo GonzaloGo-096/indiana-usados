@@ -12,9 +12,11 @@
  * @version 1.0.0
  */
 
-import React, { memo } from 'react'
+import React, { memo, useMemo } from 'react'
 import { GmailIcon, WhatsAppIcon } from '../../ui/icons'
 import { ImageCarousel } from '../../ui/ImageCarousel'
+import { formatValue } from '../../../utils/imageUtils'
+import { useCarouselImages } from '../../../hooks/useImageOptimization'
 import styles from './CardDetalle.module.css'
 
 /**
@@ -62,29 +64,23 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
         cilindrada = '' // <-- Nuevo campo
     } = auto
 
-    // Función helper para mostrar "-" cuando el valor esté vacío
-    const formatValue = (value) => {
-        if (!value || value === '' || value === 'null' || value === 'undefined') {
-            return '-'
-        }
-        return value
-    }
+    // ✅ AGREGADO: Memoizar imágenes del carrusel
+    const carouselImages = useCarouselImages(auto)
 
-    // Información de contacto por defecto
-    const defaultContactInfo = {
+    // ✅ AGREGADO: Memoizar información de contacto
+    const defaultContactInfo = useMemo(() => ({
         email: 'info@indianausados.com',
         whatsapp: '5491112345678',
         whatsappMessage: `Hola, me interesa el vehículo ${formatValue(marca)} ${formatValue(modelo)}`
-    }
+    }), [marca, modelo])
 
     const finalContactInfo = contactInfo || defaultContactInfo
 
-    // Preparar imágenes para el carrusel
-    const carouselImages = imagenes && imagenes.length > 0 
-        ? imagenes 
-        : imagen 
-            ? [imagen] 
-            : []
+    // ✅ AGREGADO: Memoizar texto alternativo
+    const altText = useMemo(() => 
+        `${formatValue(marca)} ${formatValue(modelo)}`, 
+        [marca, modelo]
+    )
 
     return (
         <div className={styles.card}>
@@ -93,7 +89,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                 <div className={styles.imageSection}>
                     <ImageCarousel 
                         images={carouselImages}
-                        altText={`${formatValue(marca)} ${formatValue(modelo)}`}
+                        altText={altText}
                         showArrows={true}
                         showIndicators={true}
                         autoPlay={false}

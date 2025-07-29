@@ -11,39 +11,54 @@
  * @version 1.0.0
  */
 
-import React, { memo } from 'react'
+import React, { memo, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../../ui/Button'
+import { formatValue } from '../../../utils/imageUtils'
+import { useMainImage } from '../../../hooks/useImageOptimization'
 import styles from './CardAuto.module.css'
 // Importar imagen por defecto
 import defaultCarImage from '../../../assets/auto1.jpg'
 
-// Función helper para mostrar "-" cuando el valor esté vacío
-const formatValue = (value) => {
-  if (!value || value === '' || value === 'null' || value === 'undefined') {
-    return '-'
-  }
-  return value
-}
-
-// Función de comparación personalizada para memo
+// Función de comparación personalizada para memo - OPTIMIZADA
 const arePropsEqual = (prevProps, nextProps) => {
   const prevAuto = prevProps.auto
   const nextAuto = nextProps.auto
   
-  // Comparar solo las propiedades que afectan el render
-  return (
-    prevAuto.id === nextAuto.id &&
-    prevAuto.marca === nextAuto.marca &&
-    prevAuto.modelo === nextAuto.modelo &&
-    prevAuto.precio === nextAuto.precio &&
-    prevAuto.año === nextAuto.año &&
-    prevAuto.kms === nextAuto.kms &&
-    prevAuto.caja === nextAuto.caja &&
-    prevAuto.color === nextAuto.color &&
-    prevAuto.categoria === nextAuto.categoria &&
-    prevAuto.imagen === nextAuto.imagen
-  )
+  // ✅ OPTIMIZADO: Comparación directa sin JSON.stringify
+  // Comparar propiedades básicas
+  if (
+    prevAuto.id !== nextAuto.id ||
+    prevAuto.marca !== nextAuto.marca ||
+    prevAuto.modelo !== nextAuto.modelo ||
+    prevAuto.precio !== nextAuto.precio ||
+    prevAuto.año !== nextAuto.año ||
+    prevAuto.kms !== nextAuto.kms ||
+    prevAuto.caja !== nextAuto.caja ||
+    prevAuto.color !== nextAuto.color ||
+    prevAuto.categoria !== nextAuto.categoria ||
+    prevAuto.imagen !== nextAuto.imagen
+  ) {
+    return false
+  }
+  
+  // ✅ OPTIMIZADO: Comparar solo propiedades de imágenes específicas
+  const imageProps = ['fotoFrontal', 'fotoTrasera', 'fotoLateralIzquierda', 'fotoLateralDerecha', 'fotoInterior']
+  
+  for (const prop of imageProps) {
+    const prevImg = prevAuto[prop]
+    const nextImg = nextAuto[prop]
+    
+    // Comparar mostrar y url directamente
+    if (
+      prevImg?.mostrar !== nextImg?.mostrar ||
+      prevImg?.url !== nextImg?.url
+    ) {
+      return false
+    }
+  }
+  
+  return true
 }
 
 /**
@@ -76,14 +91,23 @@ export const CardAuto = memo(({ auto }) => {
         categoria = ''
     } = auto
 
+    // ✅ OPTIMIZADO: Usar hook de optimización de imágenes
+    const mainImage = useMainImage(auto)
+
+    // ✅ OPTIMIZADO: Memoizar texto alternativo
+    const altText = useMemo(() => 
+        `${formatValue(marca)} ${formatValue(modelo)}`, 
+        [marca, modelo]
+    )
+
     return (
         <div className={styles.card}>
             {/* Contenedor de imagen */}
             <div className={styles.imageContainer}>
                 <img 
-                    src={auto.imagen || defaultCarImage} 
+                    src={mainImage} 
                     className={styles.image} 
-                    alt={`${formatValue(marca)} ${formatValue(modelo)}`}
+                    alt={altText}
                     loading="lazy"
                 />
             </div>

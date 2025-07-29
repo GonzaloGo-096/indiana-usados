@@ -16,15 +16,15 @@ class VehiclesApiService {
      * Obtener lista de vehículos con paginación
      * @param {Object} params - Parámetros de paginación
      * @param {number} params.limit - Número de elementos por página
-     * @param {string} params.cursor - Cursor para paginación
+     * @param {number} params.page - Número de página
      * @param {Object} params.filters - Filtros opcionales
-     * @returns {Promise<Object>} - Respuesta con datos y cursor
+     * @returns {Promise<Object>} - Respuesta con datos y paginación
      */
-    async getVehicles({ limit = 6, cursor = null, filters = {} } = {}) {
+    async getVehicles({ limit = 6, page = 1, filters = {} } = {}) {
         try {
             const params = {
                 limit,
-                ...(cursor && { cursor }),
+                page,
                 // Si hay filtros, enviarlos como query params
                 ...(Object.keys(filters).length > 0 && { 
                     ...filters 
@@ -36,11 +36,11 @@ class VehiclesApiService {
 
             // Adaptar respuesta a formato esperado
             return {
-                data: data.data || data.items || [],
-                nextCursor: data.nextCursor || data.cursor || null,
-                total: data.total || 0,
-                hasMore: !!data.nextCursor || !!data.cursor,
-                currentCursor: cursor,
+                data: data.docs || data.data || data.items || [],
+                hasNextPage: data.hasNextPage || false,
+                nextPage: data.nextPage || null,
+                total: data.totalDocs || data.total || 0,
+                currentPage: data.page || page,
             };
         } catch (error) {
             const errorMessage = handleApiError(error);
@@ -74,16 +74,16 @@ class VehiclesApiService {
      * @param {Object} filters - Filtros a aplicar
      * @param {Object} options - Opciones adicionales
      * @param {number} options.limit - Número de elementos por página
-     * @param {string} options.cursor - Cursor para paginación
+     * @param {number} options.page - Número de página
      * @returns {Promise<Object>} - Respuesta con datos filtrados
      */
-    async applyFilters(filters, { limit = 6, cursor = null } = {}) {
+    async applyFilters(filters, { limit = 6, page = 1 } = {}) {
         try {
             const payload = {
                 filters,
                 pagination: {
                     limit,
-                    ...(cursor && { cursor })
+                    page
                 }
             };
 
@@ -91,11 +91,12 @@ class VehiclesApiService {
             const data = validateResponse(response);
 
             return {
-                data: data.data || data.items || [],
-                nextCursor: data.nextCursor || data.cursor || null,
-                total: data.total || 0,
+                data: data.docs || data.data || data.items || [],
+                hasNextPage: data.hasNextPage || false,
+                nextPage: data.nextPage || null,
+                total: data.totalDocs || data.total || 0,
                 filteredCount: data.filteredCount || 0,
-                hasMore: !!data.nextCursor || !!data.cursor,
+                currentPage: data.page || page,
                 filters: filters,
                 timestamp: new Date().toISOString()
             };
@@ -133,22 +134,23 @@ class VehiclesApiService {
      * @param {Object} options - Opciones adicionales
      * @returns {Promise<Object>} - Resultados de búsqueda
      */
-    async searchVehicles(searchTerm, { limit = 6, cursor = null } = {}) {
+    async searchVehicles(searchTerm, { limit = 6, page = 1 } = {}) {
         try {
             const params = {
                 q: searchTerm,
                 limit,
-                ...(cursor && { cursor })
+                page
             };
 
             const response = await axiosInstance.get(ENDPOINTS.VEHICLES, { params });
             const data = validateResponse(response);
 
             return {
-                data: data.data || data.items || [],
-                nextCursor: data.nextCursor || data.cursor || null,
-                total: data.total || 0,
-                hasMore: !!data.nextCursor || !!data.cursor,
+                data: data.docs || data.data || data.items || [],
+                hasNextPage: data.hasNextPage || false,
+                nextPage: data.nextPage || null,
+                total: data.totalDocs || data.total || 0,
+                currentPage: data.page || page,
                 searchTerm
             };
         } catch (error) {

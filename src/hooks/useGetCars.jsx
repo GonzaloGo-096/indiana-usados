@@ -69,7 +69,7 @@ export const useGetCars = (filters = {}, options = {}) => {
         remove
     } = useInfiniteQuery({
         queryKey: ['vehicles-infinite', { filters, limit }],
-        queryFn: async ({ pageParam = null }) => {
+        queryFn: async ({ pageParam = 1 }) => {
             if (useRealApi) {
                 try {
                     console.log('🔄 Intentando conectar con backend real...');
@@ -78,30 +78,30 @@ export const useGetCars = (filters = {}, options = {}) => {
                     if (Object.keys(filters).length > 0) {
                         return await vehiclesApi.applyFilters(filters, {
                             limit,
-                            cursor: pageParam
+                            page: pageParam
                         });
                     }
                     
                     // Si no hay filtros, usar el endpoint normal
                     return await vehiclesApi.getVehicles({
                         limit,
-                        cursor: pageParam,
+                        page: pageParam,
                         filters
                     });
                 } catch (error) {
                     console.log('⚠️ Fallback a mock data:', error.message);
                     // Fallback al servicio mock si la API real falla
-                    return await autoService.getAutos({ filters, pageParam });
+                    return await autoService.getAutos({ filters, page: pageParam });
                 }
             } else {
                 // Usar directamente mock data
-                return await autoService.getAutos({ filters, pageParam });
+                return await autoService.getAutos({ filters, page: pageParam });
             }
         },
         getNextPageParam: (lastPage) => {
-            return lastPage.nextCursor || undefined;
+            return lastPage.hasNextPage ? lastPage.nextPage : undefined;
         },
-        initialPageParam: null,
+        initialPageParam: 1,
         enabled,
         staleTime,
         gcTime: cacheTime,
@@ -150,11 +150,8 @@ export const useGetCars = (filters = {}, options = {}) => {
     }, [remove, refetch]);
 
     return {
-        // Datos (mantener compatibilidad con tu código existente)
+        // Datos principales (mantener compatibilidad)
         autos: vehicles,
-        allVehicles: vehicles,
-        filteredCount: vehicles.length,
-        totalCount: totalVehicles,
         
         // Funciones
         loadMore,
@@ -175,8 +172,13 @@ export const useGetCars = (filters = {}, options = {}) => {
         hasActiveFilters: Object.keys(filters).length > 0,
         activeFiltersCount: Object.keys(filters).length,
         
-        // Datos adicionales
+        // Datos adicionales (optimizados)
         totalPages,
-        totalVehicles
+        totalVehicles,
+        
+        // ✅ OPTIMIZADO: Eliminar duplicaciones y mejorar lógica
+        filteredCount: vehicles.length,
+        totalCount: totalVehicles,
+        allVehicles: vehicles // Mantener para compatibilidad
     };
 };
