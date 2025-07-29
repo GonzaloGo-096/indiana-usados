@@ -8,7 +8,7 @@
  * - Diseño mobile-first
  * 
  * @author Indiana Usados
- * @version 2.1.0
+ * @version 2.3.0
  */
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
@@ -30,7 +30,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-4);
-    margin-top: var(--spacing-xl); /* Aumentado el espaciado superior */
+    margin-top: var(--spacing-3xl); /* Aumentado significativamente el espaciado superior */
 }
 
 /* Línea vertical sutil */
@@ -62,23 +62,11 @@
     font-weight: var(--font-weight-bold);
     color: var(--color-neutral-800);
     margin: 0;
-    text-align: center;
+    text-align: left; /* Alineado a la izquierda */
     text-transform: uppercase;
     letter-spacing: 1px;
     line-height: 1.2;
     position: relative;
-}
-
-.mainTitle::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: var(--color-primary-500);
-    border-radius: 2px;
 }
 
 /* ===== CONTENIDO ===== */
@@ -89,7 +77,7 @@
 @media (max-width: 768px) {
     .listContainer {
         padding: 0 var(--spacing-2);
-        margin-top: var(--spacing-lg);
+        margin-top: var(--spacing-2xl); /* Aumentado también en mobile */
     }
     
     .content {
@@ -103,6 +91,7 @@
     
     .mainTitle {
         font-size: var(--font-size-2xl);
+        text-align: left; /* Mantener alineación a la izquierda en mobile */
     }
     
     .verticalLine {
