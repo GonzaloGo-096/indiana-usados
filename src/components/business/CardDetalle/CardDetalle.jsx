@@ -42,45 +42,37 @@ import styles from './CardDetalle.module.css'
  * @param {string} props.contactInfo.whatsappMessage - Mensaje predefinido para WhatsApp
  */
 export const CardDetalle = memo(({ auto, contactInfo }) => {
-    // Validación de props
+    // ✅ CORREGIDO: Hooks siempre primero, antes de cualquier early return
+    const carouselImages = useCarouselImages(auto)
+    const defaultContactInfo = useMemo(() => ({
+        email: 'info@indianausados.com',
+        whatsapp: '5491112345678',
+        whatsappMessage: `Hola, me interesa el vehículo ${formatValue(auto?.marca || '')} ${formatValue(auto?.modelo || '')}`
+    }), [auto?.marca, auto?.modelo])
+    const altText = useMemo(() => 
+        `${formatValue(auto?.marca || '')} ${formatValue(auto?.modelo || '')}`, 
+        [auto?.marca, auto?.modelo]
+    )
+
+    // ✅ CORREGIDO: Validación después de hooks
     if (!auto) return null
 
     // Extraer datos con valores por defecto
     const {
-        id,
         marca = '',
         modelo = '',
         precio = '',
         año = '',
         kms = '',
-        caja = '',
         color = '',
         categoria = '',
         combustible = '',
         detalle = '',
-        imagen = '',
-        imagenes = [],
         version = '', // <-- Nuevo campo
         cilindrada = '' // <-- Nuevo campo
     } = auto
 
-    // ✅ AGREGADO: Memoizar imágenes del carrusel
-    const carouselImages = useCarouselImages(auto)
-
-    // ✅ AGREGADO: Memoizar información de contacto
-    const defaultContactInfo = useMemo(() => ({
-        email: 'info@indianausados.com',
-        whatsapp: '5491112345678',
-        whatsappMessage: `Hola, me interesa el vehículo ${formatValue(marca)} ${formatValue(modelo)}`
-    }), [marca, modelo])
-
     const finalContactInfo = contactInfo || defaultContactInfo
-
-    // ✅ AGREGADO: Memoizar texto alternativo
-    const altText = useMemo(() => 
-        `${formatValue(marca)} ${formatValue(modelo)}`, 
-        [marca, modelo]
-    )
 
     return (
         <div className={styles.card}>

@@ -15,12 +15,11 @@ import styles from './FilterSummary.module.css'
 const FilterSummary = ({ 
     pendingFilters, // Cambiado de activeFilters a pendingFilters
     onClearFilter, 
-    onClearAll,
     isSubmitting = false 
 }) => {
 
     // Filtrar solo los filtros que tienen valor válido
-    const filtersWithValues = Object.entries(pendingFilters || {}).filter(([key, value]) => {
+    const filtersWithValues = Object.entries(pendingFilters || {}).filter(([, value]) => {
         return isValidFilterValue(value)
     })
 
@@ -32,7 +31,7 @@ const FilterSummary = ({
     return (
         <div className={styles.summary}>
             <div className={styles.filtersList}>
-                {filtersWithValues.map(([key, value], index) => (
+                {filtersWithValues.map(([key, value]) => (
                     <div key={key} className={styles.filterTag}>
                         <span className={styles.filterLabel}>
                             {getFilterLabel(key)}: {formatFilterValue(value)}

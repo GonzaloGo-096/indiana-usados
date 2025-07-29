@@ -23,8 +23,7 @@ import { useFilterNotifications } from './useFilterNotifications'
 import autoService from '../../services/service'
 import { 
     getValidFilters, 
-    transformFiltersToBackend,
-    filterVehicles 
+    transformFiltersToBackend
 } from '../../utils/filterUtils'
 
 export const useFilterSystem = () => {

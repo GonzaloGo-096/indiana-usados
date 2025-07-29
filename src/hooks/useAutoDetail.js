@@ -18,7 +18,7 @@
  */
 
 import { useQuery } from '@tanstack/react-query'
-import { useMemo, useCallback } from 'react'
+import { useMemo } from 'react'
 import autoService, { queryKeys } from '../services/service'
 import vehiclesApi from '../api/vehiclesApi'
 

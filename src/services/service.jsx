@@ -2,7 +2,6 @@
 import { 
     mockVehicles, 
     filterVehicles, 
-    paginateVehicles, 
     simulateNetworkDelay 
 } from './mockData'
 

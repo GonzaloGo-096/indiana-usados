@@ -17,10 +17,9 @@
  * @version 2.0.0
  */
 
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
-import autoService, { queryKeys } from "../services/service";
-import { filterVehicles } from "../utils/filterUtils";
+import autoService from "../services/service";
 import vehiclesApi from "../api/vehiclesApi";
 
 /**

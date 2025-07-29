@@ -29,9 +29,9 @@ const FilterForm = memo(forwardRef(({
     filterSummary
 }, ref) => {
     // Configuración inicial de React Hook Form
-    const { 
-        register, 
-        watch, 
+    const {
+        register,
+        watch,
         reset, 
         setValue,
         handleSubmit,

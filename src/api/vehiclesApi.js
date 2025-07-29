@@ -1,4 +1,4 @@
-import axiosInstance, { createEndpoint, handleApiError, validateResponse } from './axiosInstance';
+import axiosInstance, { handleApiError, validateResponse } from './axiosInstance';
 
 // Endpoints de la API - ADAPTAR A TU BACKEND REAL
 const ENDPOINTS = {

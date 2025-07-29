@@ -43,9 +43,7 @@ const ListAutos = memo(() => {
         hasNextPage,
         isFetchingNextPage,
         applyFilters,
-        clearAllFilters,
-        refetch,
-        setCurrentFilters
+        refetch
     } = useFilterContext()
 
     const {
@@ -64,7 +62,7 @@ const ListAutos = memo(() => {
     
     const [pendingFilters, setPendingFilters] = useState(cleanFilters(currentFilters));
 
-    // Actualizar pendingFilters cada vez que cambian los valores del formulario
+    // Actualizar pendingFilters cada vez que cambien los valores del formulario
     const handleFiltersChange = (filters) => {
         setPendingFilters(filters);
     };

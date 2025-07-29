@@ -17,8 +17,6 @@ import { Button } from '../../ui/Button'
 import { formatValue } from '../../../utils/imageUtils'
 import { useMainImage } from '../../../hooks/useImageOptimization'
 import styles from './CardAuto.module.css'
-// Importar imagen por defecto
-import defaultCarImage from '../../../assets/auto1.jpg'
 
 // Función de comparación personalizada para memo - OPTIMIZADA
 const arePropsEqual = (prevProps, nextProps) => {
@@ -75,7 +73,14 @@ const arePropsEqual = (prevProps, nextProps) => {
  * @param {string} auto.categoria - Categoría del vehículo
  */
 export const CardAuto = memo(({ auto }) => {
-    // Validación de props
+    // ✅ CORREGIDO: Hooks siempre primero, antes de cualquier early return
+    const mainImage = useMainImage(auto)
+    const altText = useMemo(() => 
+        `${formatValue(auto?.marca || '')} ${formatValue(auto?.modelo || '')}`, 
+        [auto?.marca, auto?.modelo]
+    )
+
+    // ✅ CORREGIDO: Validación después de hooks
     if (!auto) return null
 
     // Extraer datos con valores por defecto
@@ -90,15 +95,6 @@ export const CardAuto = memo(({ auto }) => {
         color = '',
         categoria = ''
     } = auto
-
-    // ✅ OPTIMIZADO: Usar hook de optimización de imágenes
-    const mainImage = useMainImage(auto)
-
-    // ✅ OPTIMIZADO: Memoizar texto alternativo
-    const altText = useMemo(() => 
-        `${formatValue(marca)} ${formatValue(modelo)}`, 
-        [marca, modelo]
-    )
 
     return (
         <div className={styles.card}>
