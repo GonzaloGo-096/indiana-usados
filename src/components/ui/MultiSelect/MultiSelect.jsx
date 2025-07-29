@@ -7,7 +7,7 @@
  * - Performance optimizada sin complejidad
  * 
  * @author Indiana Usados
- * @version 3.0.0
+ * @version 3.1.0 - OPTIMIZADO
  */
 
 import React, { useState, useRef, useEffect, useMemo } from 'react'

@@ -5,7 +5,7 @@
  * Ideal para precio, kms y año
  * 
  * @author Indiana Usados
- * @version 1.1.0
+ * @version 1.2.0 - OPTIMIZADO
  */
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
@@ -31,18 +31,18 @@ const RangeSlider = React.memo(({
     setLocalValue(value)
   }, [value])
 
-  // Calcular posiciones - MEMOIZADO Y OPTIMIZADO
-  const getPercentage = useCallback((val) => {
+  // Calcular posiciones - OPTIMIZADO: Funciones simples sin memoización
+  const getPercentage = (val) => {
     return ((val - min) / (max - min)) * 100
-  }, [min, max])
+  }
 
-  const getValueFromPercentage = useCallback((percentage) => {
+  const getValueFromPercentage = (percentage) => {
     return Math.round((percentage / 100) * (max - min) + min)
-  }, [min, max])
+  }
 
   // Memoizar cálculos de posiciones para evitar recálculos
-  const minPercentage = useMemo(() => getPercentage(localValue[0]), [getPercentage, localValue])
-  const maxPercentage = useMemo(() => getPercentage(localValue[1]), [getPercentage, localValue])
+  const minPercentage = useMemo(() => getPercentage(localValue[0]), [localValue[0], min, max])
+  const maxPercentage = useMemo(() => getPercentage(localValue[1]), [localValue[1], min, max])
 
   // Manejar cambios - MEMOIZADO Y OPTIMIZADO
   const handleChange = useCallback((newValue) => {
@@ -73,7 +73,7 @@ const RangeSlider = React.memo(({
     }
 
     handleChange([newMin, newMax])
-  }, [localValue, min, max, step, getValueFromPercentage, handleChange])
+  }, [localValue, min, max, step, handleChange])
 
   // Manejar arrastre de thumbs - MEMOIZADO
   const handleMouseDown = useCallback((thumb) => {
@@ -97,7 +97,7 @@ const RangeSlider = React.memo(({
       const newMax = Math.min(max, Math.max(minVal + step, newValue))
       handleChange([minVal, newMax])
     }
-  }, [isDragging, activeThumb, localValue, min, max, step, getValueFromPercentage, handleChange])
+  }, [isDragging, activeThumb, localValue, min, max, step, handleChange])
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false)

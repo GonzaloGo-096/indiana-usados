@@ -4,7 +4,7 @@
  * Estilos optimizados para el formulario de filtros
  * Performance-first, mantenible y escalable
  * 
- * @version 3.0.0
+ * @version 3.1.0 - OPTIMIZADO
  * @author Indiana Usados
  */
 
@@ -189,9 +189,8 @@
   letter-spacing: 0.5px;
 }
 
-/* ===== BOTONES ===== */
-.applyButton,
-.clearButton {
+/* ===== CLASE BASE PARA BOTONES - OPTIMIZADO ===== */
+.buttonBase {
   padding: 0.5rem;
   border: none;
   border-radius: 6px;
@@ -210,7 +209,9 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* ===== BOTONES ESPECÍFICOS - OPTIMIZADO ===== */
 .applyButton {
+  composes: buttonBase;
   background: #3b82f6;
   color: #ffffff;
   border: 1px solid #1d4ed8;
@@ -223,6 +224,7 @@
 }
 
 .clearButton {
+  composes: buttonBase;
   background: #f3f4f6;
   color: #6b7280;
   border: 1px solid #d1d5db;

@@ -7,7 +7,7 @@
  * - Performance optimizada sin complejidad
  * 
  * @author Indiana Usados
- * @version 3.0.0
+ * @version 3.1.0
  */
 
 .multiSelect {
@@ -35,17 +35,18 @@
 .trigger {
   width: 100%;
   padding: var(--spacing-sm);
-  border: 1px solid var(--color-neutral-300);
+  border: 1px solid var(--color-neutral-400); /* Volvemos al color anterior */
   border-radius: var(--border-radius-sm);
   background: var(--color-white);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   font-size: var(--font-size-sm);
   color: var(--color-neutral-700);
   outline: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil y eficiente */
 }
 
 .trigger:hover:not(.disabled) {
@@ -74,10 +75,11 @@
 
 .text {
   flex: 1;
-  text-align: left;
+  text-align: center; /* Centrado el texto */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--color-neutral-300); /* Color mucho más claro y sutil para placeholder */
 }
 
 .arrow {
