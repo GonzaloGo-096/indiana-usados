@@ -133,7 +133,7 @@
 .grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 20px; /* ✅ AUMENTADO: De 12px a 20px */
+    gap: 28px; /* ✅ AUMENTADO: De 20px a 28px */
     min-height: 150px;
     /* ❌ ELIMINADO: will-change, contain, transiciones */
 }
@@ -141,7 +141,7 @@
 /* Ajustes para mobile */
 @media (max-width: 768px) {
     .grid {
-        gap: 16px; /* ✅ AUMENTADO: De 8px a 16px */
+        gap: 24px; /* ✅ AUMENTADO: De 16px a 24px */
     }
 }
 
@@ -149,7 +149,7 @@
 @media (min-width: 768px) {
     .grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px; /* ✅ AUMENTADO: De 12px a 20px */
+        gap: 28px; /* ✅ AUMENTADO: De 20px a 28px */
     }
 }
 
@@ -157,7 +157,7 @@
 @media (min-width: 1200px) {
     .grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px; /* ✅ AUMENTADO: De 12px a 20px */
+        gap: 28px; /* ✅ AUMENTADO: De 20px a 28px */
     }
 }
 

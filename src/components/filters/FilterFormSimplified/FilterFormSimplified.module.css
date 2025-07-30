@@ -22,7 +22,7 @@
   bottom: 1rem;
   right: 1rem;
   z-index: 1000;
-  background: #3b82f6;
+  background: #111827;
   color: #ffffff;
   border: none;
   border-radius: 50px;
@@ -37,7 +37,7 @@
 }
 
 .filterButtonMobile:hover {
-  background: #1d4ed8;
+  background: #374151;
   transform: translateY(-2px);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
@@ -81,7 +81,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
-  background: #3b82f6;
+  background: #111827;
   color: #ffffff;
 }
 

@@ -1,21 +1,6 @@
-/**
- * Nav.module.css - Estilos para el componente de navegación
- * 
- * Características:
- * - Diseño responsive
- * - Menú hamburguesa para mobile
- * - Estados activos
- * - Transiciones suaves
- * 
- * @author Indiana Usados
- * @version 1.0.0
- */
-
 .navbar {
-  background: rgba(18, 18, 18, 0.95); /* ✅ OPTIMIZADO: Simplificado de gradiente complejo */
-  backdrop-filter: blur(12px); /* ✅ OPTIMIZADO: Reducido de 15px a 12px */
-  -webkit-backdrop-filter: blur(12px); /* ✅ OPTIMIZADO: Reducido de 15px a 12px */
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+  background: rgba(18, 18, 18, 0.8);
+  backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -23,41 +8,36 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-  .container {
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
   margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 90px;
+  padding: 8px 24px 8px 0;
+  position: relative;
 }
 
 .brand {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-  color: white;
-  text-decoration: none;
-  transition: color var(--transition-fast);
-  justify-self: start;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
-  margin-left: 5px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  z-index: 1001;
+  padding-left: 0;
 }
 
 .logo {
   height: 75px;
   width: auto;
-  transition: transform var(--transition-fast);
+  object-fit: contain;
+  transition: transform 0.2s;
 }
 
 .logo:hover {
   transform: scale(1.05);
-}
-
-.brand:hover {
-  color: var(--color-primary-300);
 }
 
 .mobileMenu {
@@ -65,9 +45,8 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: var(--spacing-xs);
+  padding: 8px;
   z-index: 1001;
-  margin-right: 12px;
 }
 
 .hamburger {
@@ -82,104 +61,69 @@
   width: 100%;
   height: 2px;
   background-color: white;
-  transition: transform var(--transition-fast), opacity var(--transition-fast); /* ✅ OPTIMIZADO: Específico en lugar de all */
+  transition: transform 0.2s, opacity 0.2s;
   transform-origin: center;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
 }
 
 .navList {
   display: flex;
-  list-style: none;
   margin: 0;
   padding: 0;
-  gap: var(--spacing-xl);
+  gap: 32px;
+  align-items: center;
 }
 
-.navItem {
-  margin: 0;
-  position: relative;
+.divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 8px;
 }
-
-/* Removed separator lines between nav items */
 
 .navLink {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px); /* ✅ OPTIMIZADO: Reducido de 12px a 10px */
-  -webkit-backdrop-filter: blur(10px); /* ✅ OPTIMIZADO: Reducido de 12px a 10px */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--color-white);
+  background: transparent;
+  color: white;
   text-decoration: none;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--border-radius-sm);
-  font-weight: var(--font-weight-medium);
-  transition: transform var(--transition-medium), opacity var(--transition-medium), visibility var(--transition-medium);
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  transition: background-color 0.2s, transform 0.2s;
+  border: none;
+  white-space: nowrap;
 }
 
 .navLink:hover {
   color: white;
-  background: linear-gradient(135deg, rgba(96, 96, 96, 0.8) 0%, rgba(112, 112, 112, 0.7) 100%);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+  background: rgba(255, 255, 255, 0.03);
+  transform: translateY(-0.5px);
 }
 
 .navLink.active {
   color: white;
-  background: linear-gradient(135deg, rgba(112, 112, 112, 0.9) 0%, rgba(128, 128, 128, 0.8) 100%);
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+  background: rgba(255, 255, 255, 0.03);
+  font-weight: 600;
 }
 
-.navLink.active::after {
-  display: none;
-}
-
-/* Estilo especial para el enlace externo - estado normal invertido */
-.navbar .navLink.externalLink {
-  background: linear-gradient(135deg, rgba(96, 96, 96, 0.8) 0%, rgba(112, 112, 112, 0.7) 100%);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
-  color: white;
-}
-
-.navbar .navLink.externalLink:hover {
-  background: linear-gradient(135deg, rgba(80, 80, 80, 0.6) 0%, rgba(96, 96, 96, 0.5) 100%);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
-}
-
-/* Estilos base para botones externos */
-.externalLink {
-  /* Estilos compartidos entre desktop y móvil */
-}
-
-/* Botón externo para desktop */
-.desktopExternal {
-  justify-self: end;
-  margin-right: var(--spacing-md);
-}
-
-/* Botón externo para móvil */
-.mobileExternal {
-  /* Estilos específicos para móvil se definen en la media query */
-}
-
-
-
-/* Responsive */
 @media (max-width: 768px) {
+  .container {
+    padding: 6px 16px 6px 0;
+  }
+
+  .logo {
+    height: 65px;
+  }
+
   .mobileMenu {
     display: block;
   }
@@ -190,19 +134,18 @@
     left: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(12px); /* ✅ OPTIMIZADO: Reducido de 15px a 12px */
-    -webkit-backdrop-filter: blur(12px); /* ✅ OPTIMIZADO: Reducido de 15px a 12px */
+    backdrop-filter: blur(12px);
     border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: var(--border-radius-md);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transform: translateY(-10px);
     opacity: 0;
     visibility: hidden;
-    transition: transform var(--transition-medium), opacity var(--transition-medium), visibility var(--transition-medium);
-    z-index: 1000;
+    transition: transform 0.3s, opacity 0.3s, visibility 0.3s;
     flex-direction: column;
     justify-content: flex-start;
     width: 100%;
+    padding: 16px;
   }
 
   .nav.open {
@@ -214,53 +157,36 @@
   .navList {
     flex-direction: column;
     gap: 0;
-    padding: var(--spacing-md);
-    justify-content: flex-start;
-  }
-
-  .navItem {
     width: 100%;
   }
 
-  .navItem::after {
+  .divider {
     display: none;
   }
 
-  /* Ocultar botón de desktop en móvil con mayor especificidad */
-  .container .desktopExternal {
-    display: none;
-  }
 
-  /* Estilos para botón externo en móvil */
-  .mobileExternal {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: var(--spacing-sm);
-  }
 
   .navLink {
     display: block;
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius-sm);
-    margin-bottom: var(--spacing-xs);
-    font-size: var(--font-size-base);
-    white-space: nowrap;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 15px;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.2s, transform 0.2s;
   }
 
   .navLink:hover {
-    background-color: #333333;
+    background: rgba(255, 255, 255, 0.03);
+    transform: translateX(2px);
   }
 
   .navLink.active {
-    background-color: #333333;
+    background: rgba(255, 255, 255, 0.03);
+    font-weight: 600;
   }
 
-  .navLink.active::after {
-    display: none;
-  }
-
-  /* Animación del hamburger */
   .mobileMenu[aria-expanded="true"] .line:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
   }
@@ -274,28 +200,14 @@
   }
 }
 
-@media (min-width: 768px) {
-  .container {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: var(--spacing-lg);
-  }
-  
+@media (min-width: 769px) {
   .nav {
-    position: static;
-    transform: none;
-    opacity: 1;
-    visibility: visible;
+    position: absolute;
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%, -50%);
+    background: transparent;
+    border: none;
     box-shadow: none;
-  }
-
-  /* Mostrar botón de desktop */
-  .desktopExternal {
-    display: block;
-  }
-
-  /* Ocultar botón de móvil en desktop */
-  .mobileExternal {
-    display: none;
   }
 } 

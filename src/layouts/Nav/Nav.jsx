@@ -51,60 +51,32 @@ const Nav = () => {
         </button>
         
         <div className={`${styles.nav} ${isMenuOpen ? styles.open : ''}`}>
-          <ul className={styles.navList}>
-            <li className={styles.navItem}>
-              <Link 
-                className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`} 
-                to="/"
-                onClick={closeMenu}
-              >
-                Home
-              </Link>
-            </li>
-            <li className={styles.navItem}>
-              <Link 
-                className={`${styles.navLink} ${isActive('/vehiculos') ? styles.active : ''}`} 
-                to="/vehiculos"
-                onClick={closeMenu}
-              >
-                Vehículos
-              </Link>
-            </li>
-            <li className={styles.navItem}>
-              <Link 
-                className={`${styles.navLink} ${isActive('/nosotros') ? styles.active : ''}`} 
-                to="/nosotros"
-                onClick={closeMenu}
-              >
-                Nosotros
-              </Link>
-            </li>
-            <li className={styles.navItem}>
-              <a 
-                className={`${styles.navLink} ${styles.externalLink} ${styles.mobileExternal}`}
-                href="https://peugeotindiana.com.ar/"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={closeMenu}
-              >
-                0 km ↗
-              </a>
-            </li>
-          </ul>
+          <div className={styles.navList}>
+            <Link 
+              className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`} 
+              to="/"
+              onClick={closeMenu}
+            >
+              Home
+            </Link>
+            <div className={styles.divider}></div>
+            <Link 
+              className={`${styles.navLink} ${isActive('/vehiculos') ? styles.active : ''}`} 
+              to="/vehiculos"
+              onClick={closeMenu}
+            >
+              Vehículos
+            </Link>
+            <div className={styles.divider}></div>
+            <Link 
+              className={`${styles.navLink} ${isActive('/nosotros') ? styles.active : ''}`} 
+              to="/nosotros"
+              onClick={closeMenu}
+            >
+              Nosotros
+            </Link>
+          </div>
         </div>
-        
-        <a 
-          className={`${styles.navLink} ${styles.externalLink} ${styles.desktopExternal}`}
-          href="https://peugeotindiana.com.ar/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          0 km ↗
-        </a>
-        
-
-        
-
       </div>
     </nav>
   )

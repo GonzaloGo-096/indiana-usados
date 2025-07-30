@@ -57,6 +57,16 @@ const Footer = () => {
               <li className={styles.linkItem}>
                 <Link to="/nosotros" className={styles.link}>Nosotros</Link>
               </li>
+              <li className={styles.linkItem}>
+                <a 
+                  href="https://peugeotindiana.com.ar/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className={styles.link}
+                >
+                  0 km ↗
+                </a>
+              </li>
             </ul>
           </div>
         </div>

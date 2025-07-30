@@ -122,7 +122,7 @@
 }
 
 .headerLeft {
-    flex: 0 0 auto; /* ✅ CAMBIADO: De 0.6 a 0 0 auto (solo el espacio necesario) */
+    flex: 0.6; /* ✅ REDUCIDO: De 0.7 a 0.6 para dar más espacio al contenedor negro */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -151,7 +151,7 @@
 }
 
 .headerRight {
-    flex: 1; /* ✅ CAMBIADO: De 0 0 40% a 1 (toma todo el espacio disponible) */
+    flex: 0.4; /* ✅ AUMENTADO: De 0.3 a 0.4 para mover el contenedor más a la derecha */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -163,15 +163,15 @@
     background: #111827;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 3px 8px;
+    justify-content: center; /* ✅ CAMBIADO: De flex-end a center para centrar el número */
+    padding: 3px 4px;
     border-radius: 0 8px 8px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card__price {
     color: #ffffff;
-    font-size: 22px; /* ✅ AUMENTADO: De 20px a 22px */
+    font-size: 20px; /* ✅ REDUCIDO: De 22px a 20px */
     font-weight: 700;
     text-align: center;
 }
@@ -288,11 +288,11 @@
         padding: 6px 8px;
         align-items: center;
         text-align: center;
-        flex: 0 0 auto;
+        flex: 0.6; /* ✅ MANTENIDO: Menos espacio para título */
     }
     
     .headerRight {
-        flex: 1;
+        flex: 0.4; /* ✅ MANTENIDO: Más espacio para contenedor negro */
     }
     
     .card__title_container {
@@ -301,9 +301,9 @@
     }
     
     .priceContainer {
-        padding: 3px 6px;
+        padding: 3px 3px;
         border-radius: 0 6px 6px 0;
-        justify-content: center;
+        justify-content: center; /* ✅ MANTENIDO: Número centrado */
     }
     
     .card__title {
@@ -318,7 +318,7 @@
     }
     
     .card__price {
-        font-size: 20px;
+        font-size: 18px;
     }
     
     .card__data_container {
@@ -347,7 +347,7 @@
     }
     
     .card__footer_border {
-        width: 35%; /* ✅ AJUSTADO: De 40% a 35% en tablet */
+        width: 35%;
     }
     
     .card__button {
@@ -388,9 +388,9 @@
     }
     
     .priceContainer {
-        padding: 4px 8px;
+        padding: 4px 6px;
         border-radius: 0 0 4px 4px;
-        justify-content: center;
+        justify-content: center; /* ✅ MANTENIDO: Número centrado */
     }
     
     .card__title {
@@ -406,7 +406,7 @@
     }
     
     .card__price {
-        font-size: 19px;
+        font-size: 17px;
     }
     
     .card__data_container {
@@ -435,7 +435,7 @@
     }
     
     .card__footer_border {
-        width: 30%; /* ✅ AJUSTADO: De 40% a 30% en mobile */
+        width: 30%;
     }
     
     .card__button {

@@ -54,12 +54,12 @@
 }
 
 .trigger:focus {
-  border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  border-color: var(--color-neutral-900);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .trigger.open {
-  border-color: var(--color-primary-500);
+  border-color: var(--color-neutral-900);
 }
 
 .trigger.error {
@@ -135,7 +135,7 @@
 .checkbox {
   width: 16px;
   height: 16px;
-  accent-color: var(--color-primary-500);
+  accent-color: var(--color-neutral-900);
   cursor: pointer;
   flex-shrink: 0;
 }
