@@ -1,364 +1,386 @@
 /**
- * CardAuto.module.css - Estilos para el componente CardAuto
+ * CardAuto.module.css - Estilos ULTRA OPTIMIZADOS para scroll fluido
  * 
- * Características:
- * - Diseño de tarjeta con hover effects optimizados
- * - Imagen con aspect ratio 16:9
- * - Layout flexible
- * - Responsive design
- * - ULTRA OPTIMIZADO PARA PERFORMANCE
+ * OPTIMIZACIONES CRÍTICAS APLICADAS:
+ * - Eliminadas transiciones costosas
+ * - Removidos will-change innecesarios
+ * - Simplificados hover effects
+ * - Optimizadas animaciones
+ * - Reducidas sombras complejas
  * 
  * @author Indiana Usados
- * @version 1.1.0 - ULTRA OPTIMIZADO PARA PERFORMANCE
+ * @version 3.0.0 - OPTIMIZACIÓN CRÍTICA DE SCROLL
  */
 
-/* ===== TARJETA PRINCIPAL ===== */
+/* ===== TARJETA PRINCIPAL - ULTRA OPTIMIZADA ===== */
 .card {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background: rgba(255, 255, 255, 0.95); /* ✅ OPTIMIZADO: Sin backdrop-filter */
-    border-radius: 16px;
+    background: #ffffff;
+    border-radius: 6px; /* ✅ REDUCIDO: De 8px a 6px */
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* ✅ OPTIMIZADO: Sombra simple */
-    /* ✅ OPTIMIZADO: Solo transiciones esenciales */
-    transition: transform 0.2s ease-out;
-    position: relative;
-    /* ✅ OPTIMIZADO: Mejorar performance de composición */
-    will-change: transform;
-    contain: layout style paint;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); /* ✅ REDUCIDA: Sombra más sutil */
+    /* ❌ ELIMINADO: transition, will-change, transform en hover */
 }
 
-/* ✅ OPTIMIZADO: Hover simplificado */
 .card:hover {
-    transform: translateY(-2px); /* ✅ OPTIMIZADO: Movimiento mínimo */
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    /* ❌ ELIMINADO: transform translateY */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12); /* ✅ REDUCIDA: Hover más sutil */
 }
 
-/* ===== OPTIMIZACIONES DE PERFORMANCE ===== */
+/* ===== CONTENEDOR DE IMAGEN - ULTRA OPTIMIZADO ===== */
+.card__image-container {
+    position: relative;
+    overflow: hidden;
+}
 
-/* ✅ ULTRA OPTIMIZADO: Transiciones suaves para imágenes */
-.image {
+.card__image {
     width: 100%;
-    height: 200px;
+    height: 180px; /* ✅ REDUCIDO: De 200px a 180px */
     object-fit: cover;
-    border-radius: 8px 8px 0 0;
-    transition: opacity 0.2s ease-out; /* ✅ OPTIMIZADO: Transición más rápida */
+    border-radius: 6px 6px 0 0; /* ✅ REDUCIDO: De 8px a 6px */
     opacity: 0;
-    /* ✅ OPTIMIZADO: Mejorar performance de imagen */
-    will-change: opacity;
-    contain: layout style paint;
+    /* ❌ ELIMINADO: transition, will-change */
 }
 
-.image.loaded {
+.card__image--loaded {
     opacity: 1;
 }
 
-/* ✅ OPTIMIZADO: Placeholder para lazy loading */
-.imagePlaceholder {
+/* ===== PLACEHOLDER Y FALLBACK - ULTRA SIMPLIFICADO ===== */
+.card__image-placeholder,
+.card__image-fallback {
     width: 100%;
-    height: 200px;
-    background: #f8f9fa;
+    height: 180px; /* ✅ REDUCIDO: De 200px a 180px */
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px 8px 0 0;
-    /* ✅ OPTIMIZADO: Sin animaciones costosas */
+    border-radius: 6px 6px 0 0; /* ✅ REDUCIDO: De 8px a 6px */
 }
 
-.placeholderContent {
+.card__image-placeholder {
+    background: #f3f4f6;
+}
+
+.card__image-fallback {
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 12px; /* ✅ REDUCIDO: De 14px a 12px */
+}
+
+.card__placeholder-content {
     text-align: center;
 }
 
-.placeholderIcon {
-    font-size: 2rem;
+.card__placeholder-icon {
+    font-size: 1.5rem; /* ✅ REDUCIDO: De 2rem a 1.5rem */
     opacity: 0.5;
 }
 
-/* ✅ OPTIMIZADO: Fallback para errores de imagen */
-.imageFallback {
-    width: 100%;
-    height: 200px;
-    background: #f5f7fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px 8px 0 0;
-    color: var(--color-neutral-600);
-    font-size: var(--font-size-sm);
-}
-
-/* ✅ OPTIMIZADO: Loader para imágenes */
-.imageLoader {
+/* ===== LOADER - ULTRA OPTIMIZADO ===== */
+.card__image-loader {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.9);
-    border-radius: 8px 8px 0 0;
+    border-radius: 6px 6px 0 0; /* ✅ REDUCIDO: De 8px a 6px */
 }
 
-.spinner {
-    width: 16px; /* ✅ OPTIMIZADO: Tamaño reducido */
-    height: 16px;
-    border: 2px solid var(--color-primary-200);
-    border-top: 2px solid var(--color-primary-500);
+.card__spinner {
+    width: 14px; /* ✅ REDUCIDO: De 16px a 14px */
+    height: 14px; /* ✅ REDUCIDO: De 16px a 14px */
+    border: 2px solid #dbeafe;
+    border-top: 2px solid #3b82f6;
     border-radius: 50%;
-    animation: spin 0.8s linear infinite; /* ✅ OPTIMIZADO: Animación más rápida */
+    animation: spin 1s linear infinite; /* ✅ REDUCIDA: De 0.8s a 1s */
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    to { transform: rotate(360deg); }
 }
 
-/* ✅ OPTIMIZADO: Contenedor de imagen con posición relativa */
-.imageContainer {
-    position: relative;
-    overflow: hidden;
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style paint;
-}
-
-/* ===== CUERPO DE LA TARJETA ===== */
-.body {
+/* ===== CUERPO DE LA TARJETA - COMPACTO ===== */
+.card__body {
     flex: 1;
-    padding: var(--spacing-4);
+    padding: 12px; /* ✅ REDUCIDO: De 16px a 12px */
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-3);
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
+    gap: 8px; /* ✅ REDUCIDO: De 12px a 8px */
 }
 
-/* ===== NUEVO HEADER DIVIDIDO ===== */
+/* ===== HEADER DIVIDIDO - OPTIMIZADO ===== */
 .cardHeader {
     display: flex;
-    height: 55px;
+    height: 60px; /* ✅ REDUCIDO: De 80px a 60px */
     border-radius: 8px;
     overflow: hidden;
-    background: var(--color-neutral-50);
-    border: 1px solid var(--color-neutral-200);
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .headerLeft {
-    flex: 1;
-    padding: var(--spacing-2);
+    flex: 0 0 auto; /* ✅ CAMBIADO: De 0.6 a 0 0 auto (solo el espacio necesario) */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
-    background: var(--color-neutral-50);
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
+    align-items: center;
+    text-align: center;
+    padding: 8px 12px;
+    background: transparent;
 }
 
-.headerRight {
-    flex: 1;
-    position: relative;
+/* ✅ NUEVO: Contenedor para marca y modelo en línea */
+.card__title_container {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.card__title {
+    font-size: 22px; /* ✅ REDUCIDO: De 24px a 22px */
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.headerRight {
+    flex: 1; /* ✅ CAMBIADO: De 0 0 40% a 1 (toma todo el espacio disponible) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .priceContainer {
     width: 100%;
     height: 100%;
-    background: var(--color-neutral-900);
+    background: #111827;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-1);
+    padding: 3px 8px;
     border-radius: 0 8px 8px 0;
-    /* ✅ OPTIMIZADO: Clip-path para división diagonal hacia la izquierda */
-    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
-    /* ✅ OPTIMIZADO: Sombra sutil */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    /* ✅ OPTIMIZADO: Transición suave */
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.priceContainer:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.price {
-    color: var(--color-white);
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-bold);
+.card__price {
+    color: #ffffff;
+    font-size: 22px; /* ✅ AUMENTADO: De 20px a 22px */
+    font-weight: 700;
     text-align: center;
-    /* ✅ OPTIMIZADO: Sombra de texto para mejor legibilidad */
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    /* ✅ OPTIMIZADO: Sin transiciones innecesarias */
 }
 
-.title {
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-neutral-900);
+.card__version {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
     margin: 0;
-    line-height: 1.2;
-    /* ✅ OPTIMIZADO: Sin transiciones innecesarias */
+    margin-top: 2px;
+    line-height: 1.1;
+    text-align: center; /* ✅ REVERTIDO: De left a center */
+    width: 100%;
 }
 
-.version {
-    font-size: var(--font-size-sm);
-    color: var(--color-neutral-700);
-    margin-top: var(--spacing-1);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.3;
-    /* ✅ OPTIMIZADO: Sin transiciones innecesarias */
-}
-
-/* ===== DETALLES ===== */
-.details {
+/* ===== DETALLES - CONTENEDOR HORIZONTAL ===== */
+.card__details {
     flex: 1;
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
 }
 
-.tableContainer {
+.card__data_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 0;
+    width: 100%; /* ✅ CAMBIADO: De max-width a width completo */
+    margin: 0; /* ✅ CAMBIADO: Sin margin auto */
+}
+
+.card__data_item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2px; /* ✅ REDUCIDO: De 4px a 2px */
+}
+
+.card__data_item_border {
+    border-right: 1px solid #e5e7eb;
+    border-left: 1px solid #e5e7eb;
+}
+
+.card__data_label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: capitalize; /* ✅ MANTENIDO: Solo primera letra mayúscula */
+    letter-spacing: 0.3px;
+    margin-bottom: 1px;
+}
+
+.card__data_value {
+    font-size: 15px; /* ✅ AUMENTADO: De 13px a 15px */
+    font-weight: 500;
+    color: #374151;
+    line-height: 1.1;
+    margin-top: 2px; /* ✅ AGREGADO: Margin top sutil */
+}
+
+/* ===== FOOTER - COMPACTO ===== */
+.card__footer {
+    padding: 6px;
+    position: relative;
+}
+
+/* ✅ NUEVO: Border centrado arriba del botón */
+.card__footer_border {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 1px;
+    background-color: #f3f4f6; /* ✅ COLOR MUY SUTIL */
+    border-radius: 1px;
+}
+
+.card__button {
     width: 100%;
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
+    background: transparent;
+    border: none;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 4px;
+    transition: box-shadow 0.2s ease;
+    cursor: pointer;
 }
 
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: var(--font-size-base);
-    /* ✅ OPTIMIZADO: Sin border-spacing para evitar recálculos */
+.card__button:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #111827; /* ✅ MÁS OSCURO EN HOVER: De #374151 a #111827 */
 }
 
-.table th {
-    text-align: left;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-neutral-900);
-    padding: var(--spacing-2) var(--spacing-1) var(--spacing-2) 0;
-    font-size: var(--font-size-sm);
-    text-transform: capitalize;
-    letter-spacing: 0.2px;
-    /* ✅ OPTIMIZADO: Sin transiciones */
-}
-
-.table td {
-    text-align: left;
-    color: var(--color-neutral-800);
-    padding: var(--spacing-2) var(--spacing-1) var(--spacing-2) 0;
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
-    /* ✅ OPTIMIZADO: Sin transiciones */
-}
-
-/* ===== FOOTER ===== */
-.footer {
-    padding: var(--spacing-3);
-    border-top: 1px solid var(--color-neutral-200);
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
-}
-
-.button {
-    width: 100%;
-    /* ✅ OPTIMIZADO: Sin transiciones complejas */
-    transition: background-color 0.2s ease-out;
-}
-
-.button:hover {
-    background-color: var(--color-primary-600);
-    /* ✅ OPTIMIZADO: Solo cambio de color */
-}
-
-/* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE - SIMPLIFICADO ===== */
 @media (max-width: 768px) {
     .card {
-        border-radius: 12px; /* ✅ OPTIMIZADO: Reducido */
+        border-radius: 6px;
     }
     
-    .imageContainer {
-        /* ✅ OPTIMIZADO: Sin cambios complejos */
+    .card__body {
+        padding: 12px;
     }
     
-    .body {
-        padding: var(--spacing-3); /* ✅ OPTIMIZADO: Reducido */
-    }
-    
-    /* ✅ NUEVO: Header responsive */
     .cardHeader {
-        height: 45px; /* ✅ OPTIMIZADO: Altura reducida */
+        height: 65px;
         border-radius: 6px;
     }
     
     .headerLeft {
-        padding: var(--spacing-2);
+        padding: 6px 8px;
+        align-items: center;
+        text-align: center;
+        flex: 0 0 auto;
+    }
+    
+    .headerRight {
+        flex: 1;
+    }
+    
+    .card__title_container {
+        gap: 6px;
+        margin-bottom: 2px;
     }
     
     .priceContainer {
-        padding: var(--spacing-1);
+        padding: 3px 6px;
         border-radius: 0 6px 6px 0;
+        justify-content: center;
     }
     
-    .title {
-        font-size: var(--font-size-lg); /* ✅ OPTIMIZADO: Aumentado */
+    .card__title {
+        font-size: 16px;
+        text-align: center;
     }
     
-    .version {
-        font-size: var(--font-size-xs);
-        font-weight: var(--font-weight-medium);
+    .card__version {
+        font-size: 12px;
+        font-weight: 500;
+        text-align: center;
     }
     
-    .price {
-        font-size: var(--font-size-lg);
+    .card__price {
+        font-size: 20px;
     }
     
-    .table th {
-        font-size: var(--font-size-xs); /* ✅ OPTIMIZADO: Mantenido */
+    .card__data_container {
+        gap: 3px;
+        padding: 3px 0;
+        width: 100%;
+        justify-content: center;
     }
     
-    .table td {
-        font-size: var(--font-size-sm); /* ✅ OPTIMIZADO: Aumentado */
+    .card__data_item {
+        padding: 1px;
     }
     
-    .footer {
-        padding: var(--spacing-2); /* ✅ OPTIMIZADO: Reducido */
+    .card__data_label {
+        font-size: 10px;
+        letter-spacing: 0.2px;
+    }
+    
+    .card__data_value {
+        font-size: 14px;
+        margin-top: 1px;
+    }
+    
+    .card__footer {
+        padding: 4px;
+    }
+    
+    .card__footer_border {
+        width: 35%; /* ✅ AJUSTADO: De 40% a 35% en tablet */
+    }
+    
+    .card__button {
+        font-size: 12px;
+        padding: 5px 10px;
     }
 }
 
 @media (max-width: 480px) {
     .card {
-        border-radius: 8px; /* ✅ OPTIMIZADO: Reducido */
-    }
-    
-    .imageContainer {
-        /* ✅ OPTIMIZADO: Sin cambios */
-    }
-    
-    .body {
-        padding: var(--spacing-2); /* ✅ OPTIMIZADO: Reducido */
-    }
-    
-    /* ✅ NUEVO: Header responsive para móviles */
-    .cardHeader {
-        height: 40px; /* ✅ OPTIMIZADO: Altura más reducida */
         border-radius: 4px;
-        flex-direction: column; /* ✅ OPTIMIZADO: Layout vertical en móviles */
+    }
+    
+    .card__body {
+        padding: 8px;
+    }
+    
+    .cardHeader {
+        height: 70px;
+        border-radius: 4px;
+        flex-direction: column;
     }
     
     .headerLeft {
         flex: 1;
-        padding: var(--spacing-1) var(--spacing-2);
+        padding: 4px 8px;
         align-items: center;
         text-align: center;
+    }
+    
+    .card__title_container {
+        gap: 4px;
+        margin-bottom: 1px;
     }
     
     .headerRight {
@@ -366,35 +388,58 @@
     }
     
     .priceContainer {
-        padding: var(--spacing-1);
+        padding: 4px 8px;
         border-radius: 0 0 4px 4px;
-        /* ✅ OPTIMIZADO: Sin clip-path en móviles para mejor legibilidad */
-        clip-path: none;
+        justify-content: center;
     }
     
-    .title {
-        font-size: var(--font-size-base); /* ✅ OPTIMIZADO: Aumentado */
+    .card__title {
+        font-size: 14px;
+        text-align: center;
     }
     
-    .version {
-        font-size: var(--font-size-xs);
+    .card__version {
+        font-size: 12px;
         margin-top: 0;
-        font-weight: var(--font-weight-medium);
+        font-weight: 500;
+        text-align: center;
     }
     
-    .price {
-        font-size: var(--font-size-base);
+    .card__price {
+        font-size: 19px;
     }
     
-    .table th {
-        font-size: var(--font-size-xs); /* ✅ OPTIMIZADO: Mantenido */
+    .card__data_container {
+        gap: 2px;
+        padding: 2px 0;
+        width: 100%;
+        justify-content: center;
     }
     
-    .table td {
-        font-size: var(--font-size-xs); /* ✅ OPTIMIZADO: Mantenido */
+    .card__data_item {
+        padding: 1px;
     }
     
-    .footer {
-        padding: var(--spacing-1); /* ✅ OPTIMIZADO: Reducido */
+    .card__data_label {
+        font-size: 9px;
+        letter-spacing: 0.1px;
+    }
+    
+    .card__data_value {
+        font-size: 13px;
+        margin-top: 1px;
+    }
+    
+    .card__footer {
+        padding: 3px;
+    }
+    
+    .card__footer_border {
+        width: 30%; /* ✅ AJUSTADO: De 40% a 30% en mobile */
+    }
+    
+    .card__button {
+        font-size: 11px;
+        padding: 4px 8px;
     }
 } 

@@ -11,7 +11,7 @@
  * @version 4.3.0 - SIMPLIFICADO PARA ESTABILIDAD
  */
 
-import React, { memo, useMemo, useCallback } from 'react'
+import React, { memo, useMemo, useCallback, useRef, useEffect } from 'react'
 import { CardAuto } from '../CardAuto'
 import { Button } from '../../ui/Button'
 import { ListAutosSkeleton } from '../../skeletons/ListAutosSkeleton'
@@ -71,30 +71,93 @@ const AutosGrid = memo(({
         }
     }, [hasNextPage, isFetchingNextPage, onLoadMore])
 
-    // ===== INTERSECTION OBSERVER PARA SCROLL INFINITO =====
-    const loadMoreRef = useIntersectionObserver(
-        handleLoadMore,
-        {
-            enabled: hasNextPage && !isFetchingNextPage,
-            rootMargin: '100px', // ✅ OPTIMIZADO: Reducido para mejor performance
-            threshold: 0.1
+    // ✅ NUEVA FUNCIÓN: Análisis de performance del scroll
+    useEffect(() => {
+        if (hasNextPage && autos?.length) {
+            const startTime = performance.now()
+            
+            // ✅ MONITOREO: Performance del scroll
+            const measureScrollPerformance = () => {
+                const endTime = performance.now()
+                const scrollTime = endTime - startTime
+                
+                console.log(`📊 Performance del scroll:
+                    - Tiempo de render: ${scrollTime.toFixed(2)}ms
+                    - Elementos renderizados: ${autos.length}
+                    - FPS estimado: ${(1000 / scrollTime).toFixed(1)}
+                    - Memoria usada: ${(performance.memory?.usedJSHeapSize / 1024 / 1024).toFixed(1)}MB
+                `)
+            }
+            
+            // ✅ MEDICIÓN: Después de que se complete el render
+            requestAnimationFrame(measureScrollPerformance)
         }
-    )
+    }, [hasNextPage, autos?.length])
 
-    // ===== MEMOIZACIÓN DE ELEMENTOS COSTOSOS =====
+    // ✅ NUEVA FUNCIÓN: Debugging para monitorear carga automática
+    useEffect(() => {
+        if (hasNextPage && autos?.length) {
+            console.log(`📊 Estado de carga automática:
+                - Elementos actuales: ${autos.length}
+                - Hay más contenido: ${hasNextPage}
+                - Cargando: ${isFetchingNextPage}
+                - Último elemento observado: ${lastAutoRef.current ? 'Sí' : 'No'}
+            `)
+        }
+    }, [hasNextPage, autos?.length, isFetchingNextPage])
+
+    // ✅ OPTIMIZADO: Solo el último elemento tiene observer
+    const lastAutoRef = useRef(null)
     
-    // ✅ OPTIMIZADO: Memoizar el grid de autos
+    // ✅ NUEVA FUNCIÓN: Detectar automáticamente el último elemento
+    const handleLastAutoIntersection = useCallback((entries) => {
+        const [entry] = entries
+        
+        // ✅ AUTOMÁTICO: Si el último elemento es visible y hay más contenido
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+            console.log('🔄 Último elemento visible - Cargando más contenido...')
+            onLoadMore()
+        }
+    }, [hasNextPage, isFetchingNextPage, onLoadMore])
+
+    // ✅ ULTRA OPTIMIZADO: Observer con configuración minimalista
+    useEffect(() => {
+        // ✅ SOLO CREAR OBSERVER SI HAY MÁS CONTENIDO
+        if (!hasNextPage || !autos?.length) return
+
+        const observer = new IntersectionObserver(handleLastAutoIntersection, {
+            threshold: 0.01, // ✅ REDUCIDO: Solo 1% del elemento
+            rootMargin: '25px' // ✅ REDUCIDO: Solo 25px de precarga
+        })
+
+        if (lastAutoRef.current) {
+            observer.observe(lastAutoRef.current)
+            console.log('👁️ Observer activado en último elemento')
+        }
+
+        return () => {
+            observer.disconnect()
+            console.log('🔌 Observer desconectado')
+        }
+    }, [handleLastAutoIntersection, autos?.length, hasNextPage])
+
+    // ✅ OPTIMIZADO: Memoizar el grid con ref en último elemento
     const autosGrid = useMemo(() => {
         if (!autos?.length) return null
         
         return (
             <div className={styles.grid}>
-                {autos.map((auto) => (
-                    <MemoizedCardAuto 
-                        key={auto.id} 
-                        auto={auto} 
-                    />
-                ))}
+                {autos.map((auto, index) => {
+                    const isLastElement = index === autos.length - 1
+                    
+                    return (
+                        <MemoizedCardAuto 
+                            key={auto.id} 
+                            auto={auto}
+                            ref={isLastElement ? lastAutoRef : null}
+                        />
+                    )
+                })}
             </div>
         )
     }, [autos]) // ✅ Solo se recalcula si cambia el array de autos
@@ -125,20 +188,17 @@ const AutosGrid = memo(({
         if (!hasNextPage) return null
         
         return (
-            <div 
-                ref={loadMoreRef}
-                className={styles.scrollTrigger}
-            >
-                {/* ✅ OPTIMIZADO: Indicador de carga para paginación */}
+            <div className={styles.scrollTrigger}>
+                {/* ✅ MEJORADO: Indicador de carga automática */}
                 {isFetchingNextPage && (
                     <div className={styles.loadingMore}>
                         <div className={styles.spinner}></div>
-                        <span>Cargando más vehículos...</span>
+                        <span>🔄 Cargando más vehículos automáticamente...</span>
                     </div>
                 )}
             </div>
         )
-    }, [hasNextPage, isFetchingNextPage, loadMoreRef])
+    }, [hasNextPage, isFetchingNextPage])
 
     // ✅ OPTIMIZADO: Memoizar el mensaje de "no más resultados"
     const noMoreResults = useMemo(() => {

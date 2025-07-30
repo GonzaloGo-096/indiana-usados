@@ -67,8 +67,11 @@ const ListAutos = memo(() => {
 
             {/* ===== CONTENEDOR DE LISTA CON TÍTULO ===== */}
             <div className={styles.listContainer}>
-                {/* Línea vertical sutil */}
+                {/* Línea vertical sutil izquierda */}
                 <div className={styles.verticalLine}></div>
+                
+                {/* Línea vertical sutil derecha */}
+                <div className={styles.verticalLineRight}></div>
                 
                 {/* Título principal */}
                 <div className={styles.titleSection}>

@@ -18,7 +18,7 @@ const mockVehicles = [
         modelo: "Corolla",
         version: "XSE 2.0",
         año: 2020,
-        precio: 25000,
+        precio: 10000000, // ✅ ACTUALIZADO: 10 millones
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 50000,
@@ -39,7 +39,7 @@ const mockVehicles = [
         modelo: "Camry",
         version: "XLE 2.5",
         año: 2021,
-        precio: 30000,
+        precio: 8594987, // ✅ ACTUALIZADO: 8.594.987
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 30000,
@@ -60,7 +60,7 @@ const mockVehicles = [
         modelo: "Civic",
         version: "Sport 1.8",
         año: 2019,
-        precio: 22000,
+        precio: 7500000, // ✅ ACTUALIZADO: 7.5 millones
         combustible: "Gasolina",
         transmision: "Manual",
         kilometraje: 70000,
@@ -80,7 +80,7 @@ const mockVehicles = [
         modelo: "Accord",
         version: "Touring 2.0",
         año: 2020,
-        precio: 28000,
+        precio: 9200000, // ✅ ACTUALIZADO: 9.2 millones
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 45000,
@@ -101,7 +101,7 @@ const mockVehicles = [
         modelo: "Focus",
         version: "SE 1.6",
         año: 2018,
-        precio: 18000,
+        precio: 6500000, // ✅ ACTUALIZADO: 6.5 millones
         combustible: "Gasolina",
         transmision: "Manual",
         kilometraje: 80000,
@@ -121,7 +121,7 @@ const mockVehicles = [
         modelo: "Mustang",
         version: "GT 5.0",
         año: 2022,
-        precio: 45000,
+        precio: 15000000, // ✅ ACTUALIZADO: 15 millones
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 15000,
@@ -142,7 +142,7 @@ const mockVehicles = [
         modelo: "Cruze",
         version: "Premier 1.4",
         año: 2021,
-        precio: 26000,
+        precio: 8500000, // ✅ ACTUALIZADO: 8.5 millones
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 35000,
@@ -162,7 +162,7 @@ const mockVehicles = [
         modelo: "Camaro",
         version: "SS 6.2",
         año: 2023,
-        precio: 50000,
+        precio: 18000000, // ✅ ACTUALIZADO: 18 millones
         combustible: "Gasolina",
         transmision: "Manual",
         kilometraje: 5000,
@@ -182,7 +182,7 @@ const mockVehicles = [
         modelo: "Sentra",
         version: "SR 2.0",
         año: 2020,
-        precio: 24000,
+        precio: 7800000, // ✅ ACTUALIZADO: 7.8 millones
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 40000,
@@ -202,7 +202,7 @@ const mockVehicles = [
         modelo: "Altima",
         version: "SL 2.5",
         año: 2022,
-        precio: 32000,
+        precio: 11000000, // ✅ ACTUALIZADO: 11 millones
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 20000,
@@ -222,7 +222,7 @@ const mockVehicles = [
         modelo: "208",
         version: "Feline 1.6",
         año: 2021,
-        precio: 22000,
+        precio: 7200000, // ✅ ACTUALIZADO: 7.2 millones
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 35000,
@@ -243,7 +243,7 @@ const mockVehicles = [
         modelo: "3008",
         version: "GT Line 1.6",
         año: 2022,
-        precio: 35000,
+        precio: 12500000, // ✅ ACTUALIZADO: 12.5 millones
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 25000,
@@ -264,7 +264,7 @@ const mockVehicles = [
         modelo: "Golf",
         version: "GTI 2.0",
         año: 2021,
-        precio: 28000,
+        precio: 9500000, // ✅ ACTUALIZADO: 9.5 millones
         combustible: "Gasolina",
         transmision: "Manual",
         kilometraje: 30000,
@@ -284,7 +284,7 @@ const mockVehicles = [
         modelo: "Serie 3",
         version: "320i 2.0",
         año: 2022,
-        precio: 45000,
+        precio: 16000000, // ✅ ACTUALIZADO: 16 millones
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 15000,
@@ -305,7 +305,7 @@ const mockVehicles = [
         modelo: "Clase A",
         version: "AMG Line 1.3",
         año: 2023,
-        precio: 38000,
+        precio: 13500000, // ✅ ACTUALIZADO: 13.5 millones
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 8000,
