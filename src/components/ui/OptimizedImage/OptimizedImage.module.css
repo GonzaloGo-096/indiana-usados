@@ -108,19 +108,19 @@
 
 /* Efectos hover */
 .hoverZoom {
-    transition: transform 0.3s ease;
+    /* transition: transform 0.3s ease; */
 }
 
 .hoverZoom:hover {
-    transform: scale(1.05);
+    /* transform: scale(1.05); */
 }
 
 .hoverShadow {
-    transition: box-shadow 0.3s ease;
+    /* transition: box-shadow 0.3s ease; */
 }
 
 .hoverShadow:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); */
 }
 
 /* Responsive */

@@ -1,69 +1,147 @@
 /**
- * ListAutos.module.css - Estilos para el componente ListAutos
+ * ListAutos.module.css - Estilos ULTRA OPTIMIZADOS para scroll fluido
  * 
- * Características:
- * - Grid responsive (3 columnas desktop, 2 tablet, 1 mobile)
- * - Estados de error y vacío
- * - Animaciones suaves
- * - Diseño mobile-first
+ * OPTIMIZACIONES CRÍTICAS APLICADAS:
+ * - Eliminados will-change innecesarios
+ * - Removidas transiciones costosas
+ * - Simplificados contain properties
+ * - Optimizado grid layout
+ * - Reducidas animaciones complejas
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 3.0.0 - OPTIMIZACIÓN CRÍTICA DE SCROLL
  */
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .container {
     min-height: 100vh;
-    padding: var(--spacing-8) 0;
+    padding: 32px 0;
 }
 
 /* Ajustes para mobile */
 @media (max-width: 768px) {
     .container {
-        padding: var(--spacing-4) 0;
+        padding: 16px 0;
     }
 }
 
-/* Separación extra entre filtros y autos en desktop */
-@media (min-width: 1200px) {
-    .filtersDesktop {
-        margin-top: var(--spacing-1);
-        margin-bottom: var(--spacing-8);
-    }
-}
-
-/* ===== SECCIÓN DE FILTROS ===== */
-.filterSection {
-    margin-bottom: var(--spacing-xl);
-    padding: 0 var(--spacing-4);
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Ocultar filtro en mobile (se usa el drawer) */
-@media (max-width: 768px) {
-    .filterSection {
-        display: none;
-    }
-}
-
-/* ===== GRID DE VEHÍCULOS ===== */
-.grid {
-    display: grid;
-    grid-template-columns: 1fr; /* Mobile first */
-    gap: var(--spacing-6);
-    min-height: 200px;
+/* ===== CONTENEDOR DE LISTA CON TÍTULO ===== */
+.listContainer {
+    position: relative;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 var(--spacing-4);
+    padding: 0 16px;
+    margin-top: 48px;
+}
+
+/* Línea vertical sutil izquierda */
+.verticalLine {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(
+        to bottom,
+        #e5e7eb 0%,
+        #9ca3af 50%,
+        #e5e7eb 100%
+    );
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
+/* Línea vertical sutil derecha */
+.verticalLineRight {
+    position: absolute;
+    right: -24px; /* ✅ CAMBIADO: De 64px a -24px para ponerla afuera */
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(
+        to bottom,
+        #e5e7eb 0%,
+        #9ca3af 50%,
+        #e5e7eb 100%
+    );
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
+/* Sección del título */
+.titleSection {
+    margin-bottom: 32px;
+    padding-left: 24px;
+    position: relative;
+}
+
+.mainTitle {
+    font-size: 32px;
+    font-weight: 700;
+    color: #374151;
+    margin: 0;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    position: relative;
+}
+
+/* ===== CONTENIDO ===== */
+.content {
+    padding-left: 24px;
+}
+
+@media (max-width: 768px) {
+    .listContainer {
+        padding: 0 8px;
+        margin-top: 32px;
+    }
+    
+    .content {
+        padding-left: 16px;
+    }
+    
+    .titleSection {
+        padding-left: 16px;
+        margin-bottom: 24px;
+    }
+    
+    .mainTitle {
+        font-size: 24px;
+        text-align: left;
+    }
+    
+    .verticalLine {
+        width: 2px;
+    }
+    
+    .verticalLineRight {
+        width: 2px;
+        right: -16px; /* ✅ CAMBIADO: De 32px a -16px para ponerla afuera en mobile */
+    }
+}
+
+/* ===== CONTENEDOR DEL GRID - ULTRA OPTIMIZADO ===== */
+.gridContainer {
+    position: relative;
+    width: 100%;
+    /* ❌ ELIMINADO: contain properties costosas */
+}
+
+/* ===== GRID DE VEHÍCULOS - ULTRA OPTIMIZADO ===== */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px; /* ✅ AUMENTADO: De 20px a 28px */
+    min-height: 150px;
+    /* ❌ ELIMINADO: will-change, contain, transiciones */
 }
 
 /* Ajustes para mobile */
 @media (max-width: 768px) {
     .grid {
-        gap: var(--spacing-4);
-        padding: 0 var(--spacing-2);
+        gap: 24px; /* ✅ AUMENTADO: De 16px a 24px */
     }
 }
 
@@ -71,7 +149,7 @@
 @media (min-width: 768px) {
     .grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-6);
+        gap: 28px; /* ✅ AUMENTADO: De 20px a 28px */
     }
 }
 
@@ -79,31 +157,31 @@
 @media (min-width: 1200px) {
     .grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: var(--spacing-6);
+        gap: 28px; /* ✅ AUMENTADO: De 20px a 28px */
     }
 }
 
-/* ===== WRAPPER DE TARJETAS ===== */
+/* ===== WRAPPER DE TARJETAS - ULTRA COMPACTO ===== */
 .cardWrapper {
-    min-height: 400px;
-    transition: all var(--transition-normal);
+    min-height: 350px; /* ✅ REDUCIDO: De 400px a 350px */
+    /* ❌ ELIMINADO: will-change, contain, transiciones */
 }
 
 /* Ajuste para mobile */
 @media (max-width: 768px) {
     .cardWrapper {
-        min-height: 350px;
+        min-height: 300px; /* ✅ REDUCIDO: De 350px a 300px */
     }
 }
 
 /* ===== CONTENEDOR DE CARGA ===== */
 .loadingContainer {
     min-height: 200px;
-    transition: min-height var(--transition-normal);
+    /* ❌ ELIMINADO: transition */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: var(--spacing-8) 0;
+    padding: 32px 0;
 }
 
 .loading {
@@ -113,13 +191,13 @@
 /* ===== MENSAJE DE FIN DE LISTA ===== */
 .endMessage {
     text-align: center;
-    padding: var(--spacing-8) 0;
-    color: var(--color-neutral-600);
+    padding: 32px 0;
+    color: #6b7280;
 }
 
 .endMessage p {
-    margin-bottom: var(--spacing-4);
-    font-size: var(--font-size-lg);
+    margin-bottom: 16px;
+    font-size: 18px;
 }
 
 /* ===== ESTADOS DE ERROR Y VACÍO ===== */
@@ -129,41 +207,41 @@
     justify-content: center;
     align-items: center;
     min-height: 400px;
-    padding: var(--spacing-8);
+    padding: 32px;
     text-align: center;
 }
 
 .errorContent,
 .emptyContent {
     max-width: 500px;
-    padding: var(--spacing-8);
+    padding: 32px;
     border-radius: 12px;
     background-color: white;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .error h3,
 .empty h3 {
-    color: var(--color-error-500);
-    margin-bottom: var(--spacing-4);
-    font-size: var(--font-size-xl);
+    color: #ef4444;
+    margin-bottom: 16px;
+    font-size: 20px;
 }
 
 .error p,
 .empty p {
-    color: var(--color-neutral-600);
-    margin-bottom: var(--spacing-4);
-    line-height: var(--line-height-relaxed);
+    color: #6b7280;
+    margin-bottom: 16px;
+    line-height: 1.6;
 }
 
 /* ===== BANNER DE ERROR ===== */
 .errorBanner {
-    margin-bottom: var(--spacing-8);
-    padding: var(--spacing-4);
-    background-color: var(--color-warning-50);
-    border: 1px solid var(--color-warning-500);
+    margin-bottom: 32px;
+    padding: 16px;
+    background-color: #fef3c7;
+    border: 1px solid #f59e0b;
     border-radius: 8px;
-    color: var(--color-warning-600);
+    color: #d97706;
 }
 
 .errorBanner .errorContent {
@@ -173,42 +251,42 @@
 }
 
 .errorBanner h3 {
-    color: var(--color-warning-600);
-    font-size: var(--font-size-lg);
-    margin-bottom: var(--spacing-2);
+    color: #d97706;
+    font-size: 18px;
+    margin-bottom: 8px;
 }
 
 /* ===== BOTONES ===== */
 .retryButton {
-    margin-top: var(--spacing-4);
+    margin-top: 16px;
 }
 
-/* ===== SCROLL INFINITO ===== */
+/* ===== SCROLL INFINITO - OPTIMIZADO ===== */
 .scrollTrigger {
     height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: var(--spacing-8);
+    margin-top: 32px;
 }
 
 .loadingMore {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-3);
-    margin-top: var(--spacing-6);
-    padding: var(--spacing-4);
-    color: var(--color-neutral-600);
+    gap: 12px;
+    margin-top: 24px;
+    padding: 16px;
+    color: #6b7280;
 }
 
 .spinner {
     width: 20px;
     height: 20px;
-    border: 2px solid var(--color-neutral-300);
-    border-top: 2px solid var(--color-primary-500);
+    border: 2px solid #d1d5db;
+    border-top: 2px solid #3b82f6;
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    animation: spin 1.2s linear infinite; /* ❌ REDUCIDA VELOCIDAD */
 }
 
 @keyframes spin {
@@ -217,31 +295,31 @@
 }
 
 .noMoreResults {
-    margin-top: var(--spacing-6);
-    padding: var(--spacing-4);
-    color: var(--color-neutral-500);
+    margin-top: 24px;
+    padding: 16px;
+    color: #9ca3af;
     font-style: italic;
 }
 
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
     .container {
-        padding: var(--spacing-4) 0;
+        padding: 16px 0;
     }
     
     .error,
     .empty {
         min-height: 300px;
-        padding: var(--spacing-4);
+        padding: 16px;
     }
     
     .errorContent,
     .emptyContent {
-        padding: var(--spacing-6);
+        padding: 24px;
     }
     
     .errorBanner {
-        margin-bottom: var(--spacing-6);
-        padding: var(--spacing-3);
+        margin-bottom: 24px;
+        padding: 12px;
     }
 } 

@@ -5,10 +5,14 @@
  * - Reset básico
  * - Utilidades globales
  * - Responsive base
+ * - Variables del sistema de diseño
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 2.1.0
  */
+
+/* ===== IMPORTAR VARIABLES GLOBALES ===== */
+@import './variables.css';
 
 /* ===== RESET BÁSICO ===== */
 * {

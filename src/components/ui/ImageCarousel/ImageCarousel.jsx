@@ -15,6 +15,7 @@
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx'
+import { processImages } from '../../../utils/imageUtils'
 import defaultCarImage from '../../../assets/auto1.jpg'
 import styles from './ImageCarousel.module.css'
 
@@ -43,7 +44,11 @@ export const ImageCarousel = ({
         if (!images || images.length === 0) {
             return [defaultCarImage]
         }
-        return images
+        
+        // Procesar imágenes que pueden ser objetos o URLs
+        const processedImages = processImages(images);
+        
+        return processedImages;
     }, [images])
 
     // Función para ir a la imagen anterior - MEMOIZADA

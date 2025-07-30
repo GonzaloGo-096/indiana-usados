@@ -1,13 +1,10 @@
 /**
- * Hooks de Filtros - Exportaciones centralizadas
+ * Hooks de Filtros - Exportaciones simplificadas
  * 
- * Organización de hooks relacionados con el sistema de filtros
+ * Solo exporta el nuevo sistema de filtros simplificado
+ * 
  * @author Indiana Usados
  * @version 2.0.0
  */
 
-// Hook principal del sistema de filtros
-export { useFilterSystem } from './useFilterSystem'
-
-// Hook para notificaciones de filtros
-export { useFilterNotifications } from './useFilterNotifications' 
+export { useFilterReducer } from './useFilterReducer' 

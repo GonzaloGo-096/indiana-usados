@@ -12,9 +12,11 @@
  * @version 1.0.0
  */
 
-import React, { memo } from 'react'
+import React, { memo, useMemo } from 'react'
 import { GmailIcon, WhatsAppIcon } from '../../ui/icons'
 import { ImageCarousel } from '../../ui/ImageCarousel'
+import { formatValue } from '../../../utils/imageUtils'
+import { useCarouselImages } from '../../../hooks/useImageOptimization'
 import styles from './CardDetalle.module.css'
 
 /**
@@ -40,49 +42,37 @@ import styles from './CardDetalle.module.css'
  * @param {string} props.contactInfo.whatsappMessage - Mensaje predefinido para WhatsApp
  */
 export const CardDetalle = memo(({ auto, contactInfo }) => {
-    // Validación de props
+    // ✅ CORREGIDO: Hooks siempre primero, antes de cualquier early return
+    const carouselImages = useCarouselImages(auto)
+    const defaultContactInfo = useMemo(() => ({
+        email: 'info@indianausados.com',
+        whatsapp: '5491112345678',
+        whatsappMessage: `Hola, me interesa el vehículo ${formatValue(auto?.marca || '')} ${formatValue(auto?.modelo || '')}`
+    }), [auto?.marca, auto?.modelo])
+    const altText = useMemo(() => 
+        `${formatValue(auto?.marca || '')} ${formatValue(auto?.modelo || '')}`, 
+        [auto?.marca, auto?.modelo]
+    )
+
+    // ✅ CORREGIDO: Validación después de hooks
     if (!auto) return null
 
     // Extraer datos con valores por defecto
     const {
-        id,
         marca = '',
         modelo = '',
         precio = '',
         año = '',
         kms = '',
-        caja = '',
         color = '',
         categoria = '',
         combustible = '',
         detalle = '',
-        imagen = '',
-        imagenes = []
+        version = '', // <-- Nuevo campo
+        cilindrada = '' // <-- Nuevo campo
     } = auto
 
-    // Función helper para mostrar "-" cuando el valor esté vacío
-    const formatValue = (value) => {
-        if (!value || value === '' || value === 'null' || value === 'undefined') {
-            return '-'
-        }
-        return value
-    }
-
-    // Información de contacto por defecto
-    const defaultContactInfo = {
-        email: 'info@indianausados.com',
-        whatsapp: '5491112345678',
-        whatsappMessage: `Hola, me interesa el vehículo ${formatValue(marca)} ${formatValue(modelo)}`
-    }
-
     const finalContactInfo = contactInfo || defaultContactInfo
-
-    // Preparar imágenes para el carrusel
-    const carouselImages = imagenes && imagenes.length > 0 
-        ? imagenes 
-        : imagen 
-            ? [imagen] 
-            : []
 
     return (
         <div className={styles.card}>
@@ -91,7 +81,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                 <div className={styles.imageSection}>
                     <ImageCarousel 
                         images={carouselImages}
-                        altText={`${formatValue(marca)} ${formatValue(modelo)}`}
+                        altText={altText}
                         showArrows={true}
                         showIndicators={true}
                         autoPlay={false}
@@ -121,6 +111,10 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                                         <th>Kms</th>
                                         <td>{formatValue(kms)}</td>
                                     </tr>
+                                    <tr>
+                                        <th>Versión</th>
+                                        <td>{formatValue(version)}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -139,6 +133,10 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                                     <tr>
                                         <th>Categoría</th>
                                         <td>{formatValue(categoria)}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cilindrada</th>
+                                        <td>{formatValue(cilindrada)}</td>
                                     </tr>
                                 </tbody>
                             </table>

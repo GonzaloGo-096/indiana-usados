@@ -1,10 +1,11 @@
 // Importar datos mock locales
 import { 
     mockVehicles, 
-    filterVehicles, 
-    paginateVehicles, 
     simulateNetworkDelay 
 } from './mockData'
+
+// Importar función de filtrado centralizada
+import { filterVehicles } from '../utils/filterUtils'
 
 // URL base para las peticiones (mantener para compatibilidad)
 const BASE_URL = 'https://c65a35e4-099e-4f66-a282-1f975219d583.mock.pstmn.io'
@@ -97,32 +98,38 @@ const getVehiclesFromRealBackend = async ({ page = 1, limit = 6, filters = {} })
 /**
  * Función para obtener autos con paginación y filtros (usando mock local)
  * @param {Object} params - Parámetros de la petición
- * @param {number} params.pageParam - Página actual
+ * @param {number} params.page - Página actual
  * @param {Object} params.filters - Objeto de filtros
  * @returns {Promise<Object>} - Datos de vehículos
  */
-const getAutos = async ({ filters = {} }) => {
+const getAutos = async ({ filters = {}, page = 1 } = {}) => {
     try {
-        console.log('🌐 Simulando petición al backend con filtros:', filters)
-        console.log('🔍 Filtros aplicados:', filters)
-        
         // Simular delay de red
         await simulateNetworkDelay(300)
         
-        // Filtrar vehículos según los filtros
+        // Filtrar vehículos según los filtros usando función centralizada
         let filteredVehicles = mockVehicles
         
         if (Object.keys(filters).length > 0) {
             filteredVehicles = filterVehicles(mockVehicles, filters)
-            console.log(`📊 Vehículos filtrados: ${filteredVehicles.length} de ${mockVehicles.length}`)
         }
-        // Siempre devolver todos los autos filtrados, sin paginación
+        
+        // Simular paginación por páginas (compatible con backend real)
+        const limit = 6
+        const startIndex = (page - 1) * limit
+        const endIndex = startIndex + limit
+        const paginatedVehicles = filteredVehicles.slice(startIndex, endIndex)
+        
         return {
-            items: filteredVehicles,
-            total: filteredVehicles.length,
-            currentPage: 1,
-            hasMore: false,
-            nextPage: undefined
+            data: paginatedVehicles,           // ✅ Compatible con backend real
+            docs: paginatedVehicles,           // ✅ Fallback para backend real
+            items: paginatedVehicles,          // ✅ Fallback para compatibilidad
+            hasNextPage: endIndex < filteredVehicles.length,  // ✅ Nueva estructura
+            nextPage: endIndex < filteredVehicles.length ? page + 1 : null,  // ✅ Nueva estructura
+            total: filteredVehicles.length,    // ✅ Total de elementos filtrados
+            totalDocs: filteredVehicles.length, // ✅ Fallback para backend real
+            currentPage: page,                 // ✅ Página actual
+            page: page                         // ✅ Fallback para backend real
         }
     } catch (error) {
         console.error('❌ Error en getAutos:', error)
@@ -133,37 +140,37 @@ const getAutos = async ({ filters = {} }) => {
 /**
  * Función para aplicar filtros via POST al backend
  * @param {Object} filters - Filtros a aplicar
+ * @param {Object} options - Opciones de paginación
+ * @param {number} options.page - Página actual
+ * @param {number} options.limit - Elementos por página
  * @returns {Promise<Object>} - Datos filtrados del backend
  */
-const applyFilters = async (filters) => {
+const applyFilters = async (filters, { page = 1, limit = 6 } = {}) => {
     try {
-        console.log('🚀 Aplicando filtros via POST:', filters)
-        
         // Simular petición POST al backend
         await simulateNetworkDelay(500)
         
-        // En el futuro, esto será una petición POST real:
-        // const response = await fetch(`${API_BASE_URL}/vehicles/filter`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': `Bearer ${API_KEY}`
-        //     },
-        //     body: JSON.stringify(filters)
-        // })
-        // 
-        // if (!response.ok) {
-        //     throw new Error(`HTTP error! status: ${response.status}`)
-        // }
-        // 
-        // return response.json()
-        
-        // Por ahora, simulamos la respuesta del backend
+        // Por ahora, simulamos la respuesta del backend usando función centralizada
         const filteredVehicles = filterVehicles(mockVehicles, filters)
         
+        // ✅ AGREGADO: Simular paginación por páginas
+        const startIndex = (page - 1) * limit
+        const endIndex = startIndex + limit
+        const paginatedVehicles = filteredVehicles.slice(startIndex, endIndex)
+        
         return {
-            items: filteredVehicles,
+            // ✅ COMPATIBLE: Estructura nueva
+            data: paginatedVehicles,
+            docs: paginatedVehicles,
+            items: paginatedVehicles,
+            hasNextPage: endIndex < filteredVehicles.length,
+            nextPage: endIndex < filteredVehicles.length ? page + 1 : null,
             total: filteredVehicles.length,
+            totalDocs: filteredVehicles.length,
+            currentPage: page,
+            page: page,
+            
+            // ✅ MANTENER: Compatibilidad con estructura anterior
             filteredCount: filteredVehicles.length,
             totalCount: mockVehicles.length,
             filters: filters,
@@ -181,8 +188,6 @@ const applyFilters = async (filters) => {
  */
 const getAllVehicles = async () => {
     try {
-        console.log('📋 Obteniendo lista completa de vehículos')
-        
         // Simular petición GET al backend
         await simulateNetworkDelay(200)
         
@@ -208,8 +213,6 @@ const getAutoById = async (id) => {
     }
 
     try {
-        console.log(`🔍 Buscando vehículo con ID: ${id}`)
-        
         // Simular delay de red
         await simulateNetworkDelay(200)
         
@@ -220,7 +223,6 @@ const getAutoById = async (id) => {
             throw new Error('Auto no encontrado')
         }
         
-        console.log('📦 Vehículo encontrado:', vehicle)
         return vehicle
     } catch (error) {
         console.error(`Error al cargar auto ${id}:`, error)

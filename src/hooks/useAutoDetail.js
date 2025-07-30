@@ -14,12 +14,13 @@
  * - Formateo de datos consistente
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0 - CORREGIDO ERROR useRealApi
  */
 
 import { useQuery } from '@tanstack/react-query'
-import { useMemo, useCallback } from 'react'
+import { useMemo } from 'react'
 import autoService, { queryKeys } from '../services/service'
+import vehiclesApi from '../api/vehiclesApi'
 
 // Función helper memoizada para formatear valores
 const formatValue = (value) => {
@@ -56,7 +57,7 @@ export const useAutoDetail = (id, options = {}) => {
         refetchOnWindowFocus = false
     } = options
 
-    // Query principal para obtener el vehículo
+    // ✅ CORREGIDO: Query principal para obtener el vehículo
     const {
         data: auto,
         isLoading,
@@ -65,9 +66,17 @@ export const useAutoDetail = (id, options = {}) => {
         refetch
     } = useQuery({
         queryKey: queryKeys.auto(id),
-        queryFn: () => autoService.getAutoById(id),
+        queryFn: async () => {
+            // ✅ CORREGIDO: Usar directamente mock data por ahora
+            // En el futuro, aquí se puede agregar lógica para API real
+            try {
+                return await autoService.getAutoById(id)
+            } catch (error) {
+                throw new Error(`Error al cargar el vehículo: ${error.message}`)
+            }
+        },
         staleTime,
-        cacheTime,
+        gcTime: cacheTime, // cacheTime fue renombrado a gcTime en v5
         retry,
         refetchOnWindowFocus,
         enabled: enabled && !!id
@@ -144,7 +153,7 @@ export const useAutoDetail = (id, options = {}) => {
         // Funciones
         refetch,
         
-        // Estados adicionales
+        // Estados calculados
         hasData,
         hasFormattedData
     }

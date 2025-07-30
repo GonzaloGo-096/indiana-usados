@@ -35,7 +35,7 @@
   font-family: var(--font-family-primary);
   background-color: var(--color-white);
   color: var(--color-neutral-800);
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast), border var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast); /* OPTIMIZADO */
 }
 
 .input:focus {
@@ -68,7 +68,7 @@
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-base);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast); /* OPTIMIZADO */
   width: 100%;
 }
 

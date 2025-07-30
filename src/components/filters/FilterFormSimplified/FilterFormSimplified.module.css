@@ -1,0 +1,323 @@
+/**
+ * FilterFormSimplified.module.css
+ * 
+ * Estilos optimizados para el formulario de filtros
+ * Performance-first, mantenible y escalable
+ * 
+ * @version 3.1.0 - OPTIMIZADO
+ * @author Indiana Usados
+ */
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.filterContainer {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+/* ===== BOTÓN MOBILE ===== */
+.filterButtonMobile {
+  display: none;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  background: #111827;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.filterButtonMobile:hover {
+  background: #374151;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.filterButtonMobile:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.badge {
+  background: #ef4444;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 0.25rem;
+}
+
+/* ===== FORMULARIO ===== */
+.formWrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+  transition: all 0.2s ease;
+  width: 70%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== HEADER MOBILE ===== */
+.formHeaderMobile {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: #111827;
+  color: #ffffff;
+}
+
+.formHeaderMobile h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== FORMULARIO PRINCIPAL ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.25rem;
+}
+
+/* ===== TÍTULO DEL FORMULARIO ===== */
+.formTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 10px 1rem 0.25rem;
+  margin-left: 1rem;
+  position: relative;
+}
+
+.formTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #d1d5db;
+}
+
+.formTitle h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  margin: 0;
+  color: #374151;
+}
+
+.titleActions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* ===== SECCIONES ===== */
+.rangesSection,
+.selectsSection {
+  display: grid;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 6px;
+  overflow: visible;
+}
+
+.rangesSection {
+  background: #f9fafb;
+}
+
+.selectsSection {
+  background: #ffffff;
+}
+
+/* ===== GRUPOS DE FORMULARIO ===== */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  align-items: center;
+}
+
+/* ===== LABELS ===== */
+.formGroup label {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== CLASE BASE PARA BOTONES - OPTIMIZADO ===== */
+.buttonBase {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 70px;
+  max-width: 80px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== BOTONES ESPECÍFICOS - OPTIMIZADO ===== */
+.applyButton {
+  composes: buttonBase;
+  background: var(--color-neutral-900);
+  color: #ffffff;
+  border: 1px solid var(--color-neutral-900);
+}
+
+.applyButton:hover:not(:disabled) {
+  background: var(--color-neutral-800);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.clearButton {
+  composes: buttonBase;
+  background: #f3f4f6;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+}
+
+.clearButton:hover:not(:disabled) {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  color: #374151;
+}
+
+.applyButton:active:not(:disabled),
+.clearButton:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.applyButton:disabled,
+.clearButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Desktop */
+@media (min-width: 769px) {
+  .rangesSection,
+  .selectsSection {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .filterButtonMobile {
+    display: flex;
+  }
+  
+  .formWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1001;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    border-radius: 0;
+  }
+  
+  .filterContainer.open .formWrapper {
+    transform: translateX(0);
+  }
+  
+  .filterContainer.open::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  
+  .formHeaderMobile {
+    display: flex;
+  }
+  
+  .form {
+    height: calc(100% - 60px);
+    overflow-y: auto;
+  }
+  
+  .formTitle {
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: stretch;
+  }
+  
+  .titleActions {
+    justify-content: center;
+  }
+}
+
+/* Touch devices - Optimización para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .applyButton:hover:not(:disabled),
+  .clearButton:hover:not(:disabled),
+  .filterButtonMobile:hover {
+    transform: none;
+  }
+} 

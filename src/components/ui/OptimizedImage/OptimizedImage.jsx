@@ -13,7 +13,7 @@
  * @version 2.0.0
  */
 
-import React, { memo, useState, useEffect } from 'react'
+import React, { memo, useState, useEffect, useCallback } from 'react'
 import { getOptimizedImage, getResponsiveImage } from '../../../config/images'
 import styles from './OptimizedImage.module.css'
 
@@ -66,7 +66,7 @@ export const OptimizedImage = memo(({
     const isImageKey = !src?.startsWith('http') && !src?.startsWith('/') && !src?.startsWith('./')
     
     // Obtener URL optimizada
-    const getOptimizedSrc = () => {
+    const getOptimizedSrc = useCallback(() => {
         if (isImageKey) {
             // Es una clave de imagen, usar el sistema de configuración
             return getOptimizedImage(src, {
@@ -78,7 +78,7 @@ export const OptimizedImage = memo(({
         
         // Es una URL directa
         return src
-    }
+    }, [isImageKey, src, format, optimizationOptions, useCdn])
 
     // Obtener srcset si es necesario
     const getSrcSet = () => {
@@ -135,7 +135,7 @@ export const OptimizedImage = memo(({
             isError: false,
             currentSrc: optimizedSrc
         }))
-    }, [src, format, useCdn, optimizationOptions])
+    }, [src, format, useCdn, optimizationOptions, getOptimizedSrc])
 
     // Renderizar skeleton de carga
     if (state.isLoading && showSkeleton) {

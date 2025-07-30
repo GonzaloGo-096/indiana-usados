@@ -7,17 +7,17 @@
  * @version 2.0.0
  */
 
-// ===== HOOKS DE FILTROS =====
-export * from './filters'
-
-// ===== HOOKS DE AUTENTICACIÓN =====
+// Hooks principales
 export { useAuth } from './useAuth'
 export { useAuthMutation } from './useAuthMutation'
-
-// ===== HOOKS DE DATOS =====
-export { useGetCars } from './useGetCars'
 export { useAutoDetail } from './useAutoDetail'
-
-// ===== HOOKS UTILITARIOS =====
+export { useGetCars } from './useGetCars'
+export { useImageOptimization } from './useImageOptimization'
 export { useIntersectionObserver } from './useIntersectionObserver'
-export { useImageOptimization } from './useImageOptimization' 
+export { useDropdownMulti } from './useDropdownMulti'
+
+// ✅ AGREGADO: Hook de optimización de scroll
+export { useScrollOptimization, useListScrollOptimization } from './useScrollOptimization'
+
+// Hooks de filtros
+export * from './filters' 

@@ -1,0 +1,209 @@
+/**
+ * MultiSelect.module.css - Estilos ultra simples y eficientes
+ * 
+ * Principios: Simplicidad, Performance, Mantenibilidad
+ * - Sin over-engineering
+ * - CSS mínimo y claro
+ * - Performance optimizada sin complejidad
+ * 
+ * @author Indiana Usados
+ * @version 3.1.0
+ */
+
+.multiSelect {
+  width: 100%;
+  position: relative;
+}
+
+.label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-neutral-700);
+  margin-bottom: var(--spacing-sm);
+}
+
+.required {
+  color: #ef4444;
+  font-weight: var(--font-weight-bold);
+}
+
+.container {
+  position: relative;
+}
+
+.trigger {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-neutral-400); /* Volvemos al color anterior */
+  border-radius: var(--border-radius-sm);
+  background: var(--color-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-700);
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil y eficiente */
+}
+
+.trigger:hover:not(.disabled) {
+  border-color: var(--color-neutral-400);
+}
+
+.trigger:focus {
+  border-color: var(--color-neutral-900);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.trigger.open {
+  border-color: var(--color-neutral-900);
+}
+
+.trigger.error {
+  border-color: #ef4444;
+}
+
+.trigger.disabled {
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-500);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.text {
+  flex: 1;
+  text-align: center; /* Centrado el texto */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-neutral-300); /* Color mucho más claro y sutil para placeholder */
+}
+
+.arrow {
+  flex-shrink: 0;
+  margin-left: var(--spacing-sm);
+  transition: transform 0.2s ease;
+}
+
+.trigger.open .arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  margin-top: 2px;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.options {
+  padding: var(--spacing-xs);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xs);
+  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  transition: background-color 0.2s ease;
+  gap: var(--spacing-xs);
+  outline: none;
+}
+
+.option:hover {
+  background: var(--color-neutral-50);
+}
+
+.option:focus {
+  background: var(--color-neutral-100);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-neutral-900);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkbox:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.optionText {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-700);
+  user-select: none;
+}
+
+.emptyState {
+  padding: var(--spacing-md);
+  text-align: center;
+  color: var(--color-neutral-500);
+  font-size: var(--font-size-sm);
+  font-style: italic;
+}
+
+.errorMessage {
+  margin-top: var(--spacing-xs);
+  color: #ef4444;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dropdown {
+    max-height: 250px;
+  }
+  
+  .options {
+    max-height: 200px;
+  }
+  
+  .trigger {
+    padding: var(--spacing-md);
+    font-size: var(--font-size-base);
+  }
+  
+  .option {
+    padding: var(--spacing-sm);
+  }
+  
+  .optionText {
+    font-size: var(--font-size-base);
+  }
+}
+
+/* Touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .trigger {
+    padding: var(--spacing-md);
+    font-size: var(--font-size-base);
+  }
+  
+  .option {
+    padding: var(--spacing-sm);
+  }
+  
+  .checkbox {
+    width: 20px;
+    height: 20px;
+  }
+} 

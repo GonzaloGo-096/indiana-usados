@@ -129,7 +129,7 @@ export const authService = {
             headers: getAuthHeaders()
           })
         } else {
-          console.log('Logout exitoso (modo desarrollo)')
+          // Log removido para limpiar debug info
         }
       } catch (error) {
         console.error('Error during logout API call:', error)

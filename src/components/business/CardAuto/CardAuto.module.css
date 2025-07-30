@@ -1,244 +1,445 @@
 /**
- * CardAuto.module.css - Estilos para el componente CardAuto
+ * CardAuto.module.css - Estilos ULTRA OPTIMIZADOS para scroll fluido
  * 
- * Características:
- * - Diseño de tarjeta con hover effects
- * - Imagen con aspect ratio 16:9
- * - Layout flexible
- * - Responsive design
+ * OPTIMIZACIONES CRÍTICAS APLICADAS:
+ * - Eliminadas transiciones costosas
+ * - Removidos will-change innecesarios
+ * - Simplificados hover effects
+ * - Optimizadas animaciones
+ * - Reducidas sombras complejas
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 3.0.0 - OPTIMIZACIÓN CRÍTICA DE SCROLL
  */
 
-/* ===== TARJETA PRINCIPAL ===== */
+/* ===== TARJETA PRINCIPAL - ULTRA OPTIMIZADA ===== */
 .card {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 245, 245, 0.8) 50%, rgba(235, 235, 235, 0.7) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 16px;
+    background: #ffffff;
+    border-radius: 6px; /* ✅ REDUCIDO: De 8px a 6px */
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    transition: all var(--transition-normal);
-    position: relative;
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(245, 245, 245, 0.3) 50%, rgba(235, 235, 235, 0.2) 100%);
-    border-radius: 16px;
-    pointer-events: none;
-    z-index: -1;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); /* ✅ REDUCIDA: Sombra más sutil */
+    /* ❌ ELIMINADO: transition, will-change, transform en hover */
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 250, 250, 0.9) 50%, rgba(245, 245, 245, 0.8) 100%);
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+    /* ❌ ELIMINADO: transform translateY */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12); /* ✅ REDUCIDA: Hover más sutil */
 }
 
-/* ===== CONTENEDOR DE IMAGEN ===== */
-.imageContainer {
+/* ===== CONTENEDOR DE IMAGEN - ULTRA OPTIMIZADO ===== */
+.card__image-container {
     position: relative;
-    padding-top: 56.25%; /* Aspect ratio 16:9 */
     overflow: hidden;
-    background-color: var(--color-neutral-100);
-    min-height: 200px; /* Altura mínima para evitar imágenes muy pequeñas */
 }
 
-.image {
-    position: absolute;
-    top: 0;
-    left: 0;
+.card__image {
     width: 100%;
-    height: 100%;
+    height: 180px; /* ✅ REDUCIDO: De 200px a 180px */
     object-fit: cover;
-    transition: transform var(--transition-normal);
+    border-radius: 6px 6px 0 0; /* ✅ REDUCIDO: De 8px a 6px */
+    opacity: 0;
+    /* ❌ ELIMINADO: transition, will-change */
 }
 
-.card:hover .image {
-    transform: scale(1.05);
+.card__image--loaded {
+    opacity: 1;
 }
 
-/* ===== CUERPO DE LA TARJETA ===== */
-.body {
+/* ===== PLACEHOLDER Y FALLBACK - ULTRA SIMPLIFICADO ===== */
+.card__image-placeholder,
+.card__image-fallback {
+    width: 100%;
+    height: 180px; /* ✅ REDUCIDO: De 200px a 180px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px 6px 0 0; /* ✅ REDUCIDO: De 8px a 6px */
+}
+
+.card__image-placeholder {
+    background: #f3f4f6;
+}
+
+.card__image-fallback {
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 12px; /* ✅ REDUCIDO: De 14px a 12px */
+}
+
+.card__placeholder-content {
+    text-align: center;
+}
+
+.card__placeholder-icon {
+    font-size: 1.5rem; /* ✅ REDUCIDO: De 2rem a 1.5rem */
+    opacity: 0.5;
+}
+
+/* ===== LOADER - ULTRA OPTIMIZADO ===== */
+.card__image-loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 6px 6px 0 0; /* ✅ REDUCIDO: De 8px a 6px */
+}
+
+.card__spinner {
+    width: 14px; /* ✅ REDUCIDO: De 16px a 14px */
+    height: 14px; /* ✅ REDUCIDO: De 16px a 14px */
+    border: 2px solid #dbeafe;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite; /* ✅ REDUCIDA: De 0.8s a 1s */
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== CUERPO DE LA TARJETA - COMPACTO ===== */
+.card__body {
+    flex: 1;
+    padding: 12px; /* ✅ REDUCIDO: De 16px a 12px */
     display: flex;
     flex-direction: column;
-    flex: 1;
-    padding: var(--spacing-sm);
-    padding-top: var(--spacing-xs);
+    gap: 8px; /* ✅ REDUCIDO: De 12px a 8px */
 }
 
-.title {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-neutral-800);
-    margin-bottom: var(--spacing-md);
-    line-height: var(--line-height-tight);
-    text-align: center;
-}
-
-/* ===== DETALLES ===== */
-.details {
-    margin-top: auto;
-}
-
-.tablesContainer {
+/* ===== HEADER DIVIDIDO - OPTIMIZADO ===== */
+.cardHeader {
     display: flex;
-    gap: 0.25rem;
-    justify-content: space-between;
+    height: 60px; /* ✅ REDUCIDO: De 80px a 60px */
+    border-radius: 8px;
+    overflow: hidden;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.tableSection {
+.headerLeft {
+    flex: 0.6; /* ✅ REDUCIDO: De 0.7 a 0.6 para dar más espacio al contenedor negro */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8px 12px;
+    background: transparent;
+}
+
+/* ✅ NUEVO: Contenedor para marca y modelo en línea */
+.card__title_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.card__title {
+    font-size: 22px; /* ✅ REDUCIDO: De 24px a 22px */
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.headerRight {
+    flex: 0.4; /* ✅ AUMENTADO: De 0.3 a 0.4 para mover el contenedor más a la derecha */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.priceContainer {
+    width: 100%;
+    height: 100%;
+    background: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* ✅ CAMBIADO: De flex-end a center para centrar el número */
+    padding: 3px 4px;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card__price {
+    color: #ffffff;
+    font-size: 20px; /* ✅ REDUCIDO: De 22px a 20px */
+    font-weight: 700;
+    text-align: center;
+}
+
+.card__version {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    margin: 0;
+    margin-top: 2px;
+    line-height: 1.1;
+    text-align: center; /* ✅ REVERTIDO: De left a center */
+    width: 100%;
+}
+
+/* ===== DETALLES - CONTENEDOR HORIZONTAL ===== */
+.card__details {
     flex: 1;
 }
 
-.table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 4px;
-    margin: 0;
+.card__data_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 0;
+    width: 100%; /* ✅ CAMBIADO: De max-width a width completo */
+    margin: 0; /* ✅ CAMBIADO: Sin margin auto */
 }
 
-.table th {
-    background: linear-gradient(180deg, rgba(240, 240, 240, 0.8) 0%, rgba(230, 230, 230, 0.7) 100%);
-    font-weight: var(--font-weight-semibold);
-    color: black;
-    padding: var(--spacing-xs) 0.25rem var(--spacing-xs) 0;
+.card__data_item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    border: none;
-    white-space: nowrap;
-    font-size: 0.8rem;
-    width: 32%;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 8px 0 0 8px;
+    padding: 2px; /* ✅ REDUCIDO: De 4px a 2px */
 }
 
-.table td {
-    padding: var(--spacing-xs) 0 var(--spacing-xs) 0.25rem;
-    border: none;
-    color: black;
-    background: linear-gradient(180deg, rgba(235, 235, 235, 0.6) 0%, rgba(225, 225, 225, 0.5) 100%);
-    font-size: 0.8rem;
-    width: 68%;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 0 8px 8px 0;
-    text-align: center;
+.card__data_item_border {
+    border-right: 1px solid #e5e7eb;
+    border-left: 1px solid #e5e7eb;
 }
 
-.table tr:last-child th,
-.table tr:last-child td {
-    border-bottom: none;
+.card__data_label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: capitalize; /* ✅ MANTENIDO: Solo primera letra mayúscula */
+    letter-spacing: 0.3px;
+    margin-bottom: 1px;
 }
 
-/* Efecto hover para las filas */
-.table tr:hover th {
-    background: linear-gradient(180deg, rgba(250, 250, 250, 0.9) 0%, rgba(240, 240, 240, 0.8) 100%);
+.card__data_value {
+    font-size: 15px; /* ✅ AUMENTADO: De 13px a 15px */
+    font-weight: 500;
+    color: #374151;
+    line-height: 1.1;
+    margin-top: 2px; /* ✅ AGREGADO: Margin top sutil */
 }
 
-.table tr:hover td {
-    background: linear-gradient(180deg, rgba(245, 245, 245, 0.7) 0%, rgba(235, 235, 235, 0.6) 100%);
+/* ===== FOOTER - COMPACTO ===== */
+.card__footer {
+    padding: 6px;
+    position: relative;
 }
 
-/* ===== FOOTER ===== */
-.footer {
-    padding: var(--spacing-lg);
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-    background: linear-gradient(180deg, rgba(235, 235, 235, 0.8) 0%, rgba(245, 245, 245, 0.9) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+/* ✅ NUEVO: Border centrado arriba del botón */
+.card__footer_border {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 1px;
+    background-color: #f3f4f6; /* ✅ COLOR MUY SUTIL */
+    border-radius: 1px;
 }
 
-.button {
+.card__button {
     width: 100%;
-    transition: all var(--transition-normal);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background: transparent;
+    border: none;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 4px;
+    transition: box-shadow 0.2s ease;
+    cursor: pointer;
 }
 
-.button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 250, 250, 0.9) 100%);
+.card__button:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #111827; /* ✅ MÁS OSCURO EN HOVER: De #374151 a #111827 */
 }
 
-/* ===== RESPONSIVE ADJUSTMENTS ===== */
+/* ===== RESPONSIVE - SIMPLIFICADO ===== */
 @media (max-width: 768px) {
     .card {
-        border-radius: 14px;
+        border-radius: 6px;
     }
     
-    .imageContainer {
-        min-height: 180px; /* Altura mínima para mobile */
+    .card__body {
+        padding: 12px;
     }
     
-    .body {
-        padding: calc(var(--spacing-sm) * 0.8);
-        padding-top: calc(var(--spacing-xs) * 0.8);
+    .cardHeader {
+        height: 65px;
+        border-radius: 6px;
     }
     
-    .title {
-        font-size: calc(var(--font-size-lg) * 0.9);
-        margin-bottom: calc(var(--spacing-md) * 0.8);
+    .headerLeft {
+        padding: 6px 8px;
+        align-items: center;
+        text-align: center;
+        flex: 0.6; /* ✅ MANTENIDO: Menos espacio para título */
     }
     
-    .table th,
-    .table td {
-        font-size: 0.75rem;
-        padding: calc(var(--spacing-xs) * 0.8) 0.2rem calc(var(--spacing-xs) * 0.8) 0;
+    .headerRight {
+        flex: 0.4; /* ✅ MANTENIDO: Más espacio para contenedor negro */
     }
     
-    .table td {
-        padding: calc(var(--spacing-xs) * 0.8) 0 calc(var(--spacing-xs) * 0.8) 0.2rem;
+    .card__title_container {
+        gap: 6px;
+        margin-bottom: 2px;
     }
     
-    .footer {
-        padding: calc(var(--spacing-lg) * 0.8);
+    .priceContainer {
+        padding: 3px 3px;
+        border-radius: 0 6px 6px 0;
+        justify-content: center; /* ✅ MANTENIDO: Número centrado */
+    }
+    
+    .card__title {
+        font-size: 16px;
+        text-align: center;
+    }
+    
+    .card__version {
+        font-size: 12px;
+        font-weight: 500;
+        text-align: center;
+    }
+    
+    .card__price {
+        font-size: 18px;
+    }
+    
+    .card__data_container {
+        gap: 3px;
+        padding: 3px 0;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .card__data_item {
+        padding: 1px;
+    }
+    
+    .card__data_label {
+        font-size: 10px;
+        letter-spacing: 0.2px;
+    }
+    
+    .card__data_value {
+        font-size: 14px;
+        margin-top: 1px;
+    }
+    
+    .card__footer {
+        padding: 4px;
+    }
+    
+    .card__footer_border {
+        width: 35%;
+    }
+    
+    .card__button {
+        font-size: 12px;
+        padding: 5px 10px;
     }
 }
 
 @media (max-width: 480px) {
     .card {
-        border-radius: 12px;
+        border-radius: 4px;
     }
     
-    .imageContainer {
-        min-height: 160px; /* Altura mínima para móvil pequeño */
+    .card__body {
+        padding: 8px;
     }
     
-    .body {
-        padding: calc(var(--spacing-sm) * 0.7);
-        padding-top: calc(var(--spacing-xs) * 0.7);
+    .cardHeader {
+        height: 70px;
+        border-radius: 4px;
+        flex-direction: column;
     }
     
-    .title {
-        font-size: calc(var(--font-size-lg) * 0.8);
-        margin-bottom: calc(var(--spacing-md) * 0.7);
+    .headerLeft {
+        flex: 1;
+        padding: 4px 8px;
+        align-items: center;
+        text-align: center;
     }
     
-    .table th,
-    .table td {
-        font-size: 0.7rem;
-        padding: calc(var(--spacing-xs) * 0.7) 0.15rem calc(var(--spacing-xs) * 0.7) 0;
+    .card__title_container {
+        gap: 4px;
+        margin-bottom: 1px;
     }
     
-    .table td {
-        padding: calc(var(--spacing-xs) * 0.7) 0 calc(var(--spacing-xs) * 0.7) 0.15rem;
+    .headerRight {
+        flex: 1;
     }
     
-    .footer {
-        padding: calc(var(--spacing-lg) * 0.7);
+    .priceContainer {
+        padding: 4px 6px;
+        border-radius: 0 0 4px 4px;
+        justify-content: center; /* ✅ MANTENIDO: Número centrado */
+    }
+    
+    .card__title {
+        font-size: 14px;
+        text-align: center;
+    }
+    
+    .card__version {
+        font-size: 12px;
+        margin-top: 0;
+        font-weight: 500;
+        text-align: center;
+    }
+    
+    .card__price {
+        font-size: 17px;
+    }
+    
+    .card__data_container {
+        gap: 2px;
+        padding: 2px 0;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .card__data_item {
+        padding: 1px;
+    }
+    
+    .card__data_label {
+        font-size: 9px;
+        letter-spacing: 0.1px;
+    }
+    
+    .card__data_value {
+        font-size: 13px;
+        margin-top: 1px;
+    }
+    
+    .card__footer {
+        padding: 3px;
+    }
+    
+    .card__footer_border {
+        width: 30%;
+    }
+    
+    .card__button {
+        font-size: 11px;
+        padding: 4px 8px;
     }
 } 
