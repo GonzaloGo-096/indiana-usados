@@ -99,6 +99,20 @@
     left: 100%;
 }
 
+/* ===== VARIANTE NEGRA ===== */
+.black {
+    background-color: rgba(229, 231, 235, 0.8);
+    color: var(--color-neutral-800);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.black:hover:not(.disabled) {
+    background-color: rgba(229, 231, 235, 0.9);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
 /* ===== TAMAÑOS ===== */
 .small {
     padding: var(--spacing-2) var(--spacing-3);

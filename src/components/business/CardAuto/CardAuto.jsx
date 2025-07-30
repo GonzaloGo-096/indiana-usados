@@ -69,6 +69,17 @@ export const CardAuto = memo(({ auto }) => {
         return `${formatValue(auto.marca)} ${formatValue(auto.modelo)}`
     }, [auto?.marca, auto?.modelo])
 
+    // ✅ OPTIMIZADO: Función para formatear precio con puntos de miles
+    const formatPrice = useMemo(() => (price) => {
+        if (!price) return '-'
+        
+        // Convertir a número y formatear con puntos de miles
+        const numericPrice = parseFloat(price.toString().replace(/[^\d]/g, ''))
+        if (isNaN(numericPrice)) return price
+        
+        return `$${numericPrice.toLocaleString('es-AR')}`
+    }, [])
+
     // ✅ OPTIMIZADO: Memoización de datos extraídos
     const vehicleData = useMemo(() => {
         if (!auto) return null
@@ -77,6 +88,7 @@ export const CardAuto = memo(({ auto }) => {
             id: auto.id,
             marca: auto.marca || '',
             modelo: auto.modelo || '',
+            version: auto.version || '',
             precio: auto.precio || '',
             año: auto.año || '',
             kms: auto.kms || '',
@@ -111,7 +123,7 @@ export const CardAuto = memo(({ auto }) => {
     // ✅ CORREGIDO: Validación después de hooks
     if (!auto || !vehicleData) return null
 
-    const { id, marca, modelo, precio, año, kms, caja, color, categoria } = vehicleData
+    const { id, marca, modelo, version, precio, año, kms, caja, color, categoria } = vehicleData
 
     // ✅ OPTIMIZADO: Handlers memoizados
     const handleImageLoad = useMemo(() => () => setImageLoaded(true), [])
@@ -162,50 +174,49 @@ export const CardAuto = memo(({ auto }) => {
             
             {/* ✅ OPTIMIZADO: Cuerpo de la tarjeta con memoización */}
             <div className={styles.body}>
-                <h5 className={styles.title}>
-                    {formatValue(marca)} {formatValue(modelo)}
-                </h5>
+                {/* ✅ NUEVO: Header dividido en dos mitades */}
+                <div className={styles.cardHeader}>
+                    {/* ✅ Primera mitad: Marca, modelo y versión */}
+                    <div className={styles.headerLeft}>
+                        <h3 className={styles.title}>
+                            {formatValue(marca)} {formatValue(modelo)}
+                        </h3>
+                        {version && (
+                            <span className={styles.version}>
+                                {formatValue(version)}
+                            </span>
+                        )}
+                    </div>
+                    
+                    {/* ✅ Segunda mitad: Precio destacado */}
+                    <div className={styles.headerRight}>
+                        <div className={styles.priceContainer}>
+                            <span className={styles.price}>
+                                {formatPrice(precio)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 
                 {/* ✅ OPTIMIZADO: Detalles del vehículo memoizados */}
                 <div className={styles.details}>
-                    <div className={styles.tablesContainer}>
-                        <div className={styles.tableSection}>
-                            <table className={styles.table}>
-                                <tbody>
-                                    <tr>
-                                        <th>Precio</th>
-                                        <td>{precio ? `$${precio}` : '-'}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Año</th>
-                                        <td>{formatValue(año)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Kms</th>
-                                        <td>{formatValue(kms)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div className={styles.tableSection}>
-                            <table className={styles.table}>
-                                <tbody>
-                                    <tr>
-                                        <th>Caja</th>
-                                        <td>{formatValue(caja)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Color</th>
-                                        <td>{formatValue(color)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Categoría</th>
-                                        <td>{formatValue(categoria)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div className={styles.tableContainer}>
+                        <table className={styles.table}>
+                            <tbody>
+                                <tr>
+                                    <th>Año</th>
+                                    <td>{formatValue(año)}</td>
+                                    <th>Kms</th>
+                                    <td>{formatValue(kms)}</td>
+                                </tr>
+                                <tr>
+                                    <th>Caja</th>
+                                    <td>{formatValue(caja)}</td>
+                                    <th>Categoría</th>
+                                    <td>{formatValue(categoria)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -214,7 +225,7 @@ export const CardAuto = memo(({ auto }) => {
             <div className={styles.footer}>
                 <Link to={`/vehiculo/${id}`}>
                     <Button 
-                        variant="primary" 
+                        variant="black" 
                         className={styles.button}
                     >
                         Ver más
@@ -226,4 +237,5 @@ export const CardAuto = memo(({ auto }) => {
 }, arePropsEqual) // ✅ AGREGADO: Función de comparación personalizada
 
 // Agregar displayName para debugging
+CardAuto.displayName = 'CardAuto' 
 CardAuto.displayName = 'CardAuto' 
