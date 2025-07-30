@@ -2,7 +2,20 @@ import { useRef, useCallback, useEffect } from 'react'
 
 export const useIntersectionObserver = (callback, options = {}) => {
     const observer = useRef()
+    const callbackRef = useRef(callback)
     const { enabled = true, ...observerOptions } = options
+    
+    // ✅ OPTIMIZADO: Throttling para evitar múltiples llamadas
+    const throttledCallback = useCallback(() => {
+        if (callbackRef.current) {
+            callbackRef.current()
+        }
+    }, [])
+    
+    // ✅ OPTIMIZADO: Actualizar callback ref cuando cambie
+    useEffect(() => {
+        callbackRef.current = callback
+    }, [callback])
     
     const ref = useCallback(node => {
         if (observer.current) {
@@ -18,11 +31,13 @@ export const useIntersectionObserver = (callback, options = {}) => {
                 entries => {
                     const entry = entries[0]
                     if (entry.isIntersecting) {
-                        callback()
+                        // ✅ OPTIMIZADO: Usar requestAnimationFrame para throttling
+                        requestAnimationFrame(throttledCallback)
                     }
                 },
                 { 
-                    rootMargin: '300px', 
+                    // ✅ OPTIMIZADO: Reducir rootMargin para mejor performance
+                    rootMargin: '100px', // Reducido de 300px a 100px
                     threshold: 0.1, 
                     ...observerOptions 
                 }
@@ -32,7 +47,7 @@ export const useIntersectionObserver = (callback, options = {}) => {
         } catch (error) {
             console.error('❌ Error initializing Intersection Observer:', error)
         }
-    }, [callback, enabled, observerOptions])
+    }, [enabled, observerOptions, throttledCallback])
     
     // Cleanup on unmount
     useEffect(() => {

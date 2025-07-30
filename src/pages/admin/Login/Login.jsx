@@ -25,24 +25,24 @@ const Login = () => {
     }, [isAuthenticated, isLoading, navigate])
 
     const handleSubmit = async (values) => {
-        setErrors({})
+        setIsLoading(true)
+        setError(null)
         
-        console.log('Intentando login con:', values)
-        
-        // Usar el hook de autenticación
-        const result = await login(values)
-        
-        console.log('Resultado del login:', result)
-        
-        if (result.success) {
-            console.log('Login exitoso, redirigiendo...')
-            navigate(AUTH_CONFIG.routes.dashboard)
-        } else {
-            console.log('Error en login:', result.error)
-            setErrors({
-                usuario: result.error || 'Error de autenticación',
-                contraseña: result.error || 'Error de autenticación',
-            })
+        try {
+            // Intentar login
+            const result = await loginMutation.mutateAsync(values)
+            
+            if (result.success) {
+                // Login exitoso
+                navigate('/admin/dashboard')
+            } else {
+                // Error en login
+                setError(result.error || 'Error al iniciar sesión')
+            }
+        } catch (error) {
+            setError('Error al iniciar sesión')
+        } finally {
+            setIsLoading(false)
         }
     }
 

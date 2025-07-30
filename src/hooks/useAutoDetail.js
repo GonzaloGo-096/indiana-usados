@@ -14,7 +14,7 @@
  * - Formateo de datos consistente
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0 - CORREGIDO ERROR useRealApi
  */
 
 import { useQuery } from '@tanstack/react-query'
@@ -57,7 +57,7 @@ export const useAutoDetail = (id, options = {}) => {
         refetchOnWindowFocus = false
     } = options
 
-    // Query principal para obtener el vehículo
+    // ✅ CORREGIDO: Query principal para obtener el vehículo
     const {
         data: auto,
         isLoading,
@@ -67,14 +67,12 @@ export const useAutoDetail = (id, options = {}) => {
     } = useQuery({
         queryKey: queryKeys.auto(id),
         queryFn: async () => {
-            // Intentar usar la nueva API primero
+            // ✅ CORREGIDO: Usar directamente mock data por ahora
+            // En el futuro, aquí se puede agregar lógica para API real
             try {
-                console.log(`🔍 Intentando obtener vehículo ${id} desde backend real...`);
-                return await vehiclesApi.getVehicleById(id);
+                return await autoService.getAutoById(id)
             } catch (error) {
-                console.log(`⚠️ Fallback a mock data para vehículo ${id}:`, error.message);
-                // Fallback al servicio mock si la API real falla
-                return await autoService.getAutoById(id);
+                throw new Error(`Error al cargar el vehículo: ${error.message}`)
             }
         },
         staleTime,
@@ -155,7 +153,7 @@ export const useAutoDetail = (id, options = {}) => {
         // Funciones
         refetch,
         
-        // Estados adicionales
+        // Estados calculados
         hasData,
         hasFormattedData
     }

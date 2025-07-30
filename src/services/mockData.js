@@ -4,8 +4,11 @@
  * Simula una API que maneja filtros correctamente
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 2.1.0 - LIMPIEZA DE DUPLICADOS
  */
+
+// Importar función de filtrado centralizada
+import { filterVehicles } from '../utils/filterUtils'
 
 // Datos mock de vehículos con múltiples imágenes
 const mockVehicles = [
@@ -98,48 +101,9 @@ const mockVehicles = [
         transmision: "Manual",
         kilometraje: 80000,
         color: "Rojo",
-        categoria: "Hatchback",
-        caja: "Manual",
-        detalle: "Vehículo económico, perfecto para uso diario",
-        imagen: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
-        imagenes: [
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
-            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop"
-        ]
-    },
-    {
-        id: 6,
-        marca: "Ford",
-        modelo: "Mustang",
-        año: 2021,
-        precio: 45000,
-        combustible: "Gasolina",
-        transmision: "Automática",
-        kilometraje: 15000,
-        color: "Negro",
-        categoria: "Deportivo",
-        caja: "Automática",
-        detalle: "Vehículo deportivo de alto rendimiento, estado impecable",
-        imagen: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
-        imagenes: [
-            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
-            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop"
-        ]
-    },
-    {
-        id: 7,
-        marca: "Chevrolet",
-        modelo: "Cruze",
-        año: 2019,
-        precio: 20000,
-        combustible: "Gasolina",
-        transmision: "Automática",
-        kilometraje: 60000,
-        color: "Blanco",
         categoria: "Sedán",
-        caja: "Automática",
-        detalle: "Vehículo confiable, bajo consumo de combustible",
+        caja: "Manual",
+        detalle: "Vehículo económico, ideal para ciudad",
         imagen: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
         imagenes: [
             "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
@@ -147,88 +111,102 @@ const mockVehicles = [
         ]
     },
     {
-        id: 8,
-        marca: "Chevrolet",
-        modelo: "Malibu",
-        año: 2020,
-        precio: 25000,
+        id: 6,
+        marca: "Ford",
+        modelo: "Mustang",
+        año: 2022,
+        precio: 45000,
         combustible: "Gasolina",
         transmision: "Automática",
-        kilometraje: 40000,
-        color: "Azul",
-        categoria: "Sedán",
+        kilometraje: 15000,
+        color: "Negro",
+        categoria: "Deportivo",
         caja: "Automática",
-        detalle: "Vehículo elegante, perfecto para viajes largos",
+        detalle: "Vehículo deportivo de alto rendimiento",
         imagen: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
         imagenes: [
             "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
             "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
             "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop"
         ]
+    },
+    {
+        id: 7,
+        marca: "Chevrolet",
+        modelo: "Cruze",
+        año: 2021,
+        precio: 26000,
+        combustible: "Gasolina",
+        transmision: "Automática",
+        kilometraje: 35000,
+        color: "Blanco",
+        categoria: "Sedán",
+        caja: "Automática",
+        detalle: "Vehículo confortable y eficiente",
+        imagen: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
+        imagenes: [
+            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop"
+        ]
+    },
+    {
+        id: 8,
+        marca: "Chevrolet",
+        modelo: "Camaro",
+        año: 2023,
+        precio: 50000,
+        combustible: "Gasolina",
+        transmision: "Manual",
+        kilometraje: 5000,
+        color: "Amarillo",
+        categoria: "Deportivo",
+        caja: "Manual",
+        detalle: "Vehículo deportivo legendario",
+        imagen: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
+        imagenes: [
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop"
+        ]
+    },
+    {
+        id: 9,
+        marca: "Nissan",
+        modelo: "Sentra",
+        año: 2020,
+        precio: 24000,
+        combustible: "Gasolina",
+        transmision: "Automática",
+        kilometraje: 40000,
+        color: "Gris",
+        categoria: "Sedán",
+        caja: "Automática",
+        detalle: "Vehículo confiable y económico",
+        imagen: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
+        imagenes: [
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop"
+        ]
+    },
+    {
+        id: 10,
+        marca: "Nissan",
+        modelo: "Altima",
+        año: 2022,
+        precio: 32000,
+        combustible: "Gasolina",
+        transmision: "Automática",
+        kilometraje: 20000,
+        color: "Azul",
+        categoria: "Sedán",
+        caja: "Automática",
+        detalle: "Vehículo premium con tecnología avanzada",
+        imagen: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
+        imagenes: [
+            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&h=600&fit=crop",
+            "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop"
+        ]
     }
 ]
-
-/**
- * Función para filtrar vehículos según parámetros
- * @param {Array} vehicles - Array de vehículos
- * @param {Object} filters - Objeto con filtros
- * @returns {Array} - Vehículos filtrados
- */
-const filterVehicles = (vehicles, filters) => {
-    return vehicles.filter(vehicle => {
-        // Filtrar por marca
-        if (filters.marca && vehicle.marca !== filters.marca) {
-            return false
-        }
-        
-        // Filtrar por año desde
-        if (filters.añoDesde && vehicle.año < parseInt(filters.añoDesde)) {
-            return false
-        }
-        
-        // Filtrar por año hasta
-        if (filters.añoHasta && vehicle.año > parseInt(filters.añoHasta)) {
-            return false
-        }
-        
-        // Filtrar por precio desde
-        if (filters.precioDesde && vehicle.precio < parseInt(filters.precioDesde)) {
-            return false
-        }
-        
-        // Filtrar por precio hasta
-        if (filters.precioHasta && vehicle.precio > parseInt(filters.precioHasta)) {
-            return false
-        }
-        
-        // Filtrar por combustible
-        if (filters.combustible && vehicle.combustible !== filters.combustible) {
-            return false
-        }
-        
-        // Filtrar por transmisión
-        if (filters.transmision && vehicle.transmision !== filters.transmision) {
-            return false
-        }
-        
-        // Filtrar por kilometraje desde
-        if (filters.kilometrajeDesde && vehicle.kilometraje < parseInt(filters.kilometrajeDesde)) {
-            return false
-        }
-        
-        // Filtrar por kilometraje hasta
-        if (filters.kilometrajeHasta && vehicle.kilometraje > parseInt(filters.kilometrajeHasta)) {
-            return false
-        }
-        
-        // Filtrar por color
-        if (filters.color && vehicle.color !== filters.color) {
-            return false
-        }
-        
-        return true
-    })
-}
 
 /**
  * Función para paginar resultados
@@ -262,7 +240,7 @@ const simulateNetworkDelay = (ms = 500) => {
 
 export {
     mockVehicles,
-    filterVehicles,
+    filterVehicles, // ✅ Ahora usa la función centralizada de filterUtils
     paginateVehicles,
     simulateNetworkDelay
 } 

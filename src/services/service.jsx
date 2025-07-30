@@ -1,9 +1,11 @@
 // Importar datos mock locales
 import { 
     mockVehicles, 
-    filterVehicles, 
     simulateNetworkDelay 
 } from './mockData'
+
+// Importar función de filtrado centralizada
+import { filterVehicles } from '../utils/filterUtils'
 
 // URL base para las peticiones (mantener para compatibilidad)
 const BASE_URL = 'https://c65a35e4-099e-4f66-a282-1f975219d583.mock.pstmn.io'
@@ -28,7 +30,7 @@ const getAutos = async ({ filters = {}, page = 1 } = {}) => {
         // Simular delay de red
         await simulateNetworkDelay(300)
         
-        // Filtrar vehículos según los filtros
+        // Filtrar vehículos según los filtros usando función centralizada
         let filteredVehicles = mockVehicles
         
         if (Object.keys(filters).length > 0) {
@@ -71,7 +73,7 @@ const applyFilters = async (filters, { page = 1, limit = 6 } = {}) => {
         // Simular petición POST al backend
         await simulateNetworkDelay(500)
         
-        // Por ahora, simulamos la respuesta del backend
+        // Por ahora, simulamos la respuesta del backend usando función centralizada
         const filteredVehicles = filterVehicles(mockVehicles, filters)
         
         // ✅ AGREGADO: Simular paginación por páginas

@@ -9,7 +9,7 @@
  * - Paginación infinita con scroll automático
  * 
  * @author Indiana Usados
- * @version 10.1.0
+ * @version 10.2.0 - CORREGIDO PARA NUEVA API
  */
 
 import React, { memo, useState, useCallback } from 'react'
@@ -24,25 +24,19 @@ import styles from './ListAutos.module.css'
 const ListAutos = memo(() => {
     const [isFiltering, setIsFiltering] = useState(false)
     
-    // Usar useGetCars directamente
+    // ✅ CORREGIDO: Usar nueva API de useGetCars
     const {
-        autos: cars,
-        allVehicles,
-        totalCount,
+        cars,                    // ✅ CORREGIDO: Se llama 'cars'
         isLoading,
         isError,
         error,
-        loadMore,
         hasNextPage,
         isFetchingNextPage,
+        onLoadMore,              // ✅ CORREGIDO: Se llama 'onLoadMore'
         refetch
-    } = useGetCars({}, {
-        enabled: true,
-        staleTime: 1000 * 60 * 10, // 10 minutos
-        cacheTime: 1000 * 60 * 60, // 1 hora
-    })
+    } = useGetCars({}, 12)       // ✅ CORREGIDO: Solo filtros y pageSize
 
-    // Función para aplicar filtros
+    // ✅ CORREGIDO: Función para aplicar filtros
     const applyFilters = useCallback(async (filters) => {
         setIsFiltering(true)
         try {
@@ -83,22 +77,23 @@ const ListAutos = memo(() => {
 
                 {/* ===== GRID DE VEHÍCULOS ===== */}
                 <div className={styles.content}>
-                    <AutosGrid 
-                        autos={cars}
-                        isLoading={isLoading}
-                        isError={isError}
-                        error={error}
-                        onLoadMore={loadMore}
-                        hasNextPage={hasNextPage}
-                        isFetchingNextPage={isFetchingNextPage}
-                        onRetry={refetch}
-                    />
+                                    <AutosGrid 
+                    autos={cars}
+                    isLoading={isLoading}
+                    isError={isError}
+                    error={error}
+                    onLoadMore={onLoadMore}
+                    hasNextPage={hasNextPage}
+                    isFetchingNextPage={isFetchingNextPage}
+                    onRetry={refetch}
+                />
                 </div>
             </div>
         </div>
     )
 })
 
+// ✅ AGREGADO: Display name para debugging
 ListAutos.displayName = 'ListAutos'
 
 export default ListAutos

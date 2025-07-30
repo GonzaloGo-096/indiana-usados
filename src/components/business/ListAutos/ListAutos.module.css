@@ -99,18 +99,54 @@
     }
 }
 
+/* ===== CONTENEDOR DEL GRID ===== */
+.gridContainer {
+    position: relative;
+    width: 100%;
+    /* ✅ OPTIMIZADO: Mejorar performance */
+    contain: layout style;
+}
+
 /* ===== GRID DE VEHÍCULOS ===== */
 .grid {
     display: grid;
     grid-template-columns: 1fr; /* Mobile first */
-    gap: var(--spacing-6);
+    gap: var(--spacing-4); /* ✅ OPTIMIZADO: Reducido de 6 a 4 */
     min-height: 200px;
+    /* ✅ ULTRA OPTIMIZADO: Mejorar performance del scroll */
+    will-change: transform;
+    contain: layout style paint;
+    /* ✅ OPTIMIZADO: Sin transiciones innecesarias */
+}
+
+/* ✅ VIRTUALIZACIÓN: Estilos para virtualización */
+.virtualizedGrid {
+    position: relative;
+    width: 100%;
+    /* ✅ OPTIMIZADO: Mejorar performance */
+    contain: layout style paint;
+}
+
+.virtualizedContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* ✅ OPTIMIZADO: Mejorar performance */
+    will-change: transform;
+    contain: layout style paint;
+}
+
+.virtualizedContainer {
+    /* ✅ OPTIMIZADO: Mejorar performance del scroll */
+    contain: layout style paint;
+    /* ✅ OPTIMIZADO: Sin transiciones */
 }
 
 /* Ajustes para mobile */
 @media (max-width: 768px) {
     .grid {
-        gap: var(--spacing-4);
+        gap: var(--spacing-3); /* ✅ OPTIMIZADO: Reducido */
     }
 }
 
@@ -118,7 +154,7 @@
 @media (min-width: 768px) {
     .grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-6);
+        gap: var(--spacing-4); /* ✅ OPTIMIZADO: Reducido */
     }
 }
 
@@ -126,14 +162,18 @@
 @media (min-width: 1200px) {
     .grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: var(--spacing-6);
+        gap: var(--spacing-4); /* ✅ OPTIMIZADO: Reducido */
     }
 }
 
 /* ===== WRAPPER DE TARJETAS ===== */
 .cardWrapper {
     min-height: 400px;
-    transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+    /* ✅ ULTRA OPTIMIZADO: Mejorar performance de animaciones */
+    will-change: transform;
+    contain: layout style paint;
+    /* ✅ OPTIMIZADO: Solo transición esencial */
+    transition: transform 0.2s ease-out;
 }
 
 /* Ajuste para mobile */
