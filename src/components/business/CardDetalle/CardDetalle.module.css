@@ -30,11 +30,7 @@
     contain: layout style paint;
 }
 
-/* ✅ OPTIMIZADO: Hover simplificado */
-.card:hover {
-    transform: translateY(-2px); /* ✅ OPTIMIZADO: Movimiento mínimo */
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-}
+/* ✅ ELIMINADO: Hover de la card para mejor performance */
 
 /* ===== CONTENIDO DE LA TARJETA ===== */
 .cardContent {
@@ -67,6 +63,129 @@
     contain: layout style;
 }
 
+/* ✅ NUEVO: Header copiado de CardAuto */
+.cardHeader {
+    display: flex;
+    height: 70px; /* ✅ AUMENTADO: De 50px a 70px */
+    border-radius: 8px;
+    overflow: hidden;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: var(--spacing-sm); /* ✅ REDUCIDO: De var(--spacing-lg) a var(--spacing-sm) para acercar los 3 datos */
+}
+
+.headerLeft {
+    flex: 0.6;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8px 12px;
+    background: transparent;
+}
+
+.card__title_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.card__title {
+    font-size: 28px; /* ✅ AUMENTADO: De 20px a 28px */
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.headerRight {
+    flex: 0.4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.priceContainer {
+    width: 100%;
+    height: 100%;
+    background: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 4px;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card__price {
+    color: #ffffff;
+    font-size: 28px; /* ✅ AUMENTADO: De 20px a 28px */
+    font-weight: 700;
+    text-align: center;
+}
+
+.card__version {
+    font-size: 16px; /* ✅ AUMENTADO: De 13px a 16px */
+    font-weight: 500;
+    color: #6b7280;
+    margin: 0;
+    margin-top: 4px; /* ✅ AUMENTADO: De 2px a 4px */
+    line-height: 1.1;
+    text-align: center;
+    width: 100%;
+}
+
+/* ✅ NUEVO: Estilos de detalles copiados de CardAuto */
+.card__details {
+    flex: 1;
+    margin-bottom: var(--spacing-lg);
+}
+
+.card__data_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* ✅ AUMENTADO: De 4px a 8px */
+    padding: 12px 0; /* ✅ AUMENTADO: De 4px a 12px */
+    width: 100%;
+    margin: 0;
+}
+
+.card__data_item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px; /* ✅ AUMENTADO: De 2px a 8px */
+}
+
+.card__data_item_border {
+    border-right: 1px solid #e5e7eb;
+    border-left: 1px solid #e5e7eb;
+}
+
+.card__data_label {
+    font-size: 14px; /* ✅ AUMENTADO: De 11px a 14px */
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px; /* ✅ AUMENTADO: De 1px a 4px */
+}
+
+.card__data_value {
+    font-size: 24px; /* ✅ AUMENTADO: De 15px a 24px */
+    font-weight: 700; /* ✅ AUMENTADO: De 500 a 700 */
+    color: #111827; /* ✅ CAMBIADO: De #374151 a #111827 para más contraste */
+    line-height: 1.1;
+    margin-top: 4px; /* ✅ AUMENTADO: De 2px a 4px */
+}
+
+/* ✅ MANTENIDO: Título original para compatibilidad */
 .title {
     font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-bold);
@@ -77,45 +196,44 @@
     /* ✅ OPTIMIZADO: Sin transiciones innecesarias */
 }
 
-/* ===== CONTENEDOR DE TABLAS ===== */
-.tablesContainer {
-    display: flex;
-    gap: var(--spacing-md);
+/* ===== CONTENEDOR DE INFORMACIÓN CON FLEXBOX ===== */
+.infoContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* ✅ 3 columnas */
+    gap: var(--spacing-sm);
     margin-bottom: var(--spacing-md);
-    /* ✅ OPTIMIZADO: Sin flex-wrap para evitar recálculos */
 }
 
-.tableSection {
-    flex: 1;
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
+.infoSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md); /* ✅ Espacio entre items */
 }
 
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: var(--font-size-sm);
-    /* ✅ OPTIMIZADO: Sin border-spacing para evitar recálculos */
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-.table th {
-    text-align: left;
+.infoKey {
+    font-size: var(--font-size-xs);
     font-weight: var(--font-weight-semibold);
     color: var(--color-neutral-700);
-    padding: var(--spacing-1) 0;
-    font-size: var(--font-size-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    /* ✅ OPTIMIZADO: Sin gradientes ni transiciones */
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px; /* ✅ Espacio controlado entre key y value */
 }
 
-.table td {
-    text-align: left;
-    color: var(--color-neutral-600);
-    padding: var(--spacing-1) 0;
+.infoValue {
     font-size: var(--font-size-sm);
-    /* ✅ OPTIMIZADO: Sin gradientes ni transiciones */
+    font-weight: var(--font-weight-bold);
+    color: var(--color-neutral-800);
+    text-align: center;
 }
+
+/* ✅ ELIMINADO: Estilos de tabla reemplazados por flexbox */
 
 /* ===== DETALLES ADICIONALES ===== */
 .additionalDetails {
@@ -166,27 +284,38 @@
 }
 
 .contactButton {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-md) var(--spacing-lg);
-    background: var(--color-primary-500);
-    color: white;
+    gap: 0.4rem;
+    padding: 0.7rem 1.2rem;
+    background: var(--color-neutral-900);
+    border: 1px solid var(--color-neutral-900);
+    color: #ffffff;
     text-decoration: none;
-    border-radius: 8px;
-    font-weight: var(--font-weight-semibold);
-    transition: background-color 0.2s ease-out;
-    /* ✅ OPTIMIZADO: Solo transición esencial */
+    border-radius: 6px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-weight: 600;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 90px;
+    max-width: 110px;
+    height: 36px;
+    justify-content: center;
+    letter-spacing: 0.3px;
+    /* ✅ OPTIMIZADO: Mejorar performance */
+    will-change: transform;
+    contain: layout style;
 }
 
 .contactButton:hover {
-    background: var(--color-primary-600);
-    /* ✅ OPTIMIZADO: Solo cambio de color */
+    background: var(--color-neutral-800);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .contactButton:active {
-    transform: translateY(1px);
-    /* ✅ OPTIMIZADO: Movimiento mínimo */
+    transform: translateY(0px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* ===== RESPONSIVE ===== */
@@ -200,8 +329,8 @@
         min-height: 250px;
     }
     
-    .tablesContainer {
-        flex-direction: column;
+    .infoContainer {
+        grid-template-columns: 1fr; /* ✅ CAMBIADO: De 3 columnas a 1 en móvil */
         gap: var(--spacing-sm);
     }
 }
@@ -215,16 +344,82 @@
         padding: var(--spacing-md); /* ✅ OPTIMIZADO: Reducido */
     }
     
+    /* ✅ NUEVO: Estilos responsive para el header */
+    .cardHeader {
+        height: 75px; /* ✅ AUMENTADO: De 55px a 75px */
+        border-radius: 6px;
+    }
+    
+    .headerLeft {
+        padding: 6px 8px;
+        align-items: center;
+        text-align: center;
+        flex: 0.6;
+    }
+    
+    .card__title_container {
+        gap: 6px;
+        margin-bottom: 2px;
+    }
+    
+    .card__title {
+        font-size: 22px; /* ✅ AUMENTADO: De 15px a 22px */
+        text-align: center;
+    }
+    
+    .card__version {
+        font-size: 12px;
+        font-weight: 500;
+        text-align: center;
+    }
+    
+    .headerRight {
+        flex: 0.4;
+    }
+    
+    .priceContainer {
+        height: 100%;
+        padding: 3px 3px;
+        border-radius: 0 6px 6px 0;
+        justify-content: center;
+    }
+    
+    .card__price {
+        font-size: 22px; /* ✅ AUMENTADO: De 18px a 22px */
+    }
+    
+    /* ✅ NUEVO: Estilos responsive para detalles */
+    .card__data_container {
+        gap: 6px; /* ✅ AUMENTADO: De 3px a 6px */
+        padding: 8px 0; /* ✅ AUMENTADO: De 3px a 8px */
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .card__data_item {
+        padding: 6px; /* ✅ AUMENTADO: De 1px a 6px */
+    }
+    
+    .card__data_label {
+        font-size: 12px; /* ✅ AUMENTADO: De 10px a 12px */
+        letter-spacing: 0.2px;
+    }
+    
+    .card__data_value {
+        font-size: 20px; /* ✅ AUMENTADO: De 14px a 20px */
+        margin-top: 2px; /* ✅ AUMENTADO: De 1px a 2px */
+    }
+    
     .title {
         font-size: var(--font-size-xl); /* ✅ OPTIMIZADO: Reducido */
     }
     
-    .table th {
-        font-size: var(--font-size-xs); /* ✅ OPTIMIZADO: Mantenido */
+    .infoKey {
+        font-size: var(--font-size-xs);
     }
     
-    .table td {
-        font-size: var(--font-size-xs); /* ✅ OPTIMIZADO: Reducido */
+    .infoValue {
+        font-size: var(--font-size-sm);
     }
     
     .contactButtons {
@@ -233,7 +428,11 @@
     }
     
     .contactButton {
-        padding: var(--spacing-sm) var(--spacing-md); /* ✅ OPTIMIZADO: Reducido */
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+        height: 34px;
+        min-width: 80px;
+        max-width: 100px;
     }
 }
 
@@ -242,19 +441,91 @@
         padding: var(--spacing-sm); /* ✅ OPTIMIZADO: Reducido */
     }
     
+    /* ✅ NUEVO: Estilos responsive para el header en móvil */
+    .cardHeader {
+        height: 80px; /* ✅ AUMENTADO: De 60px a 80px */
+        border-radius: 4px;
+        flex-direction: column;
+    }
+    
+    .headerLeft {
+        flex: 1;
+        padding: 4px 8px;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .card__title_container {
+        gap: 4px;
+        margin-bottom: 1px;
+    }
+    
+    .card__title {
+        font-size: 18px; /* ✅ AUMENTADO: De 13px a 18px */
+        text-align: center;
+    }
+    
+    .card__version {
+        font-size: 12px;
+        margin-top: 0;
+        font-weight: 500;
+        text-align: center;
+    }
+    
+    .headerRight {
+        flex: 1;
+    }
+    
+    .priceContainer {
+        height: 100%;
+        padding: 4px 6px;
+        border-radius: 0 0 4px 4px;
+        justify-content: center;
+    }
+    
+    .card__price {
+        font-size: 20px; /* ✅ AUMENTADO: De 17px a 20px */
+    }
+    
+    /* ✅ NUEVO: Estilos responsive para detalles en móvil */
+    .card__data_container {
+        gap: 2px;
+        padding: 2px 0;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .card__data_item {
+        padding: 1px;
+    }
+    
+    .card__data_label {
+        font-size: 9px;
+        letter-spacing: 0.1px;
+    }
+    
+    .card__data_value {
+        font-size: 13px;
+        margin-top: 1px;
+    }
+    
     .title {
         font-size: var(--font-size-lg); /* ✅ OPTIMIZADO: Reducido */
     }
     
-    .table th {
-        font-size: var(--font-size-xs); /* ✅ OPTIMIZADO: Mantenido */
+    .infoKey {
+        font-size: var(--font-size-xs);
     }
     
-    .table td {
-        font-size: var(--font-size-xs); /* ✅ OPTIMIZADO: Mantenido */
+    .infoValue {
+        font-size: var(--font-size-xs);
     }
     
     .contactButton {
-        padding: var(--spacing-xs) var(--spacing-sm); /* ✅ OPTIMIZADO: Reducido */
+        padding: 0.5rem 0.8rem;
+        font-size: 0.7rem;
+        height: 32px;
+        min-width: 70px;
+        max-width: 90px;
     }
 } 

@@ -13,7 +13,7 @@
  */
 
 import React, { memo, useMemo } from 'react'
-import { GmailIcon, WhatsAppIcon } from '../../ui/icons'
+import { EmailIconPNG, WhatsAppIconPNG } from '../../ui/icons'
 import { ImageCarousel } from '../../ui/ImageCarousel'
 import { formatValue } from '../../../utils/imageUtils'
 import { useCarouselImages } from '../../../hooks/useImageOptimization'
@@ -44,11 +44,29 @@ import styles from './CardDetalle.module.css'
 export const CardDetalle = memo(({ auto, contactInfo }) => {
     // ✅ CORREGIDO: Hooks siempre primero, antes de cualquier early return
     const carouselImages = useCarouselImages(auto)
+    
+    // ✅ OPTIMIZADO: Memoización del precio formateado
+    const formattedPrice = useMemo(() => {
+        if (!auto?.precio) return '-'
+        const numericPrice = parseFloat(auto.precio.toString().replace(/[^\d]/g, ''))
+        if (isNaN(numericPrice)) return auto.precio
+        return `$${numericPrice.toLocaleString('es-AR')}`
+    }, [auto?.precio])
+    
+    // ✅ OPTIMIZADO: Memoización del kilometraje formateado
+    const formattedKms = useMemo(() => {
+        if (!auto?.kms) return '-'
+        const numericKms = parseInt(auto.kms)
+        if (isNaN(numericKms)) return auto.kms
+        return `${numericKms.toLocaleString('es-AR')} km`
+    }, [auto?.kms])
+    
     const defaultContactInfo = useMemo(() => ({
         email: 'info@indianausados.com',
         whatsapp: '5491112345678',
         whatsappMessage: `Hola, me interesa el vehículo ${formatValue(auto?.marca || '')} ${formatValue(auto?.modelo || '')}`
     }), [auto?.marca, auto?.modelo])
+    
     const altText = useMemo(() => 
         `${formatValue(auto?.marca || '')} ${formatValue(auto?.modelo || '')}`, 
         [auto?.marca, auto?.modelo]
@@ -64,6 +82,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
         precio = '',
         año = '',
         kms = '',
+        caja = '', // ✅ AGREGADO: Campo caja que faltaba
         color = '',
         categoria = '',
         combustible = '',
@@ -90,66 +109,90 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                 
                 {/* Sección de detalles */}
                 <div className={styles.detailsSection}>
-                    <h2 className={styles.title}>
-                        {formatValue(marca)} {formatValue(modelo)}
-                    </h2>
-                    
-                    {/* Tablas de información */}
-                    <div className={styles.tablesContainer}>
-                        <div className={styles.tableSection}>
-                            <table className={styles.table}>
-                                <tbody>
-                                    <tr>
-                                        <th>Precio</th>
-                                        <td>{precio ? `$${precio}` : '-'}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Año</th>
-                                        <td>{formatValue(año)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Kms</th>
-                                        <td>{formatValue(kms)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Versión</th>
-                                        <td>{formatValue(version)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    {/* ✅ NUEVO: Header copiado de CardAuto */}
+                    <div className={styles.cardHeader}>
+                        {/* ✅ Primera mitad: Marca, modelo y versión */}
+                        <div className={styles.headerLeft}>
+                            <div className={styles.card__title_container}>
+                                <h3 className={styles.card__title}>
+                                    {formatValue(marca)}
+                                </h3>
+                                <h3 className={styles.card__title}>
+                                    {formatValue(modelo)}
+                                </h3>
+                            </div>
+                            {version && (
+                                <span className={styles.card__version}>
+                                    {formatValue(version)}
+                                </span>
+                            )}
                         </div>
                         
-                        <div className={styles.tableSection}>
-                            <table className={styles.table}>
-                                <tbody>
-                                    <tr>
-                                        <th>Combustible</th>
-                                        <td>{formatValue(combustible)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Color</th>
-                                        <td>{formatValue(color)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Categoría</th>
-                                        <td>{formatValue(categoria)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Cilindrada</th>
-                                        <td>{formatValue(cilindrada)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        {/* ✅ Segunda mitad: Precio destacado */}
+                        <div className={styles.headerRight}>
+                            <div className={styles.priceContainer}>
+                                <span className={styles.card__price}>
+                                    {formattedPrice}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* ✅ NUEVO: Detalles del vehículo en contenedor horizontal (copiado de CardAuto) */}
+                    <div className={styles.card__details}>
+                        <div className={styles.card__data_container}>
+                            <div className={styles.card__data_item}>
+                                <span className={styles.card__data_label}>Año</span>
+                                <span className={styles.card__data_value}>{formatValue(año)}</span>
+                            </div>
+                            <div className={`${styles.card__data_item} ${styles.card__data_item_border}`}>
+                                <span className={styles.card__data_label}>Kms</span>
+                                <span className={styles.card__data_value}>{formattedKms}</span>
+                            </div>
+                            <div className={styles.card__data_item}>
+                                <span className={styles.card__data_label}>Caja</span>
+                                <span className={styles.card__data_value}>{formatValue(caja)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Contenedores de información - 3 columnas con flexbox */}
+                    <div className={styles.infoContainer}>
+                        <div className={styles.infoSection}>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Año</span>
+                                <span className={styles.infoValue}>{formatValue(año)}</span>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Combustible</span>
+                                <span className={styles.infoValue}>{formatValue(combustible)}</span>
+                            </div>
+                        </div>
+                        
+                        <div className={styles.infoSection}>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Versión</span>
+                                <span className={styles.infoValue}>{formatValue(version)}</span>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Color</span>
+                                <span className={styles.infoValue}>{formatValue(color)}</span>
+                            </div>
+                        </div>
+                        
+                        <div className={styles.infoSection}>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Categoría</span>
+                                <span className={styles.infoValue}>{formatValue(categoria)}</span>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Cilindrada</span>
+                                <span className={styles.infoValue}>{formatValue(cilindrada)}</span>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Detalles adicionales */}
-                    {detalle && (
-                        <div className={styles.additionalDetails}>
-                            <h4 className={styles.detailsTitle}>Detalles adicionales</h4>
-                            <p className={styles.detailsText}>{formatValue(detalle)}</p>
-                        </div>
-                    )}
+
                     
                     {/* Sección de contacto */}
                     <div className={styles.contactSection}>
@@ -160,7 +203,6 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                                 className={styles.contactButton}
                                 title="Enviar email"
                             >
-                                <GmailIcon />
                                 <span>Email</span>
                             </a>
                             <a 
@@ -170,7 +212,6 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                                 className={styles.contactButton}
                                 title="Contactar por WhatsApp"
                             >
-                                <WhatsAppIcon />
                                 <span>WhatsApp</span>
                             </a>
                         </div>

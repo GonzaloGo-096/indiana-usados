@@ -21,26 +21,42 @@
 .backLink {
     display: inline-flex;
     align-items: center;
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: rgba(59, 130, 246, 0.85); /* ✅ OPTIMIZADO: Simplificado de gradiente complejo */
-    backdrop-filter: blur(10px); /* ✅ OPTIMIZADO: Reducido de 15px a 10px */
-    -webkit-backdrop-filter: blur(10px); /* ✅ OPTIMIZADO: Reducido de 15px a 10px */
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    color: white;
+    gap: 0.25rem; /* ✅ NUEVO: Espacio entre flecha y texto */
+    padding: 0.6rem 1rem; /* ✅ AUMENTADO: Más padding */
+    background: var(--color-neutral-900);
+    border: 1px solid var(--color-neutral-900);
+    color: #ffffff;
     text-decoration: none;
-    border-radius: var(--border-radius-sm);
-    transition: background var(--transition-fast), border var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast); /* OPTIMIZADO */
-    font-weight: var(--font-weight-medium);
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+    border-radius: 6px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* ✅ OPTIMIZADO: Solo transiciones necesarias */
+    font-weight: 600;
+    font-size: 0.8rem; /* ✅ AUMENTADO: Texto más grande */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 80px; /* ✅ AUMENTADO: Más ancho */
+    max-width: 100px; /* ✅ AUMENTADO: Más ancho */
+    height: 32px; /* ✅ AUMENTADO: Más alto */
+    justify-content: center;
+    letter-spacing: 0.3px; /* ✅ REDUCIDO: Menos letter-spacing */
+    /* ✅ OPTIMIZADO: Mejorar performance */
+    will-change: transform;
+    contain: layout style;
 }
 
 .backLink:hover {
-    background: rgba(59, 130, 246, 0.9); /* ✅ OPTIMIZADO: Simplificado de gradiente complejo */
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    color: white;
-    text-decoration: none;
+    background: var(--color-neutral-800);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ✅ NUEVO: Estilos para la flecha */
+.backArrow {
+    font-size: 0.8rem; /* ✅ Ligeramente más grande que el texto */
+    font-weight: 700; /* ✅ Más bold que el texto */
+    transition: transform 0.2s ease; /* ✅ Transición suave */
+}
+
+.backLink:hover .backArrow {
+    transform: translateX(-2px); /* ✅ Efecto de movimiento hacia la izquierda */
 }
 
 /* ===== CONTENIDO PRINCIPAL ===== */
@@ -61,8 +77,11 @@
     }
     
     .backLink {
-        padding: var(--spacing-xs) var(--spacing-sm);
-        font-size: var(--font-size-sm);
+        padding: 0.5rem 0.8rem; /* ✅ AUMENTADO: Más grande en tablet */
+        font-size: 0.75rem; /* ✅ AUMENTADO: Texto más grande */
+        height: 30px; /* ✅ AUMENTADO: Más alto */
+        min-width: 70px; /* ✅ AUMENTADO: Más ancho */
+        max-width: 90px; /* ✅ AUMENTADO: Más ancho */
     }
 }
 
@@ -72,7 +91,10 @@
     }
     
     .backLink {
-        padding: var(--spacing-xs);
-        font-size: var(--font-size-xs);
+        padding: 0.4rem 0.7rem; /* ✅ AUMENTADO: Más grande en móvil */
+        font-size: 0.7rem; /* ✅ AUMENTADO: Texto más grande */
+        height: 28px; /* ✅ AUMENTADO: Más alto */
+        min-width: 60px; /* ✅ AUMENTADO: Más ancho */
+        max-width: 80px; /* ✅ AUMENTADO: Más ancho */
     }
 } 

@@ -58,12 +58,24 @@ export const getCarouselImages = (auto) => {
     }
     
     try {
-        // Obtener todas las imágenes disponibles (true y false)
+        // ✅ ARREGLADO: Manejar tanto objetos como arrays de URLs
+        if (auto.imagenes && Array.isArray(auto.imagenes)) {
+            // Si hay array de imágenes, usarlo
+            return auto.imagenes.length > 0 ? auto.imagenes : [defaultCarImage]
+        }
+        
+        // ✅ ARREGLADO: Buscar imágenes en propiedades del objeto
         const allImages = Object.values(auto)
             .filter(img => isValidImage(img))
             .map(img => img.url);
         
-        return allImages.length > 0 ? allImages : (auto.imagen ? [auto.imagen] : [defaultCarImage]);
+        // ✅ ARREGLADO: Si no hay imágenes estructuradas, usar imagen principal
+        if (allImages.length > 0) {
+            return allImages
+        }
+        
+        // ✅ ARREGLADO: Fallback a imagen principal
+        return auto.imagen ? [auto.imagen] : [defaultCarImage]
     } catch (error) {
         console.warn('⚠️ Error al procesar imágenes del carrusel:', error)
         return auto.imagen ? [auto.imagen] : [defaultCarImage]

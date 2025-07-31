@@ -6,4 +6,6 @@
  */
 
 export { GmailIcon } from './GmailIcon'
-export { WhatsAppIcon } from './WhatsAppIcon' 
+export { WhatsAppIcon } from './WhatsAppIcon'
+export { EmailIconPNG } from './EmailIconPNG'
+export { WhatsAppIconPNG } from './WhatsAppIconPNG' 

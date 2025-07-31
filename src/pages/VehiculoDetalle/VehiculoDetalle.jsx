@@ -5,7 +5,7 @@
  * @version 2.0.0
  */
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useAutoDetail } from '../../hooks'
 import { CardDetalle } from '../../components/business/CardDetalle'
@@ -15,6 +15,11 @@ import styles from './VehiculoDetalle.module.css'
 
 const VehiculoDetalle = () => {
     const { id } = useParams()
+
+    // ✅ NUEVO: Scroll hacia arriba al cargar la página
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const { 
         auto,
@@ -56,11 +61,12 @@ const VehiculoDetalle = () => {
     return (
         <div className={styles.container}>
             {/* Botón de volver */}
-            <div className={styles.backButton}>
-                <Link to="/vehiculos" className={styles.backLink}>
-                    ← Volver a vehículos
-                </Link>
-            </div>
+                            <div className={styles.backButton}>
+                    <Link to="/vehiculos" className={styles.backLink}>
+                        <span className={styles.backArrow}>←</span>
+                        <span>Atrás</span>
+                    </Link>
+                </div>
             
             {/* Contenido principal */}
             <div className={styles.content}>

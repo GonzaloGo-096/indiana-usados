@@ -162,7 +162,7 @@
 }
 
 .rangesSection {
-  background: #f9fafb;
+  background: #ffffff; /* ✅ CAMBIADO: De #f9fafb a #ffffff para fondo blanco */
 }
 
 .selectsSection {
@@ -178,6 +178,12 @@
   align-items: center;
 }
 
+/* ✅ NUEVO: Reducir ancho de los inputs select */
+.formGroup > div {
+  width: 80%; /* ✅ REDUCIDO: De 100% a 80% para inputs más pequeños */
+  max-width: 200px; /* ✅ AGREGADO: Límite máximo de ancho */
+}
+
 /* ===== LABELS ===== */
 .formGroup label {
   text-align: center;
@@ -185,7 +191,7 @@
   font-size: 0.875rem;
   color: #374151;
   margin-bottom: 0.25rem;
-  text-transform: uppercase;
+  text-transform: capitalize; /* ✅ CAMBIADO: De uppercase a capitalize para solo primera letra mayúscula */
   letter-spacing: 0.5px;
 }
 

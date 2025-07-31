@@ -245,10 +245,10 @@ const FilterFormSimplified = React.memo(({
               />
             </div>
 
-            {/* Kilometraje */}
+            {/* Kms */}
             <div className={styles.formGroup}>
               <RangeSlider
-                label="Kilometraje"
+                label="Kms"
                 min={0}
                 max={200000}
                 step={5000}
@@ -283,14 +283,14 @@ const FilterFormSimplified = React.memo(({
               />
             </div>
 
-            {/* Transmisión */}
+            {/* Caja */}
             <div className={styles.formGroup}>
               <MultiSelect
-                label="Transmisión"
+                label="Caja"
                 options={FILTER_OPTIONS.transmisiones}
                 value={transmision || []}
                 onChange={handleTransmisionChange}
-                placeholder="Todas las transmisiones"
+                placeholder="Todas las cajas"
               />
             </div>
           </div>

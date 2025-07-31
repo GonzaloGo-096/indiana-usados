@@ -115,7 +115,7 @@
 /* ===== HEADER DIVIDIDO - OPTIMIZADO ===== */
 .cardHeader {
     display: flex;
-    height: 60px; /* ✅ REDUCIDO: De 80px a 60px */
+    height: 50px; /* ✅ REDUCIDO: De 60px a 50px para menor altura */
     border-radius: 8px;
     overflow: hidden;
     border-bottom: 1px solid #e5e7eb;
@@ -128,7 +128,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 8px 12px;
+    padding: 8px 12px; /* ✅ REVERTIDO: Volviendo al valor original */
     background: transparent;
 }
 
@@ -142,7 +142,7 @@
 }
 
 .card__title {
-    font-size: 22px; /* ✅ REDUCIDO: De 24px a 22px */
+    font-size: 20px; /* ✅ REDUCIDO: De 22px a 20px para equilibrar con el contenedor negro */
     font-weight: 700;
     color: #111827;
     margin: 0;
@@ -159,7 +159,7 @@
 
 .priceContainer {
     width: 100%;
-    height: 100%;
+    height: 100%; /* ✅ REVERTIDO: Volviendo al valor original */
     background: #111827;
     display: flex;
     align-items: center;
@@ -235,7 +235,7 @@
 
 /* ===== FOOTER - COMPACTO ===== */
 .card__footer {
-    padding: 6px;
+    padding: 4px; /* ✅ REDUCIDO: De 6px a 4px para alinear mejor con el contenedor negro */
     position: relative;
 }
 
@@ -258,7 +258,7 @@
     color: #374151;
     font-size: 13px;
     font-weight: 500;
-    padding: 7px 14px;
+    padding: 5px 14px; /* ✅ REDUCIDO: De 7px a 5px para menor altura */
     border-radius: 4px;
     transition: box-shadow 0.2s ease;
     cursor: pointer;
@@ -280,12 +280,12 @@
     }
     
     .cardHeader {
-        height: 65px;
+        height: 55px; /* ✅ REDUCIDO: De 65px a 55px para menor altura */
         border-radius: 6px;
     }
     
     .headerLeft {
-        padding: 6px 8px;
+        padding: 6px 8px; /* ✅ REVERTIDO: Volviendo al valor original */
         align-items: center;
         text-align: center;
         flex: 0.6; /* ✅ MANTENIDO: Menos espacio para título */
@@ -301,13 +301,14 @@
     }
     
     .priceContainer {
+        height: 100%; /* ✅ REVERTIDO: Volviendo al valor original */
         padding: 3px 3px;
         border-radius: 0 6px 6px 0;
         justify-content: center; /* ✅ MANTENIDO: Número centrado */
     }
     
     .card__title {
-        font-size: 16px;
+        font-size: 15px; /* ✅ REDUCIDO: De 16px a 15px para equilibrar */
         text-align: center;
     }
     
@@ -343,7 +344,7 @@
     }
     
     .card__footer {
-        padding: 4px;
+        padding: 3px; /* ✅ REDUCIDO: De 4px a 3px para mejor alineación */
     }
     
     .card__footer_border {
@@ -352,7 +353,7 @@
     
     .card__button {
         font-size: 12px;
-        padding: 5px 10px;
+        padding: 4px 10px; /* ✅ REDUCIDO: De 5px a 4px para menor altura */
     }
 }
 
@@ -366,14 +367,14 @@
     }
     
     .cardHeader {
-        height: 70px;
+        height: 60px; /* ✅ REDUCIDO: De 70px a 60px para menor altura */
         border-radius: 4px;
         flex-direction: column;
     }
     
     .headerLeft {
         flex: 1;
-        padding: 4px 8px;
+        padding: 4px 8px; /* ✅ REVERTIDO: Volviendo al valor original */
         align-items: center;
         text-align: center;
     }
@@ -388,13 +389,14 @@
     }
     
     .priceContainer {
+        height: 100%; /* ✅ REVERTIDO: Volviendo al valor original */
         padding: 4px 6px;
         border-radius: 0 0 4px 4px;
         justify-content: center; /* ✅ MANTENIDO: Número centrado */
     }
     
     .card__title {
-        font-size: 14px;
+        font-size: 13px; /* ✅ REDUCIDO: De 14px a 13px para equilibrar */
         text-align: center;
     }
     
@@ -431,7 +433,7 @@
     }
     
     .card__footer {
-        padding: 3px;
+        padding: 2px; /* ✅ REDUCIDO: De 3px a 2px para mejor alineación */
     }
     
     .card__footer_border {
@@ -440,6 +442,6 @@
     
     .card__button {
         font-size: 11px;
-        padding: 4px 8px;
+        padding: 3px 8px; /* ✅ REDUCIDO: De 4px a 3px para menor altura */
     }
 } 
