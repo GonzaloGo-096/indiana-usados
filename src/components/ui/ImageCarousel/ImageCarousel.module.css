@@ -16,7 +16,7 @@
 .carouselContainer {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: 0; /* ✅ CAMBIADO: Sin gap para eliminar el recuadro gris */
     width: 100%;
 }
 
@@ -48,24 +48,21 @@
     transform: translateY(-50%);
     width: 40px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.7); /* ✅ CAMBIADO: Negro con opacity */
     border: none;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal);
-    backdrop-filter: blur(8px); /* ✅ OPTIMIZADO: Reducido de 10px a 8px */
-    -webkit-backdrop-filter: blur(8px); /* ✅ OPTIMIZADO: Reducido de 10px a 8px */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+    transition: background 0.2s ease, transform 0.2s ease; /* ✅ OPTIMIZADO: Solo transiciones necesarias */
     z-index: 2;
+    color: #ffffff; /* ✅ AGREGADO: Color blanco para las flechas */
 }
 
 .arrow:hover {
-    /* background: rgba(255, 255, 255, 1); */
-    /* transform: translateY(-50%) scale(1.1); */
-    /* box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); */
+    background: rgba(0, 0, 0, 0.9); /* ✅ CAMBIADO: Negro más opaco en hover */
+    transform: translateY(-50%) scale(1.05); /* ✅ OPTIMIZADO: Escala mínima */
 }
 
 .arrowLeft {
@@ -88,22 +85,21 @@
 }
 
 .indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.4);
+    width: 20px; /* ✅ CAMBIADO: Línea horizontal */
+    height: 2px; /* ✅ CAMBIADO: Altura mínima */
+    border-radius: 1px; /* ✅ CAMBIADO: Bordes redondeados mínimos */
+    border: none;
+    background: rgba(255, 255, 255, 0.4); /* ✅ CAMBIADO: Blanco con opacity */
     cursor: pointer;
-    transition: background var(--transition-normal);
+    transition: background 0.2s ease; /* ✅ OPTIMIZADO: Transición simple */
 }
 
 .indicator:hover {
-    /* background: rgba(255, 255, 255, 0.6); */
+    background: rgba(255, 255, 255, 0.7); /* ✅ CAMBIADO: Blanco más opaco en hover */
 }
 
 .indicator.active {
-    background: rgba(255, 255, 255, 0.8);
-    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 1); /* ✅ CAMBIADO: Blanco sólido activo */
 }
 
 /* ===== CONTENEDOR DE MINIATURAS ===== */
@@ -114,6 +110,9 @@
     scrollbar-color: var(--color-neutral-300) transparent;
     display: flex;
     justify-content: center;
+    background: #ffffff; /* ✅ CAMBIADO: Fondo blanco */
+    border-radius: 8px; /* ✅ RESTAURADO: Bordes redondeados */
+    padding: var(--spacing-sm); /* ✅ RESTAURADO: Padding para separación */
 }
 
 .thumbnailsContainer::-webkit-scrollbar {
@@ -144,36 +143,49 @@
 /* ===== MINIATURAS ===== */
 .thumbnail {
     flex-shrink: 0;
-    width: 80px;
-    height: 60px;
+    width: 100px;
+    height: 70px;
     border-radius: 8px;
     overflow: hidden;
     border: 2px solid transparent;
     cursor: pointer;
-    transition: border-color var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal);
-    background: var(--color-neutral-100);
+    transition: transform 0.2s ease; /* ✅ OPTIMIZADO: Solo transform para mejor performance */
+    background: #ffffff;
+    position: relative;
 }
 
 .thumbnail:hover {
-    /* border-color: var(--color-primary-500); */
-    /* transform: scale(1.05); */
-    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); */
+    border-color: transparent; /* ✅ CAMBIADO: Sin borde en hover */
+    transform: scale(1.02); /* ✅ MANTENIDO: Escala mínima */
 }
 
 .thumbnail.active {
-    border-color: var(--color-primary-500);
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+    transform: scale(1.05); /* ✅ MANTENIDO: Ligeramente más grande que las otras */
+    position: relative; /* ✅ MANTENIDO: Para posicionar el indicador */
+}
+
+.thumbnail.active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background-color: #6b7280;
+    border-radius: 1px;
 }
 
 .thumbnailImage {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform var(--transition-normal);
+    transition: transform 0.2s ease; /* ✅ OPTIMIZADO: Solo transform para mejor performance */
+    border-radius: 8px;
 }
 
 .thumbnail:hover .thumbnailImage {
-    /* transform: scale(1.1); */
+    transform: scale(1.08); /* ✅ AUMENTADO: Zoom más pronunciado en la imagen */
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
@@ -216,8 +228,8 @@
     }
     
     .indicator {
-        width: 10px;
-        height: 10px;
+        width: 16px; /* ✅ AJUSTADO: Línea más corta en tablet */
+        height: 2px;
     }
     
     .thumbnail {
