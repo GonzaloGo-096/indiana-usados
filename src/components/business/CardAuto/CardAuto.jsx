@@ -80,6 +80,7 @@ export const CardAuto = forwardRef(({ auto }, ref) => {
             marca: auto.marca || '',
             modelo: auto.modelo || '',
             version: auto.version || '',
+            cilindrada: auto.cilindrada || '', // ✅ AGREGADO: Campo cilindrada
             precio: auto.precio || '',
             año: auto.año || '',
             kilometraje: auto.kilometraje || '', // ✅ CORREGIDO: De kms a kilometraje
@@ -133,6 +134,7 @@ export const CardAuto = forwardRef(({ auto }, ref) => {
         marca, 
         modelo, 
         version, 
+        cilindrada, // ✅ AGREGADO: Campo cilindrada
         precio, 
         año, 
         kilometraje, // ✅ CORREGIDO: De kms a kilometraje
@@ -204,7 +206,7 @@ export const CardAuto = forwardRef(({ auto }, ref) => {
                         </div>
                         {version && (
                             <span className={styles.card__version}>
-                                {formatValue(version)}
+                                {formatValue(version)}{cilindrada && ` ${formatValue(cilindrada)}`}
                             </span>
                         )}
                     </div>

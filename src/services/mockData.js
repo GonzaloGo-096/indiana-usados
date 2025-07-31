@@ -16,12 +16,17 @@ const mockVehicles = [
         id: 1,
         marca: "Toyota",
         modelo: "Corolla",
-        version: "XSE 2.0",
+        version: "XSE",
         año: 2020,
-        precio: 10000000, // ✅ ACTUALIZADO: 10 millones
+        precio: 10000000,
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 50000,
+        kms: 50000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "2.0", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x2", // ✅ AGREGADO: Campo tracción
+        tapizado: "Cuero", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Full", // ✅ AGREGADO: Campo categoría
         color: "Blanco",
         categoria: "Sedán",
         caja: "Automática",
@@ -37,12 +42,17 @@ const mockVehicles = [
         id: 2,
         marca: "Toyota",
         modelo: "Camry",
-        version: "XLE 2.5",
+        version: "XLE",
         año: 2021,
-        precio: 8594987, // ✅ ACTUALIZADO: 8.594.987
+        precio: 8594987,
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 30000,
+        kms: 30000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "2.5", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x2", // ✅ AGREGADO: Campo tracción
+        tapizado: "Semi Cuero", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Intermedia", // ✅ AGREGADO: Campo categoría
         color: "Negro",
         categoria: "Sedán",
         caja: "Automática",
@@ -58,12 +68,17 @@ const mockVehicles = [
         id: 3,
         marca: "Honda",
         modelo: "Civic",
-        version: "Sport 1.8",
+        version: "Sport",
         año: 2019,
-        precio: 7500000, // ✅ ACTUALIZADO: 7.5 millones
+        precio: 7500000,
         combustible: "Gasolina",
         transmision: "Manual",
         kilometraje: 70000,
+        kms: 70000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "1.8", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x2", // ✅ AGREGADO: Campo tracción
+        tapizado: "Pana", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Base", // ✅ AGREGADO: Campo categoría
         color: "Azul",
         categoria: "Sedán",
         caja: "Manual",
@@ -78,12 +93,17 @@ const mockVehicles = [
         id: 4,
         marca: "Honda",
         modelo: "Accord",
-        version: "Touring 2.0",
+        version: "Touring",
         año: 2020,
-        precio: 9200000, // ✅ ACTUALIZADO: 9.2 millones
+        precio: 9200000,
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 45000,
+        kms: 45000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "2.0", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x4", // ✅ AGREGADO: Campo tracción
+        tapizado: "Cuero", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Full", // ✅ AGREGADO: Campo categoría
         color: "Gris",
         categoria: "Sedán",
         caja: "Automática",
@@ -99,12 +119,17 @@ const mockVehicles = [
         id: 5,
         marca: "Ford",
         modelo: "Focus",
-        version: "SE 1.6",
+        version: "SE",
         año: 2018,
-        precio: 6500000, // ✅ ACTUALIZADO: 6.5 millones
+        precio: 6500000,
         combustible: "Gasolina",
         transmision: "Manual",
         kilometraje: 80000,
+        kms: 80000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "1.6", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x2", // ✅ AGREGADO: Campo tracción
+        tapizado: "Pana", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Base", // ✅ AGREGADO: Campo categoría
         color: "Rojo",
         categoria: "Sedán",
         caja: "Manual",
@@ -119,12 +144,17 @@ const mockVehicles = [
         id: 6,
         marca: "Ford",
         modelo: "Mustang",
-        version: "GT 5.0",
+        version: "GT",
         año: 2022,
-        precio: 15000000, // ✅ ACTUALIZADO: 15 millones
+        precio: 15000000,
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 15000,
+        kms: 15000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "5.0", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x2", // ✅ AGREGADO: Campo tracción
+        tapizado: "Cuero", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Full", // ✅ AGREGADO: Campo categoría
         color: "Negro",
         categoria: "Deportivo",
         caja: "Automática",
@@ -140,12 +170,17 @@ const mockVehicles = [
         id: 7,
         marca: "Chevrolet",
         modelo: "Cruze",
-        version: "Premier 1.4",
+        version: "Premier",
         año: 2021,
-        precio: 8500000, // ✅ ACTUALIZADO: 8.5 millones
+        precio: 8500000,
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 35000,
+        kms: 35000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "1.4", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x2", // ✅ AGREGADO: Campo tracción
+        tapizado: "Semi Cuero", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Intermedia", // ✅ AGREGADO: Campo categoría
         color: "Blanco",
         categoria: "Sedán",
         caja: "Automática",
@@ -160,12 +195,17 @@ const mockVehicles = [
         id: 8,
         marca: "Chevrolet",
         modelo: "Camaro",
-        version: "SS 6.2",
+        version: "SS",
         año: 2023,
-        precio: 18000000, // ✅ ACTUALIZADO: 18 millones
+        precio: 18000000,
         combustible: "Gasolina",
         transmision: "Manual",
         kilometraje: 5000,
+        kms: 5000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "6.2", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x2", // ✅ AGREGADO: Campo tracción
+        tapizado: "Cuero", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Full", // ✅ AGREGADO: Campo categoría
         color: "Amarillo",
         categoria: "Deportivo",
         caja: "Manual",
@@ -180,12 +220,17 @@ const mockVehicles = [
         id: 9,
         marca: "Nissan",
         modelo: "Sentra",
-        version: "SR 2.0",
+        version: "SR",
         año: 2020,
-        precio: 7800000, // ✅ ACTUALIZADO: 7.8 millones
+        precio: 7800000,
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 40000,
+        kms: 40000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "2.0", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x2", // ✅ AGREGADO: Campo tracción
+        tapizado: "Pana", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Base", // ✅ AGREGADO: Campo categoría
         color: "Gris",
         categoria: "Sedán",
         caja: "Automática",
@@ -200,12 +245,17 @@ const mockVehicles = [
         id: 10,
         marca: "Nissan",
         modelo: "Altima",
-        version: "SL 2.5",
+        version: "SL",
         año: 2022,
-        precio: 11000000, // ✅ ACTUALIZADO: 11 millones
+        precio: 11000000,
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 20000,
+        kms: 20000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "2.5", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x4", // ✅ AGREGADO: Campo tracción
+        tapizado: "Cuero", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Full", // ✅ AGREGADO: Campo categoría
         color: "Azul",
         categoria: "Sedán",
         caja: "Automática",
@@ -220,12 +270,17 @@ const mockVehicles = [
         id: 11,
         marca: "Peugeot",
         modelo: "208",
-        version: "Feline 1.6",
+        version: "Feline",
         año: 2021,
-        precio: 7200000, // ✅ ACTUALIZADO: 7.2 millones
+        precio: 7200000,
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 35000,
+        kms: 35000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "1.6", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x2", // ✅ AGREGADO: Campo tracción
+        tapizado: "Semi Cuero", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Intermedia", // ✅ AGREGADO: Campo categoría
         color: "Blanco",
         categoria: "Hatchback",
         caja: "Automática",
@@ -241,12 +296,17 @@ const mockVehicles = [
         id: 12,
         marca: "Peugeot",
         modelo: "3008",
-        version: "GT Line 1.6",
+        version: "GT Line",
         año: 2022,
-        precio: 12500000, // ✅ ACTUALIZADO: 12.5 millones
+        precio: 12500000,
         combustible: "Gasolina",
         transmision: "Automática",
         kilometraje: 25000,
+        kms: 25000, // ✅ AGREGADO: Campo kms para vehículo detalle
+        cilindrada: "1.6", // ✅ AGREGADO: Campo cilindrada
+        traccion: "4x4", // ✅ AGREGADO: Campo tracción
+        tapizado: "Cuero", // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo: "Full", // ✅ AGREGADO: Campo categoría
         color: "Gris",
         categoria: "SUV",
         caja: "Automática",

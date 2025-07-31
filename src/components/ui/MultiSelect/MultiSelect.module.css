@@ -50,7 +50,8 @@
 }
 
 .trigger:hover:not(.disabled) {
-  border-color: var(--color-neutral-400);
+  border-color: var(--color-neutral-600); /* ✅ MEJORADO: Color más visible */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* ✅ AGREGADO: Sombra sutil en hover */
 }
 
 .trigger:focus {

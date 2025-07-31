@@ -2,22 +2,22 @@
  * CardDetalle.module.css - Estilos para el componente CardDetalle
  * 
  * Características:
- * - Diseño de tarjeta detallada optimizado
+ * - Diseño de tarjeta detallada ultra optimizado
  * - Layout de dos columnas (imagen + detalles)
  * - Secciones organizadas de información
- * - Botones de contacto
- * - Responsive design
- * - ULTRA OPTIMIZADO PARA PERFORMANCE
+ * - Botones de contacto optimizados
+ * - Responsive design y performance
+ * - BEM methodology implementada
  * 
  * @author Indiana Usados
- * @version 1.1.0 - ULTRA OPTIMIZADO PARA PERFORMANCE
+ * @version 2.0.0 - OPTIMIZACIÓN FINAL
  */
 
 /* ===== TARJETA PRINCIPAL ===== */
 .card {
     display: flex;
     flex-direction: column;
-    background: rgba(255, 255, 255, 0.95); /* ✅ OPTIMIZADO: Sin backdrop-filter */
+    background: #ffffff; /* ✅ OPTIMIZADO: Color sólido para mejor performance */
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -58,7 +58,7 @@
 .detailsSection {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: 0; /* ✅ CORREGIDO: Sin gap para pegar elementos */
     /* ✅ OPTIMIZADO: Mejorar performance */
     contain: layout style;
 }
@@ -66,11 +66,10 @@
 /* ✅ NUEVO: Header copiado de CardAuto */
 .cardHeader {
     display: flex;
-    height: 70px; /* ✅ AUMENTADO: De 50px a 70px */
+    height: 70px;
     border-radius: 8px;
-    overflow: hidden;
     border-bottom: 1px solid #e5e7eb;
-    margin-bottom: var(--spacing-sm); /* ✅ REDUCIDO: De var(--spacing-lg) a var(--spacing-sm) para acercar los 3 datos */
+    margin-bottom: 12px; /* ✅ AUMENTADO: Más espacio */
 }
 
 .headerLeft {
@@ -111,19 +110,19 @@
 .priceContainer {
     width: 100%;
     height: 100%;
-    background: #111827;
+    background: var(--color-neutral-900); /* ✅ OPTIMIZADO: Usando variable CSS predefinida */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3px 4px;
-    border-radius: 0 8px 8px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-1) var(--spacing-2); /* ✅ OPTIMIZADO: Usando variables de spacing */
+    border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0; /* ✅ OPTIMIZADO: Usando variables de border-radius */
+    box-shadow: var(--shadow-sm); /* ✅ OPTIMIZADO: Usando variable de shadow predefinida */
 }
 
 .card__price {
-    color: #ffffff;
-    font-size: 28px; /* ✅ AUMENTADO: De 20px a 28px */
-    font-weight: 700;
+    color: var(--color-white); /* ✅ OPTIMIZADO: Usando variable CSS predefinida */
+    font-size: var(--font-size-2xl); /* ✅ OPTIMIZADO: Usando variable de font-size */
+    font-weight: var(--font-weight-bold); /* ✅ OPTIMIZADO: Usando variable de font-weight */
     text-align: center;
 }
 
@@ -140,8 +139,9 @@
 
 /* ✅ NUEVO: Estilos de detalles copiados de CardAuto */
 .card__details {
-    flex: 1;
-    margin-bottom: var(--spacing-lg);
+    flex: 0 0 auto; /* ✅ CORREGIDO: Solo el espacio necesario */
+    margin-bottom: var(--spacing-lg); /* ✅ AGREGADO: Espacio grande hacia abajo */
+    height: fit-content; /* ✅ CORREGIDO: Altura exacta al contenido */
 }
 
 .card__data_container {
@@ -149,7 +149,7 @@
     justify-content: center;
     align-items: center;
     gap: 8px; /* ✅ AUMENTADO: De 4px a 8px */
-    padding: 12px 0; /* ✅ AUMENTADO: De 4px a 12px */
+    padding: 0; /* ✅ ELIMINADO: Sin padding para pegar completamente */
     width: 100%;
     margin: 0;
 }
@@ -190,24 +190,31 @@
     font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-bold);
     color: var(--color-neutral-800);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: 0; /* ✅ ELIMINADO: Sin espacio para pegar */
     line-height: 1.3;
     text-align: center;
     /* ✅ OPTIMIZADO: Sin transiciones innecesarias */
 }
 
-/* ===== CONTENEDOR DE INFORMACIÓN CON FLEXBOX ===== */
+/* ===== CONTENEDOR DE INFORMACIÓN - CORREGIDO ===== */
 .infoContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* ✅ 3 columnas */
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: 22px; /* ✅ AUMENTADO: Más espacio entre filas */
+    margin: 0;
+    padding: 0;
+    margin-top: 16px; /* ✅ AUMENTADO: Más espacio desde arriba */
+    margin-bottom: var(--spacing-md); /* ✅ AGREGADO: Separación de la siguiente sección */
+    width: 100%; /* ✅ CORREGIDO: Ancho completo */
 }
 
 .infoSection {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md); /* ✅ Espacio entre items */
+    flex-direction: row;
+    gap: 3px; /* ✅ CORREGIDO: Espacio funcional entre columnas */
+    margin: 0;
+    padding: 0;
+    width: 100%; /* ✅ CORREGIDO: Ancho completo */
 }
 
 .infoItem {
@@ -215,6 +222,9 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    margin: 0;
+    padding: 0;
+    flex: 1; /* ✅ MANTENIDO: Distribución equitativa */
 }
 
 .infoKey {
@@ -222,8 +232,9 @@
     font-weight: var(--font-weight-semibold);
     color: var(--color-neutral-700);
     text-transform: capitalize;
-    letter-spacing: 0.3px;
-    margin-bottom: 4px; /* ✅ Espacio controlado entre key y value */
+    margin: 0 0 2px 0; /* ✅ CORREGIDO: Espacio funcional */
+    padding: 0;
+    line-height: 1.2; /* ✅ CORREGIDO: Line-height funcional */
 }
 
 .infoValue {
@@ -231,6 +242,9 @@
     font-weight: var(--font-weight-bold);
     color: var(--color-neutral-800);
     text-align: center;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2; /* ✅ CORREGIDO: Line-height funcional */
 }
 
 /* ✅ ELIMINADO: Estilos de tabla reemplazados por flexbox */
@@ -260,11 +274,11 @@
     /* ✅ OPTIMIZADO: Sin transiciones */
 }
 
-/* ===== SECCIÓN DE CONTACTO ===== */
+/* ===== SECCIÓN DE CONTACTO MODERNIZADA ===== */
 .contactSection {
-    margin-top: var(--spacing-lg);
     /* ✅ OPTIMIZADO: Mejorar performance */
     contain: layout style;
+    margin-top: 32px;
 }
 
 .contactTitle {
@@ -284,38 +298,67 @@
 }
 
 .contactButton {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.7rem 1.2rem;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 24px;
     background: var(--color-neutral-900);
-    border: 1px solid var(--color-neutral-900);
+    border: none;
     color: #ffffff;
     text-decoration: none;
-    border-radius: 6px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 8px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 600;
-    font-size: 0.8rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    min-width: 90px;
-    max-width: 110px;
-    height: 36px;
-    justify-content: center;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 130px;
+    height: 48px;
+    text-align: center;
     letter-spacing: 0.3px;
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    will-change: transform;
+    /* ✅ OPTIMIZADO: Propiedades para hover sutil */
+    will-change: transform, box-shadow, background-color;
     contain: layout style;
+    position: relative;
+    overflow: hidden;
+}
+
+.contactButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
 }
 
 .contactButton:hover {
     background: var(--color-neutral-800);
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.contactButton:hover::before {
+    left: 100%;
 }
 
 .contactButton:active {
-    transform: translateY(0px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--color-neutral-700);
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.buttonIcon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.buttonText {
+    font-weight: 600;
+    letter-spacing: 0.3px;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -330,8 +373,14 @@
     }
     
     .infoContainer {
-        grid-template-columns: 1fr; /* ✅ CAMBIADO: De 3 columnas a 1 en móvil */
-        gap: var(--spacing-sm);
+        gap: 12px;
+        margin-top: var(--spacing-sm); /* ✅ AGREGADO: Espacio desde arriba */
+    }
+    
+    .infoSection {
+        flex-direction: column;
+        gap: 3px;
+        width: 100%;
     }
 }
 
@@ -391,7 +440,7 @@
     /* ✅ NUEVO: Estilos responsive para detalles */
     .card__data_container {
         gap: 6px; /* ✅ AUMENTADO: De 3px a 6px */
-        padding: 8px 0; /* ✅ AUMENTADO: De 3px a 8px */
+        padding: 0; /* ✅ ELIMINADO: Sin padding para pegar completamente */
         width: 100%;
         justify-content: center;
     }
@@ -428,11 +477,10 @@
     }
     
     .contactButton {
-        padding: 0.6rem 1rem;
-        font-size: 0.75rem;
-        height: 34px;
-        min-width: 80px;
-        max-width: 100px;
+        padding: 12px 20px;
+        font-size: 0.85rem;
+        height: 44px;
+        min-width: 110px;
     }
 }
 
@@ -513,6 +561,17 @@
         font-size: var(--font-size-lg); /* ✅ OPTIMIZADO: Reducido */
     }
     
+    .infoContainer {
+        gap: 18px;
+        margin-top: var(--spacing-sm); /* ✅ AGREGADO: Espacio desde arriba */
+    }
+    
+    .infoSection {
+        flex-direction: column;
+        gap: 3px;
+        width: 100%;
+    }
+    
     .infoKey {
         font-size: var(--font-size-xs);
     }
@@ -522,10 +581,9 @@
     }
     
     .contactButton {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.7rem;
-        height: 32px;
-        min-width: 70px;
-        max-width: 90px;
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        height: 36px;
+        min-width: 80px;
     }
 } 

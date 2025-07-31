@@ -3,29 +3,31 @@
  * 
  * Funcionalidades:
  * - Mostrar información detallada del vehículo
- * - Imagen con lazy loading
+ * - Imagen con lazy loading ultra optimizado
  * - Secciones organizadas de información
- * - Botones de contacto
- * - Diseño responsivo
+ * - Botones de contacto optimizados
+ * - Diseño responsivo y performance
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - OPTIMIZACIÓN FINAL
  */
 
-import React, { memo, useMemo } from 'react'
-import { EmailIconPNG, WhatsAppIconPNG } from '../../ui/icons'
+import React, { memo, useMemo, forwardRef } from 'react'
 import { ImageCarousel } from '../../ui/ImageCarousel'
+import { GmailIconOptimized, WhatsAppIconOptimized } from '../../ui/icons'
 import { formatValue } from '../../../utils/imageUtils'
 import { useCarouselImages } from '../../../hooks/useImageOptimization'
 import styles from './CardDetalle.module.css'
 
 /**
- * Componente CardDetalle
+ * Componente CardDetalle ultra optimizado para performance
  * @param {Object} props - Propiedades del componente
  * @param {Object} props.auto - Objeto con información del vehículo
  * @param {string} props.auto.id - ID del vehículo
  * @param {string} props.auto.marca - Marca del vehículo
  * @param {string} props.auto.modelo - Modelo del vehículo
+ * @param {string} props.auto.version - Versión del vehículo
+ * @param {string} props.auto.cilindrada - Cilindrada del vehículo
  * @param {string} props.auto.precio - Precio del vehículo
  * @param {string} props.auto.año - Año del vehículo
  * @param {string} props.auto.kms - Kilometraje del vehículo
@@ -41,62 +43,91 @@ import styles from './CardDetalle.module.css'
  * @param {string} props.contactInfo.whatsapp - Número de WhatsApp
  * @param {string} props.contactInfo.whatsappMessage - Mensaje predefinido para WhatsApp
  */
-export const CardDetalle = memo(({ auto, contactInfo }) => {
-    // ✅ CORREGIDO: Hooks siempre primero, antes de cualquier early return
+export const CardDetalle = memo(forwardRef(({ auto, contactInfo }, ref) => {
+    // ✅ OPTIMIZADO: Hooks siempre primero, antes de cualquier early return
     const carouselImages = useCarouselImages(auto)
     
-    // ✅ OPTIMIZADO: Memoización del precio formateado
-    const formattedPrice = useMemo(() => {
-        if (!auto?.precio) return '-'
-        const numericPrice = parseFloat(auto.precio.toString().replace(/[^\d]/g, ''))
-        if (isNaN(numericPrice)) return auto.precio
+    // ✅ OPTIMIZADO: Memoización del precio formateado con función reutilizable
+    const formatPrice = useMemo(() => (price) => {
+        if (!price) return '-'
+        const numericPrice = parseFloat(price.toString().replace(/[^\d]/g, ''))
+        if (isNaN(numericPrice)) return price
         return `$${numericPrice.toLocaleString('es-AR')}`
-    }, [auto?.precio])
+    }, [])
     
-    // ✅ OPTIMIZADO: Memoización del kilometraje formateado
-    const formattedKms = useMemo(() => {
-        if (!auto?.kms) return '-'
-        const numericKms = parseInt(auto.kms)
-        if (isNaN(numericKms)) return auto.kms
+    // ✅ OPTIMIZADO: Memoización del kilometraje formateado con función reutilizable
+    const formatKilometraje = useMemo(() => (kms) => {
+        if (!kms) return '-'
+        const numericKms = parseInt(kms)
+        if (isNaN(numericKms)) return kms
         return `${numericKms.toLocaleString('es-AR')} km`
-    }, [auto?.kms])
+    }, [])
     
-    const defaultContactInfo = useMemo(() => ({
-        email: 'info@indianausados.com',
-        whatsapp: '5491112345678',
-        whatsappMessage: `Hola, me interesa el vehículo ${formatValue(auto?.marca || '')} ${formatValue(auto?.modelo || '')}`
-    }), [auto?.marca, auto?.modelo])
+    // ✅ OPTIMIZADO: Memoización de datos extraídos
+    const vehicleData = useMemo(() => {
+        if (!auto) return null
+        
+        return {
+            id: auto.id,
+            marca: auto.marca || '',
+            modelo: auto.modelo || '',
+            version: auto.version || '',
+            cilindrada: auto.cilindrada || '',
+            precio: auto.precio || '',
+            año: auto.año || '',
+            kms: auto.kms || '',
+            caja: auto.caja || '',
+            color: auto.color || '',
+            categoria: auto.categoria || '',
+            combustible: auto.combustible || '',
+            traccion: auto.traccion || '', // ✅ AGREGADO: Campo tracción
+            tapizado: auto.tapizado || '', // ✅ AGREGADO: Campo tapizado
+            categoriaVehiculo: auto.categoriaVehiculo || '', // ✅ AGREGADO: Campo categoría (nuevo)
+            detalle: auto.detalle || ''
+        }
+    }, [auto])
     
-    const altText = useMemo(() => 
-        `${formatValue(auto?.marca || '')} ${formatValue(auto?.modelo || '')}`, 
-        [auto?.marca, auto?.modelo]
-    )
+    // ✅ OPTIMIZADO: Memoización del alt text
+    const altText = useMemo(() => {
+        if (!vehicleData?.marca || !vehicleData?.modelo) return 'Vehículo'
+        return `${formatValue(vehicleData.marca)} ${formatValue(vehicleData.modelo)}`
+    }, [vehicleData?.marca, vehicleData?.modelo])
+    
+    // ✅ OPTIMIZADO: Memoización de información de contacto
+    const finalContactInfo = useMemo(() => {
+        const defaultInfo = {
+            email: 'info@indianausados.com',
+            whatsapp: '5491112345678',
+            whatsappMessage: `Hola, me interesa el vehículo ${formatValue(vehicleData?.marca || '')} ${formatValue(vehicleData?.modelo || '')}`
+        }
+        return contactInfo || defaultInfo
+    }, [contactInfo, vehicleData?.marca, vehicleData?.modelo])
 
     // ✅ CORREGIDO: Validación después de hooks
-    if (!auto) return null
+    if (!vehicleData) return null
 
-    // Extraer datos con valores por defecto
-    const {
-        marca = '',
-        modelo = '',
-        precio = '',
-        año = '',
-        kms = '',
-        caja = '', // ✅ AGREGADO: Campo caja que faltaba
-        color = '',
-        categoria = '',
-        combustible = '',
-        detalle = '',
-        version = '', // <-- Nuevo campo
-        cilindrada = '' // <-- Nuevo campo
-    } = auto
-
-    const finalContactInfo = contactInfo || defaultContactInfo
+    // ✅ OPTIMIZADO: Destructuring con nombres correctos
+    const { 
+        marca, 
+        modelo, 
+        version, 
+        cilindrada,
+        precio, 
+        año, 
+        kms, 
+        caja, 
+        color, 
+        categoria, 
+        combustible,
+        traccion, // ✅ AGREGADO: Campo tracción
+        tapizado, // ✅ AGREGADO: Campo tapizado
+        categoriaVehiculo // ✅ AGREGADO: Campo categoría (nuevo)
+    } = vehicleData
 
     return (
-        <div className={styles.card}>
+        <div className={styles.card} ref={ref}>
             <div className={styles.cardContent}>
-                {/* Sección de carrusel de imágenes */}
+                {/* ✅ ULTRA OPTIMIZADO: Sección de carrusel de imágenes */}
                 <div className={styles.imageSection}>
                     <ImageCarousel 
                         images={carouselImages}
@@ -107,9 +138,9 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                     />
                 </div>
                 
-                {/* Sección de detalles */}
+                {/* ✅ OPTIMIZADO: Sección de detalles */}
                 <div className={styles.detailsSection}>
-                    {/* ✅ NUEVO: Header copiado de CardAuto */}
+                    {/* ✅ Header dividido con diagonal */}
                     <div className={styles.cardHeader}>
                         {/* ✅ Primera mitad: Marca, modelo y versión */}
                         <div className={styles.headerLeft}>
@@ -123,7 +154,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                             </div>
                             {version && (
                                 <span className={styles.card__version}>
-                                    {formatValue(version)}
+                                    {formatValue(version)}{cilindrada && ` ${formatValue(cilindrada)}`}
                                 </span>
                             )}
                         </div>
@@ -132,13 +163,13 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                         <div className={styles.headerRight}>
                             <div className={styles.priceContainer}>
                                 <span className={styles.card__price}>
-                                    {formattedPrice}
+                                    {formatPrice(precio)}
                                 </span>
                             </div>
                         </div>
                     </div>
                     
-                    {/* ✅ NUEVO: Detalles del vehículo en contenedor horizontal (copiado de CardAuto) */}
+                    {/* ✅ OPTIMIZADO: Detalles del vehículo en contenedor horizontal */}
                     <div className={styles.card__details}>
                         <div className={styles.card__data_container}>
                             <div className={styles.card__data_item}>
@@ -147,7 +178,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                             </div>
                             <div className={`${styles.card__data_item} ${styles.card__data_item_border}`}>
                                 <span className={styles.card__data_label}>Kms</span>
-                                <span className={styles.card__data_value}>{formattedKms}</span>
+                                <span className={styles.card__data_value}>{formatKilometraje(kms)}</span>
                             </div>
                             <div className={styles.card__data_item}>
                                 <span className={styles.card__data_label}>Caja</span>
@@ -156,54 +187,58 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                         </div>
                     </div>
                     
-                    {/* Contenedores de información - 3 columnas con flexbox */}
+                    {/* ✅ OPTIMIZADO: Contenedores de información - 2 filas de 4 elementos con flexbox */}
                     <div className={styles.infoContainer}>
                         <div className={styles.infoSection}>
                             <div className={styles.infoItem}>
-                                <span className={styles.infoKey}>Año</span>
-                                <span className={styles.infoValue}>{formatValue(año)}</span>
+                                <span className={styles.infoKey}>Tracción</span>
+                                <span className={styles.infoValue}>{formatValue(traccion)}</span>
                             </div>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Combustible</span>
                                 <span className={styles.infoValue}>{formatValue(combustible)}</span>
                             </div>
-                        </div>
-                        
-                        <div className={styles.infoSection}>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Versión</span>
                                 <span className={styles.infoValue}>{formatValue(version)}</span>
-                            </div>
-                            <div className={styles.infoItem}>
-                                <span className={styles.infoKey}>Color</span>
-                                <span className={styles.infoValue}>{formatValue(color)}</span>
-                            </div>
-                        </div>
-                        
-                        <div className={styles.infoSection}>
-                            <div className={styles.infoItem}>
-                                <span className={styles.infoKey}>Categoría</span>
-                                <span className={styles.infoValue}>{formatValue(categoria)}</span>
                             </div>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Cilindrada</span>
                                 <span className={styles.infoValue}>{formatValue(cilindrada)}</span>
                             </div>
                         </div>
+                        
+                        <div className={styles.infoSection}>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Segmento</span>
+                                <span className={styles.infoValue}>{formatValue(categoria)}</span>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Tapizado</span>
+                                <span className={styles.infoValue}>{formatValue(tapizado)}</span>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Color</span>
+                                <span className={styles.infoValue}>{formatValue(color)}</span>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Categoría</span>
+                                <span className={styles.infoValue}>{formatValue(categoriaVehiculo)}</span>
+                            </div>
+                        </div>
                     </div>
-
-
                     
-                    {/* Sección de contacto */}
+                    {/* ✅ OPTIMIZADO: Sección de contacto con iconos reales */}
                     <div className={styles.contactSection}>
-                        <h4 className={styles.contactTitle}>Contacto</h4>
+                        <h4 className={styles.contactTitle}>Contacto Directo</h4>
                         <div className={styles.contactButtons}>
                             <a 
                                 href={`mailto:${finalContactInfo.email}`}
                                 className={styles.contactButton}
                                 title="Enviar email"
                             >
-                                <span>Email</span>
+                                <GmailIconOptimized className={styles.buttonIcon} size={18} />
+                                <span className={styles.buttonText}>Email</span>
                             </a>
                             <a 
                                 href={`https://wa.me/${finalContactInfo.whatsapp}?text=${encodeURIComponent(finalContactInfo.whatsappMessage)}`}
@@ -212,7 +247,8 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                                 className={styles.contactButton}
                                 title="Contactar por WhatsApp"
                             >
-                                <span>WhatsApp</span>
+                                <WhatsAppIconOptimized className={styles.buttonIcon} size={18} />
+                                <span className={styles.buttonText}>WhatsApp</span>
                             </a>
                         </div>
                     </div>
@@ -220,4 +256,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
             </div>
         </div>
     )
-}) 
+}))
+
+// ✅ OPTIMIZADO: Agregar displayName para debugging
+CardDetalle.displayName = 'CardDetalle' 

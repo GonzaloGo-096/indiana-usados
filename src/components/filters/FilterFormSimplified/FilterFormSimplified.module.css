@@ -184,6 +184,8 @@
   max-width: 200px; /* ✅ AGREGADO: Límite máximo de ancho */
 }
 
+
+
 /* ===== LABELS ===== */
 .formGroup label {
   text-align: center;
