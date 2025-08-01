@@ -94,7 +94,7 @@
 .card__title {
     font-size: 28px; /* ✅ AUMENTADO: De 20px a 28px */
     font-weight: 700;
-    color: #111827;
+    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
     margin: 0;
     line-height: 1.2;
     text-align: center;
@@ -117,6 +117,7 @@
     padding: var(--spacing-1) var(--spacing-2); /* ✅ OPTIMIZADO: Usando variables de spacing */
     border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0; /* ✅ OPTIMIZADO: Usando variables de border-radius */
     box-shadow: var(--shadow-sm); /* ✅ OPTIMIZADO: Usando variable de shadow predefinida */
+
 }
 
 .card__price {
@@ -180,7 +181,7 @@
 .card__data_value {
     font-size: 24px; /* ✅ AUMENTADO: De 15px a 24px */
     font-weight: 700; /* ✅ AUMENTADO: De 500 a 700 */
-    color: #111827; /* ✅ CAMBIADO: De #374151 a #111827 para más contraste */
+    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
     line-height: 1.1;
     margin-top: 4px; /* ✅ AUMENTADO: De 2px a 4px */
 }
@@ -431,6 +432,7 @@
         padding: 3px 3px;
         border-radius: 0 6px 6px 0;
         justify-content: center;
+
     }
     
     .card__price {

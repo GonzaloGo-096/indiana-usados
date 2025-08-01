@@ -161,12 +161,12 @@ export const CardAuto = forwardRef(({ auto }, ref) => {
                         onError={handleImageError}
                         // ✅ ULTRA OPTIMIZADO: Atributos para mejor performance
                         decoding="async"
-                        fetchPriority="low"
+                        fetchpriority="low"
                         width="400"
                         height="300"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         // ✅ OPTIMIZADO: Preload para imágenes críticas (primeras 6)
-                        {...(auto.id <= 6 && { fetchPriority: "high" })}
+                        {...(auto.id <= 6 && { fetchpriority: "high" })}
                     />
                 ) : !isInViewport ? (
                     // ✅ OPTIMIZADO: Placeholder mientras no está en viewport

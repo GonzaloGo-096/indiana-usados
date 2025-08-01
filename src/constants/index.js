@@ -74,7 +74,7 @@ export const cssVariables = `
     
     /* ===== COLORES BASE ===== */
     --color-white: #ffffff;
-    --color-black: #000000;
+    --color-black: #0a0d14, /* 🎨 NUEVO: Negro profundo */
     
     /* ===== NAV ===== */
     --nav-background: ${colors.nav.background};

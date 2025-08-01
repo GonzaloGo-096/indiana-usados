@@ -301,6 +301,14 @@
     font-style: italic;
 }
 
+.noResults {
+    text-align: center;
+    padding: 2rem;
+    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
     .container {

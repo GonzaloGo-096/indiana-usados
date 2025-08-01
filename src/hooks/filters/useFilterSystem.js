@@ -2,24 +2,25 @@
  * useFilterSystem - Hook simplificado para manejo de filtros
  * 
  * Responsabilidades:
- * - Manejar estado de filtros (pendientes y aplicados)
+ * - 🚀 NUEVO: Usar reducer para estado complejo
  * - Usar useGetCars para obtener datos con paginación infinita
  * - Proporcionar acciones para manipular filtros
  * - Notificaciones de feedback
  * 
  * Arquitectura:
  * - useGetCars: Maneja la obtención de datos y paginación infinita
- * - useFilterSystem: Maneja el estado de filtros
+ * - useFilterSystem: 🚀 NUEVO: Orquestador que usa reducer
  * - Separación clara de responsabilidades
  * 
  * @author Indiana Usados
- * @version 10.0.0 - Migrado a paginación infinita
+ * @version 11.0.0 - Migrado a reducer para estado complejo
  */
 
-import { useState, useCallback, useMemo } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useCallback } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useGetCars } from '../useGetCars'
 import { useFilterNotifications } from './useFilterNotifications'
+import { useFilterReducer } from './useFilterReducer' // 🚀 NUEVO: Importar reducer
 import autoService from '../../services/service'
 import { 
     getValidFilters, 
@@ -31,9 +32,24 @@ export const useFilterSystem = () => {
     const queryClient = useQueryClient()
     const notifications = useFilterNotifications()
     
-    // ===== ESTADO DE FILTROS =====
-    const [currentFilters, setCurrentFilters] = useState({})
-    const [pendingFilters, setPendingFilters] = useState({})
+    // 🚀 NUEVO: Usar reducer para estado complejo
+    const {
+        // 🎯 ESTADO DESDE REDUCER
+        currentFilters,
+        pendingFilters,
+        isLoading,
+        isError,
+        error,
+        isSubmitting,
+        
+        // 🎯 ACCIONES DESDE REDUCER
+        setPendingFilters,
+        applyFilters,
+        clearFilters,
+        setLoading,
+        setError,
+        clearError
+    } = useFilterReducer()
 
     // ===== QUERY PRINCIPAL CON PAGINACIÓN INFINITA =====
     const {
@@ -41,9 +57,6 @@ export const useFilterSystem = () => {
         allVehicles,
         totalCount,
         filteredCount,
-        isLoading,
-        isError,
-        error,
         loadMore,
         fetchNextPage,
         hasNextPage,
@@ -59,10 +72,13 @@ export const useFilterSystem = () => {
         cacheTime: 1000 * 60 * 60, // 1 hora
     })
 
-    // ===== MUTATION PARA APLICAR FILTROS =====
+    // ===== MUTATION SIMPLIFICADA =====
     const applyFiltersMutation = useMutation({
         mutationFn: async (filters) => {
             try {
+                // 🚀 NUEVO: Usar reducer para estados
+                setLoading(true)
+                clearError()
                 notifications.showLoadingNotification('Aplicando filtros...')
                 
                 // Transformar pending filters en queries aptas para backend
@@ -77,26 +93,33 @@ export const useFilterSystem = () => {
                 return result
             } catch (error) {
                 console.error('❌ Error al aplicar filtros:', error)
+                // 🚀 NUEVO: Usar reducer para error
+                setError(error.message)
                 notifications.showErrorNotification(`Error al aplicar filtros: ${error.message}`)
                 throw error
+            } finally {
+                // 🚀 NUEVO: Usar reducer para loading
+                setLoading(false)
             }
         },
         onSuccess: (result) => {
             console.log('🔄 Procesando respuesta del backend:', result)
             
-            // 1. PRIMERO: Actualizar filtros aplicados
-            setCurrentFilters(pendingFilters)
+            // 🚀 NUEVO: Usar reducer para aplicar filtros
+            applyFilters()
             
-            // 2. SEGUNDO: Invalidar cache para forzar nueva consulta con filtros
+            // Invalidar cache para forzar nueva consulta con filtros
             queryClient.invalidateQueries({ queryKey: ['vehicles-infinite'] })
             
-            // 3. TERCERO: Mostrar notificación de éxito
+            // Mostrar notificación de éxito
             notifications.showSuccessNotification(
                 `Filtros aplicados: ${result.filteredCount || 0} vehículos encontrados`
             )
         },
         onError: (error) => {
             console.error('❌ Error en mutation:', error)
+            // 🚀 NUEVO: Usar reducer para error
+            setError(error.message)
             notifications.showErrorNotification(`Error: ${error.message}`)
         }
     })
@@ -105,12 +128,12 @@ export const useFilterSystem = () => {
     const isFiltering = applyFiltersMutation.isPending
     const activeFiltersCount = Object.keys(currentFilters).length
 
-    // ===== FUNCIONES =====
+    // ===== FUNCIONES SIMPLIFICADAS =====
     
     /**
      * Aplicar filtros pendientes
      */
-    const applyFilters = useCallback(async () => {
+    const handleApplyFilters = useCallback(async () => {
         if (Object.keys(pendingFilters).length === 0) {
             notifications.showWarningNotification('No hay filtros para aplicar')
             return
@@ -126,22 +149,23 @@ export const useFilterSystem = () => {
     /**
      * Limpiar todos los filtros
      */
-    const clearAllFilters = useCallback(() => {
-        setCurrentFilters({})
-        setPendingFilters({})
+    const handleClearAllFilters = useCallback(() => {
+        // 🚀 NUEVO: Usar reducer para limpiar
+        clearFilters()
         
         // Invalidar cache para recargar sin filtros
         queryClient.invalidateQueries({ queryKey: ['vehicles-infinite'] })
         
         notifications.showSuccessNotification('Filtros limpiados')
-    }, [queryClient, notifications])
+    }, [queryClient, notifications, clearFilters])
 
     /**
      * Actualizar filtros pendientes
      */
     const updatePendingFilters = useCallback((filters) => {
+        // 🚀 NUEVO: Usar reducer para actualizar
         setPendingFilters(getValidFilters(filters))
-    }, [])
+    }, [setPendingFilters])
 
     // ===== TRANSFORMAR FILTROS PARA BACKEND =====
     const transformFiltersToQueryParams = (filters) => {
@@ -151,18 +175,18 @@ export const useFilterSystem = () => {
 
     return {
         // ===== DATOS =====
-        cars, // Lista de autos con paginación infinita
-        allVehicles, // Compatibilidad
+        cars,
+        allVehicles,
         totalCount,
         filteredCount,
         
-        // ===== ESTADOS =====
+        // ===== ESTADOS (DESDE REDUCER) =====
         isLoading,
         isError,
         error,
         isFiltering,
         
-        // ===== FILTROS =====
+        // ===== FILTROS (DESDE REDUCER) =====
         currentFilters,
         pendingFilters,
         activeFiltersCount,
@@ -176,8 +200,8 @@ export const useFilterSystem = () => {
         totalPages,
         
         // ===== FUNCIONES =====
-        applyFilters,
-        clearAllFilters,
+        applyFilters: handleApplyFilters,
+        clearAllFilters: handleClearAllFilters,
         setPendingFilters: updatePendingFilters,
         refetch
     }

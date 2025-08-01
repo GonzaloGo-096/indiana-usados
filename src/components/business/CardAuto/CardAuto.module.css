@@ -144,7 +144,7 @@
 .card__title {
     font-size: 20px; /* ✅ REDUCIDO: De 22px a 20px para equilibrar con el contenedor negro */
     font-weight: 700;
-    color: #111827;
+    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
     margin: 0;
     line-height: 1.2;
     text-align: center;
@@ -167,6 +167,7 @@
     padding: var(--spacing-1) var(--spacing-2); /* ✅ OPTIMIZADO: Usando variables de spacing */
     border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0; /* ✅ OPTIMIZADO: Usando variables de border-radius */
     box-shadow: var(--shadow-sm); /* ✅ OPTIMIZADO: Usando variable de shadow predefinida */
+
 }
 
 .card__price {
@@ -228,7 +229,7 @@
 .card__data_value {
     font-size: 15px; /* ✅ AUMENTADO: De 13px a 15px */
     font-weight: 500;
-    color: #374151;
+    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
     line-height: 1.1;
     margin-top: 2px; /* ✅ AGREGADO: Margin top sutil */
 }
@@ -266,7 +267,7 @@
 
 .card__button:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #111827; /* ✅ MÁS OSCURO EN HOVER: De #374151 a #111827 */
+    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
 }
 
 /* ===== RESPONSIVE - SIMPLIFICADO ===== */
@@ -305,6 +306,7 @@
         padding: 3px 3px;
         border-radius: 0 6px 6px 0;
         justify-content: center; /* ✅ MANTENIDO: Número centrado */
+
     }
     
     .card__title {
@@ -393,6 +395,7 @@
         padding: 4px 6px;
         border-radius: 0 0 4px 4px;
         justify-content: center; /* ✅ MANTENIDO: Número centrado */
+
     }
     
     .card__title {

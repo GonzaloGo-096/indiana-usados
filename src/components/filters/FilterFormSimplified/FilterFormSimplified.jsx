@@ -6,9 +6,10 @@
  * - Cálculo simplificado de filtros activos
  * - Imports optimizados
  * - Performance al nivel de estándares industria
+ * - 🚀 NUEVO: Integración mejorada con reducer
  * 
  * @author Indiana Usados
- * @version 3.0.0 - PROFESIONALMENTE OPTIMIZADO
+ * @version 4.0.0 - Integrado con reducer expandido
  */
 
 import React, { useMemo } from 'react'
@@ -19,13 +20,16 @@ import MultiSelect from '../../ui/MultiSelect/MultiSelect'
 import { FILTER_OPTIONS } from '../../../constants'
 import styles from './FilterFormSimplified.module.css'
 
-const FilterFormSimplified = React.memo(({ 
+const FilterFormSimplified = React.memo(React.forwardRef(({ 
   onApplyFilters,
   isLoading = false 
-}) => {
+}, ref) => {
+  // 🚀 NUEVO: Usar reducer expandido
   const {
     isSubmitting,
     isDrawerOpen,
+    isError,
+    error,
     setSubmitting,
     toggleDrawer,
     closeDrawer
@@ -74,9 +78,9 @@ const FilterFormSimplified = React.memo(({
     return [hasMarca, hasCombustible, hasTransmision, hasRanges].filter(Boolean).length
   }, [marca?.length, combustible?.length, transmision?.length, añoDesde, precioDesde, kilometrajeDesde])
 
-  // OPTIMIZACIÓN PROFESIONAL: Funciones simples sin memoización
+  // 🚀 NUEVO: Función mejorada con reducer
   const onSubmit = async (data) => {
-    setSubmitting(true)
+    setSubmitting(true) // 🚀 Usar reducer
     try {
       // Filtrar solo valores válidos
       const validData = Object.entries(data).reduce((acc, [key, value]) => {
@@ -91,11 +95,11 @@ const FilterFormSimplified = React.memo(({
       }, {})
 
       await onApplyFilters(validData)
-      closeDrawer()
+      closeDrawer() // 🚀 Usar reducer
     } catch (error) {
       console.error('Error al aplicar filtros:', error)
     } finally {
-      setSubmitting(false)
+      setSubmitting(false) // 🚀 Usar reducer
     }
   }
 
@@ -179,6 +183,13 @@ const FilterFormSimplified = React.memo(({
           <span className={styles.badge}>{activeFiltersCount}</span>
         )}
       </button>
+
+      {/* 🚀 NUEVO: Mostrar error si existe */}
+      {isError && error && (
+        <div className={styles.errorMessage}>
+          Error: {error}
+        </div>
+      )}
 
       {/* Formulario */}
       <div className={styles.formWrapper}>
@@ -300,7 +311,7 @@ const FilterFormSimplified = React.memo(({
       </div>
     </div>
   )
-})
+}))
 
 FilterFormSimplified.displayName = 'FilterFormSimplified'
 

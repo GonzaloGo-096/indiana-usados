@@ -33,7 +33,7 @@
 
     /* ===== VARIABLES DE COLORES ===== */
     --color-white: #ffffff;
-    --color-black: #000000;
+    --color-black: #0a0d14; /* 🎨 NUEVO: Negro profundo */
     
     --color-neutral-50: #f9fafb;
     --color-neutral-100: #f3f4f6;
@@ -44,7 +44,7 @@
     --color-neutral-600: #4b5563;
     --color-neutral-700: #374151;
     --color-neutral-800: #1f2937;
-    --color-neutral-900: #111827;
+    --color-neutral-900: #0a0d14; /* 🎨 NUEVO: Negro profundo más opaco */
 
     --color-primary-50: #eff6ff;
     --color-primary-100: #dbeafe;
