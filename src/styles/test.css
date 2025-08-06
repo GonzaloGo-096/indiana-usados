@@ -1,0 +1,13 @@
+/* Archivo de prueba para verificar CSS */
+.test-container {
+    background: red;
+    color: white;
+    padding: 20px;
+    margin: 20px;
+    border: 2px solid black;
+}
+
+.test-text {
+    font-size: 18px;
+    font-weight: bold;
+} 

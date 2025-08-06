@@ -1,100 +1,91 @@
 /**
- * VehiculoDetalle.module.css - Estilos para la página de detalle de vehículo
+ * VehiculoDetalle.module.css - Estilos limpios y modernos para la página de detalle
+ * 
+ * Características:
+ * - Diseño limpio y minimalista
+ * - Layout responsive optimizado
+ * - Performance mejorada
+ * - Estructura CSS simplificada
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 3.0.0 - Rediseño completo
  */
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .container {
-    max-width: var(--breakpoint-xl);
-    margin: 0 auto;
-    padding: var(--spacing-xl) var(--spacing-md);
-    min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 100vh;
 }
 
 /* ===== BOTÓN DE VOLVER ===== */
 .backButton {
-    margin-bottom: var(--spacing-lg);
+  margin-bottom: 2rem;
 }
 
 .backLink {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem; /* ✅ NUEVO: Espacio entre flecha y texto */
-    padding: 0.6rem 1rem; /* ✅ AUMENTADO: Más padding */
-    background: var(--color-neutral-900);
-    border: 1px solid var(--color-neutral-900);
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 6px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* ✅ OPTIMIZADO: Solo transiciones necesarias */
-    font-weight: 600;
-    font-size: 0.8rem; /* ✅ AUMENTADO: Texto más grande */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    min-width: 80px; /* ✅ AUMENTADO: Más ancho */
-    max-width: 100px; /* ✅ AUMENTADO: Más ancho */
-    height: 32px; /* ✅ AUMENTADO: Más alto */
-    justify-content: center;
-    letter-spacing: 0.3px; /* ✅ REDUCIDO: Menos letter-spacing */
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    will-change: transform;
-    contain: layout style;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: #1f2937;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .backLink:hover {
-    background: var(--color-neutral-800);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: #374151;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* ✅ NUEVO: Estilos para la flecha */
 .backArrow {
-    font-size: 0.8rem; /* ✅ Ligeramente más grande que el texto */
-    font-weight: 700; /* ✅ Más bold que el texto */
-    transition: transform 0.2s ease; /* ✅ Transición suave */
-}
-
-.backLink:hover .backArrow {
-    transform: translateX(-2px); /* ✅ Efecto de movimiento hacia la izquierda */
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 /* ===== CONTENIDO PRINCIPAL ===== */
 .content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
-    .container {
-        padding: var(--spacing-lg) var(--spacing-sm);
-    }
-    
-    .backButton {
-        margin-bottom: var(--spacing-md);
-    }
-    
-    .backLink {
-        padding: 0.5rem 0.8rem; /* ✅ AUMENTADO: Más grande en tablet */
-        font-size: 0.75rem; /* ✅ AUMENTADO: Texto más grande */
-        height: 30px; /* ✅ AUMENTADO: Más alto */
-        min-width: 70px; /* ✅ AUMENTADO: Más ancho */
-        max-width: 90px; /* ✅ AUMENTADO: Más ancho */
-    }
+  .container {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .backButton {
+    margin-bottom: 1.5rem;
+  }
+  
+  .backLink {
+    padding: 0.625rem 1rem;
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: var(--spacing-md) var(--spacing-xs);
-    }
-    
-    .backLink {
-        padding: 0.4rem 0.7rem; /* ✅ AUMENTADO: Más grande en móvil */
-        font-size: 0.7rem; /* ✅ AUMENTADO: Texto más grande */
-        height: 28px; /* ✅ AUMENTADO: Más alto */
-        min-width: 60px; /* ✅ AUMENTADO: Más ancho */
-        max-width: 80px; /* ✅ AUMENTADO: Más ancho */
-    }
+  .container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .backButton {
+    margin-bottom: 1rem;
+  }
+  
+  .backLink {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+  }
 } 

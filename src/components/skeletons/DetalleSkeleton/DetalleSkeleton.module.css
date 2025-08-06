@@ -1,77 +1,123 @@
 /**
- * DetalleSkeleton.module.css - Estilos para el skeleton de detalle
+ * DetalleSkeleton.module.css - Estilos simplificados para el skeleton de detalle
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.1.0 - Performance optimizada
  */
 
 .container {
-  max-width: var(--breakpoint-xl);
+  max-width: 1200px;
   margin: 0 auto;
-  padding: var(--spacing-xl) var(--spacing-md);
+  padding: 2rem 1rem;
 }
 
-.content {
+/* Botón de volver */
+.backButton {
+  margin-bottom: 1.5rem;
+}
+
+/* Card principal */
+.card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #f3f4f6;
+}
+
+.cardContent {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-xl);
-  align-items: start;
+  gap: 2rem;
+  padding: 2rem;
 }
 
+/* Sección de imagen */
 .imageSection {
   position: relative;
-}
-
-.imageCard {
-  background: var(--color-white);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: 12px;
   overflow: hidden;
+  background: #f9fafb;
+  min-height: 400px;
 }
 
+/* Sección de detalles */
 .detailsSection {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: 1.5rem;
 }
 
-.detailsCard {
-  background: var(--color-white);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: var(--spacing-xl);
-}
-
-.tablesContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
-}
-
-.tableSection {
+/* Header */
+.header {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Datos principales */
+.mainData {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Información adicional */
+.additionalInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Sección de contacto */
+.contactSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contactButtons {
+  display: flex;
+  gap: 1rem;
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .cardContent {
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .imageSection {
+    min-height: 350px;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
-    padding: var(--spacing-lg) var(--spacing-md);
+    padding: 1.5rem 1rem;
   }
 
-  .content {
+  .backButton {
+    margin-bottom: 1rem;
+  }
+
+  .cardContent {
     grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
+    gap: 1.5rem;
+    padding: 1rem;
   }
 
-  .tablesContainer {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+  .contactButtons {
+    flex-direction: column;
   }
+}
 
-  .detailsCard {
-    padding: var(--spacing-lg);
+@media (max-width: 480px) {
+  .cardContent {
+    padding: 0.75rem;
   }
 } 

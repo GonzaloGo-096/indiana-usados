@@ -1,22 +1,29 @@
 /**
- * VehiculoDetalle - Página de detalle de vehículo
+ * VehiculoDetalle - Página de detalle de vehículo optimizada
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 3.1.0 - Performance optimizada
  */
 
 import React, { useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useAutoDetail } from '../../hooks'
 import { CardDetalle } from '../../components/business/CardDetalle'
 import { ErrorState } from '../../components/ui'
 import DetalleSkeleton from '../../components/skeletons/DetalleSkeleton'
+import { useScrollPosition } from '../../hooks/useScrollPosition'
 import styles from './VehiculoDetalle.module.css'
 
 const VehiculoDetalle = () => {
     const { id } = useParams()
 
-    // ✅ NUEVO: Scroll hacia arriba al cargar la página
+    // Hook para preservar scroll
+    const { navigateWithScroll } = useScrollPosition({
+        key: 'vehicles-list',
+        enabled: true
+    })
+
+    // Scroll hacia arriba al cargar la página
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -28,6 +35,11 @@ const VehiculoDetalle = () => {
         isError, 
         error 
     } = useAutoDetail(id)
+
+    // Función para volver preservando scroll
+    const handleBack = () => {
+        navigateWithScroll('/vehiculos')
+    }
 
     // Estado de carga
     if (isLoading) return <DetalleSkeleton />
@@ -60,13 +72,13 @@ const VehiculoDetalle = () => {
 
     return (
         <div className={styles.container}>
-            {/* Botón de volver */}
-                            <div className={styles.backButton}>
-                    <Link to="/vehiculos" className={styles.backLink}>
-                        <span className={styles.backArrow}>←</span>
-                        <span>Atrás</span>
-                    </Link>
-                </div>
+            {/* Botón de volver con preservación de scroll */}
+            <div className={styles.backButton}>
+                <button onClick={handleBack} className={styles.backLink}>
+                    <span className={styles.backArrow}>←</span>
+                    <span>Atrás</span>
+                </button>
+            </div>
             
             {/* Contenido principal */}
             <div className={styles.content}>

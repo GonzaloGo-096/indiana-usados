@@ -16,7 +16,7 @@
 .carouselContainer {
     display: flex;
     flex-direction: column;
-    gap: 0; /* ✅ CAMBIADO: Sin gap para eliminar el recuadro gris */
+    gap: 0;
     width: 100%;
 }
 
@@ -35,6 +35,8 @@
     height: 100%;
     object-fit: cover;
     transition: transform var(--transition-normal);
+    background-color: #f3f4f6;
+    min-height: 200px;
 }
 
 .mainImageContainer:hover .mainImage {
@@ -48,96 +50,85 @@
     transform: translateY(-50%);
     width: 40px;
     height: 40px;
-    background: rgba(0, 0, 0, 0.7); /* ✅ CAMBIADO: Negro con opacity */
+    background: rgba(0, 0, 0, 0.7);
     border: none;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease; /* ✅ OPTIMIZADO: Solo transiciones necesarias */
-    z-index: 2;
-    color: #ffffff; /* ✅ AGREGADO: Color blanco para las flechas */
+    transition: background 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+    color: #ffffff;
+    opacity: 1;
+    visibility: visible;
 }
 
 .arrow:hover {
-    background: rgba(0, 0, 0, 0.9); /* ✅ CAMBIADO: Negro más opaco en hover */
-    transform: translateY(-50%) scale(1.05); /* ✅ OPTIMIZADO: Escala mínima */
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.05);
 }
 
 .arrowLeft {
-    left: var(--spacing-md);
+    left: 16px;
 }
 
 .arrowRight {
-    right: var(--spacing-md);
+    right: 16px;
 }
 
 /* ===== INDICADORES DE POSICIÓN ===== */
 .indicators {
     position: absolute;
-    bottom: var(--spacing-md);
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: var(--spacing-xs);
-    z-index: 2;
+    gap: 8px;
+    z-index: 10;
+    opacity: 1;
+    visibility: visible;
 }
 
 .indicator {
-    width: 20px; /* ✅ CAMBIADO: Línea horizontal */
-    height: 2px; /* ✅ CAMBIADO: Altura mínima */
-    border-radius: 1px; /* ✅ CAMBIADO: Bordes redondeados mínimos */
+    width: 20px;
+    height: 2px;
+    border-radius: 1px;
     border: none;
-    background: rgba(255, 255, 255, 0.4); /* ✅ CAMBIADO: Blanco con opacity */
+    background: rgba(255, 255, 255, 0.4);
     cursor: pointer;
-    transition: background 0.2s ease; /* ✅ OPTIMIZADO: Transición simple */
+    transition: background 0.2s ease;
 }
 
 .indicator:hover {
-    background: rgba(255, 255, 255, 0.7); /* ✅ CAMBIADO: Blanco más opaco en hover */
+    background: rgba(255, 255, 255, 0.7);
 }
 
 .indicator.active {
-    background: rgba(255, 255, 255, 1); /* ✅ CAMBIADO: Blanco sólido activo */
+    background: rgba(255, 255, 255, 1);
 }
 
 /* ===== CONTENEDOR DE MINIATURAS ===== */
 .thumbnailsContainer {
     width: 100%;
-    overflow-x: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-neutral-300) transparent;
+    overflow: hidden; /* ✅ CAMBIADO: Ocultar scroll */
     display: flex;
     justify-content: center;
-    background: #ffffff; /* ✅ CAMBIADO: Fondo blanco */
-    border-radius: 8px; /* ✅ RESTAURADO: Bordes redondeados */
-    padding: var(--spacing-sm); /* ✅ RESTAURADO: Padding para separación */
-}
-
-.thumbnailsContainer::-webkit-scrollbar {
-    height: 6px;
-}
-
-.thumbnailsContainer::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.thumbnailsContainer::-webkit-scrollbar-thumb {
-    background: var(--color-neutral-300);
-    border-radius: 3px;
-}
-
-.thumbnailsContainer::-webkit-scrollbar-thumb:hover {
-    /* background: var(--color-neutral-400); */
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 12px;
+    opacity: 1;
+    visibility: visible;
+    z-index: 5;
 }
 
 .thumbnails {
     display: flex;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-xs);
-    min-width: max-content;
+    gap: 12px;
+    padding: 4px;
     justify-content: center;
+    flex-wrap: wrap; /* ✅ AGREGADO: Para que las miniaturas se ajusten */
+    max-width: 100%; /* ✅ AGREGADO: Limitar ancho */
 }
 
 /* ===== MINIATURAS ===== */
@@ -149,19 +140,19 @@
     overflow: hidden;
     border: 2px solid transparent;
     cursor: pointer;
-    transition: transform 0.2s ease; /* ✅ OPTIMIZADO: Solo transform para mejor performance */
+    transition: transform 0.2s ease;
     background: #ffffff;
     position: relative;
 }
 
 .thumbnail:hover {
-    border-color: transparent; /* ✅ CAMBIADO: Sin borde en hover */
-    transform: scale(1.02); /* ✅ MANTENIDO: Escala mínima */
+    border-color: transparent;
+    transform: scale(1.02);
 }
 
 .thumbnail.active {
-    transform: scale(1.05); /* ✅ MANTENIDO: Ligeramente más grande que las otras */
-    position: relative; /* ✅ MANTENIDO: Para posicionar el indicador */
+    transform: scale(1.05);
+    position: relative;
 }
 
 .thumbnail.active::after {
@@ -180,12 +171,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.2s ease; /* ✅ OPTIMIZADO: Solo transform para mejor performance */
+    transition: transform 0.2s ease;
     border-radius: 8px;
 }
 
 .thumbnail:hover .thumbnailImage {
-    transform: scale(1.08); /* ✅ AUMENTADO: Zoom más pronunciado en la imagen */
+    transform: scale(1.08);
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
@@ -216,19 +207,19 @@
     }
     
     .arrowLeft {
-        left: var(--spacing-sm);
+        left: 12px;
     }
     
     .arrowRight {
-        right: var(--spacing-sm);
+        right: 12px;
     }
     
     .indicators {
-        bottom: var(--spacing-sm);
+        bottom: 12px;
     }
     
     .indicator {
-        width: 16px; /* ✅ AJUSTADO: Línea más corta en tablet */
+        width: 16px;
         height: 2px;
     }
     
@@ -238,7 +229,7 @@
     }
     
     .thumbnails {
-        gap: var(--spacing-xs);
+        gap: 8px;
         justify-content: center;
     }
     
@@ -263,7 +254,7 @@
     }
     
     .thumbnails {
-        padding: var(--spacing-xs) 0;
+        padding: 4px 0;
         justify-content: center;
     }
     

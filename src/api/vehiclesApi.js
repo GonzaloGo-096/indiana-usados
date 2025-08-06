@@ -1,166 +1,234 @@
-import axiosInstance, { handleApiError, validateResponse } from './axiosInstance';
+/**
+ * vehiclesApi.js - API Service para vehículos con configuración dinámica
+ * 
+ * Características:
+ * - Configuración dinámica basada en variables de entorno
+ * - Estrategia GET/POST unificada
+ * - Validación de respuestas
+ * - Mock local implementado
+ * - Logging específico para debugging
+ * 
+ * @author Indiana Usados
+ * @version 5.0.0 - Mock local implementado
+ */
 
-// Endpoints de la API - ADAPTAR A TU BACKEND REAL
-const ENDPOINTS = {
-    VEHICLES: '/api/autos',           // GET - Lista de vehículos
-    VEHICLE_DETAIL: (id) => `/api/autos/${id}`, // GET - Detalle de vehículo
-    VEHICLES_FILTER: '/api/autos/filter', // POST - Aplicar filtros
-};
+import axiosInstance, { detailAxiosInstance } from './axiosInstance'
+import { validatePostmanResponse, extractPostmanData } from '../config/postman'
+import { getMockVehicles, getMockVehicleById } from './mockData'
+
+// ✅ CONFIGURACIÓN DINÁMICA DE ENTORNO
+const USE_MOCK_API = import.meta.env.VITE_USE_MOCK_API === 'true'
+const USE_POSTMAN_MOCK = import.meta.env.VITE_USE_POSTMAN_MOCK === 'true'
+const IS_DEVELOPMENT = import.meta.env.DEV
+
+// ✅ LOGGING DE CONFIGURACIÓN (solo en desarrollo)
+if (IS_DEVELOPMENT) {
+    console.log('🔧 CONFIGURACIÓN VEHICLES API:', {
+        useMock: USE_MOCK_API,
+        usePostman: USE_POSTMAN_MOCK,
+        environment: import.meta.env.MODE
+    })
+}
 
 /**
- * Servicio de API para vehículos
- * Maneja todas las operaciones relacionadas con vehículos
+ * Servicio principal para vehículos
  */
 class VehiclesApiService {
     /**
-     * Obtener lista de vehículos con paginación
+     * Obtener vehículos (GET sin filtros)
      * @param {Object} params - Parámetros de paginación
-     * @param {number} params.limit - Número de elementos por página
-     * @param {number} params.page - Número de página
-     * @param {Object} params.filters - Filtros opcionales
-     * @returns {Promise<Object>} - Respuesta con datos y paginación
+     * @returns {Promise<Object>} - Respuesta con datos y metadatos
      */
-    async getVehicles({ limit = 6, page = 1, filters = {} } = {}) {
-        try {
-            const params = {
-                limit,
-                page,
-                // Si hay filtros, enviarlos como query params
-                ...(Object.keys(filters).length > 0 && { 
-                    ...filters 
-                })
-            };
-
-            const response = await axiosInstance.get(ENDPOINTS.VEHICLES, { params });
-            const data = validateResponse(response);
-
-            // Adaptar respuesta a formato esperado
-            return {
-                data: data.docs || data.data || data.items || [],
-                hasNextPage: data.hasNextPage || false,
-                nextPage: data.nextPage || null,
-                total: data.totalDocs || data.total || 0,
-                currentPage: data.page || page,
-            };
-        } catch (error) {
-            const errorMessage = handleApiError(error);
-            throw new Error(`Error al obtener vehículos: ${errorMessage}`);
+    async getVehiclesMain({ limit = 6, page = 1 } = {}) {
+        // ✅ DETECTAR ENTORNO Y USAR ESTRATEGIA APROPIADA
+        if (USE_MOCK_API && !USE_POSTMAN_MOCK) {
+            // ✅ MOCK LOCAL IMPLEMENTADO
+            console.log('🔄 MOCK LOCAL: Obteniendo vehículos sin filtros', { limit, page })
+            const result = getMockVehicles(page, limit)
+            console.log('✅ MOCK LOCAL: Vehículos obtenidos', result)
+            return result
         }
+        
+        // ✅ POSTMAN MOCK O BACKEND REAL
+        const response = await axiosInstance.get('/api/vehicles', {
+            params: { limit, page }
+        })
+        
+        // ✅ VALIDAR RESPUESTA SEGÚN ENTORNO
+        if (USE_POSTMAN_MOCK) {
+            if (validatePostmanResponse(response.data)) {
+                const result = extractPostmanData(response.data, page)
+                return result
+            }
+            throw new Error('Respuesta inválida de Postman')
+        }
+        
+        // ✅ BACKEND REAL - asumir estructura estándar
+        return response.data
     }
 
     /**
-     * Obtener vehículo por ID
+     * Obtener vehículos con filtros (POST con filtros)
+     * @param {Object} params - Parámetros de filtros y paginación
+     * @returns {Promise<Object>} - Respuesta con datos filtrados
+     */
+    async getVehiclesWithFilters({ limit = 6, page = 1, filters = {} } = {}) {
+        if (IS_DEVELOPMENT) {
+            console.log('🔍 API: Intentando obtener vehículos con filtros', { filters, limit, page })
+        }
+        
+        // ✅ DETECTAR ENTORNO Y USAR ESTRATEGIA APROPIADA
+        if (USE_MOCK_API && !USE_POSTMAN_MOCK) {
+            // ✅ MOCK LOCAL IMPLEMENTADO CON FILTROS
+            console.log('🔄 MOCK LOCAL: Aplicando filtros', filters)
+            const result = getMockVehicles(page, limit, filters)
+            if (IS_DEVELOPMENT) {
+                console.log('✅ MOCK LOCAL: Vehículos filtrados obtenidos', result)
+            }
+            return result
+        }
+        
+        // ✅ POSTMAN MOCK O BACKEND REAL
+        const response = await axiosInstance.post('/api/vehicles', {
+            filters,
+            pagination: { limit, page }
+        })
+        
+        if (IS_DEVELOPMENT) {
+            console.log('📦 API: Respuesta con filtros recibida', response.data)
+        }
+        
+        // ✅ VALIDAR RESPUESTA SEGÚN ENTORNO
+        if (USE_POSTMAN_MOCK) {
+            if (validatePostmanResponse(response.data)) {
+                const result = extractPostmanData(response.data, page)
+                if (IS_DEVELOPMENT) {
+                    console.log('✅ API: Datos filtrados extraídos correctamente', result)
+                }
+                return result
+            }
+            console.error('❌ API: Respuesta con filtros inválida')
+            throw new Error('Respuesta inválida de Postman con filtros')
+        }
+        
+        // ✅ BACKEND REAL - asumir estructura estándar
+        return response.data
+    }
+
+    /**
+     * Obtener vehículo por ID (GET por ID)
      * @param {string|number} id - ID del vehículo
      * @returns {Promise<Object>} - Datos del vehículo
      */
     async getVehicleById(id) {
         try {
-            if (!id) {
-                throw new Error('ID de vehículo no proporcionado');
+            if (IS_DEVELOPMENT) {
+                console.log('🔍 DEBUG: Iniciando getVehicleById con ID:', id)
             }
-
-            const response = await axiosInstance.get(ENDPOINTS.VEHICLE_DETAIL(id));
-            const data = validateResponse(response);
-
-            return data;
+            
+            // ✅ DETECTAR ENTORNO Y USAR ESTRATEGIA APROPIADA
+            if (USE_MOCK_API && !USE_POSTMAN_MOCK) {
+                // ✅ MOCK LOCAL IMPLEMENTADO
+                console.log('🔄 MOCK LOCAL: Buscando vehículo por ID', id)
+                const vehicle = getMockVehicleById(id)
+                if (vehicle) {
+                    if (IS_DEVELOPMENT) {
+                        console.log('✅ MOCK LOCAL: Vehículo encontrado', vehicle)
+                    }
+                    return vehicle
+                } else {
+                    throw new Error(`Vehículo con ID ${id} no encontrado en mock local`)
+                }
+            }
+            
+            // ✅ POSTMAN MOCK O BACKEND REAL
+            if (IS_DEVELOPMENT) {
+                console.log('🔗 DEBUG: URL completa:', `${detailAxiosInstance.defaults.baseURL}/api/vehicles/${id}`)
+            }
+            
+            const response = await detailAxiosInstance.get(`/api/vehicles/${id}`)
+            
+            if (IS_DEVELOPMENT) {
+                console.log('✅ DEBUG: Respuesta recibida:', response)
+                console.log('📦 DEBUG: response.data:', response.data)
+                console.log('📦 DEBUG: response.status:', response.status)
+            }
+            
+            // ✅ VALIDAR RESPUESTA SEGÚN ENTORNO
+            if (USE_POSTMAN_MOCK) {
+                // Validar respuesta de Postman
+                if (response.data && response.data.id) {
+                    if (IS_DEVELOPMENT) {
+                        console.log('✅ DEBUG: Vehículo encontrado:', response.data)
+                        console.log('🔍 DEBUG: Campos especiales:', {
+                            frenos: response.data.frenos,
+                            turbo: response.data.turbo,
+                            llantas: response.data.llantas,
+                            HP: response.data.HP
+                        })
+                    }
+                    return response.data
+                }
+                
+                // Manejar caso donde Postman devuelve array
+                if (Array.isArray(response.data) && response.data.length > 0) {
+                    const vehicle = response.data.find(item => item.id === parseInt(id))
+                    if (vehicle) {
+                        if (IS_DEVELOPMENT) {
+                            console.log('✅ DEBUG: Vehículo encontrado en array:', vehicle)
+                        }
+                        return vehicle
+                    }
+                }
+                
+                console.error('❌ DEBUG: Vehículo no encontrado')
+                throw new Error(`Vehículo con ID ${id} no encontrado en Postman`)
+            }
+            
+            // ✅ BACKEND REAL - asumir estructura estándar
+            return response.data
+            
         } catch (error) {
-            const errorMessage = handleApiError(error);
-            throw new Error(`Error al obtener vehículo ${id}: ${errorMessage}`);
+            if (IS_DEVELOPMENT) {
+                console.error('❌ DEBUG: Error en getVehicleById:', error)
+                console.error('❌ DEBUG: Error completo:', {
+                    message: error.message,
+                    status: error.response?.status,
+                    statusText: error.response?.statusText,
+                    data: error.response?.data,
+                    config: error.config
+                })
+            }
+            throw error
         }
     }
 
     /**
-     * Aplicar filtros a vehículos via POST
+     * Método unificado para obtener vehículos
+     * @param {Object} params - Parámetros de consulta
+     * @returns {Promise<Object>} - Respuesta con datos
+     */
+    async getVehicles({ limit = 6, page = 1, filters = {} } = {}) {
+        if (Object.keys(filters).length === 0) {
+            return this.getVehiclesMain({ limit, page })
+        } else {
+            return this.getVehiclesWithFilters({ limit, page, filters })
+        }
+    }
+
+    /**
+     * Aplicar filtros a vehículos
      * @param {Object} filters - Filtros a aplicar
-     * @param {Object} options - Opciones adicionales
-     * @param {number} options.limit - Número de elementos por página
-     * @param {number} options.page - Número de página
+     * @param {Object} pagination - Parámetros de paginación
      * @returns {Promise<Object>} - Respuesta con datos filtrados
      */
-    async applyFilters(filters, { limit = 6, page = 1 } = {}) {
-        try {
-            const payload = {
-                filters,
-                pagination: {
-                    limit,
-                    page
-                }
-            };
-
-            const response = await axiosInstance.post(ENDPOINTS.VEHICLES_FILTER, payload);
-            const data = validateResponse(response);
-
-            return {
-                data: data.docs || data.data || data.items || [],
-                hasNextPage: data.hasNextPage || false,
-                nextPage: data.nextPage || null,
-                total: data.totalDocs || data.total || 0,
-                filteredCount: data.filteredCount || 0,
-                currentPage: data.page || page,
-                filters: filters,
-                timestamp: new Date().toISOString()
-            };
-        } catch (error) {
-            const errorMessage = handleApiError(error);
-            throw new Error(`Error al aplicar filtros: ${errorMessage}`);
-        }
-    }
-
-    /**
-     * Obtener lista completa de vehículos (sin paginación)
-     * @returns {Promise<Object>} - Lista completa de vehículos
-     */
-    async getAllVehicles() {
-        try {
-            const response = await axiosInstance.get(ENDPOINTS.VEHICLES, {
-                params: { limit: 1000 } // Obtener todos los vehículos
-            });
-            const data = validateResponse(response);
-
-            return {
-                items: data.data || data.items || [],
-                total: data.total || 0,
-                timestamp: new Date().toISOString()
-            };
-        } catch (error) {
-            const errorMessage = handleApiError(error);
-            throw new Error(`Error al obtener lista completa: ${errorMessage}`);
-        }
-    }
-
-    /**
-     * Buscar vehículos por término de búsqueda
-     * @param {string} searchTerm - Término de búsqueda
-     * @param {Object} options - Opciones adicionales
-     * @returns {Promise<Object>} - Resultados de búsqueda
-     */
-    async searchVehicles(searchTerm, { limit = 6, page = 1 } = {}) {
-        try {
-            const params = {
-                q: searchTerm,
-                limit,
-                page
-            };
-
-            const response = await axiosInstance.get(ENDPOINTS.VEHICLES, { params });
-            const data = validateResponse(response);
-
-            return {
-                data: data.docs || data.data || data.items || [],
-                hasNextPage: data.hasNextPage || false,
-                nextPage: data.nextPage || null,
-                total: data.totalDocs || data.total || 0,
-                currentPage: data.page || page,
-                searchTerm
-            };
-        } catch (error) {
-            const errorMessage = handleApiError(error);
-            throw new Error(`Error en búsqueda: ${errorMessage}`);
-        }
+    async applyFilters(filters, pagination = { limit: 6, page: 1 }) {
+        return this.getVehiclesWithFilters({
+            limit: pagination.limit,
+            page: pagination.page,
+            filters
+        })
     }
 }
 
-// Crear instancia del servicio
-const vehiclesApi = new VehiclesApiService();
-
-export default vehiclesApi; 
+export default new VehiclesApiService() 

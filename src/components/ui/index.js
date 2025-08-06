@@ -5,7 +5,7 @@
  * para facilitar las importaciones
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 3.0.0 - CODE SPLITTING IMPLEMENTADO
  */
 
 export { FormInput } from './FormInput'
@@ -16,4 +16,8 @@ export { ErrorState } from './ErrorState'
 export { ImageCarousel } from './ImageCarousel'
 export { OptimizedImage } from './OptimizedImage' 
 export { default as RangeSlider } from './RangeSlider/RangeSlider' 
-export { default as MultiSelect } from './MultiSelect/MultiSelect' 
+export { default as MultiSelect } from './MultiSelect/MultiSelect'
+
+// ✅ NUEVOS: Componentes para Code Splitting
+export { LoadingSpinner } from './LoadingSpinner'
+export { LazyComponent } from './LazyComponent' 

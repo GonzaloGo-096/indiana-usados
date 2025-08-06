@@ -1,55 +1,39 @@
 /**
- * Skeleton.module.css - Estilos para componentes de carga
+ * Skeleton.module.css - Estilos simplificados para componentes de carga
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.1.0 - Performance optimizada
  */
 
 .skeleton {
   display: block;
-  background-color: var(--color-neutral-200);
-  border-radius: var(--border-radius-sm);
+  background-color: #f3f4f6;
+  border-radius: 8px;
   position: relative;
   overflow: hidden;
 }
 
-.skeleton::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  transform: translateX(-100%);
-  background-image: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0,
-    rgba(255, 255, 255, 0.2) 20%,
-    rgba(255, 255, 255, 0.5) 60%,
-    rgba(255, 255, 255, 0)
-  );
-  animation: shimmer 2s infinite;
-}
-
 /* Tamaños predefinidos */
 .image {
-  height: 180px;
+  height: 200px;
   width: 100%;
+  border-radius: 12px;
 }
 
 .text {
   height: 1rem;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 0.75rem;
 }
 
 .title {
   height: 1.5rem;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: 1rem;
 }
 
 .button {
-  height: 2.2rem;
+  height: 2.5rem;
   width: 100%;
+  border-radius: 8px;
 }
 
 /* Ancho predefinidos */
@@ -57,13 +41,6 @@
 .w50 { width: 50%; }
 .w75 { width: 75%; }
 .w100 { width: 100%; }
-
-/* Animación de shimmer */
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
 
 /* Variantes */
 .rounded {
@@ -79,13 +56,13 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: 0.75rem;
 }
 
 /* Grid de skeletons */
 .grid {
   display: grid;
-  gap: var(--spacing-md);
+  gap: 1.5rem;
 }
 
 .grid3 {
@@ -102,5 +79,17 @@
 @media (max-width: 768px) {
   .grid3 {
     grid-template-columns: 1fr;
+  }
+  
+  .image {
+    height: 180px;
+  }
+  
+  .container {
+    gap: 0.5rem;
+  }
+  
+  .grid {
+    gap: 1rem;
   }
 } 

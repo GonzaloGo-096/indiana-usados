@@ -1,0 +1,52 @@
+/* EMERGENCY CSS - Estilos básicos para debug */
+
+/* Reset básico */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background: #f5f5f5;
+}
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos de emergencia para la app */
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: white;
+}
+
+/* Debug element */
+.debug-test {
+    background: red !important;
+    color: white !important;
+    padding: 10px !important;
+    margin: 10px !important;
+    border: 2px solid black !important;
+    font-weight: bold !important;
+}
+
+/* Estilos básicos para componentes */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.main-content {
+    flex: 1;
+    width: 100%;
+} 

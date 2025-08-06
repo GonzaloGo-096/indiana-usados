@@ -1,591 +1,402 @@
 /**
- * CardDetalle.module.css - Estilos para el componente CardDetalle
+ * CardDetalle.module.css - Estilos optimizados y limpios
  * 
  * Características:
- * - Diseño de tarjeta detallada ultra optimizado
- * - Layout de dos columnas (imagen + detalles)
- * - Secciones organizadas de información
- * - Botones de contacto optimizados
- * - Responsive design y performance
- * - BEM methodology implementada
+ * - Header 60/40 compacto
+ * - Datos principales sin bordes, con líneas sutiles
+ * - Información adicional comprimida
+ * - Botones con iconos coloridos
  * 
  * @author Indiana Usados
- * @version 2.0.0 - OPTIMIZACIÓN FINAL
+ * @version 4.0.0 - Optimizado y limpio
  */
 
 /* ===== TARJETA PRINCIPAL ===== */
 .card {
-    display: flex;
-    flex-direction: column;
-    background: #ffffff; /* ✅ OPTIMIZADO: Color sólido para mejor performance */
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* ✅ OPTIMIZADO: Sombra simple */
-    /* ✅ OPTIMIZADO: Solo transiciones esenciales */
-    transition: transform 0.2s ease-out;
-    position: relative;
-    /* ✅ OPTIMIZADO: Mejorar performance de composición */
-    will-change: transform;
-    contain: layout style paint;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #f3f4f6;
 }
 
-/* ✅ ELIMINADO: Hover de la card para mejor performance */
-
-/* ===== CONTENIDO DE LA TARJETA ===== */
 .cardContent {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-lg);
-    padding: var(--spacing-lg);
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
 }
 
-/* ===== SECCIÓN DE CARRUSEL ===== */
+/* ===== SECCIÓN DE IMAGEN ===== */
 .imageSection {
-    position: relative;
-    overflow: hidden;
-    border-radius: 12px;
-    background-color: var(--color-neutral-100);
-    min-height: 300px;
-    width: 100%;
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style paint;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f9fafb;
+  min-height: 400px;
 }
 
 /* ===== SECCIÓN DE DETALLES ===== */
 .detailsSection {
-    display: flex;
-    flex-direction: column;
-    gap: 0; /* ✅ CORREGIDO: Sin gap para pegar elementos */
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 100%;
 }
 
-/* ✅ NUEVO: Header copiado de CardAuto */
+/* ===== HEADER 60/40 ===== */
 .cardHeader {
-    display: flex;
-    height: 70px;
-    border-radius: 8px;
-    border-bottom: 1px solid #e5e7eb;
-    margin-bottom: 12px; /* ✅ AUMENTADO: Más espacio */
+  display: flex;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  border-bottom: 1px solid #e5e7eb;
+  background: transparent;
+  margin-bottom: 0;
 }
 
 .headerLeft {
-    flex: 0.6;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 8px 12px;
-    background: transparent;
+  flex: 0.6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px 12px;
 }
 
 .card__title_container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 2px;
 }
 
 .card__title {
-    font-size: 28px; /* ✅ AUMENTADO: De 20px a 28px */
-    font-weight: 700;
-    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
-    margin: 0;
-    line-height: 1.2;
-    text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'Barlow', sans-serif;
 }
 
 .headerRight {
-    flex: 0.4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  flex: 0.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .priceContainer {
-    width: 100%;
-    height: 100%;
-    background: var(--color-neutral-900); /* ✅ OPTIMIZADO: Usando variable CSS predefinida */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-1) var(--spacing-2); /* ✅ OPTIMIZADO: Usando variables de spacing */
-    border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0; /* ✅ OPTIMIZADO: Usando variables de border-radius */
-    box-shadow: var(--shadow-sm); /* ✅ OPTIMIZADO: Usando variable de shadow predefinida */
-
+  width: 100%;
+  height: 100%;
+  background: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 4px;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card__price {
-    color: var(--color-white); /* ✅ OPTIMIZADO: Usando variable CSS predefinida */
-    font-size: var(--font-size-2xl); /* ✅ OPTIMIZADO: Usando variable de font-size */
-    font-weight: var(--font-weight-bold); /* ✅ OPTIMIZADO: Usando variable de font-weight */
-    text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  font-family: 'Barlow', sans-serif;
+  line-height: 1.2;
 }
 
 .card__version {
-    font-size: 16px; /* ✅ AUMENTADO: De 13px a 16px */
-    font-weight: 500;
-    color: #6b7280;
-    margin: 0;
-    margin-top: 4px; /* ✅ AUMENTADO: De 2px a 4px */
-    line-height: 1.1;
-    text-align: center;
-    width: 100%;
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  margin-top: 0;
+  font-weight: 500;
+  font-family: 'Barlow', sans-serif;
 }
 
-/* ✅ NUEVO: Estilos de detalles copiados de CardAuto */
+/* ===== DATOS PRINCIPALES OPTIMIZADOS ===== */
 .card__details {
-    flex: 0 0 auto; /* ✅ CORREGIDO: Solo el espacio necesario */
-    margin-bottom: var(--spacing-lg); /* ✅ AGREGADO: Espacio grande hacia abajo */
-    height: fit-content; /* ✅ CORREGIDO: Altura exacta al contenido */
+  display: flex;
+  padding: 0.0625rem 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin: 0;
 }
 
 .card__data_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px; /* ✅ AUMENTADO: De 4px a 8px */
-    padding: 0; /* ✅ ELIMINADO: Sin padding para pegar completamente */
-    width: 100%;
-    margin: 0;
+  display: flex;
+  width: 100%;
 }
 
 .card__data_item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 8px; /* ✅ AUMENTADO: De 2px a 8px */
+  flex: 1;
+  text-align: center;
+  padding: 0.0625rem;
+  background: transparent;
+  border: none;
 }
 
 .card__data_item_border {
-    border-right: 1px solid #e5e7eb;
-    border-left: 1px solid #e5e7eb;
+  border-inline: 1px solid #e5e7eb;
 }
 
 .card__data_label {
-    font-size: 14px; /* ✅ AUMENTADO: De 11px a 14px */
-    font-weight: 600;
-    color: #6b7280;
-    text-transform: capitalize;
-    letter-spacing: 0.3px;
-    margin-bottom: 4px; /* ✅ AUMENTADO: De 1px a 4px */
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9ca3af;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.125rem;
+  display: block;
 }
 
 .card__data_value {
-    font-size: 24px; /* ✅ AUMENTADO: De 15px a 24px */
-    font-weight: 700; /* ✅ AUMENTADO: De 500 a 700 */
-    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
-    line-height: 1.1;
-    margin-top: 4px; /* ✅ AUMENTADO: De 2px a 4px */
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  display: block;
 }
 
-/* ✅ MANTENIDO: Título original para compatibilidad */
-.title {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-neutral-800);
-    margin-bottom: 0; /* ✅ ELIMINADO: Sin espacio para pegar */
-    line-height: 1.3;
-    text-align: center;
-    /* ✅ OPTIMIZADO: Sin transiciones innecesarias */
-}
-
-/* ===== CONTENEDOR DE INFORMACIÓN - CORREGIDO ===== */
+/* ===== INFORMACIÓN ADICIONAL ===== */
 .infoContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 22px; /* ✅ AUMENTADO: Más espacio entre filas */
-    margin: 0;
-    padding: 0;
-    margin-top: 16px; /* ✅ AUMENTADO: Más espacio desde arriba */
-    margin-bottom: var(--spacing-md); /* ✅ AGREGADO: Separación de la siguiente sección */
-    width: 100%; /* ✅ CORREGIDO: Ancho completo */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0 -0.25rem;
 }
 
 .infoSection {
-    display: flex;
-    flex-direction: row;
-    gap: 3px; /* ✅ CORREGIDO: Espacio funcional entre columnas */
-    margin: 0;
-    padding: 0;
-    width: 100%; /* ✅ CORREGIDO: Ancho completo */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.15rem;
+  margin: 0 -0.25rem;
+  min-height: 2rem;
 }
 
 .infoItem {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    flex: 1; /* ✅ MANTENIDO: Distribución equitativa */
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  border-radius: 0;
+  border: none;
 }
 
 .infoKey {
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-neutral-700);
-    text-transform: capitalize;
-    margin: 0 0 2px 0; /* ✅ CORREGIDO: Espacio funcional */
-    padding: 0;
-    line-height: 1.2; /* ✅ CORREGIDO: Line-height funcional */
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #9ca3af;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+  display: block;
 }
 
 .infoValue {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-neutral-800);
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    line-height: 1.2; /* ✅ CORREGIDO: Line-height funcional */
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  display: block;
+  min-height: 1.2rem;
+  line-height: 1.3;
 }
 
-/* ✅ ELIMINADO: Estilos de tabla reemplazados por flexbox */
-
-/* ===== DETALLES ADICIONALES ===== */
-.additionalDetails {
-    margin-top: var(--spacing-md);
-    padding: var(--spacing-md);
-    background: var(--color-neutral-50);
-    border-radius: 8px;
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
-}
-
-.detailsTitle {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-neutral-800);
-    margin-bottom: var(--spacing-sm);
-    /* ✅ OPTIMIZADO: Sin transiciones */
-}
-
-.detailsText {
-    font-size: var(--font-size-sm);
-    color: var(--color-neutral-600);
-    line-height: 1.5;
-    /* ✅ OPTIMIZADO: Sin transiciones */
-}
-
-/* ===== SECCIÓN DE CONTACTO MODERNIZADA ===== */
+/* ===== SECCIÓN DE CONTACTO ===== */
 .contactSection {
-    /* ✅ OPTIMIZADO: Mejorar performance */
-    contain: layout style;
-    margin-top: 32px;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
 }
 
 .contactTitle {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-neutral-800);
-    margin-bottom: var(--spacing-md);
-    text-align: center;
-    /* ✅ OPTIMIZADO: Sin transiciones */
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.75rem 0;
+  text-align: center;
 }
 
 .contactButtons {
-    display: flex;
-    gap: var(--spacing-md);
-    justify-content: center;
-    /* ✅ OPTIMIZADO: Sin flex-wrap para evitar recálculos */
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .contactButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 14px 24px;
-    background: var(--color-neutral-900);
-    border: none;
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 600;
-    font-size: 0.95rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    min-width: 130px;
-    height: 48px;
-    text-align: center;
-    letter-spacing: 0.3px;
-    /* ✅ OPTIMIZADO: Propiedades para hover sutil */
-    will-change: transform, box-shadow, background-color;
-    contain: layout style;
-    position: relative;
-    overflow: hidden;
-}
-
-.contactButton::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.6s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: #f3f4f6;
+  color: #111827;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  min-width: 100px;
+  justify-content: center;
 }
 
 .contactButton:hover {
-    background: var(--color-neutral-800);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.contactButton:hover::before {
-    left: 100%;
-}
-
-.contactButton:active {
-    background: var(--color-neutral-700);
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  background: #e5e7eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .buttonIcon {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .buttonText {
-    font-weight: 600;
-    letter-spacing: 0.3px;
+  font-weight: 600;
+  color: #111827;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1024px) {
-    .cardContent {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-md);
-    }
-    
-    .imageSection {
-        min-height: 250px;
-    }
-    
-    .infoContainer {
-        gap: 12px;
-        margin-top: var(--spacing-sm); /* ✅ AGREGADO: Espacio desde arriba */
-    }
-    
-    .infoSection {
-        flex-direction: column;
-        gap: 3px;
-        width: 100%;
-    }
+  .cardContent {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .imageSection {
+    min-height: 300px;
+  }
+  
+  .infoSection {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.25rem;
+    margin: 0 -0.25rem;
+  }
 }
 
 @media (max-width: 768px) {
-    .card {
-        border-radius: 12px; /* ✅ OPTIMIZADO: Reducido */
-    }
-    
-    .cardContent {
-        padding: var(--spacing-md); /* ✅ OPTIMIZADO: Reducido */
-    }
-    
-    /* ✅ NUEVO: Estilos responsive para el header */
-    .cardHeader {
-        height: 75px; /* ✅ AUMENTADO: De 55px a 75px */
-        border-radius: 6px;
-    }
-    
-    .headerLeft {
-        padding: 6px 8px;
-        align-items: center;
-        text-align: center;
-        flex: 0.6;
-    }
-    
-    .card__title_container {
-        gap: 6px;
-        margin-bottom: 2px;
-    }
-    
-    .card__title {
-        font-size: 22px; /* ✅ AUMENTADO: De 15px a 22px */
-        text-align: center;
-    }
-    
-    .card__version {
-        font-size: 12px;
-        font-weight: 500;
-        text-align: center;
-    }
-    
-    .headerRight {
-        flex: 0.4;
-    }
-    
-    .priceContainer {
-        height: 100%;
-        padding: 3px 3px;
-        border-radius: 0 6px 6px 0;
-        justify-content: center;
-
-    }
-    
-    .card__price {
-        font-size: 22px; /* ✅ AUMENTADO: De 18px a 22px */
-    }
-    
-    /* ✅ NUEVO: Estilos responsive para detalles */
-    .card__data_container {
-        gap: 6px; /* ✅ AUMENTADO: De 3px a 6px */
-        padding: 0; /* ✅ ELIMINADO: Sin padding para pegar completamente */
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .card__data_item {
-        padding: 6px; /* ✅ AUMENTADO: De 1px a 6px */
-    }
-    
-    .card__data_label {
-        font-size: 12px; /* ✅ AUMENTADO: De 10px a 12px */
-        letter-spacing: 0.2px;
-    }
-    
-    .card__data_value {
-        font-size: 20px; /* ✅ AUMENTADO: De 14px a 20px */
-        margin-top: 2px; /* ✅ AUMENTADO: De 1px a 2px */
-    }
-    
-    .title {
-        font-size: var(--font-size-xl); /* ✅ OPTIMIZADO: Reducido */
-    }
-    
-    .infoKey {
-        font-size: var(--font-size-xs);
-    }
-    
-    .infoValue {
-        font-size: var(--font-size-sm);
-    }
-    
-    .contactButtons {
-        flex-direction: column;
-        gap: var(--spacing-sm);
-    }
-    
-    .contactButton {
-        padding: 12px 20px;
-        font-size: 0.85rem;
-        height: 44px;
-        min-width: 110px;
-    }
+  .cardContent {
+    padding: 1.5rem;
+  }
+  
+  .cardHeader {
+    height: 50px;
+  }
+  
+  .card__title {
+    font-size: 20px;
+  }
+  
+  .card__price {
+    font-size: 18px;
+  }
+  
+  .card__details {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .card__data_container {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .card__data_item {
+    padding: 0.75rem;
+  }
+  
+  .card__data_label {
+    font-size: 0.7rem;
+  }
+  
+  .card__data_value {
+    font-size: 1.25rem;
+  }
+  
+  .infoSection {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin: 0 -0.25rem;
+  }
+  
+  .infoItem {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .infoKey {
+    font-size: 0.75rem;
+  }
+  
+  .infoValue {
+    font-size: 0.875rem;
+  }
+  
+  .contactButtons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .contactButton {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 480px) {
-    .cardContent {
-        padding: var(--spacing-sm); /* ✅ OPTIMIZADO: Reducido */
-    }
-    
-    /* ✅ NUEVO: Estilos responsive para el header en móvil */
-    .cardHeader {
-        height: 80px; /* ✅ AUMENTADO: De 60px a 80px */
-        border-radius: 4px;
-        flex-direction: column;
-    }
-    
-    .headerLeft {
-        flex: 1;
-        padding: 4px 8px;
-        align-items: center;
-        text-align: center;
-    }
-    
-    .card__title_container {
-        gap: 4px;
-        margin-bottom: 1px;
-    }
-    
-    .card__title {
-        font-size: 18px; /* ✅ AUMENTADO: De 13px a 18px */
-        text-align: center;
-    }
-    
-    .card__version {
-        font-size: 12px;
-        margin-top: 0;
-        font-weight: 500;
-        text-align: center;
-    }
-    
-    .headerRight {
-        flex: 1;
-    }
-    
-    .priceContainer {
-        height: 100%;
-        padding: 4px 6px;
-        border-radius: 0 0 4px 4px;
-        justify-content: center;
-    }
-    
-    .card__price {
-        font-size: 20px; /* ✅ AUMENTADO: De 17px a 20px */
-    }
-    
-    /* ✅ NUEVO: Estilos responsive para detalles en móvil */
-    .card__data_container {
-        gap: 2px;
-        padding: 2px 0;
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .card__data_item {
-        padding: 1px;
-    }
-    
-    .card__data_label {
-        font-size: 9px;
-        letter-spacing: 0.1px;
-    }
-    
-    .card__data_value {
-        font-size: 13px;
-        margin-top: 1px;
-    }
-    
-    .title {
-        font-size: var(--font-size-lg); /* ✅ OPTIMIZADO: Reducido */
-    }
-    
-    .infoContainer {
-        gap: 18px;
-        margin-top: var(--spacing-sm); /* ✅ AGREGADO: Espacio desde arriba */
-    }
-    
-    .infoSection {
-        flex-direction: column;
-        gap: 3px;
-        width: 100%;
-    }
-    
-    .infoKey {
-        font-size: var(--font-size-xs);
-    }
-    
-    .infoValue {
-        font-size: var(--font-size-xs);
-    }
-    
-    .contactButton {
-        padding: 8px 12px;
-        font-size: 0.75rem;
-        height: 36px;
-        min-width: 80px;
-    }
+  .cardContent {
+    padding: 1rem;
+  }
+  
+  .cardHeader {
+    height: 45px;
+  }
+  
+  .card__title {
+    font-size: 18px;
+  }
+  
+  .card__price {
+    font-size: 16px;
+  }
+  
+  .card__data_item {
+    padding: 0.5rem;
+  }
+  
+  .card__data_label {
+    font-size: 0.625rem;
+  }
+  
+  .card__data_value {
+    font-size: 1.125rem;
+  }
+  
+  .infoItem {
+    padding: 0.375rem 0.5rem;
+  }
+  
+  .infoKey {
+    font-size: 0.7rem;
+  }
+  
+  .infoValue {
+    font-size: 0.8rem;
+  }
+  
+  .contactButton {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.75rem;
+    min-width: 100px;
+  }
+  
+  .buttonIcon {
+    width: 18px;
+    height: 18px;
+  }
 } 

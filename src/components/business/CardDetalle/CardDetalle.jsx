@@ -1,74 +1,45 @@
 /**
  * CardDetalle - Componente para mostrar información detallada de un vehículo
  * 
- * Funcionalidades:
- * - Mostrar información detallada del vehículo
- * - Imagen con lazy loading ultra optimizado
- * - Secciones organizadas de información
- * - Botones de contacto optimizados
- * - Diseño responsivo y performance
+ * Características:
+ * - Header 60/40 como CardAuto
+ * - Datos principales con clave arriba, valor abajo
+ * - Información adicional con mismo estilo
+ * - Botones con fondo gris claro e iconos coloridos
  * 
  * @author Indiana Usados
- * @version 2.0.0 - OPTIMIZACIÓN FINAL
+ * @version 3.0.0 - Basado en CardAuto con mejoras
  */
 
-import React, { memo, useMemo, forwardRef } from 'react'
-import { ImageCarousel } from '../../ui/ImageCarousel'
+import React, { memo, useMemo } from 'react'
 import { GmailIconOptimized, WhatsAppIconOptimized } from '../../ui/icons'
 import { formatValue } from '../../../utils/imageUtils'
 import { useCarouselImages } from '../../../hooks/useImageOptimization'
+import { ImageCarousel } from '../../ui/ImageCarousel'
 import styles from './CardDetalle.module.css'
 
 /**
- * Componente CardDetalle ultra optimizado para performance
- * @param {Object} props - Propiedades del componente
- * @param {Object} props.auto - Objeto con información del vehículo
- * @param {string} props.auto.id - ID del vehículo
- * @param {string} props.auto.marca - Marca del vehículo
- * @param {string} props.auto.modelo - Modelo del vehículo
- * @param {string} props.auto.version - Versión del vehículo
- * @param {string} props.auto.cilindrada - Cilindrada del vehículo
- * @param {string} props.auto.precio - Precio del vehículo
- * @param {string} props.auto.año - Año del vehículo
- * @param {string} props.auto.kms - Kilometraje del vehículo
- * @param {string} props.auto.caja - Tipo de caja del vehículo
- * @param {string} props.auto.color - Color del vehículo
- * @param {string} props.auto.categoria - Categoría del vehículo
- * @param {string} props.auto.combustible - Tipo de combustible
- * @param {string} props.auto.detalle - Detalles adicionales
- * @param {string} props.auto.imagen - URL de la imagen
- * @param {Array} props.auto.imagenes - Array de URLs de imágenes
- * @param {Object} props.contactInfo - Información de contacto
- * @param {string} props.contactInfo.email - Email de contacto
- * @param {string} props.contactInfo.whatsapp - Número de WhatsApp
- * @param {string} props.contactInfo.whatsappMessage - Mensaje predefinido para WhatsApp
+ * Componente CardDetalle basado en CardAuto
  */
-export const CardDetalle = memo(forwardRef(({ auto, contactInfo }, ref) => {
-    // ✅ OPTIMIZADO: Hooks siempre primero, antes de cualquier early return
+export const CardDetalle = memo(({ auto, contactInfo }) => {
+    // Hooks
     const carouselImages = useCarouselImages(auto)
     
-    // ✅ OPTIMIZADO: Memoización del precio formateado con función reutilizable
-    const formatPrice = useMemo(() => (price) => {
-        if (!price) return '-'
-        const numericPrice = parseFloat(price.toString().replace(/[^\d]/g, ''))
-        if (isNaN(numericPrice)) return price
-        return `$${numericPrice.toLocaleString('es-AR')}`
-    }, [])
+    // Debug: Log de imágenes del carrusel
+    console.log('🖼️ CARRUSEL DEBUG: Imágenes recibidas:', carouselImages)
+    console.log('🖼️ CARRUSEL DEBUG: Cantidad de imágenes:', carouselImages?.length)
+    console.log('🖼️ CARRUSEL DEBUG: Objeto auto completo:', auto)
     
-    // ✅ OPTIMIZADO: Memoización del kilometraje formateado con función reutilizable
-    const formatKilometraje = useMemo(() => (kms) => {
-        if (!kms) return '-'
-        const numericKms = parseInt(kms)
-        if (isNaN(numericKms)) return kms
-        return `${numericKms.toLocaleString('es-AR')} km`
-    }, [])
-    
-    // ✅ OPTIMIZADO: Memoización de datos extraídos
+    // Memoización de datos del vehículo
     const vehicleData = useMemo(() => {
-        if (!auto) return null
+        console.log('🔍 CARD DEBUG: Objeto auto recibido:', auto)
         
-        return {
-            id: auto.id,
+        if (!auto) {
+            console.log('❌ CARD DEBUG: auto es null/undefined')
+            return null
+        }
+        
+        const data = {
             marca: auto.marca || '',
             modelo: auto.modelo || '',
             version: auto.version || '',
@@ -76,24 +47,37 @@ export const CardDetalle = memo(forwardRef(({ auto, contactInfo }, ref) => {
             precio: auto.precio || '',
             año: auto.año || '',
             kms: auto.kms || '',
-            caja: auto.caja || '',
+            caja: auto.caja || auto.transmisión || '',
             color: auto.color || '',
             categoria: auto.categoria || '',
             combustible: auto.combustible || '',
-            traccion: auto.traccion || '', // ✅ AGREGADO: Campo tracción
-            tapizado: auto.tapizado || '', // ✅ AGREGADO: Campo tapizado
-            categoriaVehiculo: auto.categoriaVehiculo || '', // ✅ AGREGADO: Campo categoría (nuevo)
-            detalle: auto.detalle || ''
+            traccion: auto.tracción || '',
+            tapizado: auto.tapizado || '',
+            categoriaVehiculo: auto.categoriaVehiculo || '',
+            frenos: auto.frenos || '',
+            turbo: auto.turbo || '',
+            llantas: auto.llantas || '',
+            HP: auto.HP || ''
         }
+        
+        console.log('📊 CARD DEBUG: Datos procesados:', data)
+        console.log('🔍 CARD DEBUG: Campos especiales:', {
+            frenos: data.frenos,
+            turbo: data.turbo,
+            llantas: data.llantas,
+            HP: data.HP
+        })
+        
+        return data
     }, [auto])
     
-    // ✅ OPTIMIZADO: Memoización del alt text
+    // Memoización del alt text
     const altText = useMemo(() => {
         if (!vehicleData?.marca || !vehicleData?.modelo) return 'Vehículo'
         return `${formatValue(vehicleData.marca)} ${formatValue(vehicleData.modelo)}`
     }, [vehicleData?.marca, vehicleData?.modelo])
     
-    // ✅ OPTIMIZADO: Memoización de información de contacto
+    // Memoización de información de contacto
     const finalContactInfo = useMemo(() => {
         const defaultInfo = {
             email: 'info@indianausados.com',
@@ -103,31 +87,28 @@ export const CardDetalle = memo(forwardRef(({ auto, contactInfo }, ref) => {
         return contactInfo || defaultInfo
     }, [contactInfo, vehicleData?.marca, vehicleData?.modelo])
 
-    // ✅ CORREGIDO: Validación después de hooks
+    // Validación
     if (!vehicleData) return null
 
-    // ✅ OPTIMIZADO: Destructuring con nombres correctos
-    const { 
-        marca, 
-        modelo, 
-        version, 
-        cilindrada,
-        precio, 
-        año, 
-        kms, 
-        caja, 
-        color, 
-        categoria, 
-        combustible,
-        traccion, // ✅ AGREGADO: Campo tracción
-        tapizado, // ✅ AGREGADO: Campo tapizado
-        categoriaVehiculo // ✅ AGREGADO: Campo categoría (nuevo)
-    } = vehicleData
+    // Funciones de formateo
+    const formatPrice = (price) => {
+        if (!price) return '-'
+        const numericPrice = parseFloat(price.toString().replace(/[^\d]/g, ''))
+        if (isNaN(numericPrice)) return price
+        return `$${numericPrice.toLocaleString('es-AR')}`
+    }
+    
+    const formatKilometraje = (kms) => {
+        if (!kms) return '-'
+        const numericKms = parseInt(kms)
+        if (isNaN(numericKms)) return kms
+        return numericKms.toLocaleString('es-AR')
+    }
 
     return (
-        <div className={styles.card} ref={ref}>
+        <div className={styles.card}>
             <div className={styles.cardContent}>
-                {/* ✅ ULTRA OPTIMIZADO: Sección de carrusel de imágenes */}
+                {/* Sección de carrusel de imágenes */}
                 <div className={styles.imageSection}>
                     <ImageCarousel 
                         images={carouselImages}
@@ -138,97 +119,115 @@ export const CardDetalle = memo(forwardRef(({ auto, contactInfo }, ref) => {
                     />
                 </div>
                 
-                {/* ✅ OPTIMIZADO: Sección de detalles */}
+                {/* Sección de detalles */}
                 <div className={styles.detailsSection}>
-                    {/* ✅ Header dividido con diagonal */}
+                    {/* Header 60/40 (COMO CARD AUTO) */}
                     <div className={styles.cardHeader}>
-                        {/* ✅ Primera mitad: Marca, modelo y versión */}
                         <div className={styles.headerLeft}>
                             <div className={styles.card__title_container}>
                                 <h3 className={styles.card__title}>
-                                    {formatValue(marca)}
+                                    {vehicleData.marca}
                                 </h3>
                                 <h3 className={styles.card__title}>
-                                    {formatValue(modelo)}
+                                    {vehicleData.modelo}
                                 </h3>
                             </div>
-                            {version && (
-                                <span className={styles.card__version}>
-                                    {formatValue(version)}{cilindrada && ` ${formatValue(cilindrada)}`}
-                                </span>
+                            {vehicleData.version && (
+                                <p className={styles.card__version}>
+                                    {vehicleData.version}
+                                    {vehicleData.cilindrada && ` ${vehicleData.cilindrada}`}
+                                </p>
                             )}
                         </div>
                         
-                        {/* ✅ Segunda mitad: Precio destacado */}
                         <div className={styles.headerRight}>
                             <div className={styles.priceContainer}>
                                 <span className={styles.card__price}>
-                                    {formatPrice(precio)}
+                                    {formatPrice(vehicleData.precio)}
                                 </span>
                             </div>
                         </div>
                     </div>
                     
-                    {/* ✅ OPTIMIZADO: Detalles del vehículo en contenedor horizontal */}
+                    {/* Datos principales (CLAVE ARRIBA, VALOR ABAJO) */}
                     <div className={styles.card__details}>
                         <div className={styles.card__data_container}>
                             <div className={styles.card__data_item}>
                                 <span className={styles.card__data_label}>Año</span>
-                                <span className={styles.card__data_value}>{formatValue(año)}</span>
+                                <span className={styles.card__data_value}>{vehicleData.año}</span>
                             </div>
                             <div className={`${styles.card__data_item} ${styles.card__data_item_border}`}>
-                                <span className={styles.card__data_label}>Kms</span>
-                                <span className={styles.card__data_value}>{formatKilometraje(kms)}</span>
+                                <span className={styles.card__data_label}>Km</span>
+                                <span className={styles.card__data_value}>{formatKilometraje(vehicleData.kms)}</span>
                             </div>
                             <div className={styles.card__data_item}>
                                 <span className={styles.card__data_label}>Caja</span>
-                                <span className={styles.card__data_value}>{formatValue(caja)}</span>
+                                <span className={styles.card__data_value}>{vehicleData.caja}</span>
                             </div>
                         </div>
                     </div>
                     
-                    {/* ✅ OPTIMIZADO: Contenedores de información - 2 filas de 4 elementos con flexbox */}
+                    {/* Información adicional */}
                     <div className={styles.infoContainer}>
                         <div className={styles.infoSection}>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Tracción</span>
-                                <span className={styles.infoValue}>{formatValue(traccion)}</span>
+                                <span className={styles.infoValue}>{vehicleData.traccion}</span>
                             </div>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Combustible</span>
-                                <span className={styles.infoValue}>{formatValue(combustible)}</span>
+                                <span className={styles.infoValue}>{vehicleData.combustible}</span>
                             </div>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Versión</span>
-                                <span className={styles.infoValue}>{formatValue(version)}</span>
+                                <span className={styles.infoValue}>{vehicleData.version}</span>
                             </div>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Cilindrada</span>
-                                <span className={styles.infoValue}>{formatValue(cilindrada)}</span>
+                                <span className={styles.infoValue}>{vehicleData.cilindrada}</span>
                             </div>
                         </div>
                         
                         <div className={styles.infoSection}>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Segmento</span>
-                                <span className={styles.infoValue}>{formatValue(categoria)}</span>
+                                <span className={styles.infoValue}>{vehicleData.categoria}</span>
                             </div>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Tapizado</span>
-                                <span className={styles.infoValue}>{formatValue(tapizado)}</span>
+                                <span className={styles.infoValue}>{vehicleData.tapizado}</span>
                             </div>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Color</span>
-                                <span className={styles.infoValue}>{formatValue(color)}</span>
+                                <span className={styles.infoValue}>{vehicleData.color}</span>
                             </div>
                             <div className={styles.infoItem}>
                                 <span className={styles.infoKey}>Categoría</span>
-                                <span className={styles.infoValue}>{formatValue(categoriaVehiculo)}</span>
+                                <span className={styles.infoValue}>{vehicleData.categoriaVehiculo}</span>
+                            </div>
+                        </div>
+                        
+                        <div className={styles.infoSection}>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Frenos</span>
+                                <span className={styles.infoValue}>{vehicleData.frenos}</span>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Turbo</span>
+                                <span className={styles.infoValue}>{vehicleData.turbo}</span>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>Llantas</span>
+                                <span className={styles.infoValue}>{vehicleData.llantas}</span>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoKey}>HP</span>
+                                <span className={styles.infoValue}>{vehicleData.HP}</span>
                             </div>
                         </div>
                     </div>
                     
-                    {/* ✅ OPTIMIZADO: Sección de contacto con iconos reales */}
+                    {/* Sección de contacto con iconos coloridos */}
                     <div className={styles.contactSection}>
                         <h4 className={styles.contactTitle}>Contacto Directo</h4>
                         <div className={styles.contactButtons}>
@@ -237,7 +236,7 @@ export const CardDetalle = memo(forwardRef(({ auto, contactInfo }, ref) => {
                                 className={styles.contactButton}
                                 title="Enviar email"
                             >
-                                <GmailIconOptimized className={styles.buttonIcon} size={18} />
+                                <GmailIconOptimized className={styles.buttonIcon} size={20} />
                                 <span className={styles.buttonText}>Email</span>
                             </a>
                             <a 
@@ -247,7 +246,7 @@ export const CardDetalle = memo(forwardRef(({ auto, contactInfo }, ref) => {
                                 className={styles.contactButton}
                                 title="Contactar por WhatsApp"
                             >
-                                <WhatsAppIconOptimized className={styles.buttonIcon} size={18} />
+                                <WhatsAppIconOptimized className={styles.buttonIcon} size={20} />
                                 <span className={styles.buttonText}>WhatsApp</span>
                             </a>
                         </div>
@@ -256,7 +255,6 @@ export const CardDetalle = memo(forwardRef(({ auto, contactInfo }, ref) => {
             </div>
         </div>
     )
-}))
+})
 
-// ✅ OPTIMIZADO: Agregar displayName para debugging
 CardDetalle.displayName = 'CardDetalle' 

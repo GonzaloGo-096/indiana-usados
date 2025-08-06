@@ -1,23 +1,39 @@
 /**
  * AdminRoutes - Rutas del panel de administración
  * 
+ * ✅ IMPLEMENTADO: Lazy loading para mejor performance
+ * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - CODE SPLITTING IMPLEMENTADO
  */
 
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Dashboard from '../pages/admin/Dashboard'
-import Login from '../pages/admin/Login'
+import LoadingSpinner from '../components/ui/LoadingSpinner'
+
+// ✅ LAZY LOADING: Páginas de admin cargadas bajo demanda
+const Dashboard = lazy(() => import('../pages/admin/Dashboard'))
+const Login = lazy(() => import('../pages/admin/Login'))
+
+// ✅ FALLBACK: Componente de carga para admin
+const AdminLoading = () => (
+    <LoadingSpinner 
+        message="Cargando panel de administración..." 
+        size="medium" 
+        fullScreen={false}
+    />
+)
 
 const AdminRoutes = () => (
     <div className="admin-container">
-        <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/autos" element={<div>Lista de Autos Admin</div>} />
-            <Route path="/autos/:id/editar" element={<div>Editar Auto</div>} />
-        </Routes>
+        <Suspense fallback={<AdminLoading />}>
+            <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/autos" element={<div>Lista de Autos Admin</div>} />
+                <Route path="/autos/:id/editar" element={<div>Editar Auto</div>} />
+            </Routes>
+        </Suspense>
     </div>
 )
 

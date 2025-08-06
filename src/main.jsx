@@ -13,15 +13,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import { cssVariables } from './constants'
 import './styles/globals.css'
 import './styles/fonts.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-// Inyectar variables CSS globales
-const style = document.createElement('style')
-style.textContent = cssVariables
-document.head.appendChild(style)
 
 // Crear una nueva instancia de QueryClient
 const queryClient = new QueryClient({

@@ -17,6 +17,8 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx'
 import { processImages } from '../../../utils/imageUtils'
 import defaultCarImage from '../../../assets/auto1.jpg'
+
+
 import styles from './ImageCarousel.module.css'
 
 /**
@@ -41,12 +43,17 @@ export const ImageCarousel = ({
     
     // Si no hay imágenes, usar imagen por defecto - MEMOIZADO
     const allImages = useMemo(() => {
+        console.log('🖼️ ImageCarousel: images recibidas', images)
+        console.log('🖼️ ImageCarousel: images.length', images?.length)
+        
         if (!images || images.length === 0) {
+            console.log('⚠️ ImageCarousel: No hay imágenes, usando default')
             return [defaultCarImage]
         }
         
         // Procesar imágenes que pueden ser objetos o URLs
         const processedImages = processImages(images);
+        console.log('🖼️ ImageCarousel: Imágenes procesadas', processedImages)
         
         return processedImages;
     }, [images])
@@ -153,6 +160,8 @@ export const ImageCarousel = ({
                         ))}
                     </div>
                 )}
+                
+
             </div>
 
             {/* Miniaturas */}
@@ -179,6 +188,8 @@ export const ImageCarousel = ({
                     </div>
                 </div>
             )}
+            
+
         </div>
     )
 } 

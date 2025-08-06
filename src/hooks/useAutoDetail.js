@@ -1,160 +1,82 @@
 /**
- * useAutoDetail - Hook para obtener detalles de un vehículo específico
+ * useAutoDetail - Hook optimizado para obtener detalle de vehículo desde vehiclesApi
  * 
  * Responsabilidades:
- * - Obtener detalles de un vehículo por ID
+ * - Obtener datos de un vehículo específico
  * - Manejar estados de carga y error
- * - Proporcionar datos formateados
- * - Cache inteligente con React Query
- * 
- * Preparado para:
- * - Conectar con endpoints reales del backend
- * - Manejo robusto de errores
- * - Cache inteligente con React Query
- * - Formateo de datos consistente
+ * - Cachear datos para evitar peticiones innecesarias
+ * - Performance optimizada
  * 
  * @author Indiana Usados
- * @version 1.1.0 - CORREGIDO ERROR useRealApi
+ * @version 3.1.0 - Performance optimizada
  */
 
 import { useQuery } from '@tanstack/react-query'
-import { useMemo } from 'react'
-import autoService, { queryKeys } from '../services/service'
 import vehiclesApi from '../api/vehiclesApi'
 
-// Función helper memoizada para formatear valores
-const formatValue = (value) => {
-    if (!value || value === '' || value === 'null' || value === 'undefined') {
-        return '-'
-    }
-    return value
-}
-
 /**
- * Hook para obtener detalles de un vehículo específico
+ * Hook optimizado para obtener detalle de vehículo
  * 
- * @param {string} id - ID del vehículo
- * @param {Object} options - Opciones adicionales del hook
+ * @param {string|number} id - ID del vehículo
+ * @param {Object} options - Opciones adicionales
  * @param {boolean} options.enabled - Si la query debe ejecutarse
  * @param {number} options.staleTime - Tiempo en ms antes de considerar datos obsoletos
  * @param {number} options.cacheTime - Tiempo en ms para mantener en cache
- * @param {number} options.retry - Número de reintentos en caso de error
  * 
  * @returns {Object} - Objeto con datos y estados del hook
- * @returns {Object} returns.auto - Datos del vehículo
+ * @returns {Object} returns.vehicle - Datos del vehículo
  * @returns {boolean} returns.isLoading - Si está cargando
  * @returns {boolean} returns.isError - Si hay error
  * @returns {Error} returns.error - Objeto de error si existe
  * @returns {Function} returns.refetch - Función para recargar datos
- * @returns {Object} returns.formattedData - Datos formateados para la UI
  */
 export const useAutoDetail = (id, options = {}) => {
     const {
         enabled = true,
-        staleTime = 1000 * 60 * 5, // 5 minutos
-        cacheTime = 1000 * 60 * 30, // 30 minutos
+        staleTime = 1000 * 60 * 30, // 30 minutos (aumentado)
+        cacheTime = 1000 * 60 * 60, // 1 hora
         retry = 1,
-        refetchOnWindowFocus = false
-    } = options
+        refetchOnWindowFocus = false,
+        refetchOnMount = false,
+        refetchOnReconnect = false
+    } = options;
 
-    // ✅ CORREGIDO: Query principal para obtener el vehículo
     const {
-        data: auto,
+        data: vehicle,
         isLoading,
         isError,
         error,
         refetch
     } = useQuery({
-        queryKey: queryKeys.auto(id),
-        queryFn: async () => {
-            // ✅ CORREGIDO: Usar directamente mock data por ahora
-            // En el futuro, aquí se puede agregar lógica para API real
-            try {
-                return await autoService.getAutoById(id)
-            } catch (error) {
-                throw new Error(`Error al cargar el vehículo: ${error.message}`)
-            }
-        },
-        staleTime,
-        gcTime: cacheTime, // cacheTime fue renombrado a gcTime en v5
-        retry,
-        refetchOnWindowFocus,
-        enabled: enabled && !!id
-    })
+        queryKey: ['vehicle-detail', id],
+        queryFn: () => vehiclesApi.getVehicleById(id),
+        enabled: enabled && !!id,
+        staleTime: staleTime,
+        gcTime: cacheTime,
+        retry: retry,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        retryDelay: 1000,
+        networkMode: 'online'
+    });
 
-    // Datos formateados para la UI - OPTIMIZADO
-    const formattedData = useMemo(() => {
-        if (!auto) return null
-
-        // Extraer datos con valores por defecto
-        const {
-            marca = '',
-            modelo = '',
-            precio = '',
-            año = '',
-            color = '',
-            combustible = '',
-            categoria = '',
-            detalle = '',
-            kms = '',
-            caja = '',
-            imagen = '',
-            imagenes = []
-        } = auto
-
-        // Formatear valores una sola vez
-        const marcaFormatted = formatValue(marca)
-        const modeloFormatted = formatValue(modelo)
-        const titulo = `${marcaFormatted} ${modeloFormatted}`
-
-        return {
-            // Datos básicos
-            id: auto.id,
-            marca: marcaFormatted,
-            modelo: modeloFormatted,
-            precio: precio ? `$${precio}` : '-',
-            año: formatValue(año),
-            color: formatValue(color),
-            combustible: formatValue(combustible),
-            categoria: formatValue(categoria),
-            detalle: formatValue(detalle),
-            kms: formatValue(kms),
-            caja: formatValue(caja),
-            imagen: imagen || null,
-            imagenes: imagenes || [],
-            
-            // Datos calculados
-            titulo,
-            altText: titulo,
-            
-            // Datos para contacto
-            contactInfo: {
-                email: 'info@indianausados.com',
-                whatsapp: '5491112345678',
-                whatsappMessage: `Hola, me interesa el vehículo ${titulo}`
-            }
+    // Formatear datos para compatibilidad
+    const formattedData = vehicle ? {
+        contactInfo: {
+            email: 'info@indianausados.com',
+            whatsapp: '5491112345678',
+            whatsappMessage: `Hola, me interesa el vehículo ${vehicle.marca || ''} ${vehicle.modelo || ''}`
         }
-    }, [auto])
-
-    // Estados memoizados para evitar recálculos
-    const hasData = useMemo(() => !!auto, [auto])
-    const hasFormattedData = useMemo(() => !!formattedData, [formattedData])
+    } : null;
 
     return {
-        // Datos
-        auto,
+        auto: vehicle,
+        vehicle,
         formattedData,
-        
-        // Estados
         isLoading,
         isError,
         error,
-        
-        // Funciones
-        refetch,
-        
-        // Estados calculados
-        hasData,
-        hasFormattedData
-    }
-} 
+        refetch
+    };
+}; 

@@ -1,17 +1,17 @@
 /**
- * AutosGrid - Componente para mostrar el grid de vehículos
+ * AutosGrid - Componente para mostrar el grid de vehículos optimizado
  * 
  * Responsabilidades:
  * - Renderizado del grid de autos
  * - Estados de carga y error del grid
  * - Paginación infinita con scroll automático optimizado
- * - Optimización de performance sin virtualización compleja
+ * - Performance optimizada
  * 
  * @author Indiana Usados
- * @version 4.3.0 - SIMPLIFICADO PARA ESTABILIDAD
+ * @version 4.5.0 - Performance optimizada
  */
 
-import React, { memo, useMemo, useCallback, useRef, useEffect } from 'react'
+import React, { memo, useMemo, useCallback, useRef } from 'react'
 import { CardAuto } from '../CardAuto'
 import { Button } from '../../ui/Button'
 import { ListAutosSkeleton } from '../../skeletons/ListAutosSkeleton'
@@ -43,188 +43,81 @@ const ErrorMessage = memo(({ message, onRetry }) => (
 ErrorMessage.displayName = 'ErrorMessage'
 
 /**
- * ✅ OPTIMIZADO: Componente de tarjeta individual memoizado
+ * Componente de tarjeta individual optimizado
  */
-const MemoizedCardAuto = memo(({ auto }) => (
-    <div className={styles.cardWrapper}>
-        <CardAuto auto={auto} />
+const MemoizedCardAuto = memo(React.forwardRef(({ vehicle }, ref) => (
+    <div className={styles.cardWrapper} ref={ref}>
+        <CardAuto auto={vehicle} />
     </div>
-))
+)))
 
 MemoizedCardAuto.displayName = 'MemoizedCardAuto'
 
 const AutosGrid = memo(({ 
-    autos, 
+    vehicles, 
     isLoading, 
     isError, 
     error, 
     onRetry,
-    // Props para paginación
     hasNextPage = false,
     isFetchingNextPage = false,
     onLoadMore = null
 }) => {
-    // ✅ OPTIMIZADO: Callback memoizado para loadMore
+    // Callback memoizado para loadMore
     const handleLoadMore = useCallback(() => {
         if (hasNextPage && !isFetchingNextPage && onLoadMore) {
             onLoadMore()
         }
     }, [hasNextPage, isFetchingNextPage, onLoadMore])
 
-    // ✅ NUEVA FUNCIÓN: Análisis de performance del scroll
-    useEffect(() => {
-        if (hasNextPage && autos?.length) {
-            const startTime = performance.now()
-            
-            // ✅ MONITOREO: Performance del scroll
-            const measureScrollPerformance = () => {
-                const endTime = performance.now()
-                const scrollTime = endTime - startTime
-                
-                console.log(`📊 Performance del scroll:
-                    - Tiempo de render: ${scrollTime.toFixed(2)}ms
-                    - Elementos renderizados: ${autos.length}
-                    - FPS estimado: ${(1000 / scrollTime).toFixed(1)}
-                    - Memoria usada: ${(performance.memory?.usedJSHeapSize / 1024 / 1024).toFixed(1)}MB
-                `)
-            }
-            
-            // ✅ MEDICIÓN: Después de que se complete el render
-            requestAnimationFrame(measureScrollPerformance)
+    // Ref para el elemento de carga
+    const loadMoreRef = useRef(null)
+
+    // Intersection observer para carga automática
+    const { isIntersecting } = useIntersectionObserver(loadMoreRef, {
+        threshold: 0.1,
+        rootMargin: '100px'
+    })
+
+    // Cargar más cuando el elemento es visible
+    React.useEffect(() => {
+        if (isIntersecting && hasNextPage && !isFetchingNextPage) {
+            handleLoadMore()
         }
-    }, [hasNextPage, autos?.length])
+    }, [isIntersecting, hasNextPage, isFetchingNextPage, handleLoadMore])
 
-    // ✅ NUEVA FUNCIÓN: Debugging para monitorear carga automática
-    useEffect(() => {
-        if (hasNextPage && autos?.length) {
-            console.log(`📊 Estado de carga automática:
-                - Elementos actuales: ${autos.length}
-                - Hay más contenido: ${hasNextPage}
-                - Cargando: ${isFetchingNextPage}
-                - Último elemento observado: ${lastAutoRef.current ? 'Sí' : 'No'}
-            `)
-        }
-    }, [hasNextPage, autos?.length, isFetchingNextPage])
-
-    // ✅ OPTIMIZADO: Solo el último elemento tiene observer
-    const lastAutoRef = useRef(null)
-    
-    // ✅ NUEVA FUNCIÓN: Detectar automáticamente el último elemento
-    const handleLastAutoIntersection = useCallback((entries) => {
-        const [entry] = entries
-        
-        // ✅ AUTOMÁTICO: Si el último elemento es visible y hay más contenido
-        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-            console.log('🔄 Último elemento visible - Cargando más contenido...')
-            onLoadMore()
-        }
-    }, [hasNextPage, isFetchingNextPage, onLoadMore])
-
-    // ✅ ULTRA OPTIMIZADO: Observer con configuración minimalista
-    useEffect(() => {
-        // ✅ SOLO CREAR OBSERVER SI HAY MÁS CONTENIDO
-        if (!hasNextPage || !autos?.length) return
-
-        const observer = new IntersectionObserver(handleLastAutoIntersection, {
-            threshold: 0.01, // ✅ REDUCIDO: Solo 1% del elemento
-            rootMargin: '25px' // ✅ REDUCIDO: Solo 25px de precarga
-        })
-
-        if (lastAutoRef.current) {
-            observer.observe(lastAutoRef.current)
-            console.log('👁️ Observer activado en último elemento')
+    // Memoizar el grid de vehículos
+    const vehiclesGrid = useMemo(() => {
+        if (!vehicles || vehicles.length === 0) {
+            return null
         }
 
-        return () => {
-            observer.disconnect()
-            console.log('🔌 Observer desconectado')
-        }
-    }, [handleLastAutoIntersection, autos?.length, hasNextPage])
+        return vehicles.map((vehicle, index) => (
+            <MemoizedCardAuto 
+                key={`vehicle-${vehicle.id || index}`}
+                vehicle={vehicle}
+                ref={index === vehicles.length - 1 ? loadMoreRef : null}
+            />
+        ))
+    }, [vehicles])
 
-    // ✅ OPTIMIZADO: Memoizar el grid con ref en último elemento
-    const autosGrid = useMemo(() => {
-        if (!autos?.length) return null
-        
-        return (
-            <div className={styles.grid}>
-                {autos.map((auto, index) => {
-                    const isLastElement = index === autos.length - 1
-                    
-                    return (
-                        <MemoizedCardAuto 
-                            key={auto.id} 
-                            auto={auto}
-                            ref={isLastElement ? lastAutoRef : null}
-                        />
-                    )
-                })}
-            </div>
-        )
-    }, [autos]) // ✅ Solo se recalcula si cambia el array de autos
-
-    // ✅ OPTIMIZADO: Memoizar el banner de error
-    const errorBanner = useMemo(() => {
-        if (!isError) return null
-        
-        return (
-            <div className={styles.errorBanner}>
-                <Alert variant="warning">
-                    <h3>Error al cargar vehículos</h3>
-                    <p>{error?.message || 'Error al cargar los vehículos'}</p>
-                    <Button 
-                        onClick={onRetry}
-                        variant="outline"
-                        size="small"
-                    >
-                        Reintentar
-                    </Button>
-                </Alert>
-            </div>
-        )
-    }, [isError, error?.message, onRetry])
-
-    // ✅ OPTIMIZADO: Memoizar el trigger de scroll infinito
-    const scrollTrigger = useMemo(() => {
-        if (!hasNextPage) return null
-        
-        return (
-            <div className={styles.scrollTrigger}>
-                {/* ✅ MEJORADO: Indicador de carga automática */}
-                {isFetchingNextPage && (
-                    <div className={styles.loadingMore}>
-                        <div className={styles.spinner}></div>
-                        <span>🔄 Cargando más vehículos automáticamente...</span>
-                    </div>
-                )}
-            </div>
-        )
-    }, [hasNextPage, isFetchingNextPage])
-
-    // ✅ OPTIMIZADO: Memoizar el mensaje de "no más resultados"
-    const noMoreResults = useMemo(() => {
-        if (hasNextPage || !autos?.length) return null
-        
-        return (
-            <div className={styles.noMoreResults}>
-                <p>No hay más vehículos para mostrar</p>
-            </div>
-        )
-    }, [hasNextPage, autos?.length])
-
-    // ===== RENDERIZADO CONDICIONAL OPTIMIZADO =====
-    
-    // ✅ OPTIMIZADO: Estados de carga
-    if (isLoading) {
+    // Estado de carga inicial
+    if (isLoading && (!vehicles || vehicles.length === 0)) {
         return <ListAutosSkeleton />
     }
 
-    // ✅ OPTIMIZADO: Estado de error
+    // Estado de error
     if (isError) {
-        return <ErrorMessage message={error?.message} onRetry={onRetry} />
+        return (
+            <ErrorMessage 
+                message={error?.message || 'Error al cargar los vehículos'}
+                onRetry={onRetry}
+            />
+        )
     }
 
-    // ✅ OPTIMIZADO: Estado vacío
-    if (!autos?.length) {
+    // Sin vehículos
+    if (!vehicles || vehicles.length === 0) {
         return (
             <div className={styles.empty}>
                 <div className={styles.emptyContent}>
@@ -235,18 +128,45 @@ const AutosGrid = memo(({
         )
     }
 
-    // ✅ OPTIMIZADO: Renderizado principal
     return (
         <div className={styles.gridContainer}>
-            {errorBanner}
-            {autosGrid}
-            {scrollTrigger}
-            {noMoreResults}
+            {/* Grid de vehículos */}
+            <div className={styles.grid}>
+                {vehiclesGrid}
+            </div>
+
+            {/* Indicador de carga más */}
+            {hasNextPage && (
+                <div className={styles.loadMoreIndicator}>
+                    {isFetchingNextPage ? (
+                        <div className={styles.loadingMore}>
+                            <span>Cargando más vehículos...</span>
+                        </div>
+                    ) : (
+                        <Button 
+                            onClick={handleLoadMore}
+                            variant="secondary"
+                            className={styles.loadMoreButton}
+                        >
+                            Cargar más
+                        </Button>
+                    )}
+                </div>
+            )}
+
+            {/* Alertas */}
+            {isError && (
+                <Alert 
+                    type="error"
+                    title="Error"
+                    message={error?.message || 'Error al cargar los vehículos'}
+                    onClose={onRetry}
+                />
+            )}
         </div>
     )
 })
 
-// ✅ AGREGADO: Display name para debugging
 AutosGrid.displayName = 'AutosGrid'
 
 export default AutosGrid 

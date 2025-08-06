@@ -1,114 +1,100 @@
-import axios from 'axios';
+/**
+ * axiosInstance.js - Configuración de Axios optimizada
+ * 
+ * Características:
+ * - Configuración dinámica basada en variables de entorno
+ * - Manejo de errores centralizado
+ * - Timeouts configurables
+ * - Performance optimizada
+ * 
+ * @author Indiana Usados
+ * @version 3.0.0 - Variables de entorno dinámicas
+ * 
+ * ⚠️ IMPORTANTE: Configurar variables de entorno en .env.local
+ */
 
-// Configuración de la URL base desde variables de entorno
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.indiana-usados.com';
+import axios from 'axios'
 
-// Crear instancia de Axios con configuración base
+// ✅ CONFIGURACIÓN DINÁMICA BASADA EN VARIABLES DE ENTORNO
+const getBaseURL = () => {
+    // Si está habilitado el mock API
+    if (import.meta.env.VITE_USE_MOCK_API === 'true') {
+        // Si está habilitado Postman Mock
+        if (import.meta.env.VITE_USE_POSTMAN_MOCK === 'true') {
+            return import.meta.env.VITE_POSTMAN_MOCK_URL || 'https://c65a35e4-099e-4f66-a282-1f975219d583.mock.pstmn.io'
+        }
+        // Fallback a mock local (futuro)
+        return import.meta.env.VITE_MOCK_API_URL || 'http://localhost:3000/api'
+    }
+    
+    // Backend real
+    return import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
+}
+
+const getDetailBaseURL = () => {
+    // Para detalle, usar la misma lógica pero con URL específica si existe
+    if (import.meta.env.VITE_USE_MOCK_API === 'true' && import.meta.env.VITE_USE_POSTMAN_MOCK === 'true') {
+        return import.meta.env.VITE_POSTMAN_DETAIL_URL || import.meta.env.VITE_POSTMAN_MOCK_URL || 'https://0ce757d8-1c7a-4cec-9872-b3e45dd2d032.mock.pstmn.io'
+    }
+    
+    return getBaseURL()
+}
+
+// ✅ CONFIGURACIÓN DE TIMEOUT DINÁMICA
+const getTimeout = () => {
+    return parseInt(import.meta.env.VITE_API_TIMEOUT) || 5000
+}
+
+// Instancia principal para listado de vehículos
 const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
-    timeout: 10000, // 10 segundos
+    baseURL: getBaseURL(),
+    timeout: getTimeout(),
     headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
-});
+        'Accept': 'application/json'
+    }
+})
 
-// Interceptor para requests (peticiones salientes)
+// Instancia separada para detalle de vehículos
+const detailAxiosInstance = axios.create({
+    baseURL: getDetailBaseURL(),
+    timeout: getTimeout(),
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+})
+
+// ✅ LOGGING DE CONFIGURACIÓN (solo en desarrollo)
+if (import.meta.env.DEV) {
+    console.log('🔧 CONFIGURACIÓN AXIOS:', {
+        baseURL: getBaseURL(),
+        detailBaseURL: getDetailBaseURL(),
+        timeout: getTimeout(),
+        useMock: import.meta.env.VITE_USE_MOCK_API,
+        usePostman: import.meta.env.VITE_USE_POSTMAN_MOCK
+    })
+}
+
+// Interceptor de request simplificado
 axiosInstance.interceptors.request.use(
     (config) => {
-        // Log de peticiones en desarrollo
-        if (import.meta.env.DEV) {
-            console.log(`🚀 [API Request] ${config.method?.toUpperCase()} ${config.url}`, {
-                params: config.params,
-                data: config.data,
-            });
-        }
-
-        // Aquí puedes agregar token de autenticación si es necesario
-        // const token = localStorage.getItem('authToken');
-        // if (token) {
-        //     config.headers.Authorization = `Bearer ${token}`;
-        // }
-
-        return config;
+        return config
     },
     (error) => {
-        console.error('❌ [API Request Error]:', error);
-        return Promise.reject(error);
+        return Promise.reject(error)
     }
-);
+)
 
-// Interceptor para responses (respuestas entrantes)
+// Interceptor de response simplificado
 axiosInstance.interceptors.response.use(
     (response) => {
-        // Log de respuestas en desarrollo
-        if (import.meta.env.DEV) {
-            console.log(`✅ [API Response] ${response.status} ${response.config.url}`, {
-                data: response.data,
-            });
-        }
-
-        return response;
+        return response
     },
     (error) => {
-        // Log de errores
-        console.error('❌ [API Response Error]:', {
-            status: error.response?.status,
-            statusText: error.response?.statusText,
-            url: error.config?.url,
-            message: error.message,
-            data: error.response?.data,
-        });
-
-        // Manejo específico de errores HTTP
-        if (error.response) {
-            switch (error.response.status) {
-                case 401:
-                    console.error('🔐 Error de autenticación');
-                    // Aquí puedes redirigir al login
-                    break;
-                case 403:
-                    console.error('🚫 Error de autorización');
-                    break;
-                case 404:
-                    console.error('🔍 Recurso no encontrado');
-                    break;
-                case 500:
-                    console.error('💥 Error del servidor');
-                    break;
-                default:
-                    console.error(`⚠️ Error HTTP ${error.response.status}`);
-            }
-        } else if (error.request) {
-            console.error('🌐 Error de red - No se pudo conectar al servidor');
-        } else {
-            console.error('❓ Error desconocido:', error.message);
-        }
-
-        return Promise.reject(error);
+        return Promise.reject(error)
     }
-);
+)
 
-// Función helper para crear URLs de endpoints
-export const createEndpoint = (path) => `${path}`;
-
-// Función helper para manejar errores de API
-export const handleApiError = (error) => {
-    if (error.response?.data?.message) {
-        return error.response.data.message;
-    }
-    if (error.message) {
-        return error.message;
-    }
-    return 'Error desconocido';
-};
-
-// Función helper para validar respuestas
-export const validateResponse = (response) => {
-    if (!response || !response.data) {
-        throw new Error('Respuesta inválida del servidor');
-    }
-    return response.data;
-};
-
-export default axiosInstance; 
+export default axiosInstance
+export { detailAxiosInstance } 

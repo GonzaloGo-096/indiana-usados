@@ -1,5 +1,5 @@
 /**
- * MultiSelect.module.css - Estilos ultra simples y eficientes
+ * MultiSelect.module.css - Estilos ultra optimizados y eficientes
  * 
  * Principios: Simplicidad, Performance, Mantenibilidad
  * - Sin over-engineering
@@ -7,7 +7,7 @@
  * - Performance optimizada sin complejidad
  * 
  * @author Indiana Usados
- * @version 3.1.0
+ * @version 4.0.0 - Optimizado y limpio
  */
 
 .multiSelect {
@@ -34,7 +34,7 @@
 
 .trigger {
   width: 100%;
-  padding: var(--spacing-sm);
+  padding: 0.625rem;
   border: 1px solid var(--color-neutral-400); /* Volvemos al color anterior */
   border-radius: var(--border-radius-sm);
   background: var(--color-white);
@@ -47,6 +47,7 @@
   color: var(--color-neutral-700);
   outline: none;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil y eficiente */
+  min-height: 34px;
 }
 
 .trigger:hover:not(.disabled) {

@@ -1,0 +1,217 @@
+/**
+ * VehiclesErrorBoundary.module.css - Estilos para error boundary de vehículos
+ * 
+ * Características:
+ * - Diseño profesional y amigable
+ * - Responsive design
+ * - Animaciones suaves
+ * - Accesibilidad mejorada
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.errorBoundary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 16px;
+    margin: var(--spacing-lg);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== CONTENIDO DEL ERROR ===== */
+.errorContent {
+    text-align: center;
+    max-width: 500px;
+    padding: var(--spacing-xl);
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+/* ===== ICONO DE ERROR ===== */
+.errorIcon {
+    font-size: 48px;
+    margin-bottom: var(--spacing-md);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* ===== TÍTULO ===== */
+.errorTitle {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-md) 0;
+    line-height: 1.3;
+}
+
+/* ===== MENSAJE ===== */
+.errorMessage {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--spacing-lg) 0;
+    line-height: 1.6;
+}
+
+/* ===== INFORMACIÓN DE REINTENTOS ===== */
+.retryInfo {
+    font-size: var(--font-size-sm);
+    color: var(--color-primary-600);
+    margin: 0 0 var(--spacing-lg) 0;
+    font-weight: 500;
+}
+
+/* ===== ACCIONES ===== */
+.errorActions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* ===== BOTONES ===== */
+.retryButton,
+.reloadButton,
+.backButton {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: 8px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    min-width: 140px;
+    justify-content: center;
+}
+
+.retryButton {
+    background: var(--color-primary-500);
+    color: #ffffff;
+}
+
+.retryButton:hover {
+    background: var(--color-primary-600);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.reloadButton {
+    background: var(--color-warning-500);
+    color: #ffffff;
+}
+
+.reloadButton:hover {
+    background: var(--color-warning-600);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.backButton {
+    background: var(--color-neutral-200);
+    color: var(--color-text-primary);
+}
+
+.backButton:hover {
+    background: var(--color-neutral-300);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== DETALLES TÉCNICOS ===== */
+.errorDetails {
+    margin-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-neutral-200);
+    padding-top: var(--spacing-lg);
+}
+
+.errorDetails summary {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+}
+
+.errorDetails summary:hover {
+    color: var(--color-text-primary);
+}
+
+.errorStack {
+    background: var(--color-neutral-100);
+    border: 1px solid var(--color-neutral-300);
+    border-radius: 6px;
+    padding: var(--spacing-md);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    line-height: 1.4;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .errorBoundary {
+        margin: var(--spacing-md);
+        padding: var(--spacing-lg);
+    }
+    
+    .errorContent {
+        padding: var(--spacing-lg);
+    }
+    
+    .errorTitle {
+        font-size: var(--font-size-lg);
+    }
+    
+    .errorActions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .retryButton,
+    .reloadButton,
+    .backButton {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .errorBoundary {
+        margin: var(--spacing-sm);
+        padding: var(--spacing-md);
+    }
+    
+    .errorContent {
+        padding: var(--spacing-md);
+    }
+    
+    .errorIcon {
+        font-size: 36px;
+    }
+    
+    .errorTitle {
+        font-size: var(--font-size-base);
+    }
+    
+    .errorMessage {
+        font-size: var(--font-size-sm);
+    }
+} 

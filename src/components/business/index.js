@@ -1,13 +1,16 @@
 /**
- * Business Components - Exportaciones centralizadas
- * 
- * Agrupa todos los componentes de negocio
- * para facilitar las importaciones
+ * business/index.js - Exportaciones de componentes de negocio
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - LIMPIEZA DE EXPORTACIONES
  */
 
-export { CardAuto } from './CardAuto'
-export { ListAutos } from './ListAutos'
-export { CardDetalle } from './CardDetalle' 
+// ✅ COMPONENTES DE TARJETAS
+export { default as CardAuto } from './CardAuto/CardAuto'
+export { default as CardDetalle } from './CardDetalle/CardDetalle'
+
+// ✅ COMPONENTES DE LISTA
+export { default as AutosGrid } from './ListAutos/AutosGrid'
+
+// ✅ COMPONENTES DE SKELETON
+export { ListAutosSkeleton } from '../skeletons/ListAutosSkeleton' 

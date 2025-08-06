@@ -1,15 +1,14 @@
 /**
- * ListAutos.module.css - Estilos ULTRA OPTIMIZADOS para scroll fluido
+ * ListAutos.module.css - Estilos ULTRA OPTIMIZADOS recreados
  * 
- * OPTIMIZACIONES CRÍTICAS APLICADAS:
- * - Eliminados will-change innecesarios
- * - Removidas transiciones costosas
- * - Simplificados contain properties
- * - Optimizado grid layout
- * - Reducidas animaciones complejas
+ * CARACTERÍSTICAS RECREADAS:
+ * - Líneas verticales grises a ambos lados
+ * - Gap aumentado entre cards
+ * - Optimizaciones de performance críticas
+ * - Sin will-change, contain, transiciones costosas
  * 
  * @author Indiana Usados
- * @version 3.0.0 - OPTIMIZACIÓN CRÍTICA DE SCROLL
+ * @version 5.0.0 - ESTILO OPTIMIZADO RECREADO
  */
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
@@ -18,7 +17,6 @@
     padding: 32px 0;
 }
 
-/* Ajustes para mobile */
 @media (max-width: 768px) {
     .container {
         padding: 16px 0;
@@ -54,7 +52,7 @@
 /* Línea vertical sutil derecha */
 .verticalLineRight {
     position: absolute;
-    right: -24px; /* ✅ CAMBIADO: De 64px a -24px para ponerla afuera */
+    right: -24px;
     top: 0;
     bottom: 0;
     width: 3px;
@@ -118,7 +116,7 @@
     
     .verticalLineRight {
         width: 2px;
-        right: -16px; /* ✅ CAMBIADO: De 32px a -16px para ponerla afuera en mobile */
+        right: -16px;
     }
 }
 
@@ -126,58 +124,53 @@
 .gridContainer {
     position: relative;
     width: 100%;
-    /* ❌ ELIMINADO: contain properties costosas */
 }
 
 /* ===== GRID DE VEHÍCULOS - ULTRA OPTIMIZADO ===== */
 .grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 28px; /* ✅ AUMENTADO: De 20px a 28px */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
     min-height: 150px;
-    /* ❌ ELIMINADO: will-change, contain, transiciones */
 }
 
-/* Ajustes para mobile */
 @media (max-width: 768px) {
     .grid {
-        gap: 24px; /* ✅ AUMENTADO: De 16px a 24px */
+        gap: 24px;
     }
 }
 
 /* Tablet: 2 columnas */
 @media (min-width: 768px) {
     .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 28px; /* ✅ AUMENTADO: De 20px a 28px */
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 28px;
     }
 }
 
 /* Desktop: 3 columnas */
 @media (min-width: 1200px) {
     .grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 28px; /* ✅ AUMENTADO: De 20px a 28px */
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 28px;
     }
 }
 
 /* ===== WRAPPER DE TARJETAS - ULTRA COMPACTO ===== */
 .cardWrapper {
-    min-height: 350px; /* ✅ REDUCIDO: De 400px a 350px */
-    /* ❌ ELIMINADO: will-change, contain, transiciones */
+    min-height: 350px;
+    width: 100%;
 }
 
-/* Ajuste para mobile */
 @media (max-width: 768px) {
     .cardWrapper {
-        min-height: 300px; /* ✅ REDUCIDO: De 350px a 300px */
+        min-height: 300px;
     }
 }
 
 /* ===== CONTENEDOR DE CARGA ===== */
 .loadingContainer {
     min-height: 200px;
-    /* ❌ ELIMINADO: transition */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -286,7 +279,7 @@
     border: 2px solid #d1d5db;
     border-top: 2px solid #3b82f6;
     border-radius: 50%;
-    animation: spin 1.2s linear infinite; /* ❌ REDUCIDA VELOCIDAD */
+    animation: spin 1.2s linear infinite;
 }
 
 @keyframes spin {
@@ -304,7 +297,7 @@
 .noResults {
     text-align: center;
     padding: 2rem;
-    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
+    color: #0a0d14;
     font-size: 1.125rem;
     font-weight: 500;
 }

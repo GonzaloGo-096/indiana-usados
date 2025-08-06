@@ -17,7 +17,7 @@ import { useForm } from 'react-hook-form'
 import { useFilterReducer } from '../../../hooks/filters/useFilterReducer'
 import RangeSlider from '../../ui/RangeSlider/RangeSlider'
 import MultiSelect from '../../ui/MultiSelect/MultiSelect'
-import { FILTER_OPTIONS } from '../../../constants'
+import { marcas, combustibles, transmisiones } from '../../../constants'
 import styles from './FilterFormSimplified.module.css'
 
 const FilterFormSimplified = React.memo(React.forwardRef(({ 
@@ -276,7 +276,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
             <div className={styles.formGroup}>
               <MultiSelect
                 label="Marca"
-                options={FILTER_OPTIONS.marcas}
+                options={marcas}
                 value={marca || []}
                 onChange={handleMarcaChange}
                 placeholder="Todas las marcas"
@@ -287,7 +287,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
             <div className={styles.formGroup}>
               <MultiSelect
                 label="Combustible"
-                options={FILTER_OPTIONS.combustibles}
+                options={combustibles}
                 value={combustible || []}
                 onChange={handleCombustibleChange}
                 placeholder="Todos los combustibles"
@@ -298,7 +298,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
             <div className={styles.formGroup}>
               <MultiSelect
                 label="Caja"
-                options={FILTER_OPTIONS.transmisiones}
+                options={transmisiones}
                 value={transmision || []}
                 onChange={handleTransmisionChange}
                 placeholder="Todas las cajas"

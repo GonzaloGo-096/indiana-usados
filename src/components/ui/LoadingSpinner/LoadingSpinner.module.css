@@ -1,0 +1,124 @@
+/**
+ * LoadingSpinner.module.css - Estilos para el componente de carga
+ * 
+ * Características:
+ * - Animación de spinner
+ * - Tamaños responsivos
+ * - Modo fullscreen
+ * - Transiciones suaves
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    min-height: 200px;
+}
+
+.fullScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+}
+
+/* ===== SPINNER ===== */
+.spinner {
+    position: relative;
+    display: inline-block;
+}
+
+.spinnerRing {
+    position: absolute;
+    border: 3px solid transparent;
+    border-top: 3px solid var(--color-primary-500);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.spinnerRing:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.spinnerRing:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.spinnerRing:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* ===== TAMAÑOS ===== */
+.small .spinnerRing {
+    width: 20px;
+    height: 20px;
+}
+
+.medium .spinnerRing {
+    width: 32px;
+    height: 32px;
+}
+
+.large .spinnerRing {
+    width: 48px;
+    height: 48px;
+}
+
+/* ===== ANIMACIÓN ===== */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: rotate(360deg);
+        opacity: 1;
+    }
+}
+
+/* ===== MENSAJE ===== */
+.message {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-md);
+        min-height: 150px;
+    }
+    
+    .message {
+        font-size: var(--font-size-xs);
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: var(--spacing-sm);
+        min-height: 120px;
+    }
+    
+    .medium .spinnerRing {
+        width: 28px;
+        height: 28px;
+    }
+} 

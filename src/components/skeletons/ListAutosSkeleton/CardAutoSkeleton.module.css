@@ -1,29 +1,41 @@
 /**
- * CardAutoSkeleton.module.css - Estilos para el skeleton de tarjeta de auto
+ * CardAutoSkeleton.module.css - Estilos optimizados para el skeleton de tarjeta de auto
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Optimizado y moderno
  */
 
 .card {
-  background: var(--color-white);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  border: 1px solid #f3f4f6;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
 .body {
-  padding: var(--spacing-lg);
+  padding: 1.5rem;
 }
 
 .footer {
-  padding: var(--spacing-lg);
+  padding: 1.5rem;
   background: transparent;
   border: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .body {
+    padding: 1rem;
+  }
+  
+  .footer {
+    padding: 1rem;
+  }
 } 

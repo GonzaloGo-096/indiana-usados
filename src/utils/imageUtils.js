@@ -54,14 +54,17 @@ export const getMainImage = (auto) => {
 export const getCarouselImages = (auto) => {
     // ✅ MEJORADO: Validación más robusta
     if (!auto || typeof auto !== 'object' || Array.isArray(auto)) {
+        console.log('⚠️ getCarouselImages: auto inválido', auto)
         return [defaultCarImage]
     }
     
     try {
+        console.log('🔍 getCarouselImages: auto.imágenes', auto.imágenes)
         // ✅ ARREGLADO: Manejar tanto objetos como arrays de URLs
-        if (auto.imagenes && Array.isArray(auto.imagenes)) {
+        if (auto.imágenes && Array.isArray(auto.imágenes)) {
             // Si hay array de imágenes, usarlo
-            return auto.imagenes.length > 0 ? auto.imagenes : [defaultCarImage]
+            console.log('✅ getCarouselImages: Usando array de imágenes', auto.imágenes)
+            return auto.imágenes.length > 0 ? auto.imágenes : [defaultCarImage]
         }
         
         // ✅ ARREGLADO: Buscar imágenes en propiedades del objeto

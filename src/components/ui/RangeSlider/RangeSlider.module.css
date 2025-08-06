@@ -1,8 +1,8 @@
 /**
- * RangeSlider.module.css - Estilos para el componente de rango
+ * RangeSlider.module.css - Estilos optimizados para el componente de rango
  * 
  * @author Indiana Usados
- * @version 1.1.0
+ * @version 2.0.0 - Optimizado y limpio
  */
 
 .rangeSlider {
@@ -46,8 +46,8 @@
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background: var(--color-white); /* ✅ CAMBIADO: Fondo blanco */
   border: 2px solid var(--color-neutral-900); /* ✅ CAMBIADO: Borde negro */
   border-radius: 50%;
@@ -111,12 +111,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: var(--spacing-sm);
-  font-size: var(--font-size-xs);
-  color: var(--color-neutral-600);
+  margin-top: 0.75rem;
+  gap: 1rem;
 }
 
 .value {
+  font-size: var(--font-size-xs);
+  color: var(--color-neutral-600);
   font-weight: var(--font-weight-medium);
 }
 

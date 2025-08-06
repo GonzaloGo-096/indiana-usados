@@ -1,23 +1,37 @@
 /**
  * Hooks - Exportaciones centralizadas
  * 
- * Organización de hooks por categorías para facilitar las importaciones
+ * Agrupa todos los hooks personalizados
+ * para facilitar las importaciones
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 3.0.0 - ERROR HANDLING INTEGRADO
  */
 
-// Hooks principales
-export { useAuth } from './useAuth'
-export { useAuthMutation } from './useAuthMutation'
+// ✅ HOOKS DE VEHÍCULOS
+export { useVehiclesQuery } from './vehicles/useVehiclesQuery'
 export { useAutoDetail } from './useAutoDetail'
-export { useGetCars } from './useGetCars'
-export { useImageOptimization } from './useImageOptimization'
+
+// ✅ HOOKS DE ERROR HANDLING
+export { 
+    useErrorHandler, 
+    useApiErrorHandler, 
+    useValidationErrorHandler 
+} from './useErrorHandler'
+
+// ✅ HOOKS DE FILTROS
+export { useFilterReducer } from './filters/useFilterReducer'
+
+// ✅ HOOKS DE SCROLL
+export { useScrollPosition } from './useScrollPosition'
 export { useIntersectionObserver } from './useIntersectionObserver'
+export { useScrollOptimization } from './useScrollOptimization'
+
+// ✅ HOOKS DE IMÁGENES
+export { useImageOptimization } from './useImageOptimization'
+export { useCarouselImages } from './useImageOptimization'
+
+// ✅ HOOKS DE UI
 export { useDropdownMulti } from './useDropdownMulti'
-
-// ✅ AGREGADO: Hook de optimización de scroll
-export { useScrollOptimization, useListScrollOptimization } from './useScrollOptimization'
-
-// Hooks de filtros
-export * from './filters' 
+export { useAuth } from './useAuth'
+export { useAuthMutation } from './useAuthMutation' 

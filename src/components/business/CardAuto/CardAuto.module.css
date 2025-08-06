@@ -1,138 +1,86 @@
 /**
- * CardAuto.module.css - Estilos ULTRA OPTIMIZADOS para scroll fluido
+ * CardAuto.module.css - Estilos ULTRA OPTIMIZADOS recreados
  * 
- * OPTIMIZACIONES CRÍTICAS APLICADAS:
- * - Eliminadas transiciones costosas
- * - Removidos will-change innecesarios
- * - Simplificados hover effects
- * - Optimizadas animaciones
- * - Reducidas sombras complejas
+ * CARACTERÍSTICAS RECREADAS:
+ * - Header 60/40 con marca/modelo lado a lado
+ * - Precio en contenedor negro
+ * - Solo 3 datos (Año, Kms, Caja) en horizontal
+ * - Botón "Ver más" minimalista
+ * - Optimizaciones de performance críticas
  * 
  * @author Indiana Usados
- * @version 3.0.0 - OPTIMIZACIÓN CRÍTICA DE SCROLL
+ * @version 5.0.0 - ESTILO OPTIMIZADO RECREADO
  */
 
-/* ===== TARJETA PRINCIPAL - ULTRA OPTIMIZADA ===== */
+/* ===== TARJETA PRINCIPAL ===== */
 .card {
     display: flex;
     flex-direction: column;
     height: 100%;
+    width: 100%;
     background: #ffffff;
-    border-radius: 6px; /* ✅ REDUCIDO: De 8px a 6px */
+    border-radius: 12px;
     overflow: hidden;
-    border: 1px solid #d1d5db;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); /* ✅ REDUCIDA: Sombra más sutil */
-    /* ❌ ELIMINADO: transition, will-change, transform en hover */
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
 }
 
 .card:hover {
-    /* ❌ ELIMINADO: transform translateY */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12); /* ✅ REDUCIDA: Hover más sutil */
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* ===== CONTENEDOR DE IMAGEN - ULTRA OPTIMIZADO ===== */
+/* ===== CONTENEDOR DE IMAGEN ===== */
 .card__image-container {
     position: relative;
     overflow: hidden;
+    background: #f9fafb;
 }
 
 .card__image {
     width: 100%;
-    height: 180px; /* ✅ REDUCIDO: De 200px a 180px */
+    height: 220px;
     object-fit: cover;
-    border-radius: 6px 6px 0 0; /* ✅ REDUCIDO: De 8px a 6px */
-    opacity: 0;
-    /* ❌ ELIMINADO: transition, will-change */
+    border-radius: 12px 12px 0 0;
+    transition: transform 0.2s ease;
 }
 
-.card__image--loaded {
-    opacity: 1;
+.card:hover .card__image {
+    transform: scale(1.05);
 }
 
-/* ===== PLACEHOLDER Y FALLBACK - ULTRA SIMPLIFICADO ===== */
-.card__image-placeholder,
-.card__image-fallback {
-    width: 100%;
-    height: 180px; /* ✅ REDUCIDO: De 200px a 180px */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px 6px 0 0; /* ✅ REDUCIDO: De 8px a 6px */
-}
-
-.card__image-placeholder {
-    background: #f3f4f6;
-}
-
-.card__image-fallback {
-    background: #f9fafb;
-    color: #6b7280;
-    font-size: 12px; /* ✅ REDUCIDO: De 14px a 12px */
-}
-
-.card__placeholder-content {
-    text-align: center;
-}
-
-.card__placeholder-icon {
-    font-size: 1.5rem; /* ✅ REDUCIDO: De 2rem a 1.5rem */
-    opacity: 0.5;
-}
-
-/* ===== LOADER - ULTRA OPTIMIZADO ===== */
-.card__image-loader {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 6px 6px 0 0; /* ✅ REDUCIDO: De 8px a 6px */
-}
-
-.card__spinner {
-    width: 14px; /* ✅ REDUCIDO: De 16px a 14px */
-    height: 14px; /* ✅ REDUCIDO: De 16px a 14px */
-    border: 2px solid #dbeafe;
-    border-top: 2px solid #3b82f6;
-    border-radius: 50%;
-    animation: spin 1s linear infinite; /* ✅ REDUCIDA: De 0.8s a 1s */
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* ===== CUERPO DE LA TARJETA - COMPACTO ===== */
+/* ===== CUERPO DE LA TARJETA ===== */
 .card__body {
     flex: 1;
-    padding: 12px; /* ✅ REDUCIDO: De 16px a 12px */
     display: flex;
     flex-direction: column;
-    gap: 8px; /* ✅ REDUCIDO: De 12px a 8px */
+    padding: 16px;
+    background: #ffffff;
 }
 
-/* ===== HEADER DIVIDIDO - OPTIMIZADO ===== */
+/* ===== HEADER 60/40 ===== */
 .cardHeader {
     display: flex;
-    height: 50px; /* ✅ REDUCIDO: De 60px a 50px para menor altura */
+    height: 60px;
     border-radius: 8px;
     overflow: hidden;
     border-bottom: 1px solid #e5e7eb;
+    background: transparent;
 }
 
 .headerLeft {
-    flex: 0.6; /* ✅ REDUCIDO: De 0.7 a 0.6 para dar más espacio al contenedor negro */
+    flex: 0.6;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 8px 12px; /* ✅ REVERTIDO: Volviendo al valor original */
+    padding: 8px 12px;
     background: transparent;
 }
 
-/* ✅ NUEVO: Contenedor para marca y modelo en línea */
 .card__title_container {
     display: flex;
     align-items: center;
@@ -142,16 +90,19 @@
 }
 
 .card__title {
-    font-size: 20px; /* ✅ REDUCIDO: De 22px a 20px para equilibrar con el contenedor negro */
+    font-size: 22px;
     font-weight: 700;
-    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
+    color: #111827;
     margin: 0;
-    line-height: 1.2;
-    text-align: center;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: 'Barlow', sans-serif;
 }
 
 .headerRight {
-    flex: 0.4; /* ✅ AUMENTADO: De 0.3 a 0.4 para mover el contenedor más a la derecha */
+    flex: 0.4;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -160,164 +111,131 @@
 .priceContainer {
     width: 100%;
     height: 100%;
-    background: var(--color-neutral-900); /* ✅ OPTIMIZADO: Usando variable CSS predefinida */
+    background: #111827;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-1) var(--spacing-2); /* ✅ OPTIMIZADO: Usando variables de spacing */
-    border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0; /* ✅ OPTIMIZADO: Usando variables de border-radius */
-    box-shadow: var(--shadow-sm); /* ✅ OPTIMIZADO: Usando variable de shadow predefinida */
-
+    padding: 3px 4px;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card__price {
-    color: var(--color-white); /* ✅ OPTIMIZADO: Usando variable CSS predefinida */
-    font-size: var(--font-size-xl); /* ✅ OPTIMIZADO: Usando variable de font-size */
-    font-weight: var(--font-weight-bold); /* ✅ OPTIMIZADO: Usando variable de font-weight */
-    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+    font-family: 'Barlow', sans-serif;
+    line-height: 1.2;
 }
 
 .card__version {
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 14px;
     color: #6b7280;
     margin: 0;
-    margin-top: 2px;
-    line-height: 1.1;
-    text-align: center; /* ✅ REVERTIDO: De left a center */
-    width: 100%;
+    margin-top: 4px;
+    font-weight: 500;
+    font-family: 'Barlow', sans-serif;
 }
 
-/* ===== DETALLES - CONTENEDOR HORIZONTAL ===== */
+/* ===== DETALLES - SOLO 3 DATOS OPTIMIZADOS ===== */
 .card__details {
     flex: 1;
+    margin: 0;
 }
 
 .card__data_container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 4px;
-    padding: 4px 0;
-    width: 100%; /* ✅ CAMBIADO: De max-width a width completo */
-    margin: 0; /* ✅ CAMBIADO: Sin margin auto */
+    background: transparent;
+    padding: 8px 0;
+    border: none;
 }
 
 .card__data_item {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     text-align: center;
-    padding: 2px; /* ✅ REDUCIDO: De 4px a 2px */
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
 }
 
 .card__data_item_border {
-    border-right: 1px solid #e5e7eb;
-    border-left: 1px solid #e5e7eb;
+    border-inline: 1px solid #e5e7eb;
 }
 
 .card__data_label {
-    font-size: 11px;
-    font-weight: 600;
+    display: block;
+    font-size: 12px;
     color: #6b7280;
-    text-transform: capitalize; /* ✅ MANTENIDO: Solo primera letra mayúscula */
-    letter-spacing: 0.3px;
-    margin-bottom: 1px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-family: 'Barlow', sans-serif;
 }
 
 .card__data_value {
-    font-size: 15px; /* ✅ AUMENTADO: De 13px a 15px */
-    font-weight: 500;
-    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
-    line-height: 1.1;
-    margin-top: 2px; /* ✅ AGREGADO: Margin top sutil */
+    display: block;
+    font-size: 17px;
+    color: #374151;
+    font-weight: 700;
+    font-family: 'Barlow', sans-serif;
+    margin-top: 2px;
 }
 
-/* ===== FOOTER - COMPACTO ===== */
+/* ===== FOOTER Y BOTÓN ===== */
 .card__footer {
-    padding: 4px; /* ✅ REDUCIDO: De 6px a 4px para alinear mejor con el contenedor negro */
-    position: relative;
+    margin-top: auto;
+    padding-top: 8px; /* ✅ REDUCIDO: Menos espacio con los datos */
 }
 
-/* ✅ NUEVO: Border centrado arriba del botón */
 .card__footer_border {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40%;
+    width: 30%; /* ✅ REDUCIDO: Línea más sutil */
     height: 1px;
-    background-color: #f3f4f6; /* ✅ COLOR MUY SUTIL */
-    border-radius: 1px;
+    background: #e5e7eb; /* ✅ CAMBIADO: Color más sutil */
+    margin: 0 auto 8px auto;
 }
 
 .card__button {
-    width: 100%;
-    background: transparent;
+    width: auto;
+    background: #ffffff; /* ✅ VUELTO: Fondo blanco */
     border: none;
-    color: #374151;
-    font-size: 13px;
+    color: #374151; /* ✅ VUELTO: Texto gris oscuro */
+    font-size: 11px;
     font-weight: 500;
-    padding: 5px 14px; /* ✅ REDUCIDO: De 7px a 5px para menor altura */
+    padding: 1px 4px;
     border-radius: 4px;
-    transition: box-shadow 0.2s ease;
+    transition: none;
     cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow', sans-serif;
+    margin: 0 auto;
 }
 
 .card__button:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
+    /* ✅ QUITADO: Sin hover */
 }
 
-/* ===== RESPONSIVE - SIMPLIFICADO ===== */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .card {
-        border-radius: 6px;
+        border-radius: 10px;
     }
     
     .card__body {
-        padding: 12px;
+        padding: 16px;
     }
     
     .cardHeader {
-        height: 55px; /* ✅ REDUCIDO: De 65px a 55px para menor altura */
-        border-radius: 6px;
-    }
-    
-    .headerLeft {
-        padding: 6px 8px; /* ✅ REVERTIDO: Volviendo al valor original */
-        align-items: center;
-        text-align: center;
-        flex: 0.6; /* ✅ MANTENIDO: Menos espacio para título */
-    }
-    
-    .headerRight {
-        flex: 0.4; /* ✅ MANTENIDO: Más espacio para contenedor negro */
-    }
-    
-    .card__title_container {
-        gap: 6px;
-        margin-bottom: 2px;
-    }
-    
-    .priceContainer {
-        height: 100%; /* ✅ REVERTIDO: Volviendo al valor original */
-        padding: 3px 3px;
-        border-radius: 0 6px 6px 0;
-        justify-content: center; /* ✅ MANTENIDO: Número centrado */
-
+        height: 50px;
     }
     
     .card__title {
-        font-size: 15px; /* ✅ REDUCIDO: De 16px a 15px para equilibrar */
-        text-align: center;
-    }
-    
-    .card__version {
-        font-size: 12px;
-        font-weight: 500;
-        text-align: center;
+        font-size: 20px;
     }
     
     .card__price {
@@ -325,126 +243,66 @@
     }
     
     .card__data_container {
-        gap: 3px;
-        padding: 3px 0;
-        width: 100%;
-        justify-content: center;
+        padding: 12px;
     }
     
     .card__data_item {
-        padding: 1px;
+        padding: 6px 8px;
     }
     
     .card__data_label {
-        font-size: 10px;
-        letter-spacing: 0.2px;
+        font-size: 11px;
     }
     
     .card__data_value {
-        font-size: 14px;
-        margin-top: 1px;
-    }
-    
-    .card__footer {
-        padding: 3px; /* ✅ REDUCIDO: De 4px a 3px para mejor alineación */
-    }
-    
-    .card__footer_border {
-        width: 35%;
+        font-size: 16px;
     }
     
     .card__button {
         font-size: 12px;
-        padding: 4px 10px; /* ✅ REDUCIDO: De 5px a 4px para menor altura */
+        padding: 6px 12px;
     }
 }
 
 @media (max-width: 480px) {
     .card {
-        border-radius: 4px;
+        border-radius: 8px;
     }
     
     .card__body {
-        padding: 8px;
+        padding: 14px;
     }
     
     .cardHeader {
-        height: 60px; /* ✅ REDUCIDO: De 70px a 60px para menor altura */
-        border-radius: 4px;
-        flex-direction: column;
-    }
-    
-    .headerLeft {
-        flex: 1;
-        padding: 4px 8px; /* ✅ REVERTIDO: Volviendo al valor original */
-        align-items: center;
-        text-align: center;
-    }
-    
-    .card__title_container {
-        gap: 4px;
-        margin-bottom: 1px;
-    }
-    
-    .headerRight {
-        flex: 1;
-    }
-    
-    .priceContainer {
-        height: 100%; /* ✅ REVERTIDO: Volviendo al valor original */
-        padding: 4px 6px;
-        border-radius: 0 0 4px 4px;
-        justify-content: center; /* ✅ MANTENIDO: Número centrado */
-
+        height: 45px;
     }
     
     .card__title {
-        font-size: 13px; /* ✅ REDUCIDO: De 14px a 13px para equilibrar */
-        text-align: center;
-    }
-    
-    .card__version {
-        font-size: 12px;
-        margin-top: 0;
-        font-weight: 500;
-        text-align: center;
+        font-size: 18px;
     }
     
     .card__price {
-        font-size: 17px;
+        font-size: 16px;
     }
     
     .card__data_container {
-        gap: 2px;
-        padding: 2px 0;
-        width: 100%;
-        justify-content: center;
+        padding: 10px;
     }
     
     .card__data_item {
-        padding: 1px;
+        padding: 4px 6px;
     }
     
     .card__data_label {
-        font-size: 9px;
-        letter-spacing: 0.1px;
+        font-size: 10px;
     }
     
     .card__data_value {
-        font-size: 13px;
-        margin-top: 1px;
-    }
-    
-    .card__footer {
-        padding: 2px; /* ✅ REDUCIDO: De 3px a 2px para mejor alineación */
-    }
-    
-    .card__footer_border {
-        width: 30%;
+        font-size: 15px;
     }
     
     .card__button {
         font-size: 11px;
-        padding: 3px 8px; /* ✅ REDUCIDO: De 4px a 3px para menor altura */
+        padding: 5px 10px;
     }
 } 
