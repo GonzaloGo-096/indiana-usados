@@ -12,10 +12,10 @@
  */
 
 import React, { memo, useMemo } from 'react'
-import { GmailIconOptimized, WhatsAppIconOptimized } from '../../ui/icons'
-import { formatValue } from '../../../utils/imageUtils'
-import { useCarouselImages } from '../../../hooks/useImageOptimization'
-import { ImageCarousel } from '../../ui/ImageCarousel'
+import { GmailIconOptimized, WhatsAppIconOptimized } from '@ui/icons'
+import { formatValue } from '@utils/imageUtils'
+import { useCarouselImages } from '@hooks/useImageOptimization'
+import { ImageCarousel } from '@ui/ImageCarousel'
 import styles from './CardDetalle.module.css'
 
 /**

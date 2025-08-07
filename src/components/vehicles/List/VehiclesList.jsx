@@ -9,17 +9,17 @@
  * - Error handling completo
  * 
  * @author Indiana Usados
- * @version 3.1.0 - Performance optimizada
+ * @version 3.2.0 - Performance optimizada
  */
 
-import React, { memo, useCallback, useState } from 'react'
-import { useVehiclesQuery } from '../../hooks/vehicles/useVehiclesQuery'
-import { useErrorHandler } from '../../hooks/useErrorHandler'
-import FilterFormSimplified from '../filters/FilterFormSimplified/FilterFormSimplified'
-import AutosGrid from '../business/ListAutos/AutosGrid'
-import { ScrollToTop } from '../ui/ScrollToTop'
-import VehiclesErrorBoundary from '../ErrorBoundary/VehiclesErrorBoundary'
-import styles from '../business/ListAutos/ListAutos.module.css'
+import React, { memo, useCallback, useState, useMemo } from 'react'
+import { useVehiclesQuery } from '@hooks/vehicles/useVehiclesQuery'
+import { useErrorHandler } from '@hooks/useErrorHandler'
+import { FilterFormSimplified } from '@vehicles'
+import { AutosGrid } from '@vehicles'
+import { ScrollToTop } from '@ui'
+import { VehiclesErrorBoundary } from '@shared'
+import styles from './ListAutos/ListAutos.module.css'
 
 const VehiclesList = memo(() => {
     const [isFiltering, setIsFiltering] = useState(false)
@@ -50,7 +50,7 @@ const VehiclesList = memo(() => {
         }
     }, [isQueryError, queryError, handleError])
 
-    // Función para aplicar filtros
+    // ✅ OPTIMIZADO: Función para aplicar filtros memoizada
     const applyFilters = useCallback(async (filters) => {
         setIsFiltering(true)
         clearError()
@@ -67,20 +67,35 @@ const VehiclesList = memo(() => {
         }
     }, [clearCache, refetch, handleError, clearError])
 
-    // Manejar reintento
+    // ✅ OPTIMIZADO: Manejar reintento memoizado
     const handleRetry = useCallback(() => {
         clearError()
         refetch()
     }, [clearError, refetch])
 
+    // ✅ OPTIMIZADO: Props memoizadas para FilterFormSimplified
+    const filterFormProps = useMemo(() => ({
+        onApplyFilters: applyFilters,
+        isLoading: isLoading || isFiltering
+    }), [applyFilters, isLoading, isFiltering])
+
+    // ✅ OPTIMIZADO: Props memoizadas para AutosGrid
+    const autosGridProps = useMemo(() => ({
+        vehicles,
+        isLoading,
+        isError,
+        error,
+        hasNextPage,
+        isFetchingNextPage,
+        onLoadMore: loadMore,
+        onRetry: handleRetry
+    }), [vehicles, isLoading, isError, error, hasNextPage, isFetchingNextPage, loadMore, handleRetry])
+
     return (
         <VehiclesErrorBoundary>
             <div className={styles.container}>
                 {/* Filtros simplificados */}
-                <FilterFormSimplified 
-                    onApplyFilters={applyFilters}
-                    isLoading={isLoading || isFiltering}
-                />
+                <FilterFormSimplified {...filterFormProps} />
 
                 {/* Contenedor de lista con título */}
                 <div className={styles.listContainer}>
@@ -96,16 +111,7 @@ const VehiclesList = memo(() => {
                     </div>
 
                     {/* Grid de vehículos */}
-                    <AutosGrid 
-                        vehicles={vehicles}
-                        isLoading={isLoading}
-                        isError={isError}
-                        error={error}
-                        hasNextPage={hasNextPage}
-                        isFetchingNextPage={isFetchingNextPage}
-                        onLoadMore={loadMore}
-                        onRetry={handleRetry}
-                    />
+                    <AutosGrid {...autosGridProps} />
                 </div>
             </div>
             

@@ -9,15 +9,15 @@
  * - 🚀 NUEVO: Integración mejorada con reducer
  * 
  * @author Indiana Usados
- * @version 4.0.0 - Integrado con reducer expandido
+ * @version 4.1.0 - Performance optimizada
  */
 
 import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-import { useFilterReducer } from '../../../hooks/filters/useFilterReducer'
-import RangeSlider from '../../ui/RangeSlider/RangeSlider'
-import MultiSelect from '../../ui/MultiSelect/MultiSelect'
-import { marcas, combustibles, transmisiones } from '../../../constants'
+import { useFilterReducer } from '@hooks/filters/useFilterReducer'
+import RangeSlider from '@ui/RangeSlider/RangeSlider'
+import MultiSelect from '@ui/MultiSelect/MultiSelect'
+import { marcas, combustibles, transmisiones } from '@constants'
 import styles from './FilterFormSimplified.module.css'
 
 const FilterFormSimplified = React.memo(React.forwardRef(({ 
@@ -68,7 +68,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   const kilometrajeDesde = watch('kilometrajeDesde')
   const kilometrajeHasta = watch('kilometrajeHasta')
   
-  // OPTIMIZACIÓN PROFESIONAL: Cálculo simplificado y eficiente
+  // ✅ OPTIMIZADO: Cálculo simplificado y eficiente
   const activeFiltersCount = useMemo(() => {
     const hasMarca = marca?.length > 0
     const hasCombustible = combustible?.length > 0
@@ -118,28 +118,17 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     })
   }
 
-  // OPTIMIZACIÓN PROFESIONAL: Formateadores simples sin memoización
+  // ✅ OPTIMIZADO: Formateadores simples sin memoización
   const formatPrice = (value) => `$${value.toLocaleString()}`
   const formatKms = (value) => `${value.toLocaleString()} km`
   const formatYear = (value) => value.toString()
 
-  // OPTIMIZACIÓN PROFESIONAL: Memoización solo para arrays
-  const añoRange = useMemo(() => [
-    añoDesde || 1990, 
-    añoHasta || 2024
-  ], [añoDesde, añoHasta])
+  // ✅ OPTIMIZADO: Arrays simples sin memoización innecesaria
+  const añoRange = [añoDesde || 1990, añoHasta || 2024]
+  const precioRange = [precioDesde || 5000000, precioHasta || 100000000]
+  const kilometrajeRange = [kilometrajeDesde || 0, kilometrajeHasta || 200000]
 
-  const precioRange = useMemo(() => [
-    precioDesde || 5000000, 
-    precioHasta || 100000000
-  ], [precioDesde, precioHasta])
-
-  const kilometrajeRange = useMemo(() => [
-    kilometrajeDesde || 0, 
-    kilometrajeHasta || 200000
-  ], [kilometrajeDesde, kilometrajeHasta])
-
-  // OPTIMIZACIÓN PROFESIONAL: Handlers simples sin memoización
+  // ✅ OPTIMIZADO: Handlers simples sin memoización
   const handleAñoChange = ([min, max]) => {
     setValue('añoDesde', min)
     setValue('añoHasta', max)

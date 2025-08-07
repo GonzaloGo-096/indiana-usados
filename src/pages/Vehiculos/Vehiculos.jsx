@@ -6,8 +6,8 @@
  */
 
 import React, { useEffect } from 'react'
-import VehiclesList from '../../components/vehicles/VehiclesList'
-import { useScrollPosition } from '../../hooks/useScrollPosition'
+import { VehiclesList } from '@vehicles'
+import { useScrollPosition } from '@hooks/useScrollPosition'
 import styles from './Vehiculos.module.css'
 
 const Vehiculos = () => {

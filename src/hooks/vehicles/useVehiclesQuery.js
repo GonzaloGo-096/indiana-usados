@@ -1,22 +1,21 @@
 /**
- * useVehiclesQuery - Hook unificado para vehículos optimizado
+ * useVehiclesQuery - Hook unificador para vehículos (MANTIENE COMPATIBILIDAD)
  * 
- * Estrategia unificada:
- * 1. GET /api/vehicles - Página principal (sin filtros)
- * 2. POST /api/vehicles - Filtros complejos
- * 3. GET /api/vehicles/:id - Detalle de vehículo
+ * Este hook ahora usa hooks especializados internamente:
+ * - useVehiclesData: Para datos básicos
+ * - useVehiclesInfinite: Para infinite scroll
+ * - useVehicleDetail: Para detalle individual
  * 
  * @author Indiana Usados
- * @version 5.1.0 - Performance optimizada
+ * @version 6.0.0 - Refactorizado con hooks especializados
  */
 
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { useMemo, useCallback } from 'react'
-import vehiclesApi from '../../api/vehiclesApi'
-import { createFiltersHash } from '../../utils/dataHelpers'
+import { useVehiclesData } from './useVehiclesData'
+import { useVehiclesInfinite } from './useVehiclesInfinite'
+import { useVehicleDetail } from './useVehicleDetail'
 
 /**
- * Hook unificado para obtener vehículos
+ * Hook unificador para obtener vehículos (MANTIENE COMPATIBILIDAD)
  *
  * @param {Object} filters - Filtros a aplicar
  * @param {Object} options - Opciones del hook
@@ -25,6 +24,7 @@ import { createFiltersHash } from '../../utils/dataHelpers'
  * @param {number} options.gcTime - Tiempo para mantener en cache
  * @param {boolean} options.useInfiniteScroll - Si usar paginación infinita
  * @param {number} options.maxPages - Límite de páginas acumuladas
+ * @param {string|number} options.id - ID para detalle individual
  * 
  * @returns {Object} - Datos y funciones del hook
  */
@@ -36,134 +36,63 @@ export const useVehiclesQuery = (filters = {}, options = {}) => {
         retry = 2,
         refetchOnWindowFocus = false,
         maxPages = 3, // Limitado a 3 páginas
-        useInfiniteScroll = true
+        useInfiniteScroll = true,
+        id = null // Para detalle individual
     } = options
 
-    // Hash de filtros para cache consistente
-    const filtersHash = useMemo(() => createFiltersHash(filters), [filters])
+    // Si se proporciona ID, usar hook de detalle
+    if (id) {
+        const detailHook = useVehicleDetail(id, {
+            enabled,
+            staleTime,
+            gcTime,
+            retry,
+            refetchOnWindowFocus
+        })
 
-    // Detectar si hay filtros activos
-    const hasActiveFilters = filters && Object.keys(filters).length > 0
-
-    // Query infinita para paginación
-    const {
-        data, isLoading, isError, error, fetchNextPage, hasNextPage,
-        isFetchingNextPage, refetch, remove
-    } = useInfiniteQuery({
-        queryKey: [`vehicles-infinite`, filtersHash],
-        queryFn: ({ pageParam = 1 }) => {
-            return vehiclesApi.getVehicles({
-                limit: 6,
-                page: pageParam,
-                filters
-            })
-        },
-        getNextPageParam: (lastPage, allPages) => {
-            // Limitar a máximo 3 páginas
-            if (allPages.length >= 3) {
-                return undefined
-            }
-            if (lastPage?.hasNextPage && lastPage?.nextPage) {
-                return lastPage.nextPage
-            }
-            return undefined
-        },
-        initialPageParam: 1,
-        enabled: enabled && useInfiniteScroll,
-        staleTime, gcTime, retry, refetchOnWindowFocus,
-        refetchOnMount: false, refetchOnReconnect: false,
-        refetchOnWindowFocus: false
-    })
-
-    // Query simple para casos sin infinite scroll
-    const {
-        data: simpleData,
-        isLoading: isLoadingSimple,
-        isError: isErrorSimple,
-        error: errorSimple,
-        refetch: refetchSimple
-    } = useQuery({
-        queryKey: [`vehicles-simple`, filtersHash],
-        queryFn: () => vehiclesApi.getVehicles({
-            limit: 6,
-            page: 1,
-            filters
-        }),
-        enabled: enabled && !useInfiniteScroll,
-        staleTime, gcTime, retry, refetchOnWindowFocus,
-        refetchOnMount: false, refetchOnReconnect: false
-    })
-
-    // Datos unificados
-    const unifiedData = useMemo(() => {
-        if (useInfiniteScroll && data) {
-            return {
-                vehicles: data.pages.flatMap(page => page.data || []),
-                total: data.pages.reduce((total, page) => total + (page.total || 0), 0),
-                currentPage: data.pages.length,
-                hasNextPage: hasNextPage,
-                nextPage: data.pages.length + 1
-            }
-        }
-        
-        if (!useInfiniteScroll && simpleData) {
-            return {
-                vehicles: simpleData.data || [],
-                total: simpleData.total || 0,
-                currentPage: 1,
-                hasNextPage: false,
-                nextPage: null
-            }
-        }
-        
         return {
-            vehicles: [],
-            total: 0,
+            // Datos
+            vehicle: detailHook.vehicle,
+            vehicles: detailHook.vehicle ? [detailHook.vehicle] : [],
+            total: detailHook.vehicle ? 1 : 0,
             currentPage: 1,
             hasNextPage: false,
-            nextPage: null
+            nextPage: null,
+            
+            // Estados
+            isLoading: detailHook.isLoading,
+            isError: detailHook.isError,
+            error: detailHook.error,
+            isFetchingNextPage: false,
+            
+            // Funciones
+            refetch: detailHook.refetch,
+            loadMore: () => {}, // No aplica para detalle
+            clearCache: detailHook.clearCache,
+            
+            // Metadatos
+            hasActiveFilters: false,
+            filtersHash: `detail-${id}`
         }
-    }, [useInfiniteScroll, data, simpleData, hasNextPage])
+    }
 
-    // Estados unificados
-    const unifiedIsLoading = useInfiniteScroll ? isLoading : isLoadingSimple
-    const unifiedIsError = useInfiniteScroll ? isError : isErrorSimple
-    const unifiedError = useInfiniteScroll ? error : errorSimple
-    const unifiedRefetch = useInfiniteScroll ? refetch : refetchSimple
-
-    // Función para cargar más datos
-    const loadMore = useCallback(() => {
-        if (useInfiniteScroll && hasNextPage && !isFetchingNextPage) {
-            fetchNextPage()
-        }
-    }, [useInfiniteScroll, hasNextPage, isFetchingNextPage, fetchNextPage])
-
-    // Función para limpiar cache
-    const clearCache = useCallback(() => {
-        remove()
-    }, [remove])
-
-    return {
-        // Datos
-        vehicles: unifiedData.vehicles,
-        total: unifiedData.total,
-        currentPage: unifiedData.currentPage,
-        hasNextPage: unifiedData.hasNextPage,
-        nextPage: unifiedData.nextPage,
-        
-        // Estados
-        isLoading: unifiedIsLoading,
-        isError: unifiedIsError,
-        error: unifiedError,
-        isFetchingNextPage,
-        
-        // Funciones
-        refetch: unifiedRefetch,
-        loadMore,
-        clearCache,
-        
-        // Metadatos
-        hasActiveFilters,
-        filtersHash
+    // Usar infinite scroll o datos simples según configuración
+    if (useInfiniteScroll) {
+        return useVehiclesInfinite(filters, {
+            enabled,
+            staleTime,
+            gcTime,
+            retry,
+            refetchOnWindowFocus,
+            maxPages
+        })
+    } else {
+        return useVehiclesData(filters, {
+            enabled,
+            staleTime,
+            gcTime,
+            retry,
+            refetchOnWindowFocus
+        })
     }
 } 

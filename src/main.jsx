@@ -16,6 +16,13 @@ import App from './App.jsx'
 import './styles/globals.css'
 import './styles/fonts.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { GlobalErrorBoundary } from '@shared'
+import { validateConfig } from './config'
+
+// Validar configuración al inicio
+if (!validateConfig()) {
+  console.error('❌ Error en configuración de la aplicación')
+}
 
 // Crear una nueva instancia de QueryClient
 const queryClient = new QueryClient({
@@ -31,8 +38,10 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <GlobalErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </GlobalErrorBoundary>
   </React.StrictMode>,
 )

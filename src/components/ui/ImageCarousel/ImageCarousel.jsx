@@ -15,8 +15,8 @@
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx'
-import { processImages } from '../../../utils/imageUtils'
-import defaultCarImage from '../../../assets/auto1.jpg'
+import { processImages } from '@utils/imageUtils'
+import defaultCarImage from '@assets/auto1.jpg'
 
 
 import styles from './ImageCarousel.module.css'

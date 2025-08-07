@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom'
-import { useAuth } from '../../hooks/useAuth'
-import { AUTH_CONFIG } from '../../config/auth'
+import { useAuth } from '@hooks/useAuth'
+import { AUTH_CONFIG } from '@config/auth'
 
 export const RequireAuth = ({ children }) => {
     const { isAuthenticated, isLoading } = useAuth()

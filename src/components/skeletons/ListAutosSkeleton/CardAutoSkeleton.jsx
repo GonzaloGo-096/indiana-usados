@@ -12,7 +12,7 @@ import {
     SkeletonText, 
     SkeletonButton,
     SkeletonGroup 
-} from '../Skeleton'
+} from '@shared'
 import styles from './CardAutoSkeleton.module.css'
 
 export const CardAutoSkeleton = () => {

@@ -14,7 +14,7 @@
  */
 
 import React, { memo, useState, useEffect, useCallback } from 'react'
-import { getOptimizedImage, getResponsiveImage } from '../../../config/images'
+import { getOptimizedImage, getResponsiveImage } from '@config/images'
 import styles from './OptimizedImage.module.css'
 
 /**

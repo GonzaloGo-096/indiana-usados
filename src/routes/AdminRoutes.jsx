@@ -9,8 +9,8 @@
 
 import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import LoadingSpinner from '../components/ui/LoadingSpinner'
-import { RequireAuth } from '../components/auth/RequireAuth'
+import { LoadingSpinner } from '@ui'
+import { RequireAuth } from '@components/auth/RequireAuth'
 
 // ✅ LAZY LOADING: Páginas de admin cargadas bajo demanda
 const Dashboard = lazy(() => import('../pages/admin/Dashboard'))

@@ -7,7 +7,7 @@
 
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button } from '../../components/ui/Button'
+import { Button } from '@ui/Button'
 import styles from './Home.module.css'
 
 const Home = () => {

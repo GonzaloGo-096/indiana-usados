@@ -6,10 +6,10 @@
  */
 
 import React from 'react'
-import LoginForm from '../../../components/auth/LoginForm'
+import { LoginForm } from '@components/auth/LoginForm'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../../hooks/useAuth'
-import { AUTH_CONFIG } from '../../../config/auth'
+import { useAuth } from '@hooks/useAuth'
+import { AUTH_CONFIG } from '@config/auth'
 import styles from './Login.module.css'
 
 const Login = () => {

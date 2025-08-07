@@ -9,9 +9,8 @@
 
 import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Nav from '../layouts/Nav'
-import Footer from '../layouts/Footer'
-import LoadingSpinner from '../components/ui/LoadingSpinner'
+import { Nav, Footer } from '@layout'
+import { LoadingSpinner } from '@ui'
 
 // ✅ LAZY LOADING: Páginas cargadas bajo demanda
 const Home = lazy(() => import('../pages/Home/Home'))

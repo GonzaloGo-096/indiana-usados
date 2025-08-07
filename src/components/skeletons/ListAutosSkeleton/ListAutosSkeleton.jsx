@@ -7,7 +7,7 @@
 
 import React from 'react'
 import { CardAutoSkeleton } from './CardAutoSkeleton'
-import { SkeletonGrid } from '../Skeleton'
+import { SkeletonGrid } from '@shared'
 
 export const ListAutosSkeleton = ({ cantidad = 6 }) => {
     return (

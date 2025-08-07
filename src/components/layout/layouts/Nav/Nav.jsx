@@ -6,19 +6,27 @@
  * - Logo y enlaces
  * - Menú hamburguesa para mobile
  * - Estados activos
+ * - ✅ NUEVO: Preloading estratégico
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0 - Preloading estratégico
  */
 
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { usePreloadRoute } from '@hooks/usePreloadRoute'
 import styles from './Nav.module.css'
-import logo from '../../assets/indiana-nav-logo.png'
+import logo from '@assets/indiana-nav-logo.png'
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation()
+
+  // ✅ NUEVO: Hook de preloading estratégico
+  const { preloadRoute, cancelPreload } = usePreloadRoute({
+    delay: 150, // 150ms de delay para preload
+    enabled: true
+  })
 
   const isActive = (path) => location.pathname === path
 
@@ -30,10 +38,29 @@ const Nav = () => {
     setIsMenuOpen(false)
   }
 
+  // ✅ NUEVO: Funciones de preloading para rutas
+  const handleVehiculosPreload = () => {
+    preloadRoute('/vehiculos', () => import('../../../../pages/Vehiculos'))
+  }
+
+  const handleNosotrosPreload = () => {
+    preloadRoute('/nosotros', () => import('../../../../pages/Nosotros'))
+  }
+
+  const handleHomePreload = () => {
+    preloadRoute('/', () => import('../../../../pages/Home'))
+  }
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
-        <Link className={styles.brand} to="/" onClick={closeMenu}>
+        <Link 
+          className={styles.brand} 
+          to="/" 
+          onClick={closeMenu}
+          onMouseEnter={handleHomePreload}
+          onMouseLeave={() => cancelPreload('/')}
+        >
           <img src={logo} alt="Indiana Usados" className={styles.logo} />
         </Link>
         
@@ -56,6 +83,8 @@ const Nav = () => {
               className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`} 
               to="/"
               onClick={closeMenu}
+              onMouseEnter={handleHomePreload}
+              onMouseLeave={() => cancelPreload('/')}
             >
               Home
             </Link>
@@ -64,6 +93,8 @@ const Nav = () => {
               className={`${styles.navLink} ${isActive('/vehiculos') ? styles.active : ''}`} 
               to="/vehiculos"
               onClick={closeMenu}
+              onMouseEnter={handleVehiculosPreload}
+              onMouseLeave={() => cancelPreload('/vehiculos')}
             >
               Vehículos
             </Link>
@@ -72,6 +103,8 @@ const Nav = () => {
               className={`${styles.navLink} ${isActive('/nosotros') ? styles.active : ''}`} 
               to="/nosotros"
               onClick={closeMenu}
+              onMouseEnter={handleNosotrosPreload}
+              onMouseLeave={() => cancelPreload('/nosotros')}
             >
               Nosotros
             </Link>

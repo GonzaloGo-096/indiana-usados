@@ -7,11 +7,11 @@
 
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useAutoDetail } from '../../hooks'
-import { CardDetalle } from '../../components/business/CardDetalle'
-import { ErrorState } from '../../components/ui'
-import DetalleSkeleton from '../../components/skeletons/DetalleSkeleton'
-import { useScrollPosition } from '../../hooks/useScrollPosition'
+import { useAutoDetail } from '@hooks'
+import { CardDetalle } from '@vehicles'
+import { ErrorState } from '@ui'
+import { DetalleSkeleton } from '@shared'
+import { useScrollPosition } from '@hooks/useScrollPosition'
 import styles from './VehiculoDetalle.module.css'
 
 const VehiculoDetalle = () => {

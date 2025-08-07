@@ -8,15 +8,15 @@
  * - Performance optimizada
  * 
  * @author Indiana Usados
- * @version 4.5.0 - Performance optimizada
+ * @version 4.6.0 - Performance optimizada
  */
 
 import React, { memo, useMemo, useCallback, useRef } from 'react'
-import { CardAuto } from '../CardAuto'
-import { Button } from '../../ui/Button'
-import { ListAutosSkeleton } from '../../skeletons/ListAutosSkeleton'
-import { Alert } from '../../ui/Alert'
-import { useIntersectionObserver } from '../../../hooks/useIntersectionObserver'
+import { CardAuto } from '@vehicles'
+import { Button } from '@ui'
+import { ListAutosSkeleton } from '@shared'
+import { Alert } from '@ui'
+import { useIntersectionObserver } from '@hooks/useIntersectionObserver'
 import styles from './ListAutos.module.css'
 
 /**
@@ -80,19 +80,24 @@ const AutosGrid = memo(({
         rootMargin: '100px'
     })
 
-    // Memoizar el grid de vehículos
+    // ✅ OPTIMIZADO: Memoizar el grid de vehículos con keys estables
     const vehiclesGrid = useMemo(() => {
         if (!vehicles || vehicles.length === 0) {
             return null
         }
 
-        return vehicles.map((vehicle, index) => (
-            <MemoizedCardAuto 
-                key={`vehicle-${vehicle.id || index}`}
-                vehicle={vehicle}
-                ref={index === vehicles.length - 1 ? loadMoreRef : null}
-            />
-        ))
+        return vehicles.map((vehicle, index) => {
+            // ✅ OPTIMIZADO: Key estable basada en ID o índice
+            const stableKey = vehicle.id ? `vehicle-${vehicle.id}` : `vehicle-index-${index}`
+            
+            return (
+                <MemoizedCardAuto 
+                    key={stableKey}
+                    vehicle={vehicle}
+                    ref={index === vehicles.length - 1 ? loadMoreRef : null}
+                />
+            )
+        })
     }, [vehicles, loadMoreRef])
 
     // Estado de carga inicial

@@ -100,4 +100,41 @@
     --z-modal: 1050;
     --z-popover: 1060;
     --z-tooltip: 1070;
+
+    /* ===== VARIABLES RESPONSIVE ===== */
+    /* Breakpoints para uso en CSS */
+    --breakpoint-xs: 0px;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --breakpoint-2xl: 1400px;
+
+    /* Breakpoints sin 'px' para media queries */
+    --breakpoint-xs-value: 0;
+    --breakpoint-sm-value: 576;
+    --breakpoint-md-value: 768;
+    --breakpoint-lg-value: 992;
+    --breakpoint-xl-value: 1200;
+    --breakpoint-2xl-value: 1400;
+
+    /* ===== UTILIDADES RESPONSIVE ===== */
+    /* Contenedores responsive */
+    --container-padding-mobile: var(--spacing-2);
+    --container-padding-tablet: var(--spacing-4);
+    --container-padding-desktop: var(--spacing-4);
+
+    /* Espaciados responsive */
+    --section-padding-mobile: var(--spacing-4);
+    --section-padding-tablet: var(--spacing-6);
+    --section-padding-desktop: var(--spacing-8);
+
+    /* Tipografía responsive */
+    --font-size-title-mobile: var(--font-size-xl);
+    --font-size-title-tablet: var(--font-size-2xl);
+    --font-size-title-desktop: 2rem;
+
+    --font-size-subtitle-mobile: var(--font-size-lg);
+    --font-size-subtitle-tablet: var(--font-size-xl);
+    --font-size-subtitle-desktop: var(--font-size-2xl);
 } 

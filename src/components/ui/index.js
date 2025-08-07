@@ -5,7 +5,7 @@
  * para facilitar las importaciones
  * 
  * @author Indiana Usados
- * @version 3.0.0 - CODE SPLITTING IMPLEMENTADO
+ * @version 3.1.0 - LAZY LOADING INTELIGENTE
  */
 
 export { FormInput } from './FormInput'
@@ -20,4 +20,8 @@ export { default as MultiSelect } from './MultiSelect/MultiSelect'
 
 // ✅ NUEVOS: Componentes para Code Splitting
 export { LoadingSpinner } from './LoadingSpinner'
-export { LazyComponent } from './LazyComponent' 
+export { LazyComponent } from './LazyComponent'
+export { ScrollToTop } from './ScrollToTop'
+
+// ✅ NUEVOS: Componentes de Lazy Loading Inteligente
+export { IntelligentLazyComponent } from './IntelligentLazyComponent' 

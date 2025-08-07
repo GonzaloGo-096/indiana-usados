@@ -12,7 +12,7 @@
  */
 
 import React, { Suspense, useState, useEffect } from 'react'
-import LoadingSpinner from '../LoadingSpinner'
+import { LoadingSpinner } from '@ui'
 
 /**
  * Componente LazyComponent

@@ -1,78 +1,49 @@
 /**
- * axiosInstance.js - Configuración de Axios optimizada
+ * axiosInstance.js - Configuración de Axios simplificada
  * 
  * Características:
- * - Configuración dinámica basada en variables de entorno
+ * - Configuración centralizada usando config/index.js
  * - Manejo de errores centralizado
  * - Timeouts configurables
  * - Performance optimizada
  * 
  * @author Indiana Usados
- * @version 3.0.0 - Variables de entorno dinámicas
- * 
- * ⚠️ IMPORTANTE: Configurar variables de entorno en .env.local
+ * @version 4.0.0 - Configuración simplificada
  */
 
 import axios from 'axios'
+import { config } from '../config'
 
-// ✅ CONFIGURACIÓN DINÁMICA BASADA EN VARIABLES DE ENTORNO
+// ✅ CONFIGURACIÓN SIMPLIFICADA USANDO CONFIG CENTRALIZADO
 const getBaseURL = () => {
-    // Si está habilitado el mock API
-    if (import.meta.env.VITE_USE_MOCK_API === 'true') {
-        // Si está habilitado Postman Mock
-        if (import.meta.env.VITE_USE_POSTMAN_MOCK === 'true') {
-            return import.meta.env.VITE_POSTMAN_MOCK_URL || 'https://c65a35e4-099e-4f66-a282-1f975219d583.mock.pstmn.io'
-        }
-        // Fallback a mock local (futuro)
-        return import.meta.env.VITE_MOCK_API_URL || 'http://localhost:3000/api'
-    }
-    
-    // Backend real
-    return import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
+    return config.api.baseURL
 }
 
-const getDetailBaseURL = () => {
-    // Para detalle, usar la misma lógica pero con URL específica si existe
-    if (import.meta.env.VITE_USE_MOCK_API === 'true' && import.meta.env.VITE_USE_POSTMAN_MOCK === 'true') {
-        return import.meta.env.VITE_POSTMAN_DETAIL_URL || import.meta.env.VITE_POSTMAN_MOCK_URL || 'https://0ce757d8-1c7a-4cec-9872-b3e45dd2d032.mock.pstmn.io'
-    }
-    
-    return getBaseURL()
-}
-
-// ✅ CONFIGURACIÓN DE TIMEOUT DINÁMICA
 const getTimeout = () => {
-    return parseInt(import.meta.env.VITE_API_TIMEOUT) || 5000
+    return config.api.timeout
 }
 
 // Instancia principal para listado de vehículos
 const axiosInstance = axios.create({
     baseURL: getBaseURL(),
     timeout: getTimeout(),
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
+    headers: config.api.headers
 })
 
-// Instancia separada para detalle de vehículos
+// Instancia separada para detalle de vehículos (misma configuración)
 const detailAxiosInstance = axios.create({
-    baseURL: getDetailBaseURL(),
+    baseURL: getBaseURL(), // Usar misma URL para simplificar
     timeout: getTimeout(),
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
+    headers: config.api.headers
 })
 
 // ✅ LOGGING DE CONFIGURACIÓN (solo en desarrollo)
-if (import.meta.env.DEV) {
+if (config.isDevelopment && config.features.debug) {
     console.log('🔧 CONFIGURACIÓN AXIOS:', {
         baseURL: getBaseURL(),
-        detailBaseURL: getDetailBaseURL(),
         timeout: getTimeout(),
-        useMock: import.meta.env.VITE_USE_MOCK_API,
-        usePostman: import.meta.env.VITE_USE_POSTMAN_MOCK
+        mock: config.api.mock,
+        environment: config.environment
     })
 }
 

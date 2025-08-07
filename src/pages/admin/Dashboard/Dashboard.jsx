@@ -6,9 +6,9 @@
  */
 
 import React, { useState, useEffect } from 'react'
-import { useAuth } from '../../../hooks/useAuth'
+import { useAuth } from '@hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
-import { mockVehicles } from '../../../api/mockData'
+import { mockVehicles } from '@api/mockData'
 import styles from './Dashboard.module.css'
 
 const Dashboard = () => {

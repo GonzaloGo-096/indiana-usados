@@ -8,7 +8,7 @@
  * - Diseño responsivo
  * 
  * @author Indiana Usados
- * @version 5.0.0 - ESTILO OPTIMIZADO RECREADO
+ * @version 5.1.0 - Performance optimizada
  */
 
 import React, { memo, useMemo } from 'react'
@@ -19,7 +19,7 @@ import {
     formatYear, 
     formatTransmission,
     formatBrandModel
-} from '../../../utils/formatters'
+} from '@utils/formatters'
 import styles from './CardAuto.module.css'
 
 /**
@@ -47,6 +47,9 @@ export const CardAuto = memo(({ auto }) => {
     const altText = useMemo(() => {
         return `${formattedData.brandModel} - ${formattedData.year}`
     }, [formattedData.brandModel, formattedData.year])
+
+    // ✅ OPTIMIZADO: Memoizar URL de navegación
+    const vehicleUrl = useMemo(() => `/vehiculo/${auto.id}`, [auto.id])
 
     return (
         <div className={styles.card}>
@@ -114,7 +117,7 @@ export const CardAuto = memo(({ auto }) => {
                 <div className={styles['card__footer']}>
                     <div className={styles['card__footer_border']}></div>
                     <Link 
-                        to={`/vehiculo/${auto.id}`}
+                        to={vehicleUrl}
                         className={styles['card__button']}
                     >
                         Ver más

@@ -6,7 +6,7 @@
  */
 
 import React from 'react'
-import { Skeleton } from '../Skeleton'
+import { Skeleton } from '@shared'
 import styles from './DetalleSkeleton.module.css'
 
 const DetalleSkeleton = () => (

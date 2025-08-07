@@ -10,34 +10,33 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),
       '@components': resolve(__dirname, 'src/components'),
+      '@vehicles': resolve(__dirname, 'src/components/vehicles'),
+      '@ui': resolve(__dirname, 'src/components/ui'),
+      '@layout': resolve(__dirname, 'src/components/layout'),
+      '@shared': resolve(__dirname, 'src/components/shared'),
       '@hooks': resolve(__dirname, 'src/hooks'),
       '@utils': resolve(__dirname, 'src/utils'),
       '@services': resolve(__dirname, 'src/services'),
+      '@api': resolve(__dirname, 'src/api'),
       '@constants': resolve(__dirname, 'src/constants'),
-      '@styles': resolve(__dirname, 'src/styles')
+      '@styles': resolve(__dirname, 'src/styles'),
+      '@assets': resolve(__dirname, 'src/assets'),
+      '@config': resolve(__dirname, 'src/config')
     }
   },
   
   build: {
+    // ✅ OPTIMIZACIONES ESTÁNDAR DE VITE
+    target: 'esnext', // Código moderno para mejor rendimiento
+    minify: 'esbuild', // Más rápido que terser
+    sourcemap: false, // Solo en desarrollo
+    chunkSizeWarningLimit: 1000,
+    
+    // ✅ ELIMINAR CHUNKS MANUALES - Vite decide automáticamente
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          query: ['@tanstack/react-query'],
-          router: ['react-router-dom'],
-          axios: ['axios'],
-          forms: ['react-hook-form', 'react-select'],
-          slider: ['rc-slider']
-        }
-      }
-    },
-    chunkSizeWarningLimit: 1000,
-    sourcemap: false,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
+        // Vite maneja el code splitting automáticamente
+        manualChunks: undefined
       }
     }
   },
