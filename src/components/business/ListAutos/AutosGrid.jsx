@@ -70,21 +70,15 @@ const AutosGrid = memo(({
         }
     }, [hasNextPage, isFetchingNextPage, onLoadMore])
 
-    // Ref para el elemento de carga
-    const loadMoreRef = useRef(null)
-
     // Intersection observer para carga automática
-    const { isIntersecting } = useIntersectionObserver(loadMoreRef, {
+    const loadMoreRef = useIntersectionObserver(() => {
+        if (hasNextPage && !isFetchingNextPage) {
+            handleLoadMore()
+        }
+    }, {
         threshold: 0.1,
         rootMargin: '100px'
     })
-
-    // Cargar más cuando el elemento es visible
-    React.useEffect(() => {
-        if (isIntersecting && hasNextPage && !isFetchingNextPage) {
-            handleLoadMore()
-        }
-    }, [isIntersecting, hasNextPage, isFetchingNextPage, handleLoadMore])
 
     // Memoizar el grid de vehículos
     const vehiclesGrid = useMemo(() => {
@@ -99,7 +93,7 @@ const AutosGrid = memo(({
                 ref={index === vehicles.length - 1 ? loadMoreRef : null}
             />
         ))
-    }, [vehicles])
+    }, [vehicles, loadMoreRef])
 
     // Estado de carga inicial
     if (isLoading && (!vehicles || vehicles.length === 0)) {
@@ -136,21 +130,11 @@ const AutosGrid = memo(({
             </div>
 
             {/* Indicador de carga más */}
-            {hasNextPage && (
+            {isFetchingNextPage && (
                 <div className={styles.loadMoreIndicator}>
-                    {isFetchingNextPage ? (
-                        <div className={styles.loadingMore}>
-                            <span>Cargando más vehículos...</span>
-                        </div>
-                    ) : (
-                        <Button 
-                            onClick={handleLoadMore}
-                            variant="secondary"
-                            className={styles.loadMoreButton}
-                        >
-                            Cargar más
-                        </Button>
-                    )}
+                    <div className={styles.loadingMore}>
+                        <span>Cargando más vehículos...</span>
+                    </div>
                 </div>
             )}
 

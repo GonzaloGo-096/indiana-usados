@@ -14,7 +14,7 @@ import styles from './Login.module.css'
 
 const Login = () => {
     const navigate = useNavigate()
-    const { login, isAuthenticated, isLoading } = useAuth()
+    const { login, isAuthenticated, isLoading, error, clearError } = useAuth()
     const [errors, setErrors] = React.useState({})
 
     // Si ya está autenticado, redirigir
@@ -25,24 +25,22 @@ const Login = () => {
     }, [isAuthenticated, isLoading, navigate])
 
     const handleSubmit = async (values) => {
-        setIsLoading(true)
-        setError(null)
+        clearError()
+        setErrors({})
         
         try {
             // Intentar login
-            const result = await loginMutation.mutateAsync(values)
+            const result = await login(values)
             
             if (result.success) {
                 // Login exitoso
-                navigate('/admin/dashboard')
+                navigate('/admin')
             } else {
                 // Error en login
-                setError(result.error || 'Error al iniciar sesión')
+                setErrors({ general: result.error || 'Error al iniciar sesión' })
             }
         } catch (error) {
-            setError('Error al iniciar sesión')
-        } finally {
-            setIsLoading(false)
+            setErrors({ general: 'Error al iniciar sesión' })
         }
     }
 
@@ -69,9 +67,24 @@ const Login = () => {
                 <div className={styles.card}>
                     <div className={styles.cardBody}>
                         <h2 className={styles.title}>Iniciar Sesión</h2>
-                        <p style={{ textAlign: 'center', marginBottom: '20px', color: '#666', fontSize: '14px' }}>
-                            Usuario: admin | Contraseña: admin123
-                        </p>
+                        
+                        <div className={styles.credentials}>
+                            <p>Usuario: admin | Contraseña: admin123</p>
+                        </div>
+                        
+                        {/* Mostrar error general */}
+                        {error && (
+                            <div className={styles.error}>
+                                {error}
+                            </div>
+                        )}
+                        
+                        {errors.general && (
+                            <div className={styles.error}>
+                                {errors.general}
+                            </div>
+                        )}
+                        
                         <LoginForm 
                             onSubmit={handleSubmit} 
                             isSubmitting={isLoading} 

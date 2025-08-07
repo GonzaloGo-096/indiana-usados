@@ -79,7 +79,7 @@ export const authService = {
   // Login - Listo para backend Node.js
   login: async (credentials) => {
     // Verificar si estamos en modo desarrollo (sin backend)
-    const isDevelopment = !AUTH_CONFIG.api.baseURL || AUTH_CONFIG.api.baseURL.includes('localhost:3001')
+    const isDevelopment = AUTH_CONFIG.development.enableMock
     
     if (isDevelopment) {
       // Usar mock para desarrollo

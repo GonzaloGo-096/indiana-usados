@@ -23,9 +23,6 @@ import AdminRoutes from './routes/AdminRoutes'
 // Componentes de autenticación
 import { RequireAuth } from './components/auth/RequireAuth'
 
-// Páginas del admin
-import Login from './pages/admin/Login'
-
 function App() {
     return (
         <Router
@@ -39,15 +36,8 @@ function App() {
                     {/* Rutas públicas */}
                     <Route path="/*" element={<PublicRoutes />} />
 
-                    {/* Ruta de login */}
-                    <Route path="/admin/login" element={<Login />} />
-
-                    {/* Rutas protegidas del admin */}
-                    <Route path="/admin/*" element={
-                        <RequireAuth>
-                            <AdminRoutes />
-                        </RequireAuth>
-                    } />
+                    {/* Rutas del admin */}
+                    <Route path="/admin/*" element={<AdminRoutes />} />
 
                     {/* Ruta por defecto */}
                     <Route path="*" element={<Navigate to="/" />} />

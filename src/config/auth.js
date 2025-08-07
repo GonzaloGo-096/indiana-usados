@@ -35,7 +35,7 @@ export const AUTH_CONFIG = {
   // Configuración de desarrollo
   development: {
     // Habilitar modo mock cuando no hay backend
-    enableMock: import.meta.env.VITE_ENABLE_MOCK === 'true' || !import.meta.env.VITE_API_URL,
+    enableMock: true, // Forzar modo mock para desarrollo
     // Credenciales de desarrollo
     mockCredentials: {
       usuario: 'admin',

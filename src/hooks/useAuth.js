@@ -8,10 +8,24 @@ export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Verificar autenticación al cargar
-  useEffect(() => {
-    checkAuthStatus()
-  }, [checkAuthStatus])
+  // Función de logout
+  const logout = useCallback(async () => {
+    try {
+      // Llamar al backend para invalidar el token
+      await authService.logout()
+    } catch (error) {
+      console.error('Error during logout:', error)
+      // Continuar con la limpieza local aunque falle la API
+    } finally {
+      // Limpiar localStorage
+      localStorage.removeItem(AUTH_CONFIG.storage.tokenKey)
+      localStorage.removeItem(AUTH_CONFIG.storage.userKey)
+      
+      setUser(null)
+      setIsAuthenticated(false)
+      setError(null)
+    }
+  }, [])
 
   // Verificar si hay un token válido
   const checkAuthStatus = useCallback(async () => {
@@ -25,7 +39,8 @@ export const useAuth = () => {
         const isDevelopment = AUTH_CONFIG.development.enableMock
         
         if (isDevelopment) {
-          setUser(JSON.parse(userData))
+          const parsedUser = JSON.parse(userData)
+          setUser(parsedUser)
           setIsAuthenticated(true)
         } else {
           // Verificar token con el backend
@@ -50,6 +65,11 @@ export const useAuth = () => {
       setIsLoading(false)
     }
   }, [logout])
+
+  // Verificar autenticación al cargar
+  useEffect(() => {
+    checkAuthStatus()
+  }, [checkAuthStatus])
 
   // Función de login
   const login = useCallback(async (credentials) => {
@@ -83,25 +103,6 @@ export const useAuth = () => {
       return { success: false, error: errorMessage }
     } finally {
       setIsLoading(false)
-    }
-  }, [])
-
-  // Función de logout
-  const logout = useCallback(async () => {
-    try {
-      // Llamar al backend para invalidar el token
-      await authService.logout()
-    } catch (error) {
-      console.error('Error during logout:', error)
-      // Continuar con la limpieza local aunque falle la API
-    } finally {
-      // Limpiar localStorage
-      localStorage.removeItem(AUTH_CONFIG.storage.tokenKey)
-      localStorage.removeItem(AUTH_CONFIG.storage.userKey)
-      
-      setUser(null)
-      setIsAuthenticated(false)
-      setError(null)
     }
   }, [])
 
