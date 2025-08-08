@@ -1,18 +1,17 @@
 /**
- * FilterFormSimplified - Formulario de filtros ultra optimizado
+ * FilterFormSimplified - Formulario de filtros optimizado
  * 
- * Optimizaciones profesionales aplicadas:
- * - Eliminación de memoización innecesaria
- * - Cálculo simplificado de filtros activos
- * - Imports optimizados
- * - Performance al nivel de estándares industria
- * - 🚀 NUEVO: Integración mejorada con reducer
+ * Características:
+ * - Contenedor fijo mobile con scroll detection
+ * - Optimizado para touch devices
+ * - Performance profesional
+ * - Compatibilidad completa mobile/desktop
  * 
  * @author Indiana Usados
- * @version 4.1.0 - Performance optimizada
+ * @version 4.2.0 - Mobile optimized
  */
 
-import React, { useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useFilterReducer } from '@hooks/filters/useFilterReducer'
 import RangeSlider from '@ui/RangeSlider/RangeSlider'
@@ -24,7 +23,6 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   onApplyFilters,
   isLoading = false 
 }, ref) => {
-  // 🚀 NUEVO: Usar reducer expandido
   const {
     isSubmitting,
     isDrawerOpen,
@@ -35,7 +33,63 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     closeDrawer
   } = useFilterReducer()
 
-  // Configurar React Hook Form con valores por defecto
+  // Estados para contenedor fijo mobile
+  const [isVisible, setIsVisible] = useState(false)
+
+  // Detectar scroll optimizado para mobile
+  useEffect(() => {
+    let scrollTimeout
+    let hideTimeout
+    let lastScrollTop = 0
+
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || 
+                       document.documentElement.scrollTop || 
+                       document.body.scrollTop || 0
+      
+      // Solo procesar cambios significativos
+      if (Math.abs(scrollTop - lastScrollTop) < 10) return
+      
+      lastScrollTop = scrollTop
+      const shouldShow = scrollTop > 50
+      
+      if (shouldShow) {
+        setIsVisible(true)
+        if (hideTimeout) {
+          clearTimeout(hideTimeout)
+          hideTimeout = null
+        }
+      } else {
+        setIsVisible(false)
+      }
+    }
+
+    const handleScrollEnd = () => {
+      if (hideTimeout) {
+        clearTimeout(hideTimeout)
+      }
+      hideTimeout = setTimeout(() => setIsVisible(false), 2000)
+    }
+
+    const handleScrollWithDelay = () => {
+      handleScroll()
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout)
+      }
+      const delay = 'ontouchstart' in window ? 100 : 150
+      scrollTimeout = setTimeout(handleScrollEnd, delay)
+    }
+
+    window.addEventListener('scroll', handleScrollWithDelay, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', handleScrollWithDelay)
+      if (scrollTimeout) clearTimeout(scrollTimeout)
+      if (hideTimeout) clearTimeout(hideTimeout)
+    }
+  }, [])
+
+  // Configurar React Hook Form
   const {
     register,
     handleSubmit,
@@ -57,37 +111,31 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     }
   })
 
-  // OPTIMIZACIÓN PROFESIONAL: Watch específico por campo
+  // Watch específico por campo
   const marca = watch('marca')
   const combustible = watch('combustible')
   const transmision = watch('transmision')
   const añoDesde = watch('añoDesde')
-  const añoHasta = watch('añoHasta')
   const precioDesde = watch('precioDesde')
-  const precioHasta = watch('precioHasta')
   const kilometrajeDesde = watch('kilometrajeDesde')
-  const kilometrajeHasta = watch('kilometrajeHasta')
   
-  // ✅ OPTIMIZADO: Cálculo simplificado y eficiente
-  const activeFiltersCount = useMemo(() => {
+  // Cálculo de filtros activos
+  const activeFiltersCount = (() => {
     const hasMarca = marca?.length > 0
     const hasCombustible = combustible?.length > 0
     const hasTransmision = transmision?.length > 0
     const hasRanges = añoDesde !== 1990 || precioDesde !== 5000000 || kilometrajeDesde !== 0
     
     return [hasMarca, hasCombustible, hasTransmision, hasRanges].filter(Boolean).length
-  }, [marca?.length, combustible?.length, transmision?.length, añoDesde, precioDesde, kilometrajeDesde])
+  })()
 
-  // 🚀 NUEVO: Función mejorada con reducer
+  // Handlers optimizados
   const onSubmit = async (data) => {
-    setSubmitting(true) // 🚀 Usar reducer
+    setSubmitting(true)
     try {
-      // Filtrar solo valores válidos
       const validData = Object.entries(data).reduce((acc, [key, value]) => {
-        if (Array.isArray(value)) {
-          if (value.length > 0) {
-            acc[key] = value
-          }
+        if (Array.isArray(value) && value.length > 0) {
+          acc[key] = value
         } else if (value && value !== '' && value !== 0 && value !== '0') {
           acc[key] = value
         }
@@ -95,15 +143,14 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
       }, {})
 
       await onApplyFilters(validData)
-      closeDrawer() // 🚀 Usar reducer
+      closeDrawer()
     } catch (error) {
       console.error('Error al aplicar filtros:', error)
     } finally {
-      setSubmitting(false) // 🚀 Usar reducer
+      setSubmitting(false)
     }
   }
 
-  // OPTIMIZACIÓN PROFESIONAL: Función simple
   const handleClear = () => {
     reset({
       marca: [],
@@ -118,17 +165,21 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     })
   }
 
-  // ✅ OPTIMIZADO: Formateadores simples sin memoización
+  // Formateadores
   const formatPrice = (value) => `$${value.toLocaleString()}`
   const formatKms = (value) => `${value.toLocaleString()} km`
   const formatYear = (value) => value.toString()
 
-  // ✅ OPTIMIZADO: Arrays simples sin memoización innecesaria
+  // Arrays simples sin memoización innecesaria
+  const añoHasta = watch('añoHasta')
+  const precioHasta = watch('precioHasta')
+  const kilometrajeHasta = watch('kilometrajeHasta')
+  
   const añoRange = [añoDesde || 1990, añoHasta || 2024]
   const precioRange = [precioDesde || 5000000, precioHasta || 100000000]
   const kilometrajeRange = [kilometrajeDesde || 0, kilometrajeHasta || 200000]
 
-  // ✅ OPTIMIZADO: Handlers simples sin memoización
+  // Handlers simples
   const handleAñoChange = ([min, max]) => {
     setValue('añoDesde', min)
     setValue('añoHasta', max)
@@ -158,7 +209,37 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
 
   return (
     <div className={`${styles.filterContainer} ${isDrawerOpen ? styles.open : ''}`}>
-      {/* Botón mobile (solo visible en mobile via CSS) */}
+      {/* Contenedor fijo mobile */}
+      <div className={`${styles.mobileActionsContainer} ${isVisible ? styles.visible : ''}`}>
+        <button 
+          className={styles.mobileActionButton}
+          onClick={() => console.log('Ordenar por')}
+          disabled={isLoading || isSubmitting}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M3 6h18"></path>
+            <path d="M6 12h12"></path>
+            <path d="M9 18h6"></path>
+          </svg>
+          <span>Ordenar por</span>
+        </button>
+        
+        <button 
+          className={styles.mobileActionButton}
+          onClick={toggleDrawer}
+          disabled={isLoading || isSubmitting}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"></polygon>
+          </svg>
+          <span>Filtrar</span>
+          {activeFiltersCount > 0 && (
+            <span className={styles.badge}>{activeFiltersCount}</span>
+          )}
+        </button>
+      </div>
+
+      {/* Botón mobile (oculto en desktop) */}
       <button 
         className={styles.filterButtonMobile}
         onClick={toggleDrawer}
@@ -173,7 +254,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
         )}
       </button>
 
-      {/* 🚀 NUEVO: Mostrar error si existe */}
+      {/* Error message */}
       {isError && error && (
         <div className={styles.errorMessage}>
           Error: {error}
@@ -181,11 +262,23 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
       )}
 
       {/* Formulario */}
+      {isDrawerOpen && (
+        <div 
+          className={styles.overlay} 
+          onClick={closeDrawer}
+          aria-label="Cerrar formulario"
+        />
+      )}
       <div className={styles.formWrapper}>
         {/* Header mobile */}
         <div className={styles.formHeaderMobile}>
           <h2>Filtrar Vehículos</h2>
-          <button onClick={closeDrawer} className={styles.closeButton}>
+          <button 
+            type="button"
+            onClick={closeDrawer} 
+            className={styles.closeButton}
+            aria-label="Cerrar formulario"
+          >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -194,7 +287,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          {/* Título del formulario con botones */}
+          {/* Título del formulario */}
           <div className={styles.formTitle}>
             <h3>Filtros de Búsqueda</h3>
             <div className={styles.titleActions}>
@@ -295,7 +388,25 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
             </div>
           </div>
 
-
+          {/* Botones mobile (solo visibles en mobile) */}
+          <div className={styles.mobileButtons}>
+            <button 
+              type="submit" 
+              className={styles.applyButton}
+              disabled={isLoading || isSubmitting}
+            >
+              {isSubmitting ? 'Aplicando...' : 'Aplicar Filtros'}
+            </button>
+            
+            <button 
+              type="button" 
+              onClick={handleClear}
+              className={styles.clearButton}
+              disabled={isLoading || isSubmitting}
+            >
+              Limpiar Filtros
+            </button>
+          </div>
         </form>
       </div>
     </div>

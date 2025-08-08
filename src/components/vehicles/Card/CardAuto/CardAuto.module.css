@@ -18,7 +18,7 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    background: #ffffff;
+    background: #fafafa; /* ✅ NUEVO: Background sutil agregado */
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid #e5e7eb;
@@ -57,7 +57,7 @@
     display: flex;
     flex-direction: column;
     padding: 16px;
-    background: #ffffff;
+    background: #ffffff; /* ✅ MANTENIDO: Fondo blanco para el contenido */
 }
 
 /* ===== HEADER 60/40 ===== */
@@ -86,7 +86,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 2px;
+    margin-bottom: 1px; /* ✅ REDUCIDO: De 2px a 1px */
 }
 
 .card__title {
@@ -133,7 +133,7 @@
     font-size: 14px;
     color: #6b7280;
     margin: 0;
-    margin-top: 4px;
+    margin-top: 2px; /* ✅ REDUCIDO: De 4px a 2px */
     font-weight: 500;
     font-family: 'Barlow', sans-serif;
 }
@@ -149,14 +149,14 @@
     justify-content: space-between;
     align-items: center;
     background: transparent;
-    padding: 8px 0;
+    padding: 6px 0; /* ✅ REDUCIDO: De 8px a 6px */
     border: none;
 }
 
 .card__data_item {
     flex: 1;
     text-align: center;
-    padding: 8px 12px;
+    padding: 6px 8px; /* ✅ REDUCIDO: De 8px 12px a 6px 8px */
     background: transparent;
     border: none;
 }
@@ -224,6 +224,7 @@
 @media (max-width: var(--breakpoint-md)) {
     .card {
         border-radius: 10px;
+        background: #fafafa; /* ✅ MANTENER: Background sutil */
     }
     
     .card__body {
@@ -243,11 +244,11 @@
     }
     
     .card__data_container {
-        padding: 12px;
+        padding: 6px 0; /* ✅ AJUSTADO: Mantener consistencia con desktop */
     }
     
     .card__data_item {
-        padding: 6px 8px;
+        padding: 6px 8px; /* ✅ AJUSTADO: Mantener consistencia con desktop */
     }
     
     .card__data_label {
@@ -267,6 +268,7 @@
 @media (max-width: var(--breakpoint-sm)) {
     .card {
         border-radius: 8px;
+        background: #fafafa; /* ✅ MANTENER: Background sutil */
     }
     
     .card__body {
@@ -286,11 +288,11 @@
     }
     
     .card__data_container {
-        padding: 10px;
+        padding: 4px 0; /* ✅ AJUSTADO: Reducido proporcionalmente */
     }
     
     .card__data_item {
-        padding: 4px 6px;
+        padding: 4px 6px; /* ✅ AJUSTADO: Mantener proporción */
     }
     
     .card__data_label {

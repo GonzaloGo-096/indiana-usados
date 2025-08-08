@@ -4,7 +4,7 @@
  * Estilos optimizados para el formulario de filtros
  * Performance-first, mantenible y escalable
  * 
- * @version 4.0.0 - Optimizado y limpio
+ * @version 6.0.0 - Optimizado con mejores prácticas
  * @author Indiana Usados
  */
 
@@ -14,27 +14,30 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: 2rem;
   z-index: 1;
+  display: flex;
+  justify-content: center;
 }
 
 /* ===== FILTER BUTTON MOBILE ===== */
 .filterButtonMobile {
-    display: none;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: #0a0d14; /* 🎨 NUEVO: Negro profundo */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #0a0d14;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .filterButtonMobile:hover {
-    background: #0f1419; /* 🎨 NUEVO: Negro carbón para hover */
-    transform: translateY(-1px);
+  background: #0f1419;
+  transform: translateY(-1px);
 }
 
 .filterButtonMobile:disabled {
@@ -47,8 +50,8 @@
   background: #ef4444;
   color: #ffffff;
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
+  width: 1.125rem;
+  height: 1.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,7 +66,7 @@
   border: 1px solid #fecaca;
   color: #dc2626;
   padding: 0.75rem 1rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   margin-bottom: 1rem;
   font-size: 0.875rem;
   font-weight: 500;
@@ -91,17 +94,14 @@
 
 /* ===== FORM WRAPPER ===== */
 .formWrapper {
-    /* Desktop: Formulario normal */
-    position: relative;
-    width: 95%;
-    max-width: 1000px;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
-    overflow: visible;
-    transition: all 0.2s ease;
-    z-index: 1;
-    margin: 0 auto;
+  position: relative;
+  width: 95%;
+  max-width: 700px;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
 }
 
 /* ===== FORM HEADER MOBILE ===== */
@@ -109,15 +109,20 @@
   display: none;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem;
-  background: #0a0d14; /* 🎨 NUEVO: Negro profundo */
+  padding: 1rem;
+  background: #0a0d14;
   color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .formHeaderMobile h2 {
   font-size: 1.125rem;
   font-weight: 700;
   margin: 0;
+  color: #ffffff;
 }
 
 .closeButton {
@@ -125,48 +130,48 @@
   border: none;
   color: #ffffff;
   cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 4px;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
   transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
 }
 
 .closeButton:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
+.closeButton svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 /* ===== FORMULARIO PRINCIPAL ===== */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
+  gap: 0.03125rem;
+  padding: 0.125rem;
 }
 
 /* ===== FORM TITLE ===== */
 .formTitle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.formTitle::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: #d1d5db;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.0625rem;
+  padding-bottom: 0.0625rem;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .formTitle h3 {
-    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin: 0;
+  color: #0a0d14;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .titleActions {
@@ -180,109 +185,149 @@
 .selectsSection {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  gap: 0.75rem;
+  margin-bottom: 0.0625rem;
   padding: 0;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   overflow: visible;
-  justify-items: center;
+  justify-items: stretch;
 }
 
-/* ===== RANGES SECTION ===== */
 .rangesSection {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.0625rem;
 }
 
 .rangesSection .formGroup {
-    margin-bottom: 0.25rem;
+  margin-bottom: 0.03125rem;
 }
 
 .rangesSection .formGroup label {
-    color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-    font-size: 0.625rem;
+  color: #0a0d14;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  font-size: 0.625rem;
 }
 
 .selectsSection {
   background: #ffffff;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
 }
 
-/* ===== GRUPOS DE FORMULARIO ===== */
+/* ===== FORM GROUPS ===== */
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.03125rem;
   width: 100%;
   align-items: center;
-  margin-bottom: 0.25rem;
-  max-width: 200px;
+  margin-bottom: 0.03125rem;
+  max-width: none;
+  padding: 0 0.25rem;
 }
 
-/* ✅ NUEVO: Reducir ancho de los inputs select */
 .formGroup > div {
-  width: 100%; /* ✅ AJUSTADO: 100% para grid */
-  max-width: 180px; /* ✅ REDUCIDO: Límite máximo más pequeño */
+  width: 100%;
+  max-width: none;
+  padding: 0 0.125rem;
+  margin-bottom: 0;
 }
 
+.formGroup > div > div {
+  margin-bottom: 0;
+}
 
+.formGroup .rangeSlider,
+.formGroup .multiSelect {
+  margin-bottom: 0;
+  width: 100%;
+  padding: 0 0.125rem;
+}
+
+.formGroup .multiSelect .trigger {
+  padding: 0.375rem 0.25rem;
+}
+
+.formGroup .rangeSlider .container,
+.formGroup .rangeSlider .values {
+  padding: 0 0.125rem;
+}
+
+.formGroup .label {
+  margin-bottom: 0.0625rem;
+  font-size: 0.625rem;
+}
+
+.formGroup .values {
+  margin-top: 0.25rem;
+  gap: 0.5rem;
+}
+
+.formGroup .container {
+  margin-bottom: 0;
+}
+
+.formGroup label {
+  color: #0a0d14;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  font-size: 0.625rem;
+}
 
 /* ===== LABELS ===== */
 .formGroup label {
   text-align: center;
   font-weight: 600;
   font-size: 0.625rem;
-  color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
+  color: #0a0d14;
   margin-bottom: 0.25rem;
-  text-transform: capitalize; /* ✅ CAMBIADO: De uppercase a capitalize para solo primera letra mayúscula */
+  text-transform: capitalize;
   letter-spacing: 0.5px;
 }
 
-/* ===== CLASE BASE PARA BOTONES - OPTIMIZADO ===== */
+/* ===== BUTTONS ===== */
 .buttonBase {
-  padding: 0.375rem 0.75rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.625rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 50px;
-  max-width: 60px;
-  height: 28px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: 0.5px;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  text-decoration: none;
+  min-height: 2.5rem;
 }
 
-/* ===== BOTONES ESPECÍFICOS - OPTIMIZADO ===== */
 .applyButton {
   composes: buttonBase;
-  background: var(--color-neutral-900);
+  background: #0a0d14;
   color: #ffffff;
-  border: 1px solid var(--color-neutral-900);
+  border-color: #0a0d14;
 }
 
 .applyButton:hover:not(:disabled) {
-  background: var(--color-neutral-800);
+  background: #0f1419;
+  border-color: #0f1419;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .clearButton {
   composes: buttonBase;
   background: #f3f4f6;
   color: #6b7280;
-  border: 1px solid #d1d5db;
+  border-color: #d1d5db;
 }
 
 .clearButton:hover:not(:disabled) {
   background: #e5e7eb;
+  border-color: #9ca3af;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  color: #374151;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .applyButton:active:not(:disabled),
@@ -299,9 +344,9 @@
   box-shadow: none;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE DESIGN ===== */
 
-/* Desktop */
+/* Desktop styles */
 @media (min-width: 769px) {
   .rangesSection,
   .selectsSection {
@@ -310,34 +355,42 @@
   
   .formWrapper {
     width: 90%;
-    max-width: 900px;
+    max-width: 700px;
+  }
+  
+  .filterContainer {
+    margin-top: 2rem;
+  }
+
+  /* Hide mobile elements on desktop */
+  .formHeaderMobile {
+    display: none;
+  }
+
+  .mobileButtons {
+    display: none;
+  }
+
+  /* Hide mobile actions container on desktop */
+  .mobileActionsContainer {
+    display: none;
   }
 }
 
-/* Mobile */
+/* Mobile styles */
 @media (max-width: 768px) {
+  /* ===== CONTAINER PRINCIPAL ===== */
+  .filterContainer {
+    margin-top: 1.5rem;
+    padding-bottom: 0; /* Removido porque el contenedor fijo ahora está arriba */
+  }
+  
   .filterButtonMobile {
-    display: flex;
+    display: none; /* Ocultar el botón original en mobile */
   }
   
-  .formWrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1001;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    border-radius: 0;
-  }
-  
-  .filterContainer.open .formWrapper {
-    transform: translateX(0);
-  }
-  
-  .filterContainer.open::before {
-    content: '';
+  /* ===== OVERLAY Y DRAWER ===== */
+  .overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -345,29 +398,225 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1000;
+    cursor: pointer;
   }
   
+  /* Mobile drawer - 45% width, slide from right */
+  .formWrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 45%;
+    height: 100vh;
+    z-index: 1001;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0.5rem 0 0 0.5rem;
+    background: #ffffff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .filterContainer.open .formWrapper {
+    transform: translateX(0);
+  }
+  
+  /* ===== HEADER MOBILE ===== */
   .formHeaderMobile {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: #0a0d14;
+    color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-shrink: 0;
+    min-height: 4rem;
+    width: 100%;
   }
-  
-  .form {
-    height: calc(100% - 60px);
-    overflow-y: auto;
+
+  .formHeaderMobile h2 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
   }
-  
-  .formTitle {
-    flex-direction: column;
-    gap: 0.25rem;
-    align-items: stretch;
-  }
-  
-  .titleActions {
+
+  .formHeaderMobile .closeButton {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    z-index: 11;
+    position: relative;
+  }
+
+  .formHeaderMobile .closeButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .formHeaderMobile .closeButton svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
+  }
+  
+  /* ===== CONTENIDO DEL FORMULARIO ===== */
+  .form {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 0;
+    height: calc(100vh - 4rem);
+    /* Remover barra de scroll visual */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  /* Remover barra de scroll en WebKit browsers */
+  .form::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ===== LAYOUT MOBILE ===== */
+  .rangesSection,
+  .selectsSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .formGroup {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .formGroup > div {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+  .titleActions {
+    display: none;
+  }
+
+  /* ===== BOTONES MOBILE ===== */
+  .mobileButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .mobileButtons .applyButton,
+  .mobileButtons .clearButton {
+    width: 100%;
+    max-width: none;
+    height: 3rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .mobileButtons .applyButton {
+    background: #0a0d14;
+    color: #ffffff;
+    border: 1px solid #0a0d14;
+  }
+
+  .mobileButtons .clearButton {
+    background: #f3f4f6;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+  }
+
+  /* ===== CONTENEDOR FIJO MOBILE ===== */
+  .mobileActionsContainer {
+    position: fixed;
+    top: 65px;
+    left: 0;
+    right: 0;
+    display: flex;
+    background: rgba(18, 18, 18, 0.8);
+    backdrop-filter: blur(12px);
+    z-index: 999;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    -webkit-overflow-scrolling: touch;
+    touch-action: manipulation;
+  }
+
+  .mobileActionsContainer.visible {
+    transform: translateY(0);
+  }
+
+  .mobileActionButton {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 1rem 1rem 1rem;
+    background: transparent;
+    color: white;
+    border: none;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    min-height: 44px;
+  }
+
+  .mobileActionButton span {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobileActionButton:first-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .mobileActionButton:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .mobileActionButton:active {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .mobileActionButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }
 
-/* Touch devices - Optimización para dispositivos táctiles */
+/* ===== TOUCH DEVICES ===== */
 @media (hover: none) and (pointer: coarse) {
   .applyButton:hover:not(:disabled),
   .clearButton:hover:not(:disabled),
