@@ -25,4 +25,4 @@ export {
   SkeletonImage,
   SkeletonTitle,
   SkeletonText
-} from '../skeletons/Skeleton' 
+} from '../skeletons/Skeleton/index.js' 

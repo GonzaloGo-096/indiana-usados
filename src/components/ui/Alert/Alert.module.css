@@ -99,7 +99,7 @@
 }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
     .alert {
         padding: var(--spacing-3);
     }

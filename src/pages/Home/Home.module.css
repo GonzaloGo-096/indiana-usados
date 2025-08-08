@@ -151,7 +151,7 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
   .hero {
     grid-template-columns: 1fr;
     text-align: center;
@@ -193,7 +193,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--breakpoint-sm)) {
   .heroTitle {
     font-size: var(--font-size-2xl);
   }

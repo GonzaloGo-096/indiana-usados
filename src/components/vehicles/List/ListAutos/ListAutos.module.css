@@ -14,21 +14,21 @@
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .container {
     min-height: 100vh;
-    padding: 32px 0;
+    padding: var(--section-padding-desktop) 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
     .container {
-        padding: 16px 0;
+        padding: var(--section-padding-mobile) 0;
     }
 }
 
 /* ===== CONTENEDOR DE LISTA CON TÍTULO ===== */
 .listContainer {
     position: relative;
-    max-width: 1200px;
+    max-width: var(--container-max-width);
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 var(--container-padding-desktop);
     margin-top: 48px;
 }
 
@@ -90,9 +90,9 @@
     padding-left: 24px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
     .listContainer {
-        padding: 0 8px;
+        padding: 0 var(--container-padding-mobile);
         margin-top: 32px;
     }
     
@@ -134,14 +134,14 @@
     min-height: 150px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
     .grid {
         gap: 24px;
     }
 }
 
 /* Tablet: 2 columnas */
-@media (min-width: 768px) {
+@media (min-width: var(--breakpoint-md)) {
     .grid {
         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         gap: 28px;
@@ -149,7 +149,7 @@
 }
 
 /* Desktop: 3 columnas */
-@media (min-width: 1200px) {
+@media (min-width: var(--breakpoint-xl)) {
     .grid {
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         gap: 28px;
@@ -162,7 +162,7 @@
     width: 100%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
     .cardWrapper {
         min-height: 300px;
     }
@@ -303,7 +303,7 @@
 }
 
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
     .container {
         padding: 16px 0;
     }

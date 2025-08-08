@@ -13,7 +13,7 @@
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .container {
-  max-width: 1200px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 2rem 1rem;
   min-height: 100vh;
@@ -60,7 +60,7 @@
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
   .container {
     padding: 1.5rem 0.75rem;
   }
@@ -75,7 +75,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--breakpoint-sm)) {
   .container {
     padding: 1rem 0.5rem;
   }

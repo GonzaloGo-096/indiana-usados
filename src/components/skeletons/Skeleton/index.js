@@ -6,4 +6,4 @@ export {
   SkeletonButton,
   SkeletonGroup,
   SkeletonGrid
-} from './Skeleton' 
+} from './Skeleton.jsx' 

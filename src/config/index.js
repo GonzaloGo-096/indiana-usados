@@ -152,4 +152,5 @@ export const validateConfig = () => {
 }
 
 // ===== EXPORTACIONES =====
+export { AUTH_CONFIG } from './auth.js'
 export default config 

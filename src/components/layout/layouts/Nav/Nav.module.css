@@ -115,7 +115,7 @@
   font-weight: 600;
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
   .container {
     padding: 6px 16px 6px 0;
   }
@@ -200,7 +200,7 @@
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: var(--breakpoint-lg)) {
   .nav {
     position: absolute;
     left: 50%;

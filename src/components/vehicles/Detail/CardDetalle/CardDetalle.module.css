@@ -263,7 +263,7 @@
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 1024px) {
+@media (max-width: var(--breakpoint-xl)) {
   .cardContent {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -280,7 +280,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-md)) {
   .cardContent {
     padding: 1.5rem;
   }
@@ -348,7 +348,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--breakpoint-sm)) {
   .cardContent {
     padding: 1rem;
   }
