@@ -102,6 +102,7 @@
   border: 1px solid #e5e7eb;
   overflow: visible; /* ✅ CAMBIADO: Permitir que los dropdowns se vean */
   z-index: 10; /* ✅ AGREGADO: Establecer stacking context */
+  padding: 0 1rem; /* ✅ AJUSTADO: Padding horizontal reducido a la mitad */
 }
 
 /* ===== FORM HEADER MOBILE ===== */
@@ -161,15 +162,15 @@
 .formTitle {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; /* ✅ MANTENER: Centrado vertical */
   margin-bottom: 0.0625rem;
-  padding-bottom: 0.0625rem;
+  padding: 0.5rem 0; /* ✅ AJUSTADO: Padding más sutil que se adapta a los botones */
   border-bottom: 1px solid #e5e7eb;
 }
 
 .formTitle h3 {
   color: #0a0d14;
-  font-size: 0.875rem;
+  font-size: 1rem; /* ✅ AUMENTADO: De 0.875rem a 1rem */
   font-weight: 600;
   margin: 0;
 }
@@ -212,7 +213,7 @@
   background: #ffffff;
   padding: 0.5rem;
   border-radius: 0.375rem;
-  border: 1px solid #e5e7eb;
+  border: none; /* ✅ CAMBIADO: Sin borde */
   position: relative; /* ✅ MANTENER: Stacking context esencial */
 }
 
@@ -292,7 +293,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem;
+  padding: 0.375rem 0.75rem; /* ✅ REDUCIDO: De 0.5rem 1rem a 0.375rem 0.75rem */
   border-radius: 0.375rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -300,7 +301,7 @@
   transition: all 0.2s ease;
   border: 1px solid transparent;
   text-decoration: none;
-  min-height: 2.5rem;
+  min-height: 2rem; /* ✅ REDUCIDO: De 2.5rem a 2rem */
 }
 
 .applyButton {
