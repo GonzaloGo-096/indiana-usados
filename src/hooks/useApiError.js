@@ -12,7 +12,7 @@
  */
 
 import { useState, useCallback, useEffect } from 'react'
-import { config } from '../config'
+import { config } from '@config'
 
 /**
  * Hook para manejo de errores de API

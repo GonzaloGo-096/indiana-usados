@@ -13,7 +13,7 @@
  */
 
 import axiosInstance, { detailAxiosInstance } from './axiosInstance'
-import { validatePostmanResponse, extractPostmanData } from '../config/postman'
+import { validatePostmanResponse, extractPostmanData } from '@config/postman'
 import { getMockVehicles, getMockVehicleById } from './mockData'
 
 // ✅ CONFIGURACIÓN DINÁMICA DE ENTORNO

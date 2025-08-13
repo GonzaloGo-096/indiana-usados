@@ -8,7 +8,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
-import { config } from '../config/index.js'
+import { config } from '@config'
 
 // Configuración de filtros por defecto
 const DEFAULT_FILTERS = {

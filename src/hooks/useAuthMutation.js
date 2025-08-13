@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { authService } from '../services/authService'
-import { AUTH_CONFIG } from '../config/auth'
+import { authService } from '@services'
+import { AUTH_CONFIG } from '@config/auth'
 
 /**
  * Hook simplificado para manejar mutaciones de autenticación con React Query

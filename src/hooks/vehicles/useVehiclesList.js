@@ -14,7 +14,7 @@
 import React from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, useCallback, useMemo } from 'react'
-import vehiclesApi from '../../api/vehiclesApi'
+import { vehiclesApi } from '@api'
 
 /**
  * Hook unificado para listas de vehículos

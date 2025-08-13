@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
-import { AUTH_CONFIG } from '../config/auth'
-import { authService } from '../services/authService'
+import { AUTH_CONFIG } from '@config/auth'
+import { authService } from '@services'
 
 export const useAuth = () => {
   const [user, setUser] = useState(null)

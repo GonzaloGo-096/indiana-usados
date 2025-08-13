@@ -1,20 +1,20 @@
 /**
  * hooks/vehicles/index.js - Exportaciones de hooks de vehículos
  * 
- * Hooks especializados:
- * - useVehiclesData: Hook base para datos
- * - useVehiclesInfinite: Hook para infinite scroll
+ * Hooks disponibles:
+ * - useVehiclesList: Hook unificado para listas (reemplaza useVehiclesData + useVehiclesInfinite)
  * - useVehicleDetail: Hook para detalle individual
  * - useVehiclesQuery: Hook unificador (mantiene compatibilidad)
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Hooks unificados y optimizados
  */
 
-// Hooks especializados
-export { useVehiclesData } from './useVehiclesData'
-export { useVehiclesInfinite } from './useVehiclesInfinite'
+// ✅ Hook unificado para listas
+export { useVehiclesList } from './useVehiclesList'
+
+// ✅ Hook para detalle individual
 export { useVehicleDetail } from './useVehicleDetail'
 
-// Hook unificador (mantiene compatibilidad)
+// ✅ Hook unificador (mantiene compatibilidad)
 export { useVehiclesQuery } from './useVehiclesQuery' 

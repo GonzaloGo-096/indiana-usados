@@ -13,8 +13,8 @@
  */
 
 import React, { memo, useCallback, useState, useMemo } from 'react'
-import { useVehiclesQuery } from '@hooks/vehicles/useVehiclesQuery'
-import { useErrorHandler } from '@hooks/useErrorHandler'
+import { useVehiclesQuery } from '@hooks'
+import { useErrorHandler } from '@hooks'
 import { FilterFormSimplified } from '@vehicles'
 import { AutosGrid } from '@vehicles'
 import { ScrollToTop } from '@ui'

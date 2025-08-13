@@ -12,7 +12,7 @@
  */
 
 import { useQuery } from '@tanstack/react-query'
-import vehiclesApi from '../api/vehiclesApi'
+import { vehiclesApi } from '@api'
 
 /**
  * Hook optimizado para obtener detalle de vehículo

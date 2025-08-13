@@ -13,9 +13,9 @@
 
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useFilterReducer } from '@hooks/filters/useFilterReducer'
-import RangeSlider from '@ui/RangeSlider/RangeSlider'
-import MultiSelect from '@ui/MultiSelect/MultiSelect'
+import { useFilterReducer } from '@hooks'
+import { RangeSlider } from '@ui'
+import { MultiSelect } from '@ui'
 import { marcas, combustibles, cajas } from '@constants'
 import styles from './FilterFormSimplified.module.css'
 
