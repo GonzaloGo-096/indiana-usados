@@ -37,7 +37,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
             precio: auto.precio || '',
             año: auto.año || '',
             kms: auto.kms || '',
-            caja: auto.caja || auto.transmisión || '',
+            caja: auto.caja || '',
             color: auto.color || '',
             categoria: auto.categoria || '',
             combustible: auto.combustible || '',

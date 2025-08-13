@@ -21,7 +21,7 @@ export const mockVehicles = [
         "año": 2020,
         "precio": 10000000,
         "combustible": "Gasolina",
-        "transmisión": "Automática",
+        "caja": "Automática",
         "kilometraje": 50000,
         "kms": 50000,
         "cilindrada": "2.0",
@@ -51,7 +51,7 @@ export const mockVehicles = [
         "año": 2021,
         "precio": 8594987,
         "combustible": "Gasolina",
-        "transmisión": "Automática",
+        "caja": "Automática",
         "kilometraje": 30000,
         "kms": 30000,
         "cilindrada": "2.5",
@@ -81,7 +81,7 @@ export const mockVehicles = [
         "año": 2019,
         "precio": 7500000,
         "combustible": "Gasolina",
-        "transmisión": "Manual",
+        "caja": "Manual",
         "kilometraje": 70000,
         "kms": 70000,
         "cilindrada": "1.8",
@@ -110,7 +110,7 @@ export const mockVehicles = [
         "año": 2022,
         "precio": 15000000,
         "combustible": "Gasolina",
-        "transmisión": "Automática",
+        "caja": "Automática",
         "kilometraje": 15000,
         "kms": 15000,
         "cilindrada": "5.0",
@@ -140,7 +140,7 @@ export const mockVehicles = [
         "año": 2021,
         "precio": 12000000,
         "combustible": "Gasolina",
-        "transmisión": "Automática",
+        "caja": "Automática",
         "kilometraje": 25000,
         "kms": 25000,
         "cilindrada": "2.0",
@@ -170,7 +170,7 @@ export const mockVehicles = [
         "año": 2020,
         "precio": 13500000,
         "combustible": "Gasolina",
-        "transmisión": "Automática",
+        "caja": "Automática",
         "kilometraje": 35000,
         "kms": 35000,
         "cilindrada": "2.0",
@@ -200,7 +200,7 @@ export const mockVehicles = [
         "año": 2021,
         "precio": 11000000,
         "combustible": "Gasolina",
-        "transmisión": "Automática",
+        "caja": "Automática",
         "kilometraje": 20000,
         "kms": 20000,
         "cilindrada": "2.0",
@@ -226,7 +226,7 @@ export const mockVehicles = [
         "año": 2019,
         "precio": 8500000,
         "combustible": "Gasolina",
-        "transmisión": "Manual",
+        "caja": "Manual",
         "kilometraje": 45000,
         "kms": 45000,
         "cilindrada": "2.0",
@@ -252,7 +252,7 @@ export const mockVehicles = [
         "año": 2020,
         "precio": 6500000,
         "combustible": "Gasolina",
-        "transmisión": "Automática",
+        "caja": "Automática",
         "kilometraje": 55000,
         "kms": 55000,
         "cilindrada": "1.8",
@@ -304,7 +304,7 @@ export const mockVehicles = [
         "año": 2020,
         "precio": 6800000,
         "combustible": "Gasolina",
-        "transmisión": "Automática",
+        "caja": "Automática",
         "kilometraje": 40000,
         "kms": 40000,
         "cilindrada": "2.0",
@@ -330,7 +330,7 @@ export const mockVehicles = [
         "año": 2021,
         "precio": 5900000,
         "combustible": "Gasolina",
-        "transmisión": "Automática",
+        "caja": "Automática",
         "kilometraje": 25000,
         "kms": 25000,
         "cilindrada": "2.0",
@@ -420,8 +420,8 @@ export const applyLocalFilters = (vehicles, filters) => {
             return false
         }
         
-        // ✅ FILTRO POR TRANSMISIÓN
-        if (filters.transmisión && vehicle.transmisión !== filters.transmisión) {
+        // ✅ FILTRO POR CAJA
+        if (filters.caja && vehicle.caja !== filters.caja) {
             return false
         }
         

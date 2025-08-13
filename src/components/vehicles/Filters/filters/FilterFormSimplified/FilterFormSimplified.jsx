@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form'
 import { useFilterReducer } from '@hooks/filters/useFilterReducer'
 import RangeSlider from '@ui/RangeSlider/RangeSlider'
 import MultiSelect from '@ui/MultiSelect/MultiSelect'
-import { marcas, combustibles, transmisiones } from '@constants'
+import { marcas, combustibles, cajas } from '@constants'
 import styles from './FilterFormSimplified.module.css'
 
 const FilterFormSimplified = React.memo(React.forwardRef(({ 
@@ -107,14 +107,14 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
       kilometrajeDesde: 0,
       kilometrajeHasta: 200000,
       combustible: [],
-      transmision: []
+      caja: []
     }
   })
 
   // Watch específico por campo
   const marca = watch('marca')
   const combustible = watch('combustible')
-  const transmision = watch('transmision')
+  const caja = watch('caja')
   const añoDesde = watch('añoDesde')
   const precioDesde = watch('precioDesde')
   const kilometrajeDesde = watch('kilometrajeDesde')
@@ -123,10 +123,10 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   const activeFiltersCount = (() => {
     const hasMarca = marca?.length > 0
     const hasCombustible = combustible?.length > 0
-    const hasTransmision = transmision?.length > 0
+    const hasCaja = caja?.length > 0
     const hasRanges = añoDesde !== 1990 || precioDesde !== 5000000 || kilometrajeDesde !== 0
     
-    return [hasMarca, hasCombustible, hasTransmision, hasRanges].filter(Boolean).length
+    return [hasMarca, hasCombustible, hasCaja, hasRanges].filter(Boolean).length
   })()
 
   // Handlers optimizados
@@ -161,8 +161,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
       kilometrajeDesde: 0,
       kilometrajeHasta: 200000,
       combustible: [],
-      transmision: []
-    })
+          caja: []
+  })
   }
 
   // Formateadores
@@ -203,8 +203,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     setValue('combustible', values)
   }
 
-  const handleTransmisionChange = (values) => {
-    setValue('transmision', values)
+  const handleCajaChange = (values) => {
+    setValue('caja', values)
   }
 
   return (
@@ -380,9 +380,9 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
             <div className={styles.formGroup}>
               <MultiSelect
                 label="Caja"
-                options={transmisiones}
-                value={transmision || []}
-                onChange={handleTransmisionChange}
+                        options={cajas}
+        value={caja || []}
+        onChange={handleCajaChange}
                 placeholder="Todas las cajas"
               />
             </div>

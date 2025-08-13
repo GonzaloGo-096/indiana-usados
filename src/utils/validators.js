@@ -222,7 +222,7 @@ export const validateAndSanitizeVehicle = (vehicle) => {
         precio: vehicle.precio || 0,
         año: vehicle.año || '',
         kms: vehicle.kms || '',
-        transmisión: vehicle.transmisión?.toString().trim() || '',
+        caja: vehicle.caja?.toString().trim() || '',
         combustible: vehicle.combustible?.toString().trim() || '',
         color: vehicle.color?.toString().trim() || '',
         cilindrada: vehicle.cilindrada?.toString().trim() || '',

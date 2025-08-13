@@ -39,8 +39,8 @@ export const colores = [
     'Plata'
 ]
 
-// ✅ OPCIONES DE TRANSMISIÓN
-export const transmisiones = [
+// ✅ OPCIONES DE CAJA
+export const cajas = [
     'Manual',
     'Automática'
 ]
@@ -138,7 +138,7 @@ export const defaultFilters = {
     añoMax: '',
     kilometrosMin: '',
     kilometrosMax: '',
-    transmisión: '',
+    caja: '',
     combustible: '',
     color: '',
     categoria: '',
@@ -178,7 +178,7 @@ export const filterLabels = {
     añoMax: 'Año máximo',
     kilometrosMin: 'Kilometraje mínimo',
     kilometrosMax: 'Kilometraje máximo',
-    transmisión: 'Transmisión',
+    caja: 'Caja',
     combustible: 'Combustible',
     color: 'Color',
     categoria: 'Categoría',
@@ -199,7 +199,7 @@ export const filterPlaceholders = {
     añoMax: 'Año máximo',
     kilometrosMin: 'Km mínimo',
     kilometrosMax: 'Km máximo',
-    transmisión: 'Seleccionar transmisión',
+    caja: 'Seleccionar caja',
     combustible: 'Seleccionar combustible',
     color: 'Seleccionar color',
     categoria: 'Seleccionar categoría',

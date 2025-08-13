@@ -17,7 +17,7 @@ import {
     formatPrice, 
     formatKilometraje, 
     formatYear, 
-    formatTransmission,
+    formatCaja,
     formatBrandModel
 } from '@utils/formatters'
 import styles from './CardAuto.module.css'
@@ -39,9 +39,9 @@ export const CardAuto = memo(({ auto }) => {
         price: formatPrice(auto.precio),
         kilometers: formatKilometraje(auto.kms),
         year: formatYear(auto.año),
-        transmission: formatTransmission(auto.transmisión),
+        caja: formatCaja(auto.caja),
         brandModel: formatBrandModel(auto.marca, auto.modelo)
-    }), [auto.precio, auto.kms, auto.año, auto.transmisión, auto.marca, auto.modelo])
+    }), [auto.precio, auto.kms, auto.año, auto.caja, auto.marca, auto.modelo])
 
     // ✅ MEMOIZAR ALT TEXT
     const altText = useMemo(() => {
@@ -108,7 +108,7 @@ export const CardAuto = memo(({ auto }) => {
                         
                         <div className={styles['card__data_item']}>
                             <span className={styles['card__data_label']}>Caja</span>
-                            <span className={styles['card__data_value']}>{formattedData.transmission}</span>
+                            <span className={styles['card__data_value']}>{formattedData.caja}</span>
                         </div>
                     </div>
                 </div>

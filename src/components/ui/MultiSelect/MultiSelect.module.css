@@ -103,7 +103,7 @@
   border: 1px solid var(--color-neutral-300);
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-lg);
-  z-index: 1000;
+  z-index: 9999; /* ✅ AUMENTADO: Z-index muy alto para asegurar visibilidad */
   margin-top: 2px;
   max-height: 300px;
   overflow: hidden;

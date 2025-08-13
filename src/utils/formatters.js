@@ -60,13 +60,13 @@ export const formatYear = (year) => {
 }
 
 /**
- * Formatea transmisión con primera letra mayúscula
- * @param {string} transmission - Transmisión a formatear
- * @returns {string} - Transmisión formateada
+ * Formatea caja con primera letra mayúscula
+ * @param {string} caja - Caja a formatear
+ * @returns {string} - Caja formateada
  */
-export const formatTransmission = (transmission) => {
-    if (!transmission) return '-'
-    return transmission.charAt(0).toUpperCase() + transmission.slice(1).toLowerCase()
+export const formatCaja = (caja) => {
+    if (!caja) return '-'
+    return caja.charAt(0).toUpperCase() + caja.slice(1).toLowerCase()
 }
 
 /**
