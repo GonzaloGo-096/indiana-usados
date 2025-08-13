@@ -16,7 +16,6 @@ import { CardAuto } from '@vehicles'
 import { Button } from '@ui'
 import { ListAutosSkeleton } from '@shared'
 import { Alert } from '@ui'
-import { useIntersectionObserver } from '@hooks/useIntersectionObserver'
 import styles from './ListAutos.module.css'
 
 /**
@@ -60,25 +59,15 @@ const AutosGrid = memo(({
     error, 
     onRetry,
     hasNextPage = false,
-    isFetchingNextPage = false,
+    isLoadingMore = false,
     onLoadMore = null
 }) => {
-    // Callback memoizado para loadMore
+    // ✅ Callback memoizado para loadMore
     const handleLoadMore = useCallback(() => {
-        if (hasNextPage && !isFetchingNextPage && onLoadMore) {
+        if (hasNextPage && !isLoadingMore && onLoadMore) {
             onLoadMore()
         }
-    }, [hasNextPage, isFetchingNextPage, onLoadMore])
-
-    // Intersection observer para carga automática
-    const loadMoreRef = useIntersectionObserver(() => {
-        if (hasNextPage && !isFetchingNextPage) {
-            handleLoadMore()
-        }
-    }, {
-        threshold: 0.1,
-        rootMargin: '100px'
-    })
+    }, [hasNextPage, isLoadingMore, onLoadMore])
 
     // ✅ OPTIMIZADO: Memoizar el grid de vehículos con keys estables
     const vehiclesGrid = useMemo(() => {
@@ -94,11 +83,10 @@ const AutosGrid = memo(({
                 <MemoizedCardAuto 
                     key={stableKey}
                     vehicle={vehicle}
-                    ref={index === vehicles.length - 1 ? loadMoreRef : null}
                 />
             )
         })
-    }, [vehicles, loadMoreRef])
+    }, [vehicles])
 
     // Estado de carga inicial
     if (isLoading && (!vehicles || vehicles.length === 0)) {
@@ -134,12 +122,16 @@ const AutosGrid = memo(({
                 {vehiclesGrid}
             </div>
 
-            {/* Indicador de carga más */}
-            {isFetchingNextPage && (
-                <div className={styles.loadMoreIndicator}>
-                    <div className={styles.loadingMore}>
-                        <span>Cargando más vehículos...</span>
-                    </div>
+            {/* ✅ BOTÓN "CARGAR MÁS" */}
+            {hasNextPage && (
+                <div className={styles.loadMoreSection}>
+                    <button 
+                        className={styles.loadMoreButton}
+                        onClick={handleLoadMore}
+                        disabled={isLoadingMore}
+                    >
+                        {isLoadingMore ? 'Cargando...' : 'Cargar más vehículos'}
+                    </button>
                 </div>
             )}
 

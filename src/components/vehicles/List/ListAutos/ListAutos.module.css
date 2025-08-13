@@ -28,8 +28,8 @@
     position: relative;
     max-width: var(--container-max-width);
     margin: 0 auto;
-    padding: 0 var(--container-padding-desktop);
-    margin-top: 64px; /* ✅ AUMENTADO: De 48px a 64px para más separación del Nav */
+    padding: 0 42px; /* ✅ OPTIMIZADO: Padding uniforme en desktop */
+    margin-top: 64px; /* ✅ MANTENER: Separación del Nav */
 }
 
 /* Línea vertical sutil izquierda */
@@ -92,12 +92,13 @@
 
 @media (max-width: var(--breakpoint-md)) {
     .listContainer {
-        padding: 0 var(--container-padding-mobile);
+        padding: 0 64px; /* ✅ OPTIMIZADO: Padding más generoso en mobile (64px) */
         margin-top: 48px; /* ✅ MANTENER: Separación del Nav */
     }
     
     .content {
-        padding-left: 16px;
+        padding-left: 48px; /* ✅ OPTIMIZADO: Padding más generoso en mobile */
+        padding-right: 48px; /* ✅ OPTIMIZADO: Padding más generoso en mobile */
     }
     
     .titleSection {
@@ -322,5 +323,73 @@
     .errorBanner {
         margin-bottom: 24px;
         padding: 12px;
+    }
+}
+
+/* ✅ BOTÓN "CARGAR MÁS" */
+.loadMoreSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+    margin-top: 1rem;
+}
+
+.loadMoreButton {
+    background: #2563eb; /* ✅ MISMO COLOR que botón "Subir" */
+    color: white;
+    border: none;
+    border-radius: 50px; /* ✅ MISMO BORDER-RADIUS que botón "Subir" */
+    padding: 0.875rem 1.5rem; /* ✅ MISMO PADDING que botón "Subir" */
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* ✅ MISMA TRANSICIÓN */
+    min-width: 200px;
+    /* ✅ OPTIMIZACIÓN: Performance */
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+.loadMoreButton:hover:not(:disabled) {
+    background: #1d4ed8; /* ✅ COLOR HOVER más oscuro */
+    transform: translateY(-2px); /* ✅ MISMO EFECTO que botón "Subir" */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* ✅ MISMA SOMBRA */
+}
+
+.loadMoreButton:disabled {
+    background: var(--color-neutral-400);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.loadMoreButton:active:not(:disabled) {
+    transform: translateY(0); /* ✅ MISMO EFECTO que botón "Subir" */
+}
+
+/* ✅ ANIMACIÓN: Entrada suave como botón "Subir" */
+.loadMoreButton {
+    animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) translateZ(0);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) translateZ(0);
+    }
+}
+
+/* ✅ RESPONSIVE para botón */
+@media (max-width: 768px) {
+    .loadMoreButton {
+        width: 100%;
+        max-width: 300px;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
     }
 } 

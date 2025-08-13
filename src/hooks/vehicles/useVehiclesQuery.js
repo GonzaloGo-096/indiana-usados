@@ -10,8 +10,7 @@
  * @version 6.0.0 - Refactorizado con hooks especializados
  */
 
-import { useVehiclesData } from './useVehiclesData'
-import { useVehiclesInfinite } from './useVehiclesInfinite'
+import { useVehiclesList } from './useVehiclesList'
 import { useVehicleDetail } from './useVehicleDetail'
 
 /**
@@ -76,23 +75,12 @@ export const useVehiclesQuery = (filters = {}, options = {}) => {
         }
     }
 
-    // Usar infinite scroll o datos simples según configuración
-    if (useInfiniteScroll) {
-        return useVehiclesInfinite(filters, {
-            enabled,
-            staleTime,
-            gcTime,
-            retry,
-            refetchOnWindowFocus,
-            maxPages
-        })
-    } else {
-        return useVehiclesData(filters, {
-            enabled,
-            staleTime,
-            gcTime,
-            retry,
-            refetchOnWindowFocus
-        })
-    }
+    // ✅ Usar hook unificado para listas
+    return useVehiclesList(filters, {
+        enabled,
+        staleTime,
+        gcTime,
+        retry,
+        refetchOnWindowFocus
+    })
 } 

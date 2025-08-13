@@ -30,17 +30,17 @@ const VehiclesList = memo(() => {
         enableAutoClear: true
     })
     
-    // Hook unificado optimizado
+    // ✅ Hook unificado optimizado
     const {
         vehicles,
         isLoading,
         isError: isQueryError,
         error: queryError,
         hasNextPage,
-        isFetchingNextPage,
+        isLoadingMore,
         loadMore,
         refetch,
-        clearCache
+        invalidateCache
     } = useVehiclesQuery()
 
     // Manejar errores de query
@@ -56,16 +56,15 @@ const VehiclesList = memo(() => {
         clearError()
         
         try {
-            // Limpiar cache y recargar con nuevos filtros
-            clearCache()
-            await refetch()
+            // ✅ INVALIDAR cache y recargar con nuevos filtros
+            invalidateCache()
         } catch (error) {
             handleError(error, 'apply-filters')
             throw error
         } finally {
             setIsFiltering(false)
         }
-    }, [clearCache, refetch, handleError, clearError])
+    }, [invalidateCache, handleError, clearError])
 
     // ✅ OPTIMIZADO: Manejar reintento memoizado
     const handleRetry = useCallback(() => {
@@ -86,10 +85,10 @@ const VehiclesList = memo(() => {
         isError,
         error,
         hasNextPage,
-        isFetchingNextPage,
+        isLoadingMore,
         onLoadMore: loadMore,
         onRetry: handleRetry
-    }), [vehicles, isLoading, isError, error, hasNextPage, isFetchingNextPage, loadMore, handleRetry])
+    }), [vehicles, isLoading, isError, error, hasNextPage, isLoadingMore, loadMore, handleRetry])
 
     return (
         <VehiclesErrorBoundary>

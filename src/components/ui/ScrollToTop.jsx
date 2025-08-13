@@ -16,73 +16,25 @@ import styles from './ScrollToTop.module.css'
 
 export const ScrollToTop = ({ 
     threshold = 300, 
-    smooth = true,
-    showCondition = () => true,
     children 
 }) => {
     const [isVisible, setIsVisible] = useState(false)
-    const [isScrolling, setIsScrolling] = useState(false)
-    const scrollTimeout = useRef(null)
-    const lastScrollY = useRef(0)
 
-    // ✅ DETECTAR: Si mostrar el botón
-    const shouldShow = useCallback(() => {
-        const scrollY = window.scrollY
-        return scrollY > threshold && showCondition()
-    }, [threshold, showCondition])
+    // ✅ FUNCIÓN: Scroll hacia arriba ULTRA SIMPLE
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
 
-    // ✅ MANEJAR: Scroll con throttling
-    const handleScroll = useCallback(() => {
-        if (scrollTimeout.current) return
-
-        scrollTimeout.current = requestAnimationFrame(() => {
-            const currentScrollY = window.scrollY
-            const shouldShowButton = shouldShow()
-            
-            setIsVisible(shouldShowButton)
-            lastScrollY.current = currentScrollY
-            
-            scrollTimeout.current = null
-        })
-    }, [shouldShow])
-
-    // ✅ FUNCIÓN: Scroll hacia arriba
-    const scrollToTop = useCallback(() => {
-        setIsScrolling(true)
-        
-        if (smooth) {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            })
-            
-            // ✅ DETECTAR: Cuando termina el scroll
-            const checkScrollEnd = () => {
-                if (window.scrollY === 0) {
-                    setIsScrolling(false)
-                } else {
-                    requestAnimationFrame(checkScrollEnd)
-                }
-            }
-            
-            requestAnimationFrame(checkScrollEnd)
-        } else {
-            window.scrollTo(0, 0)
-            setIsScrolling(false)
-        }
-    }, [smooth])
-
-    // ✅ EVENT LISTENERS
+    // ✅ MANEJAR: Scroll SIMPLE Y DIRECTO
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll, { passive: true })
-        
-        return () => {
-            window.removeEventListener('scroll', handleScroll)
-            if (scrollTimeout.current) {
-                cancelAnimationFrame(scrollTimeout.current)
-            }
+        const handleScroll = () => {
+            const shouldShow = window.scrollY > threshold
+            setIsVisible(shouldShow)
         }
-    }, [handleScroll])
+        
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [threshold])
 
     // ✅ RENDERIZADO CONDICIONAL
     if (!isVisible) {
@@ -91,9 +43,8 @@ export const ScrollToTop = ({
 
     return (
         <button
-            className={`${styles.scrollToTop} ${isScrolling ? styles.scrolling : ''}`}
+            className={styles.scrollToTop}
             onClick={scrollToTop}
-            disabled={isScrolling}
             aria-label="Subir al principio"
             title="Subir al principio"
         >
