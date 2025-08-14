@@ -8,10 +8,11 @@
  * - Estrategias de recuperación
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - OPTIMIZADO CON HOOK BASE
  */
 
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
+import { useErrorBase } from './useErrorBase'
 import { config } from '@config'
 
 /**
@@ -24,26 +25,13 @@ import { config } from '@config'
  * @returns {Object} - Estado y funciones del hook
  */
 export const useApiError = (options = {}) => {
-    const {
-        autoClearTime = 8000, // Más tiempo para errores de API
-        enableAutoClear = true,
-        onError = null
-    } = options
-
-    const [error, setError] = useState(null)
-    const [isError, setIsError] = useState(false)
-    const [errorCount, setErrorCount] = useState(0)
-
-    // Limpiar error automáticamente
-    useEffect(() => {
-        if (error && enableAutoClear) {
-            const timer = setTimeout(() => {
-                clearError()
-            }, autoClearTime)
-
-            return () => clearTimeout(timer)
-        }
-    }, [error, enableAutoClear, autoClearTime])
+    // ✅ USAR HOOK BASE PARA LÓGICA COMPARTIDA
+    const errorBase = useErrorBase({
+        autoClearTime: options.autoClearTime || 8000, // Más tiempo para errores de API
+        enableAutoClear: options.enableAutoClear !== false,
+        onError: options.onError,
+        onClear: options.onClear
+    })
 
     // Clasificar error de API
     const classifyApiError = useCallback((error) => {
@@ -181,18 +169,17 @@ export const useApiError = (options = {}) => {
     }, [])
 
     return {
-        // Estado
-        error,
-        isError,
-        errorCount,
-        errorType: error?.errorType,
+        // ✅ ESTADO Y FUNCIONES DEL HOOK BASE
+        ...errorBase,
         
-        // Funciones
+        // ✅ ESTADO ESPECÍFICO DE API
+        errorType: errorBase.error?.errorType,
+        
+        // ✅ FUNCIONES ESPECÍFICAS
         handleApiError,
-        clearError,
         retryOperation,
         
-        // Utilidades
+        // ✅ UTILIDADES
         classifyApiError,
         getFriendlyMessage
     }

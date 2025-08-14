@@ -8,10 +8,11 @@
  * - UI feedback
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - OPTIMIZADO CON HOOK BASE
  */
 
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
+import { useErrorBase } from './useErrorBase'
 
 /**
  * Hook para manejo de errores
@@ -22,57 +23,32 @@ import { useState, useCallback, useEffect } from 'react'
  * @returns {Object} - Estado y funciones del hook
  */
 export const useErrorHandler = (options = {}) => {
-    const {
-        autoClearTime = 5000,
-        enableAutoClear = true,
-        onError = null
-    } = options
+    // ✅ USAR HOOK BASE PARA LÓGICA COMPARTIDA
+    const errorBase = useErrorBase({
+        autoClearTime: options.autoClearTime || 5000,
+        enableAutoClear: options.enableAutoClear !== false,
+        onError: options.onError,
+        onClear: options.onClear
+    })
 
-    const [error, setError] = useState(null)
-    const [isError, setIsError] = useState(false)
-    const [errorCount, setErrorCount] = useState(0)
-
-    // ✅ LIMPIAR ERROR AUTOMÁTICAMENTE
-    useEffect(() => {
-        if (error && enableAutoClear) {
-            const timer = setTimeout(() => {
-                clearError()
-            }, autoClearTime)
-
-            return () => clearTimeout(timer)
-        }
-    }, [error, enableAutoClear, autoClearTime])
-
-    // ✅ MANEJAR ERROR
+    // ✅ MANEJAR ERROR CON LÓGICA ESPECÍFICA
     const handleError = useCallback((error, context = '') => {
         const errorInfo = {
             message: error?.message || 'Error inesperado',
             context,
             timestamp: new Date().toISOString(),
             stack: error?.stack,
-            count: errorCount + 1
+            count: errorBase.errorCount + 1
         }
 
         console.error(`❌ Error en ${context}:`, errorInfo)
         
-        setError(errorInfo)
-        setIsError(true)
-        setErrorCount(prev => prev + 1)
-
-        // ✅ CALLBACK PERSONALIZADO
-        if (onError) {
-            onError(errorInfo)
-        }
+        // ✅ USAR FUNCIONES DEL HOOK BASE
+        errorBase.handleError(errorInfo, context)
 
         // ✅ REPORTAR A MONITORING (FUTURO)
         reportToMonitoring(errorInfo)
-    }, [errorCount, onError])
-
-    // ✅ LIMPIAR ERROR
-    const clearError = useCallback(() => {
-        setError(null)
-        setIsError(false)
-    }, [])
+    }, [errorBase])
 
     // ✅ REINTENTAR OPERACIÓN
     const retryOperation = useCallback(async (operation, maxRetries = 3) => {
@@ -81,7 +57,7 @@ export const useErrorHandler = (options = {}) => {
         for (let attempt = 1; attempt <= maxRetries; attempt++) {
             try {
                 const result = await operation()
-                clearError()
+                errorBase.clearError()
                 return result
             } catch (error) {
                 lastError = error
@@ -97,7 +73,7 @@ export const useErrorHandler = (options = {}) => {
         // ✅ SI TODOS LOS INTENTOS FALLAN
         handleError(lastError, 'retry-operation')
         throw lastError
-    }, [handleError, clearError])
+    }, [handleError, errorBase.clearError])
 
     // ✅ REPORTAR A MONITORING
     const reportToMonitoring = (errorInfo) => {
@@ -153,14 +129,11 @@ export const useErrorHandler = (options = {}) => {
     }, [])
 
     return {
-        // ✅ ESTADO
-        error,
-        isError,
-        errorCount,
+        // ✅ ESTADO Y FUNCIONES DEL HOOK BASE
+        ...errorBase,
         
-        // ✅ FUNCIONES
+        // ✅ FUNCIONES ESPECÍFICAS
         handleError,
-        clearError,
         retryOperation,
         
         // ✅ UTILIDADES

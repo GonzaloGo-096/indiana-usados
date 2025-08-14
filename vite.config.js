@@ -63,5 +63,24 @@ export default defineConfig({
   preview: {
     port: 4173,
     open: true
+  },
+
+  // 🧪 CONFIGURACIÓN DE TESTING CON VITEST
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/',
+        'src/test/',
+        'dist/',
+        'coverage/',
+        '**/*.config.js',
+        '**/*.config.ts'
+      ]
+    }
   }
 })

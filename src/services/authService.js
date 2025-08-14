@@ -1,4 +1,4 @@
-import { AUTH_CONFIG } from '../config/auth'
+import { AUTH_CONFIG } from '@config/auth'
 
 /**
  * Servicio de autenticación para backend Node.js

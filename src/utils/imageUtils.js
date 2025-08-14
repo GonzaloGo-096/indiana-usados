@@ -8,7 +8,7 @@
  * @version 1.0.0
  */
 
-import defaultCarImage from '../assets/auto1.jpg'
+import { defaultCarImage } from '@assets'
 
 /**
  * Función helper para mostrar "-" cuando el valor esté vacío

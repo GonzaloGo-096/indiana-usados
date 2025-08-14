@@ -8,10 +8,10 @@
  * @version 2.0.0
  */
 
-import { generateCdnUrl } from '../services/imageService'
+import { generateCdnUrl } from '@services'
 
 // Importar imagen por defecto (esto funciona en Vite)
-import defaultCarImage from '../assets/auto1.jpg'
+import { defaultCarImage } from '@assets'
 
 // Configuración del entorno
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT || 'development'

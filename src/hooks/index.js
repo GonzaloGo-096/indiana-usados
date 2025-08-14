@@ -13,6 +13,7 @@ export { useVehiclesQuery } from './vehicles/useVehiclesQuery'
 export { useAutoDetail } from './useAutoDetail'
 
 // ✅ HOOKS DE ERROR HANDLING
+export { useErrorBase } from './useErrorBase'
 export { 
     useErrorHandler, 
     useApiErrorHandler, 
