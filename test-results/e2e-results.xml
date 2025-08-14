@@ -1,0 +1,1503 @@
+<testsuites id="" name="" tests="45" failures="38" skipped="0" errors="0" time="114.89170700000001">
+<testsuite name="navigation.spec.js" timestamp="2025-08-14T23:13:36.639Z" hostname="chromium" tests="4" failures="2" skipped="0" time="37.902" errors="0">
+<testcase name="Navegación Principal › should navigate to home page" classname="navigation.spec.js" time="9.419">
+</testcase>
+<testcase name="Navegación Principal › should navigate to vehicles page" classname="navigation.spec.js" time="10.478">
+<failure message="navigation.spec.js:18:3 should navigate to vehicles page" type="FAILURE">
+<![CDATA[  [chromium] › navigation.spec.js:18:3 › Navegación Principal › should navigate to vehicles page ───
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('[data-testid="filter-form"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('[data-testid="filter-form"]')
+
+
+      24 |     
+      25 |     // Verificar elementos de la página de vehículos
+    > 26 |     await expect(page.locator('[data-testid="filter-form"]')).toBeVisible()
+         |                                                               ^
+      27 |     await expect(page.locator('[data-testid="vehicles-grid"]')).toBeVisible()
+      28 |   })
+      29 |
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:26:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-chromium\video.webm]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Navegación Principal › should navigate to about page" classname="navigation.spec.js" time="7.757">
+</testcase>
+<testcase name="Navegación Principal › should have working navigation menu" classname="navigation.spec.js" time="10.248">
+<failure message="navigation.spec.js:41:3 should have working navigation menu" type="FAILURE">
+<![CDATA[  [chromium] › navigation.spec.js:41:3 › Navegación Principal › should have working navigation menu 
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('nav').locator('a[href="/"]') resolved to 2 elements:
+        1) <a href="/" class="_brand_1ug0z_41">…</a> aka getByRole('link', { name: 'Indiana Usados' })
+        2) <a href="/" class="_navLink_1ug0z_185 _active_1ug0z_223">Home</a> aka getByRole('navigation').getByRole('link', { name: 'Home' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('nav').locator('a[href="/"]')
+
+
+      45 |     
+      46 |     // Verificar enlaces principales
+    > 47 |     await expect(nav.locator('a[href="/"]')).toBeVisible()
+         |                                              ^
+      48 |     await expect(nav.locator('a[href="/vehiculos"]')).toBeVisible()
+      49 |     await expect(nav.locator('a[href="/nosotros"]')).toBeVisible()
+      50 |   })
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:47:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-chromium\video.webm]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="vehicles-flow.spec.js" timestamp="2025-08-14T23:13:36.639Z" hostname="chromium" tests="5" failures="5" skipped="0" time="72.48" errors="0">
+<testcase name="Flujo de Vehículos › should display vehicles list" classname="vehicles-flow.spec.js" time="10.573">
+<failure message="vehicles-flow.spec.js:9:3 should display vehicles list" type="FAILURE">
+<![CDATA[  [chromium] › vehicles-flow.spec.js:9:3 › Flujo de Vehículos › should display vehicles list ───────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('[data-testid="vehicles-grid"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('[data-testid="vehicles-grid"]')
+
+
+       9 |   test('should display vehicles list', async ({ page }) => {
+      10 |     // Verificar que la lista de vehículos se muestra
+    > 11 |     await expect(page.locator('[data-testid="vehicles-grid"]')).toBeVisible()
+         |                                                                 ^
+      12 |     
+      13 |     // Verificar que hay vehículos en la lista
+      14 |     const vehicles = page.locator('[data-testid^="vehicle-"]')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:11:65
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-chromium\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should apply filters correctly" classname="vehicles-flow.spec.js" time="14.196">
+<failure message="vehicles-flow.spec.js:18:3 should apply filters correctly" type="FAILURE">
+<![CDATA[  [chromium] › vehicles-flow.spec.js:18:3 › Flujo de Vehículos › should apply filters correctly ────
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="filter-form"]')
+
+
+      18 |   test('should apply filters correctly', async ({ page }) => {
+      19 |     // Abrir formulario de filtros
+    > 20 |     await page.click('[data-testid="filter-form"]')
+         |                ^
+      21 |     
+      22 |     // Seleccionar marca Toyota
+      23 |     await page.selectOption('select[name="marca"]', 'toyota')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:20:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-chromium\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should navigate to vehicle detail" classname="vehicles-flow.spec.js" time="14.647">
+<failure message="vehicles-flow.spec.js:32:3 should navigate to vehicle detail" type="FAILURE">
+<![CDATA[  [chromium] › vehicles-flow.spec.js:32:3 › Flujo de Vehículos › should navigate to vehicle detail ─
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid^="vehicle-"]:first-child')
+
+
+      32 |   test('should navigate to vehicle detail', async ({ page }) => {
+      33 |     // Hacer clic en el primer vehículo
+    > 34 |     await page.click('[data-testid^="vehicle-"]:first-child')
+         |                ^
+      35 |     
+      36 |     // Verificar que estamos en la página de detalle
+      37 |     await expect(page).toHaveURL(/.*vehiculo\/\d+/)
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:34:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-chromium\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should load more vehicles" classname="vehicles-flow.spec.js" time="15.968">
+<failure message="vehicles-flow.spec.js:44:3 should load more vehicles" type="FAILURE">
+<![CDATA[  [chromium] › vehicles-flow.spec.js:44:3 › Flujo de Vehículos › should load more vehicles ─────────
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="load-more-btn"]')
+
+
+      44 |   test('should load more vehicles', async ({ page }) => {
+      45 |     // Hacer scroll hasta el botón de cargar más
+    > 46 |     await page.locator('[data-testid="load-more-btn"]').scrollIntoViewIfNeeded()
+         |                                                         ^
+      47 |     
+      48 |     // Hacer clic en cargar más
+      49 |     await page.click('[data-testid="load-more-btn"]')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:46:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-chromium\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should handle search functionality" classname="vehicles-flow.spec.js" time="17.096">
+<failure message="vehicles-flow.spec.js:56:3 should handle search functionality" type="FAILURE">
+<![CDATA[  [chromium] › vehicles-flow.spec.js:56:3 › Flujo de Vehículos › should handle search functionality 
+
+    TimeoutError: page.fill: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('input[placeholder*="buscar"]')
+
+
+      56 |   test('should handle search functionality', async ({ page }) => {
+      57 |     // Buscar un vehículo específico
+    > 58 |     await page.fill('input[placeholder*="buscar"]', 'Toyota')
+         |                ^
+      59 |     
+      60 |     // Verificar que se muestra la búsqueda
+      61 |     await expect(page.locator('input[placeholder*="buscar"]')).toHaveValue('Toyota')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:58:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-chromium\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="navigation.spec.js" timestamp="2025-08-14T23:13:36.639Z" hostname="firefox" tests="4" failures="3" skipped="0" time="82.615" errors="0">
+<testcase name="Navegación Principal › should navigate to home page" classname="navigation.spec.js" time="10.509">
+</testcase>
+<testcase name="Navegación Principal › should navigate to vehicles page" classname="navigation.spec.js" time="24.165">
+<failure message="navigation.spec.js:18:3 should navigate to vehicles page" type="FAILURE">
+<![CDATA[  [firefox] › navigation.spec.js:18:3 › Navegación Principal › should navigate to vehicles page ────
+
+    Error: page.goto: Target page, context or browser has been closed
+    Call log:
+      - navigating to "http://localhost:3000/", waiting until "load"
+
+
+      4 |   test.beforeEach(async ({ page }) => {
+      5 |     // Navegar a la página principal antes de cada test
+    > 6 |     await page.goto('/')
+        |                ^
+      7 |   })
+      8 |
+      9 |   test('should navigate to home page', async ({ page }) => {
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:6:16
+]]>
+</failure>
+</testcase>
+<testcase name="Navegación Principal › should navigate to about page" classname="navigation.spec.js" time="20.883">
+<failure message="navigation.spec.js:30:3 should navigate to about page" type="FAILURE">
+<![CDATA[  [firefox] › navigation.spec.js:30:3 › Navegación Principal › should navigate to about page ───────
+
+    Error: browserContext.newPage: Target page, context or browser has been closed
+]]>
+</failure>
+</testcase>
+<testcase name="Navegación Principal › should have working navigation menu" classname="navigation.spec.js" time="27.058">
+<failure message="navigation.spec.js:41:3 should have working navigation menu" type="FAILURE">
+<![CDATA[  [firefox] › navigation.spec.js:41:3 › Navegación Principal › should have working navigation menu ─
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('nav').locator('a[href="/"]') resolved to 2 elements:
+        1) <a href="/" class="_brand_1ug0z_41">…</a> aka getByRole('link', { name: 'Indiana Usados' })
+        2) <a href="/" class="_navLink_1ug0z_185 _active_1ug0z_223">Home</a> aka getByRole('navigation').getByRole('link', { name: 'Home' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('nav').locator('a[href="/"]')
+
+
+      45 |     
+      46 |     // Verificar enlaces principales
+    > 47 |     await expect(nav.locator('a[href="/"]')).toBeVisible()
+         |                                              ^
+      48 |     await expect(nav.locator('a[href="/vehiculos"]')).toBeVisible()
+      49 |     await expect(nav.locator('a[href="/nosotros"]')).toBeVisible()
+      50 |   })
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:47:46
+
+    Error: browserContext._wrapApiCall: Test ended.
+    Browser logs:
+
+    <launching> C:\Users\Fernando GO\AppData\Local\ms-playwright\firefox-1489\firefox\firefox.exe -no-remote -headless -profile C:\Users\FERNAN~1\AppData\Local\Temp\playwright_firefoxdev_profile-nOAvqG -juggler-pipe -silent
+    <launched> pid=360688
+    [pid=360688][err] *** You are running in headless mode.
+    [pid=360688][err] JavaScript warning: resource://services-settings/Utils.sys.mjs, line 116: unreachable code after return statement
+    [pid=360688][out] console.warn: services.settings: Ignoring preference override of remote settings server
+    [pid=360688][out] console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+    [pid=360688][out] 
+    [pid=360688][out] Juggler listening to the pipe
+    [pid=360688][out] Crash Annotation GraphicsCriticalError: |[0][GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt (t=21.2156) [GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+    [pid=360688][err] JavaScript error: chrome://juggler/content/Helper.js, line 82: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIWebProgress.removeProgressListener]
+    [pid=360688][out] console.error: SearchEngineSelector: "Received empty search configuration!"
+    [pid=360688][out] console.error: "Received empty top sites configuration!"
+    [pid=360688][out] console.error: SearchEngineSelector: "Received empty search configuration!"
+    [pid=360688][out] console.error: SearchService: "#init: failure initializing search:" [Exception... "Failed to get engine data from Remote Settings"  nsresult: "0x8000ffff (NS_ERROR_UNEXPECTED)"  location: "JS frame :: moz-src:///toolkit/components/search/SearchEngineSelector.sys.mjs :: getEngineConfiguration :: line 105"  data: no]
+    [pid=360688][out] console.error: WebExtensions: 
+    [pid=360688][out]   Message: [Exception... "Failed to get engine data from Remote Settings"  nsresult: "0x8000ffff (NS_ERROR_UNEXPECTED)"  location: "JS frame :: moz-src:///toolkit/components/search/SearchEngineSelector.sys.mjs :: getEngineConfiguration :: line 105"  data: no]
+    [pid=360688][out]   Stack:
+    [pid=360688][out]     getEngineConfiguration@moz-src:///toolkit/components/search/SearchEngineSelector.sys.mjs:105:24
+    [pid=360688][out] 
+    [pid=360688][out] console.error: "Received empty top sites configuration!"
+    [pid=360688][err] JavaScript error: moz-src:///toolkit/components/search/SearchEngineSelector.sys.mjs, line 105: NS_ERROR_UNEXPECTED: Failed to get engine data from Remote Settings
+    [pid=360688][err] JavaScript error: moz-src:///toolkit/components/search/SearchEngineSelector.sys.mjs, line 105: NS_ERROR_UNEXPECTED: Failed to get engine data from Remote Settings
+    [pid=360688][err] JavaScript error: moz-src:///toolkit/components/search/SearchEngineSelector.sys.mjs, line 105: NS_ERROR_UNEXPECTED: Failed to get engine data from Remote Settings
+    [pid=360688][err] JavaScript error: moz-src:///toolkit/components/search/SearchEngineSelector.sys.mjs, line 105: NS_ERROR_UNEXPECTED: Failed to get engine data from Remote Settings
+    [pid=360688][out] console.error: CustomizableUI: 
+    [pid=360688][out]   Could not localize property 'fxms-bmb-button.tooltiptext'.
+    [pid=360688][out] console.error: SearchSettings: "_write: Could not write to settings file:" (new Error("cannot write without any engine.", "moz-src:///toolkit/components/search/SearchSettings.sys.mjs", 328))
+    [pid=360688][out] console.error: [Exception... "Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIWinTaskbar.getTaskbarProgress]"  nsresult: "0x80070057 (NS_ERROR_ILLEGAL_VALUE)"  location: "JS frame :: resource:///modules/DownloadsTaskbar.sys.mjs :: _attachIndicator :: line 127"  data: no]
+    [pid=360688][out] console.error: "Search service failed to init"
+    [pid=360688][out] console.error: URLBar - Provider.UrlbarProviderSearchTips: [Exception... "Failed to get engine data from Remote Settings"  nsresult: "0x8000ffff (NS_ERROR_UNEXPECTED)"  location: "JS frame :: moz-src:///toolkit/components/search/SearchEngineSelector.sys.mjs :: getEngineConfiguration :: line 105"  data: no]
+    [pid=360688][out] console.error: "Search service failed to init"
+    [pid=360688][out] console.error: [Exception... "Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsIContentSniffer.getMIMETypeFromContent]"  nsresult: "0x80040111 (NS_ERROR_NOT_AVAILABLE)"  location: "JS frame :: resource:///modules/FaviconLoader.sys.mjs :: onStopRequest :: line 300"  data: no]
+    [pid=360688][err] JavaScript error: debugger eval code, line 7319: Error: Error: strict mode violation: locator('nav').locator('a[href="/"]') resolved to 2 elements:
+    [pid=360688][err]     1) <a href="/" class="_brand_1ug0z_41">…</a> aka getByRole('link', { name: 'Indiana Usados' })
+    [pid=360688][err]     2) <a href="/" class="_navLink_1ug0z_185 _active_1ug0z_223">Home</a> aka getByRole('navigation').getByRole('link', { name: 'Home' })
+    [pid=360688][err] 
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-firefox\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-firefox\test-failed-1.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="vehicles-flow.spec.js" timestamp="2025-08-14T23:13:36.639Z" hostname="firefox" tests="5" failures="5" skipped="0" time="89.109" errors="0">
+<testcase name="Flujo de Vehículos › should display vehicles list" classname="vehicles-flow.spec.js" time="25.574">
+<failure message="vehicles-flow.spec.js:9:3 should display vehicles list" type="FAILURE">
+<![CDATA[  [firefox] › vehicles-flow.spec.js:9:3 › Flujo de Vehículos › should display vehicles list ────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('[data-testid="vehicles-grid"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('[data-testid="vehicles-grid"]')
+
+
+       9 |   test('should display vehicles list', async ({ page }) => {
+      10 |     // Verificar que la lista de vehículos se muestra
+    > 11 |     await expect(page.locator('[data-testid="vehicles-grid"]')).toBeVisible()
+         |                                                                 ^
+      12 |     
+      13 |     // Verificar que hay vehículos en la lista
+      14 |     const vehicles = page.locator('[data-testid^="vehicle-"]')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:11:65
+]]>
+</failure>
+</testcase>
+<testcase name="Flujo de Vehículos › should apply filters correctly" classname="vehicles-flow.spec.js" time="20.884">
+<failure message="vehicles-flow.spec.js:18:3 should apply filters correctly" type="FAILURE">
+<![CDATA[  [firefox] › vehicles-flow.spec.js:18:3 › Flujo de Vehículos › should apply filters correctly ─────
+
+    Error: page.goto: Target page, context or browser has been closed
+    Call log:
+      - navigating to "http://localhost:3000/vehiculos", waiting until "load"
+
+
+      4 |   test.beforeEach(async ({ page }) => {
+      5 |     // Navegar a la página de vehículos antes de cada test
+    > 6 |     await page.goto('/vehiculos')
+        |                ^
+      7 |   })
+      8 |
+      9 |   test('should display vehicles list', async ({ page }) => {
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:6:16
+]]>
+</failure>
+</testcase>
+<testcase name="Flujo de Vehículos › should navigate to vehicle detail" classname="vehicles-flow.spec.js" time="17.567">
+<failure message="vehicles-flow.spec.js:32:3 should navigate to vehicle detail" type="FAILURE">
+<![CDATA[  [firefox] › vehicles-flow.spec.js:32:3 › Flujo de Vehículos › should navigate to vehicle detail ──
+
+    Error: page.goto: Target page, context or browser has been closed
+    Call log:
+      - navigating to "http://localhost:3000/vehiculos", waiting until "load"
+
+
+      4 |   test.beforeEach(async ({ page }) => {
+      5 |     // Navegar a la página de vehículos antes de cada test
+    > 6 |     await page.goto('/vehiculos')
+        |                ^
+      7 |   })
+      8 |
+      9 |   test('should display vehicles list', async ({ page }) => {
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:6:16
+]]>
+</failure>
+</testcase>
+<testcase name="Flujo de Vehículos › should load more vehicles" classname="vehicles-flow.spec.js" time="8.946">
+<failure message="vehicles-flow.spec.js:44:3 should load more vehicles" type="FAILURE">
+<![CDATA[  [firefox] › vehicles-flow.spec.js:44:3 › Flujo de Vehículos › should load more vehicles ──────────
+
+    Error: locator.scrollIntoViewIfNeeded: Target page, context or browser has been closed
+    Call log:
+      - waiting for locator('[data-testid="load-more-btn"]')
+
+
+      44 |   test('should load more vehicles', async ({ page }) => {
+      45 |     // Hacer scroll hasta el botón de cargar más
+    > 46 |     await page.locator('[data-testid="load-more-btn"]').scrollIntoViewIfNeeded()
+         |                                                         ^
+      47 |     
+      48 |     // Hacer clic en cargar más
+      49 |     await page.click('[data-testid="load-more-btn"]')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:46:57
+]]>
+</failure>
+</testcase>
+<testcase name="Flujo de Vehículos › should handle search functionality" classname="vehicles-flow.spec.js" time="16.138">
+<failure message="vehicles-flow.spec.js:56:3 should handle search functionality" type="FAILURE">
+<![CDATA[  [firefox] › vehicles-flow.spec.js:56:3 › Flujo de Vehículos › should handle search functionality ─
+
+    Error: browserContext.newPage: Target page, context or browser has been closed
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="navigation.spec.js" timestamp="2025-08-14T23:13:36.639Z" hostname="webkit" tests="4" failures="2" skipped="0" time="61.055" errors="0">
+<testcase name="Navegación Principal › should navigate to home page" classname="navigation.spec.js" time="12.485">
+</testcase>
+<testcase name="Navegación Principal › should navigate to vehicles page" classname="navigation.spec.js" time="19.791">
+<failure message="navigation.spec.js:18:3 should navigate to vehicles page" type="FAILURE">
+<![CDATA[  [webkit] › navigation.spec.js:18:3 › Navegación Principal › should navigate to vehicles page ─────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('[data-testid="filter-form"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('[data-testid="filter-form"]')
+
+
+      24 |     
+      25 |     // Verificar elementos de la página de vehículos
+    > 26 |     await expect(page.locator('[data-testid="filter-form"]')).toBeVisible()
+         |                                                               ^
+      27 |     await expect(page.locator('[data-testid="vehicles-grid"]')).toBeVisible()
+      28 |   })
+      29 |
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:26:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-webkit\video.webm]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Navegación Principal › should navigate to about page" classname="navigation.spec.js" time="14.883">
+</testcase>
+<testcase name="Navegación Principal › should have working navigation menu" classname="navigation.spec.js" time="13.896">
+<failure message="navigation.spec.js:41:3 should have working navigation menu" type="FAILURE">
+<![CDATA[  [webkit] › navigation.spec.js:41:3 › Navegación Principal › should have working navigation menu ──
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('nav').locator('a[href="/"]') resolved to 2 elements:
+        1) <a href="/" class="_brand_1ug0z_41">…</a> aka getByRole('link', { name: 'Indiana Usados' })
+        2) <a href="/" class="_navLink_1ug0z_185 _active_1ug0z_223">Home</a> aka getByRole('navigation').getByRole('link', { name: 'Home' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('nav').locator('a[href="/"]')
+
+
+      45 |     
+      46 |     // Verificar enlaces principales
+    > 47 |     await expect(nav.locator('a[href="/"]')).toBeVisible()
+         |                                              ^
+      48 |     await expect(nav.locator('a[href="/vehiculos"]')).toBeVisible()
+      49 |     await expect(nav.locator('a[href="/nosotros"]')).toBeVisible()
+      50 |   })
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:47:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-webkit\video.webm]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="vehicles-flow.spec.js" timestamp="2025-08-14T23:13:36.639Z" hostname="webkit" tests="5" failures="5" skipped="0" time="93.641" errors="0">
+<testcase name="Flujo de Vehículos › should display vehicles list" classname="vehicles-flow.spec.js" time="15.609">
+<failure message="vehicles-flow.spec.js:9:3 should display vehicles list" type="FAILURE">
+<![CDATA[  [webkit] › vehicles-flow.spec.js:9:3 › Flujo de Vehículos › should display vehicles list ─────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('[data-testid="vehicles-grid"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('[data-testid="vehicles-grid"]')
+
+
+       9 |   test('should display vehicles list', async ({ page }) => {
+      10 |     // Verificar que la lista de vehículos se muestra
+    > 11 |     await expect(page.locator('[data-testid="vehicles-grid"]')).toBeVisible()
+         |                                                                 ^
+      12 |     
+      13 |     // Verificar que hay vehículos en la lista
+      14 |     const vehicles = page.locator('[data-testid^="vehicle-"]')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:11:65
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-webkit\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should apply filters correctly" classname="vehicles-flow.spec.js" time="19.782">
+<failure message="vehicles-flow.spec.js:18:3 should apply filters correctly" type="FAILURE">
+<![CDATA[  [webkit] › vehicles-flow.spec.js:18:3 › Flujo de Vehículos › should apply filters correctly ──────
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="filter-form"]')
+
+
+      18 |   test('should apply filters correctly', async ({ page }) => {
+      19 |     // Abrir formulario de filtros
+    > 20 |     await page.click('[data-testid="filter-form"]')
+         |                ^
+      21 |     
+      22 |     // Seleccionar marca Toyota
+      23 |     await page.selectOption('select[name="marca"]', 'toyota')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:20:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-webkit\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should navigate to vehicle detail" classname="vehicles-flow.spec.js" time="19.258">
+<failure message="vehicles-flow.spec.js:32:3 should navigate to vehicle detail" type="FAILURE">
+<![CDATA[  [webkit] › vehicles-flow.spec.js:32:3 › Flujo de Vehículos › should navigate to vehicle detail ───
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid^="vehicle-"]:first-child')
+
+
+      32 |   test('should navigate to vehicle detail', async ({ page }) => {
+      33 |     // Hacer clic en el primer vehículo
+    > 34 |     await page.click('[data-testid^="vehicle-"]:first-child')
+         |                ^
+      35 |     
+      36 |     // Verificar que estamos en la página de detalle
+      37 |     await expect(page).toHaveURL(/.*vehiculo\/\d+/)
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:34:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-webkit\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should load more vehicles" classname="vehicles-flow.spec.js" time="18.768">
+<failure message="vehicles-flow.spec.js:44:3 should load more vehicles" type="FAILURE">
+<![CDATA[  [webkit] › vehicles-flow.spec.js:44:3 › Flujo de Vehículos › should load more vehicles ───────────
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="load-more-btn"]')
+
+
+      44 |   test('should load more vehicles', async ({ page }) => {
+      45 |     // Hacer scroll hasta el botón de cargar más
+    > 46 |     await page.locator('[data-testid="load-more-btn"]').scrollIntoViewIfNeeded()
+         |                                                         ^
+      47 |     
+      48 |     // Hacer clic en cargar más
+      49 |     await page.click('[data-testid="load-more-btn"]')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:46:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-webkit\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should handle search functionality" classname="vehicles-flow.spec.js" time="20.224">
+<failure message="vehicles-flow.spec.js:56:3 should handle search functionality" type="FAILURE">
+<![CDATA[  [webkit] › vehicles-flow.spec.js:56:3 › Flujo de Vehículos › should handle search functionality ──
+
+    TimeoutError: page.fill: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('input[placeholder*="buscar"]')
+
+
+      56 |   test('should handle search functionality', async ({ page }) => {
+      57 |     // Buscar un vehículo específico
+    > 58 |     await page.fill('input[placeholder*="buscar"]', 'Toyota')
+         |                ^
+      59 |     
+      60 |     // Verificar que se muestra la búsqueda
+      61 |     await expect(page.locator('input[placeholder*="buscar"]')).toHaveValue('Toyota')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:58:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-webkit\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="navigation.spec.js" timestamp="2025-08-14T23:13:36.639Z" hostname="Mobile Chrome" tests="4" failures="3" skipped="0" time="39.916" errors="0">
+<testcase name="Navegación Principal › should navigate to home page" classname="navigation.spec.js" time="4.999">
+</testcase>
+<testcase name="Navegación Principal › should navigate to vehicles page" classname="navigation.spec.js" time="15.658">
+<failure message="navigation.spec.js:18:3 should navigate to vehicles page" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › navigation.spec.js:18:3 › Navegación Principal › should navigate to vehicles page 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('a[href="/vehiculos"]')
+        - locator resolved to 2 elements. Proceeding with the first one: <a href="/vehiculos" class="_navLink_1ug0z_185 ">Vehículos</a>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+          - waiting 100ms
+        16 × waiting for element to be visible, enabled and stable
+           - element is not visible
+         - retrying click action
+           - waiting 500ms
+
+
+      18 |   test('should navigate to vehicles page', async ({ page }) => {
+      19 |     // Hacer clic en el enlace de vehículos
+    > 20 |     await page.click('a[href="/vehiculos"]')
+         |                ^
+      21 |     
+      22 |     // Verificar que estamos en la página de vehículos
+      23 |     await expect(page).toHaveURL(/.*vehiculos/)
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:20:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Navegación Principal › should navigate to about page" classname="navigation.spec.js" time="15.231">
+<failure message="navigation.spec.js:30:3 should navigate to about page" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › navigation.spec.js:30:3 › Navegación Principal › should navigate to about page ─
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('a[href="/nosotros"]')
+        - locator resolved to 2 elements. Proceeding with the first one: <a href="/nosotros" class="_navLink_1ug0z_185 ">Nosotros</a>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+          - waiting 100ms
+        15 × waiting for element to be visible, enabled and stable
+           - element is not visible
+         - retrying click action
+           - waiting 500ms
+
+
+      30 |   test('should navigate to about page', async ({ page }) => {
+      31 |     // Hacer clic en el enlace de nosotros
+    > 32 |     await page.click('a[href="/nosotros"]')
+         |                ^
+      33 |     
+      34 |     // Verificar que estamos en la página de nosotros
+      35 |     await expect(page).toHaveURL(/.*nosotros/)
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:32:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Navegación Principal › should have working navigation menu" classname="navigation.spec.js" time="4.028">
+<failure message="navigation.spec.js:41:3 should have working navigation menu" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › navigation.spec.js:41:3 › Navegación Principal › should have working navigation menu 
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('nav').locator('a[href="/"]') resolved to 2 elements:
+        1) <a href="/" class="_brand_1ug0z_41">…</a> aka getByRole('link', { name: 'Indiana Usados' })
+        2) <a href="/" class="_navLink_1ug0z_185 _active_1ug0z_223">Home</a> aka getByRole('navigation').getByText('Home')
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('nav').locator('a[href="/"]')
+
+
+      45 |     
+      46 |     // Verificar enlaces principales
+    > 47 |     await expect(nav.locator('a[href="/"]')).toBeVisible()
+         |                                              ^
+      48 |     await expect(nav.locator('a[href="/vehiculos"]')).toBeVisible()
+      49 |     await expect(nav.locator('a[href="/nosotros"]')).toBeVisible()
+      50 |   })
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:47:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="vehicles-flow.spec.js" timestamp="2025-08-14T23:13:36.639Z" hostname="Mobile Chrome" tests="5" failures="5" skipped="0" time="69.182" errors="0">
+<testcase name="Flujo de Vehículos › should display vehicles list" classname="vehicles-flow.spec.js" time="8.697">
+<failure message="vehicles-flow.spec.js:9:3 should display vehicles list" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › vehicles-flow.spec.js:9:3 › Flujo de Vehículos › should display vehicles list ──
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('[data-testid="vehicles-grid"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('[data-testid="vehicles-grid"]')
+
+
+       9 |   test('should display vehicles list', async ({ page }) => {
+      10 |     // Verificar que la lista de vehículos se muestra
+    > 11 |     await expect(page.locator('[data-testid="vehicles-grid"]')).toBeVisible()
+         |                                                                 ^
+      12 |     
+      13 |     // Verificar que hay vehículos en la lista
+      14 |     const vehicles = page.locator('[data-testid^="vehicle-"]')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:11:65
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should apply filters correctly" classname="vehicles-flow.spec.js" time="15.14">
+<failure message="vehicles-flow.spec.js:18:3 should apply filters correctly" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › vehicles-flow.spec.js:18:3 › Flujo de Vehículos › should apply filters correctly 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="filter-form"]')
+
+
+      18 |   test('should apply filters correctly', async ({ page }) => {
+      19 |     // Abrir formulario de filtros
+    > 20 |     await page.click('[data-testid="filter-form"]')
+         |                ^
+      21 |     
+      22 |     // Seleccionar marca Toyota
+      23 |     await page.selectOption('select[name="marca"]', 'toyota')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:20:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should navigate to vehicle detail" classname="vehicles-flow.spec.js" time="16.009">
+<failure message="vehicles-flow.spec.js:32:3 should navigate to vehicle detail" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › vehicles-flow.spec.js:32:3 › Flujo de Vehículos › should navigate to vehicle detail 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid^="vehicle-"]:first-child')
+
+
+      32 |   test('should navigate to vehicle detail', async ({ page }) => {
+      33 |     // Hacer clic en el primer vehículo
+    > 34 |     await page.click('[data-testid^="vehicle-"]:first-child')
+         |                ^
+      35 |     
+      36 |     // Verificar que estamos en la página de detalle
+      37 |     await expect(page).toHaveURL(/.*vehiculo\/\d+/)
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:34:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should load more vehicles" classname="vehicles-flow.spec.js" time="14.896">
+<failure message="vehicles-flow.spec.js:44:3 should load more vehicles" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › vehicles-flow.spec.js:44:3 › Flujo de Vehículos › should load more vehicles ────
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="load-more-btn"]')
+
+
+      44 |   test('should load more vehicles', async ({ page }) => {
+      45 |     // Hacer scroll hasta el botón de cargar más
+    > 46 |     await page.locator('[data-testid="load-more-btn"]').scrollIntoViewIfNeeded()
+         |                                                         ^
+      47 |     
+      48 |     // Hacer clic en cargar más
+      49 |     await page.click('[data-testid="load-more-btn"]')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:46:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should handle search functionality" classname="vehicles-flow.spec.js" time="14.44">
+<failure message="vehicles-flow.spec.js:56:3 should handle search functionality" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › vehicles-flow.spec.js:56:3 › Flujo de Vehículos › should handle search functionality 
+
+    TimeoutError: page.fill: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('input[placeholder*="buscar"]')
+
+
+      56 |   test('should handle search functionality', async ({ page }) => {
+      57 |     // Buscar un vehículo específico
+    > 58 |     await page.fill('input[placeholder*="buscar"]', 'Toyota')
+         |                ^
+      59 |     
+      60 |     // Verificar que se muestra la búsqueda
+      61 |     await expect(page.locator('input[placeholder*="buscar"]')).toHaveValue('Toyota')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:58:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="navigation.spec.js" timestamp="2025-08-14T23:13:36.639Z" hostname="Mobile Safari" tests="4" failures="3" skipped="0" time="34.738" errors="0">
+<testcase name="Navegación Principal › should navigate to home page" classname="navigation.spec.js" time="3.789">
+</testcase>
+<testcase name="Navegación Principal › should navigate to vehicles page" classname="navigation.spec.js" time="13.681">
+<failure message="navigation.spec.js:18:3 should navigate to vehicles page" type="FAILURE">
+<![CDATA[  [Mobile Safari] › navigation.spec.js:18:3 › Navegación Principal › should navigate to vehicles page 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('a[href="/vehiculos"]')
+        - locator resolved to 2 elements. Proceeding with the first one: <a href="/vehiculos" class="_navLink_1ug0z_185 ">Vehículos</a>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+          - waiting 100ms
+        11 × waiting for element to be visible, enabled and stable
+           - element is not visible
+         - retrying click action
+           - waiting 500ms
+
+
+      18 |   test('should navigate to vehicles page', async ({ page }) => {
+      19 |     // Hacer clic en el enlace de vehículos
+    > 20 |     await page.click('a[href="/vehiculos"]')
+         |                ^
+      21 |     
+      22 |     // Verificar que estamos en la página de vehículos
+      23 |     await expect(page).toHaveURL(/.*vehiculos/)
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:20:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-a4144-d-navigate-to-vehicles-page-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Navegación Principal › should navigate to about page" classname="navigation.spec.js" time="13.288">
+<failure message="navigation.spec.js:30:3 should navigate to about page" type="FAILURE">
+<![CDATA[  [Mobile Safari] › navigation.spec.js:30:3 › Navegación Principal › should navigate to about page ─
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('a[href="/nosotros"]')
+        - locator resolved to 2 elements. Proceeding with the first one: <a href="/nosotros" class="_navLink_1ug0z_185 ">Nosotros</a>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not visible
+        - retrying click action
+          - waiting 100ms
+        11 × waiting for element to be visible, enabled and stable
+           - element is not visible
+         - retrying click action
+           - waiting 500ms
+        - waiting for element to be visible, enabled and stable
+
+
+      30 |   test('should navigate to about page', async ({ page }) => {
+      31 |     // Hacer clic en el enlace de nosotros
+    > 32 |     await page.click('a[href="/nosotros"]')
+         |                ^
+      33 |     
+      34 |     // Verificar que estamos en la página de nosotros
+      35 |     await expect(page).toHaveURL(/.*nosotros/)
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:32:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-2ab1b-ould-navigate-to-about-page-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Navegación Principal › should have working navigation menu" classname="navigation.spec.js" time="3.98">
+<failure message="navigation.spec.js:41:3 should have working navigation menu" type="FAILURE">
+<![CDATA[  [Mobile Safari] › navigation.spec.js:41:3 › Navegación Principal › should have working navigation menu 
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator('nav').locator('a[href="/"]') resolved to 2 elements:
+        1) <a href="/" class="_brand_1ug0z_41">…</a> aka getByRole('link', { name: 'Indiana Usados' })
+        2) <a href="/" class="_navLink_1ug0z_185 _active_1ug0z_223">Home</a> aka getByRole('navigation').getByText('Home')
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('nav').locator('a[href="/"]')
+
+
+      45 |     
+      46 |     // Verificar enlaces principales
+    > 47 |     await expect(nav.locator('a[href="/"]')).toBeVisible()
+         |                                              ^
+      48 |     await expect(nav.locator('a[href="/vehiculos"]')).toBeVisible()
+      49 |     await expect(nav.locator('a[href="/nosotros"]')).toBeVisible()
+      50 |   })
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\navigation.spec.js:47:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|navigation-Navegación-Prin-71fc0-ave-working-navigation-menu-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="vehicles-flow.spec.js" timestamp="2025-08-14T23:13:36.639Z" hostname="Mobile Safari" tests="5" failures="5" skipped="0" time="61.273" errors="0">
+<testcase name="Flujo de Vehículos › should display vehicles list" classname="vehicles-flow.spec.js" time="9.422">
+<failure message="vehicles-flow.spec.js:9:3 should display vehicles list" type="FAILURE">
+<![CDATA[  [Mobile Safari] › vehicles-flow.spec.js:9:3 › Flujo de Vehículos › should display vehicles list ──
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('[data-testid="vehicles-grid"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('[data-testid="vehicles-grid"]')
+
+
+       9 |   test('should display vehicles list', async ({ page }) => {
+      10 |     // Verificar que la lista de vehículos se muestra
+    > 11 |     await expect(page.locator('[data-testid="vehicles-grid"]')).toBeVisible()
+         |                                                                 ^
+      12 |     
+      13 |     // Verificar que hay vehículos en la lista
+      14 |     const vehicles = page.locator('[data-testid^="vehicle-"]')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:11:65
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-7888b-hould-display-vehicles-list-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should apply filters correctly" classname="vehicles-flow.spec.js" time="12.773">
+<failure message="vehicles-flow.spec.js:18:3 should apply filters correctly" type="FAILURE">
+<![CDATA[  [Mobile Safari] › vehicles-flow.spec.js:18:3 › Flujo de Vehículos › should apply filters correctly 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="filter-form"]')
+
+
+      18 |   test('should apply filters correctly', async ({ page }) => {
+      19 |     // Abrir formulario de filtros
+    > 20 |     await page.click('[data-testid="filter-form"]')
+         |                ^
+      21 |     
+      22 |     // Seleccionar marca Toyota
+      23 |     await page.selectOption('select[name="marca"]', 'toyota')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:20:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-5bf9b-uld-apply-filters-correctly-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should navigate to vehicle detail" classname="vehicles-flow.spec.js" time="13.189">
+<failure message="vehicles-flow.spec.js:32:3 should navigate to vehicle detail" type="FAILURE">
+<![CDATA[  [Mobile Safari] › vehicles-flow.spec.js:32:3 › Flujo de Vehículos › should navigate to vehicle detail 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid^="vehicle-"]:first-child')
+
+
+      32 |   test('should navigate to vehicle detail', async ({ page }) => {
+      33 |     // Hacer clic en el primer vehículo
+    > 34 |     await page.click('[data-testid^="vehicle-"]:first-child')
+         |                ^
+      35 |     
+      36 |     // Verificar que estamos en la página de detalle
+      37 |     await expect(page).toHaveURL(/.*vehiculo\/\d+/)
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:34:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-c5a66--navigate-to-vehicle-detail-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should load more vehicles" classname="vehicles-flow.spec.js" time="13.884">
+<failure message="vehicles-flow.spec.js:44:3 should load more vehicles" type="FAILURE">
+<![CDATA[  [Mobile Safari] › vehicles-flow.spec.js:44:3 › Flujo de Vehículos › should load more vehicles ────
+
+    TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="load-more-btn"]')
+
+
+      44 |   test('should load more vehicles', async ({ page }) => {
+      45 |     // Hacer scroll hasta el botón de cargar más
+    > 46 |     await page.locator('[data-testid="load-more-btn"]').scrollIntoViewIfNeeded()
+         |                                                         ^
+      47 |     
+      48 |     // Hacer clic en cargar más
+      49 |     await page.click('[data-testid="load-more-btn"]')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:46:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Vehículos-should-load-more-vehicles-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Flujo de Vehículos › should handle search functionality" classname="vehicles-flow.spec.js" time="12.005">
+<failure message="vehicles-flow.spec.js:56:3 should handle search functionality" type="FAILURE">
+<![CDATA[  [Mobile Safari] › vehicles-flow.spec.js:56:3 › Flujo de Vehículos › should handle search functionality 
+
+    TimeoutError: page.fill: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('input[placeholder*="buscar"]')
+
+
+      56 |   test('should handle search functionality', async ({ page }) => {
+      57 |     // Buscar un vehículo específico
+    > 58 |     await page.fill('input[placeholder*="buscar"]', 'Toyota')
+         |                ^
+      59 |     
+      60 |     // Verificar que se muestra la búsqueda
+      61 |     await expect(page.locator('input[placeholder*="buscar"]')).toHaveValue('Toyota')
+        at C:\Users\Fernando GO\Desktop\Indiana-usados\tests\e2e\vehicles-flow.spec.js:58:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|vehicles-flow-Flujo-de-Veh-1bd1d-handle-search-functionality-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>
