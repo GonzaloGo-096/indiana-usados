@@ -109,10 +109,10 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
     ], [vehicleData])
 
     return (
-        <div className={styles.card}>
+        <div className={styles.card} data-testid="vehicle-detail">
             <div className={styles.cardContent}>
                 {/* Sección de carrusel de imágenes */}
-                <div className={styles.imageSection}>
+                <div className={styles.imageSection} data-testid="vehicle-images">
                     <ImageCarousel 
                         images={carouselImages}
                         altText={altText}

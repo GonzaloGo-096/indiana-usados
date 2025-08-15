@@ -52,7 +52,7 @@ export const CardAuto = memo(({ auto }) => {
     const vehicleUrl = useMemo(() => `/vehiculo/${auto.id}`, [auto.id])
 
     return (
-        <div className={styles.card}>
+        <div className={styles.card} data-testid="vehicle-card">
             {/* ===== IMAGEN ===== */}
             <div className={styles['card__image-container']}>
                 <img 
@@ -119,6 +119,7 @@ export const CardAuto = memo(({ auto }) => {
                     <Link 
                         to={vehicleUrl}
                         className={styles['card__button']}
+                        data-testid="link-detalle"
                     >
                         Ver más
                     </Link>

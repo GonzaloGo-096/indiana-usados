@@ -92,12 +92,12 @@ const VehiclesList = memo(() => {
 
     return (
         <VehiclesErrorBoundary>
-            <div className={styles.container}>
+            <div className={styles.container} data-testid="vehicles-list-container">
                 {/* Filtros simplificados */}
                 <FilterFormSimplified {...filterFormProps} />
 
                 {/* Contenedor de lista con título */}
-                <div className={styles.listContainer}>
+                <div className={styles.listContainer} data-testid="catalog-grid">
                     {/* Línea vertical sutil izquierda */}
                     <div className={styles.verticalLine}></div>
                     

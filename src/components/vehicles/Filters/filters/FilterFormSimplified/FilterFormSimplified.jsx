@@ -286,7 +286,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form} data-testid="filters-form">
           {/* Título del formulario */}
           <div className={styles.formTitle}>
             <h3>Filtros de Búsqueda</h3>
@@ -295,6 +295,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 type="submit" 
                 className={styles.applyButton}
                 disabled={isLoading || isSubmitting}
+                data-testid="apply-filters"
               >
                 {isSubmitting ? 'Aplicando...' : 'Aplicar'}
               </button>
@@ -304,6 +305,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 onClick={handleClear}
                 className={styles.clearButton}
                 disabled={isLoading || isSubmitting}
+                data-testid="clear-filters"
               >
                 Limpiar
               </button>
@@ -394,6 +396,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
               type="submit" 
               className={styles.applyButton}
               disabled={isLoading || isSubmitting}
+              data-testid="apply-filters"
             >
               {isSubmitting ? 'Aplicando...' : 'Aplicar Filtros'}
             </button>
@@ -403,6 +406,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
               onClick={handleClear}
               className={styles.clearButton}
               disabled={isLoading || isSubmitting}
+              data-testid="clear-filters"
             >
               Limpiar Filtros
             </button>

@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "vite preview --port 4173",
     "env:postman": "node scripts/switch-env.js postman",
     "env:mock-local": "node scripts/switch-env.js mock-local",
     "env:local": "node scripts/switch-env.js local",
@@ -21,7 +21,9 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
-    "test:e2e:debug": "playwright test --debug"
+    "test:e2e:debug": "playwright test --debug",
+    "e2e:smoke": "playwright test -c playwright.smoke.config.ts",
+    "e2e:smoke:ui": "playwright test -c playwright.smoke.config.ts --ui"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
