@@ -189,6 +189,125 @@
     background: #c82333;
 }
 
+/* ✅ ESTILOS DEL MODAL DE GESTIÓN DE AUTOS */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal {
+    background: #2c3e50;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 1400px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.modalHeader {
+    background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+    color: white;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #212529;
+}
+
+.modalHeader h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    color: #adb5bd;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.closeButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.modalBody {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(90vh - 80px);
+}
+
+/* ✅ BOTÓN DE CERRAR DEL MODAL */
+.modalCloseButton {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: #495057;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: 400;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1001;
+}
+
+.modalCloseButton:hover {
+    background: #6c757d;
+    transform: scale(1.05);
+}
+
+/* ✅ MENSAJES DE FEEDBACK */
+.successMessage {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.errorMessage {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: center;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .headerContent {
@@ -214,5 +333,19 @@
     .vehicleActions {
         width: 100%;
         justify-content: flex-end;
+    }
+
+    /* ✅ RESPONSIVE DEL MODAL */
+    .modal {
+        margin: 10px;
+        max-height: 95vh;
+    }
+    
+    .modalHeader {
+        padding: 15px 20px;
+    }
+    
+    .modalHeader h2 {
+        font-size: 20px;
     }
 } 

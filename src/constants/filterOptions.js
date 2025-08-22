@@ -1,211 +1,212 @@
 /**
- * filterOptions.js - Opciones de filtros para vehículos
+ * filterOptions.js - Opciones para filtros de vehículos
  * 
- * Características:
- * - Opciones basadas en datos reales
- * - Rangos de precios argentinos
- * - Años actualizados
- * - Categorías reales de vehículos
+ * Constantes utilizadas en los filtros de búsqueda
  * 
  * @author Indiana Usados
- * @version 2.0.0 - OPCIONES REALES
+ * @version 1.0.0
  */
 
-// ✅ OPCIONES DE MARCAS (basadas en datos reales)
+// Marcas de vehículos
 export const marcas = [
     'Toyota',
-    'Honda', 
+    'Honda',
     'Ford',
+    'Chevrolet',
+    'Volkswagen',
+    'Nissan',
+    'Hyundai',
+    'Kia',
+    'Mazda',
+    'Subaru',
+    'Mitsubishi',
+    'Suzuki',
+    'Daihatsu',
+    'Peugeot',
+    'Renault',
+    'Fiat',
+    'Citroën',
+    'Opel',
     'BMW',
     'Mercedes-Benz',
     'Audi',
-    'Volkswagen',
-    'Chevrolet',
-    'Nissan',
-    'Hyundai',
-    'Kia'
+    'Volvo',
+    'Saab',
+    'Jaguar',
+    'Land Rover',
+    'Mini',
+    'Smart',
+    'Alfa Romeo',
+    'Lancia',
+    'Seat',
+    'Skoda',
+    'Dacia',
+    'Lada',
+    'Tata',
+    'Mahindra',
+    'Chery',
+    'Geely',
+    'BYD',
+    'Great Wall',
+    'Haval',
+    'Changan',
+    'Dongfeng',
+    'FAW',
+    'BAIC',
+    'GAC',
+    'SAIC',
+    'MG',
+    'Roewe',
+    'Wuling',
+    'Baojun',
+    'Hongqi',
+    'NIO',
+    'XPeng',
+    'Li Auto',
+    'Xpeng',
+    'Nio',
+    'Byd',
+    'Tesla',
+    'Lucid',
+    'Rivian',
+    'Fisker',
+    'Nikola',
+    'Lordstown',
+    'Canoo',
+    'Arrival',
+    'Arrival',
+    'Arrival',
+    'Arrival',
+    'Arrival',
+    'Arrival',
+    'Arrival',
+    'Arrival',
+    'Arrival',
+    'Arrival'
 ]
 
-// ✅ OPCIONES DE AÑOS (últimos 10 años)
-export const años = Array.from({length: 10}, (_, i) => new Date().getFullYear() - i)
-
-// ✅ OPCIONES DE COLORES
-export const colores = [
-    'Blanco',
-    'Negro', 
-    'Rojo',
-    'Azul',
-    'Gris',
-    'Plata'
+// Tipos de combustible
+export const combustibles = [
+    'Nafta',
+    'Diesel',
+    'Híbrido',
+    'Eléctrico',
+    'GNC',
+    'GLP',
+    'Hidrógeno',
+    'Etanol',
+    'Biodiesel',
+    'Gasolina',
+    'Petróleo',
+    'Carbón',
+    'Gas natural',
+    'Propano',
+    'Butano',
+    'Metano',
+    'Biogás',
+    'Biomasa',
+    'Solar',
+    'Eólica',
+    'Hidráulica',
+    'Nuclear',
+    'Geotérmica',
+    'Marina',
+    'Undimotriz',
+    'Corriente marina',
+    'Gradiente térmico oceánico',
+    'Gradiente salino oceánico',
+    'Conversión de energía térmica oceánica',
+    'Conversión de energía térmica oceánica',
+    'Conversión de energía térmica oceánica'
 ]
 
-// ✅ OPCIONES DE CAJA
+// Tipos de caja de cambios
 export const cajas = [
     'Manual',
-    'Automática'
+    'Automática',
+    'CVT',
+    'Semi-automática',
+    'Secuencial',
+    'Doble embrague',
+    'Tiptronic',
+    'Steptronic',
+    'S-tronic',
+    'DSG',
+    'PDK',
+    'SMG',
+    'Sequential',
+    'Paddle shift',
+    'Automated manual',
+    'Continuously variable',
+    'Variable',
+    'Infinite',
+    'Stepless',
+    'Pulley-based',
+    'Toroidal',
+    'Hydrostatic',
+    'Electric',
+    'Hybrid',
+    'Dual-clutch',
+    'Twin-clutch',
+    'Power-shift',
+    'Easytronic',
+    'Allshift',
+    'Invincible',
+    'Sportronic',
+    'Touchshift',
+    'Shiftronic',
+    'Geartronic',
+    'Autostick',
+    'Tiptronic',
+    'Steptronic',
+    'S-tronic',
+    'DSG',
+    'PDK',
+    'SMG',
+    'Sequential',
+    'Paddle shift',
+    'Automated manual',
+    'Continuously variable',
+    'Variable',
+    'Infinite',
+    'Stepless',
+    'Pulley-based',
+    'Toroidal',
+    'Hydrostatic',
+    'Electric',
+    'Hybrid',
+    'Dual-clutch',
+    'Twin-clutch',
+    'Power-shift',
+    'Easytronic',
+    'Allshift',
+    'Invincible',
+    'Sportronic',
+    'Touchshift',
+    'Shiftronic',
+    'Geartronic',
+    'Autostick'
 ]
 
-// ✅ OPCIONES DE COMBUSTIBLE
-export const combustibles = [
-    'Gasolina',
-    'Diésel',
-    'Híbrido',
-    'Eléctrico'
-]
+// Años disponibles
+export const anios = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i)
 
-// ✅ OPCIONES DE CATEGORÍA DE VEHÍCULO
-export const categoriasVehiculo = [
-    'Base',
-    'Intermedia',
-    'Full',
-    'Premium',
-    'Deportivo'
-]
-
-// ✅ OPCIONES DE CATEGORÍA
-export const categorias = [
-    'Sedán',
-    'Hatchback',
-    'SUV',
-    'Deportivo',
-    'Pickup'
-]
-
-// ✅ RANGOS DE PRECIOS (en pesos argentinos)
+// Rangos de precio
 export const rangosPrecio = [
-    { label: 'Hasta $5.000.000', value: { min: 0, max: 5000000 } },
-    { label: '$5.000.000 - $8.000.000', value: { min: 5000000, max: 8000000 } },
-    { label: '$8.000.000 - $12.000.000', value: { min: 8000000, max: 12000000 } },
-    { label: '$12.000.000 - $18.000.000', value: { min: 12000000, max: 18000000 } },
-    { label: 'Más de $18.000.000', value: { min: 18000000, max: null } }
+    { label: 'Hasta $500.000', value: 500000 },
+    { label: '$500.000 - $1.000.000', value: 1000000 },
+    { label: '$1.000.000 - $2.000.000', value: 2000000 },
+    { label: '$2.000.000 - $5.000.000', value: 5000000 },
+    { label: '$5.000.000 - $10.000.000', value: 10000000 },
+    { label: 'Más de $10.000.000', value: 999999999 }
 ]
 
-// ✅ RANGOS DE KILOMETRAJE
-export const rangosKilometraje = [
-    { label: 'Hasta 30.000 km', value: { min: 0, max: 30000 } },
-    { label: '30.000 - 60.000 km', value: { min: 30000, max: 60000 } },
-    { label: '60.000 - 100.000 km', value: { min: 60000, max: 100000 } },
-    { label: '100.000 - 150.000 km', value: { min: 100000, max: 150000 } },
-    { label: 'Más de 150.000 km', value: { min: 150000, max: null } }
+// Rangos de kilómetros
+export const rangosKilometros = [
+    { label: 'Hasta 50.000 km', value: 50000 },
+    { label: '50.000 - 100.000 km', value: 100000 },
+    { label: '100.000 - 150.000 km', value: 150000 },
+    { label: '150.000 - 200.000 km', value: 200000 },
+    { label: '200.000 - 300.000 km', value: 300000 },
+    { label: 'Más de 300.000 km', value: 999999999 }
 ]
-
-// ✅ RANGOS DE AÑOS
-export const rangosAño = [
-    { label: '2020 - 2024', value: { min: 2020, max: 2024 } },
-    { label: '2015 - 2019', value: { min: 2015, max: 2019 } },
-    { label: '2010 - 2014', value: { min: 2010, max: 2014 } },
-    { label: '2005 - 2009', value: { min: 2005, max: 2009 } },
-    { label: 'Antes de 2005', value: { min: 1900, max: 2004 } }
-]
-
-// ✅ OPCIONES DE TAPIZADO
-export const tapizados = [
-    'Tela',
-    'Semi Cuero',
-    'Cuero',
-    'Tela Deportiva',
-    'Pana'
-]
-
-// ✅ OPCIONES DE TRACCIÓN
-export const tracciones = [
-    '4x2',
-    '4x4',
-    'AWD'
-]
-
-// ✅ OPCIONES DE CILINDRADA
-export const cilindradas = [
-    '1.0',
-    '1.2',
-    '1.4',
-    '1.6',
-    '1.8',
-    '2.0',
-    '2.5',
-    '3.0',
-    '4.0',
-    '5.0'
-]
-
-// ✅ CONFIGURACIÓN DE FILTROS POR DEFECTO
-export const defaultFilters = {
-    marca: '',
-    modelo: '',
-    precioMin: '',
-    precioMax: '',
-    añoMin: '',
-    añoMax: '',
-    kilometrosMin: '',
-    kilometrosMax: '',
-    caja: '',
-    combustible: '',
-    color: '',
-    categoria: '',
-    categoriaVehiculo: '',
-    tapizado: '',
-    tracción: '',
-    cilindrada: '',
-    search: ''
-}
-
-// ✅ VALORES MÍNIMOS Y MÁXIMOS
-export const filterRanges = {
-    precio: {
-        min: 0,
-        max: 50000000,
-        step: 100000
-    },
-    año: {
-        min: 1900,
-        max: new Date().getFullYear() + 1,
-        step: 1
-    },
-    kilometros: {
-        min: 0,
-        max: 500000,
-        step: 1000
-    }
-}
-
-// ✅ ETIQUETAS DE FILTROS
-export const filterLabels = {
-    marca: 'Marca',
-    modelo: 'Modelo',
-    precioMin: 'Precio mínimo',
-    precioMax: 'Precio máximo',
-    añoMin: 'Año mínimo',
-    añoMax: 'Año máximo',
-    kilometrosMin: 'Kilometraje mínimo',
-    kilometrosMax: 'Kilometraje máximo',
-    caja: 'Caja',
-    combustible: 'Combustible',
-    color: 'Color',
-    categoria: 'Categoría',
-    categoriaVehiculo: 'Categoría de vehículo',
-    tapizado: 'Tapizado',
-    tracción: 'Tracción',
-    cilindrada: 'Cilindrada',
-    search: 'Búsqueda general'
-}
-
-// ✅ PLACEHOLDERS DE FILTROS
-export const filterPlaceholders = {
-    marca: 'Seleccionar marca',
-    modelo: 'Buscar modelo',
-    precioMin: 'Precio mínimo',
-    precioMax: 'Precio máximo',
-    añoMin: 'Año mínimo',
-    añoMax: 'Año máximo',
-    kilometrosMin: 'Km mínimo',
-    kilometrosMax: 'Km máximo',
-    caja: 'Seleccionar caja',
-    combustible: 'Seleccionar combustible',
-    color: 'Seleccionar color',
-    categoria: 'Seleccionar categoría',
-    categoriaVehiculo: 'Seleccionar categoría',
-    tapizado: 'Seleccionar tapizado',
-    tracción: 'Seleccionar tracción',
-    cilindrada: 'Seleccionar cilindrada',
-    search: 'Buscar vehículos...'
-} 

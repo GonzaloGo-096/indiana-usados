@@ -1,182 +1,89 @@
 /**
- * formatters.js - Utilidades de formateo centralizadas
+ * formatters.js - Funciones de formateo de datos
  * 
- * Características:
- * - Formateo de precios con moneda argentina
- * - Formateo de kilometraje
- * - Formateo de años
- * - Formateo de transmisión
- * - Validación de datos
+ * Funciones básicas para formatear precios, kilómetros, años, etc.
  * 
  * @author Indiana Usados
  * @version 1.0.0
  */
 
 /**
- * Formatea precio con moneda argentina
+ * Formatear precio en formato de moneda
  * @param {number|string} price - Precio a formatear
  * @returns {string} - Precio formateado
  */
 export const formatPrice = (price) => {
-    if (!price) return '-'
+    if (!price || price === 0) return 'Consultar'
     
-    // ✅ CONVERTIR A NÚMERO
-    const numericPrice = parseFloat(price.toString().replace(/[^\d]/g, ''))
-    if (isNaN(numericPrice)) return price.toString()
+    const numPrice = typeof price === 'string' ? parseFloat(price) : price
+    if (isNaN(numPrice)) return 'Consultar'
     
-    // ✅ FORMATEAR CON MONEDA ARGENTINA
     return new Intl.NumberFormat('es-AR', {
         style: 'currency',
         currency: 'ARS',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
-    }).format(numericPrice)
+    }).format(numPrice)
 }
 
 /**
- * Formatea kilometraje con separadores de miles
- * @param {number|string} kms - Kilometraje a formatear
- * @returns {string} - Kilometraje formateado
+ * Formatear kilómetros
+ * @param {number|string} kilometers - Kilómetros a formatear
+ * @returns {string} - Kilómetros formateados
  */
-export const formatKilometraje = (kms) => {
-    if (!kms) return '-'
+export const formatKilometraje = (kilometers) => {
+    if (!kilometers || kilometers === 0) return '0 km'
     
-    // ✅ CONVERTIR A NÚMERO
-    const numericKms = parseInt(kms.toString().replace(/[^\d]/g, ''))
-    if (isNaN(numericKms)) return kms.toString()
+    const numKm = typeof kilometers === 'string' ? parseFloat(kilometers) : kilometers
+    if (isNaN(numKm)) return '0 km'
     
-    // ✅ FORMATEAR CON SEPARADORES
-    return new Intl.NumberFormat('es-AR').format(numericKms)
+    return new Intl.NumberFormat('es-AR').format(numKm) + ' km'
 }
 
 /**
- * Formatea año
+ * Formatear año
  * @param {number|string} year - Año a formatear
  * @returns {string} - Año formateado
  */
 export const formatYear = (year) => {
     if (!year) return '-'
-    return year.toString()
+    
+    const numYear = typeof year === 'string' ? parseInt(year) : year
+    if (isNaN(numYear)) return '-'
+    
+    return numYear.toString()
 }
 
 /**
- * Formatea caja con primera letra mayúscula
- * @param {string} caja - Caja a formatear
+ * Formatear tipo de caja
+ * @param {string} caja - Tipo de caja
  * @returns {string} - Caja formateada
  */
 export const formatCaja = (caja) => {
     if (!caja) return '-'
+    
+    const cajaLower = caja.toLowerCase()
+    
+    if (cajaLower.includes('manual')) return 'Manual'
+    if (cajaLower.includes('automatic')) return 'Automática'
+    if (cajaLower.includes('cvt')) return 'CVT'
+    
     return caja.charAt(0).toUpperCase() + caja.slice(1).toLowerCase()
 }
 
 /**
- * Formatea combustible
- * @param {string} fuel - Combustible a formatear
- * @returns {string} - Combustible formateado
- */
-export const formatFuel = (fuel) => {
-    if (!fuel) return '-'
-    return fuel.charAt(0).toUpperCase() + fuel.slice(1).toLowerCase()
-}
-
-/**
- * Formatea color
- * @param {string} color - Color a formatear
- * @returns {string} - Color formateado
- */
-export const formatColor = (color) => {
-    if (!color) return '-'
-    return color.charAt(0).toUpperCase() + color.slice(1).toLowerCase()
-}
-
-/**
- * Formatea cilindrada
- * @param {string} engine - Cilindrada a formatear
- * @returns {string} - Cilindrada formateada
- */
-export const formatEngine = (engine) => {
-    if (!engine) return '-'
-    return engine
-}
-
-/**
- * Formatea versión del vehículo
- * @param {string} version - Versión a formatear
- * @returns {string} - Versión formateada
- */
-export const formatVersion = (version) => {
-    if (!version) return '-'
-    return version
-}
-
-/**
- * Formatea marca y modelo
+ * Formatear marca y modelo
  * @param {string} marca - Marca del vehículo
  * @param {string} modelo - Modelo del vehículo
  * @returns {string} - Marca y modelo formateados
  */
 export const formatBrandModel = (marca, modelo) => {
-    if (!marca && !modelo) return '-'
-    if (!marca) return modelo
-    if (!modelo) return marca
-    return `${marca} ${modelo}`
-}
-
-/**
- * Formatea fecha
- * @param {string|Date} date - Fecha a formatear
- * @returns {string} - Fecha formateada
- */
-export const formatDate = (date) => {
-    if (!date) return '-'
+    const marcaFormatted = marca ? marca.charAt(0).toUpperCase() + marca.slice(1).toLowerCase() : ''
+    const modeloFormatted = modelo ? modelo.charAt(0).toUpperCase() + modelo.slice(1).toLowerCase() : ''
     
-    try {
-        const dateObj = new Date(date)
-        return new Intl.DateTimeFormat('es-AR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        }).format(dateObj)
-    } catch (error) {
-        return date.toString()
+    if (marcaFormatted && modeloFormatted) {
+        return `${marcaFormatted} ${modeloFormatted}`
     }
+    
+    return marcaFormatted || modeloFormatted || '-'
 }
-
-/**
- * Formatea rango de precios
- * @param {number|string} min - Precio mínimo
- * @param {number|string} max - Precio máximo
- * @returns {string} - Rango formateado
- */
-export const formatPriceRange = (min, max) => {
-    if (!min && !max) return '-'
-    if (!min) return `Hasta ${formatPrice(max)}`
-    if (!max) return `Desde ${formatPrice(min)}`
-    return `${formatPrice(min)} - ${formatPrice(max)}`
-}
-
-/**
- * Formatea rango de años
- * @param {number|string} min - Año mínimo
- * @param {number|string} max - Año máximo
- * @returns {string} - Rango formateado
- */
-export const formatYearRange = (min, max) => {
-    if (!min && !max) return '-'
-    if (!min) return `Hasta ${formatYear(max)}`
-    if (!max) return `Desde ${formatYear(min)}`
-    return `${formatYear(min)} - ${formatYear(max)}`
-}
-
-/**
- * Formatea rango de kilometraje
- * @param {number|string} min - Kilometraje mínimo
- * @param {number|string} max - Kilometraje máximo
- * @returns {string} - Rango formateado
- */
-export const formatKilometrajeRange = (min, max) => {
-    if (!min && !max) return '-'
-    if (!min) return `Hasta ${formatKilometraje(max)}`
-    if (!max) return `Desde ${formatKilometraje(min)}`
-    return `${formatKilometraje(min)} - ${formatKilometraje(max)}`
-} 

@@ -16,6 +16,7 @@ const Login = () => {
     const navigate = useNavigate()
     const { login, isAuthenticated, isLoading, error, clearError } = useAuth()
     const [errors, setErrors] = React.useState({})
+    const [isSubmitting, setIsSubmitting] = React.useState(false) // ✅ ESTADO SEPARADO PARA SUBMIT
 
     // Si ya está autenticado, redirigir
     React.useEffect(() => {
@@ -24,9 +25,17 @@ const Login = () => {
         }
     }, [isAuthenticated, isLoading, navigate])
 
+    // ✅ SINCRONIZAR ERRORES DEL HOOK CON ESTADO LOCAL
+    React.useEffect(() => {
+        if (error) {
+            setErrors({ general: error })
+        }
+    }, [error])
+
     const handleSubmit = async (values) => {
         clearError()
         setErrors({})
+        setIsSubmitting(true)
         
         try {
             // Intentar login
@@ -34,13 +43,18 @@ const Login = () => {
             
             if (result.success) {
                 // Login exitoso
+                console.log('✅ LOGIN EXITOSO - Redirigiendo al dashboard')
                 navigate('/admin')
             } else {
                 // Error en login
+                console.log('❌ LOGIN FALLIDO:', result.error)
                 setErrors({ general: result.error || 'Error al iniciar sesión' })
             }
         } catch (error) {
+            console.error('💥 ERROR:', error)
             setErrors({ general: 'Error al iniciar sesión' })
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -69,7 +83,8 @@ const Login = () => {
                         <h2 className={styles.title}>Iniciar Sesión</h2>
                         
                         <div className={styles.credentials}>
-                            <p>Usuario: admin | Contraseña: admin123</p>
+                            <p>Usuario: indiana-autos</p>
+                            <p>Contraseña: 12345678</p>
                         </div>
                         
                         {/* Mostrar error general */}
@@ -87,7 +102,7 @@ const Login = () => {
                         
                         <LoginForm 
                             onSubmit={handleSubmit} 
-                            isSubmitting={isLoading} 
+                            isSubmitting={isSubmitting} 
                             errors={errors} 
                         />
                     </div>

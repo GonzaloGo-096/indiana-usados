@@ -1,0 +1,332 @@
+/* CarFormRHF.module.css - Estilos para el formulario de autos */
+
+.form {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* ✅ HEADER DEL FORMULARIO */
+.formHeader {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.formHeader h2 {
+    color: #2c3e50;
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.formHeader p {
+    color: #6c757d;
+    margin: 0 0 20px 0;
+    font-size: 16px;
+}
+
+/* ✅ HEADER SIMPLE CON FONDO BLANCO */
+.simpleHeader {
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    color: #2c3e50;
+    border: 1px solid #e9ecef;
+}
+
+.simpleHeader h2 {
+    color: #2c3e50;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.guidelinesGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.guidelinesColumn h4 {
+    color: white;
+    margin: 0 0 10px 0;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.guidelinesColumn ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #e9ecef;
+}
+
+.guidelinesColumn li {
+    margin-bottom: 5px;
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.guidelinesColumn li:last-child {
+    margin-bottom: 0;
+}
+
+/* ✅ SECCIÓN DE IMÁGENES */
+.imageSection {
+    margin-bottom: 40px;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.imageSection h3 {
+    color: #2c3e50;
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.imageGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.imageField {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.imageLabel {
+    font-weight: 600;
+    color: #495057;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+
+.existingImage {
+    text-align: center;
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+}
+
+.previewImage {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.existingImage small {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.fileInput {
+    padding: 8px;
+    border: 2px dashed #dee2e6;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.fileInput:hover {
+    border-color: #007bff;
+    background: #f8f9ff;
+}
+
+.fileInput:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* ✅ SECCIÓN DE DATOS */
+.dataSection {
+    margin-bottom: 40px;
+}
+
+.dataSection h3 {
+    color: #2c3e50;
+    margin: 0 0 25px 0;
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formGroup label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 14px;
+}
+
+.input,
+.textarea {
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.input:focus,
+.textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.input:hover,
+.textarea:hover {
+    border-color: #adb5bd;
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+/* ✅ MANEJO DE ERRORES */
+.error {
+    color: #dc3545;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+/* ✅ BOTONES DE ACCIÓN */
+.formActions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding-top: 20px;
+    border-top: 2px solid #e9ecef;
+}
+
+.submitButton {
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.submitButton:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.submitButton:active {
+    transform: translateY(0);
+}
+
+.submitButton:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+/* ✅ RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .form {
+        padding: 15px;
+        margin: 10px;
+    }
+    
+    .imageGrid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .formGrid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .formHeader h2 {
+        font-size: 24px;
+    }
+    
+    .submitButton {
+        width: 100%;
+        padding: 16px;
+    }
+    
+    /* ✅ RESPONSIVE PARA HEADER MODERNO */
+    .headerContent {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .compactGuidelines {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+    
+    .guidelineItem {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .form {
+        padding: 10px;
+        margin: 5px;
+    }
+    
+    .imageSection,
+    .dataSection {
+        padding: 15px;
+    }
+    
+    .formHeader {
+        margin-bottom: 20px;
+    }
+    
+    .formHeader h2 {
+        font-size: 20px;
+    }
+}

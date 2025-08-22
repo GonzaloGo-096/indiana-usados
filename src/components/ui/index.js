@@ -20,8 +20,4 @@ export { default as MultiSelect } from './MultiSelect/MultiSelect'
 
 // ✅ NUEVOS: Componentes para Code Splitting
 export { LoadingSpinner } from './LoadingSpinner'
-export { LazyComponent } from './LazyComponent'
-export { ScrollToTop } from './ScrollToTop'
-
-// ✅ NUEVOS: Componentes de Lazy Loading Inteligente
-export { IntelligentLazyComponent } from './IntelligentLazyComponent' 
+export { ScrollToTop } from './ScrollToTop' 

@@ -17,9 +17,8 @@ export const useAuth = () => {
       console.error('Error during logout:', error)
       // Continuar con la limpieza local aunque falle la API
     } finally {
-      // Limpiar localStorage
-      localStorage.removeItem(AUTH_CONFIG.storage.tokenKey)
-      localStorage.removeItem(AUTH_CONFIG.storage.userKey)
+      // Limpiar localStorage usando función centralizada
+      authService.clearLocalStorage()
       
       setUser(null)
       setIsAuthenticated(false)
@@ -81,6 +80,13 @@ export const useAuth = () => {
       
       if (response.success) {
         const { token, user: userData } = response.data
+        
+        // ✅ LOG ESENCIAL: Token recibido
+        console.log('🎫 TOKEN RECIBIDO:', {
+          token: token?.substring(0, 50) + '...',
+          tokenLength: token?.length,
+          hasToken: !!token
+        })
         
         // Guardar en localStorage
         localStorage.setItem(AUTH_CONFIG.storage.tokenKey, token)

@@ -18,7 +18,7 @@ import {
     getVisibleImages, 
     getAllValidImages,
     isValidImage 
-} from '@utils'
+} from '@utils/imageUtils'
 
 /**
  * Hook para optimizar imagen principal

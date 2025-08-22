@@ -24,29 +24,20 @@ export {
 export { useFilterReducer } from './filters/useFilterReducer'
 
 // ✅ HOOKS DE CONFIGURACIÓN
-export { 
-    useConfig, 
-    useApiConfig, 
-    useFeaturesConfig, 
-    useAuthConfig, 
-    useContactConfig 
-} from './useConfig'
-
-// ✅ HOOKS DE ENTORNO DE API
-export { useApiEnvironment } from './useApiEnvironment'
+export { useConfig } from './useConfig'
 
 // ✅ HOOKS DE SCROLL
 export { useScrollPosition } from './useScrollPosition'
-export { useScrollOptimization } from './useScrollOptimization'
 
 // ✅ HOOKS DE IMÁGENES
 export { useImageOptimization } from './useImageOptimization'
 export { useCarouselImages } from './useImageOptimization'
 
 // ✅ HOOKS DE UI
-export { useDropdownMulti } from './useDropdownMulti'
 export { useAuth } from './useAuth'
-export { useAuthMutation } from './useAuthMutation'
+export { useAutoLogout } from './useAutoLogout'
+export { useVehicleImage, getVehicleImageUrl } from './useVehicleImage'
+export { useVehicleData } from './useVehicleData'
 
 // ✅ HOOKS DE LAZY LOADING
 export { usePreloadRoute } from './usePreloadRoute' 

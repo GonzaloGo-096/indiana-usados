@@ -12,10 +12,6 @@
 export * from './filterOptions'
 
 // ===== DESIGN TOKENS =====
-export * from './colors'
-export * from './typography'
-export * from './spacing'
-export * from './shadows'
 export * from './breakpoints'
 
 // ===== VARIABLES CSS SIMPLIFICADAS PARA DEBUG =====

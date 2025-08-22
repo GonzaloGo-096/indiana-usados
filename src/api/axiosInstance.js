@@ -37,6 +37,50 @@ const detailAxiosInstance = axios.create({
     headers: config.api.headers
 })
 
+// ✅ NUEVA: Instancia específica para autenticación
+const authAxiosInstance = axios.create({
+    baseURL: getBaseURL(),
+    timeout: getTimeout(),
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+})
+
+// ✅ INTERCEPTOR AUTOMÁTICO PARA TOKEN DE AUTH
+authAxiosInstance.interceptors.request.use(
+    (config) => {
+        // Agregar token automáticamente si existe
+        const token = localStorage.getItem('auth_token')
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`
+        }
+        return config
+    },
+    (error) => {
+        return Promise.reject(error)
+    }
+)
+
+// ✅ INTERCEPTOR DE RESPUESTA PARA AUTH
+authAxiosInstance.interceptors.response.use(
+    (response) => {
+        return response
+    },
+    (error) => {
+        // Si el token expiró, limpiar localStorage
+        if (error.response?.status === 401) {
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('auth_user')
+            // Redirigir al login si es necesario
+            if (window.location.pathname !== '/admin/login') {
+                window.location.href = '/admin/login'
+            }
+        }
+        return Promise.reject(error)
+    }
+)
+
 // ✅ LOGGING DE CONFIGURACIÓN (solo en desarrollo)
 if (config.isDevelopment && config.features.debug) {
     console.log('🔧 CONFIGURACIÓN AXIOS:', {
@@ -68,4 +112,4 @@ axiosInstance.interceptors.response.use(
 )
 
 export default axiosInstance
-export { detailAxiosInstance } 
+export { detailAxiosInstance, authAxiosInstance } 

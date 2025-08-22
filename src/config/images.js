@@ -2,43 +2,21 @@
  * images.js - Configuración de imágenes
  * 
  * Centraliza las rutas de imágenes para facilitar el mantenimiento
- * y asegurar que funcionen correctamente con Vite y CDN
+ * y asegurar que funcionen correctamente con Vite
  * 
  * @author Indiana Usados
  * @version 2.0.0
  */
-
-import { generateCdnUrl } from '@services'
 
 // Importar imagen por defecto (esto funciona en Vite)
 import { defaultCarImage } from '@assets'
 
 // Configuración del entorno
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT || 'development'
-const USE_CDN = import.meta.env.VITE_USE_CDN === 'true'
-
-// Rutas de imágenes en CDN (ejemplo)
-const CDN_IMAGE_PATHS = {
-    // Imágenes de vehículos en CDN
-    autoPruebaPrincipal: 'vehicles/auto-prueba-principal.webp',
-    autoPrueba2: 'vehicles/auto-pueba-2.webp',
-    autoPrueba3: 'vehicles/auto-prueba-3.webp',
-    defaultCarImage: 'vehicles/default-car.jpg'
-}
 
 // Configuración de imágenes locales (usando rutas públicas)
 const LOCAL_IMAGES = {
-    autoPruebaPrincipal: '/src/assets/fotos/auto-prueba-principal.webp',
-    autoPrueba2: '/src/assets/fotos/auto-pueba-2.webp',
-    autoPrueba3: '/src/assets/fotos/auto-prueba-3.webp',
     defaultCarImage: defaultCarImage, // Esta sí funciona porque está importada
-    
-    // Array de imágenes para carrusel
-    carouselImages: [
-        '/src/assets/fotos/auto-prueba-principal.webp',
-        '/src/assets/fotos/auto-pueba-2.webp',
-        '/src/assets/fotos/auto-prueba-3.webp'
-    ]
 }
 
 /**
@@ -48,15 +26,7 @@ const LOCAL_IMAGES = {
  * @returns {string} - URL de la imagen
  */
 export const getOptimizedImage = (imageKey, options = {}) => {
-    if (USE_CDN && ENVIRONMENT === 'production') {
-        // Usar CDN en producción
-        const cdnPath = CDN_IMAGE_PATHS[imageKey]
-        if (cdnPath) {
-            return generateCdnUrl(cdnPath, options)
-        }
-    }
-    
-    // Usar imágenes locales en desarrollo o como fallback
+    // Usar imágenes locales
     return LOCAL_IMAGES[imageKey] || LOCAL_IMAGES.defaultCarImage
 }
 
@@ -66,23 +36,12 @@ export const getOptimizedImage = (imageKey, options = {}) => {
  * @returns {Array} - Array de URLs de imágenes
  */
 export const getCarouselImages = (options = {}) => {
-    if (USE_CDN && ENVIRONMENT === 'production') {
-        // Usar CDN en producción
-        return Object.values(CDN_IMAGE_PATHS)
-            .filter(path => path !== CDN_IMAGE_PATHS.defaultCarImage)
-            .map(path => generateCdnUrl(path, options))
-    }
-    
     // Usar imágenes locales
-    return LOCAL_IMAGES.carouselImages
+    return [LOCAL_IMAGES.defaultCarImage]
 }
 
 // Configuración de imágenes (compatibilidad hacia atrás)
 export const IMAGES = {
-    // Imágenes WebP
-    autoPruebaPrincipal: getOptimizedImage('autoPruebaPrincipal'),
-    autoPrueba2: getOptimizedImage('autoPrueba2'),
-    autoPrueba3: getOptimizedImage('autoPrueba3'),
     defaultCarImage: getOptimizedImage('defaultCarImage'),
     
     // Array de imágenes para carrusel

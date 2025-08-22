@@ -67,7 +67,7 @@ export const isFeatureEnabled = (featureKey) => {
 export const getApiConfig = () => ({
   baseURL: env.VITE_API_URL || (isDevelopment() ? 'http://localhost:3001' : 'https://tu-backend-real.com'),
   timeout: Number(env.VITE_API_TIMEOUT) || 10000,
-  mock: isFeatureEnabled('VITE_MOCK_ENABLED') || isDevelopment(),
+  mock: isFeatureEnabled('VITE_MOCK_ENABLED') || false, // ✅ CAMBIADO: No mock por defecto
   postman: isFeatureEnabled('VITE_USE_POSTMAN_MOCK')
 })
 

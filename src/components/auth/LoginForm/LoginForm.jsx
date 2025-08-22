@@ -20,8 +20,8 @@ const LoginForm = ({ onSubmit, isSubmitting, errors: externalErrors }) => {
         clearErrors
     } = useForm({
         defaultValues: {
-            usuario: '',
-            contraseña: ''
+            username: '', // ✅ CAMPOS VACÍOS
+            password: ''  // ✅ CAMPOS VACÍOS
         }
     })
 
@@ -46,14 +46,15 @@ const LoginForm = ({ onSubmit, isSubmitting, errors: externalErrors }) => {
                 <label className={styles.label}>Usuario</label>
                 <input
                     type="text"
-                    {...register('usuario', {
+                    {...register('username', { // ✅ INTERNO: username
                         required: 'El usuario es requerido'
                     })}
                     className={styles.input}
                     disabled={isSubmitting}
+                    placeholder="Ingresa tu usuario" // ✅ PLACEHOLDER GENÉRICO
                 />
-                {errors.usuario && (
-                    <span className={styles.error}>{errors.usuario.message}</span>
+                {errors.username && (
+                    <span className={styles.error}>{errors.username.message}</span>
                 )}
             </div>
 
@@ -61,14 +62,15 @@ const LoginForm = ({ onSubmit, isSubmitting, errors: externalErrors }) => {
                 <label className={styles.label}>Contraseña</label>
                 <input
                     type="password"
-                    {...register('contraseña', {
+                    {...register('password', { // ✅ INTERNO: password
                         required: 'La contraseña es requerida'
                     })}
                     className={styles.input}
                     disabled={isSubmitting}
+                    placeholder="Ingresa tu contraseña" // ✅ PLACEHOLDER GENÉRICO
                 />
-                {errors.contraseña && (
-                    <span className={styles.error}>{errors.contraseña.message}</span>
+                {errors.password && (
+                    <span className={styles.error}>{errors.password.message}</span>
                 )}
             </div>
 

@@ -1,50 +1,17 @@
 import { AUTH_CONFIG } from '@config/auth'
+import { authAxiosInstance } from '@api/axiosInstance'
 
 /**
- * Servicio de autenticación para backend Node.js
+ * Servicio de autenticación para backend Node.js REAL
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 3.0.0 - Migrado a axiosInstance
  */
 
-// Función helper para hacer requests a la API
-const apiRequest = async (endpoint, options = {}) => {
-  const url = `${AUTH_CONFIG.api.baseURL}${endpoint}`
-  
-  const defaultOptions = {
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers
-    }
-  }
-
-  const config = {
-    ...defaultOptions,
-    ...options
-  }
-
-  try {
-    const response = await fetch(url, config)
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data.message || `Error ${response.status}: ${response.statusText}`)
-    }
-
-    return data
-  } catch (error) {
-    // Si es error de red, mantener el mensaje original
-    if (error.name === 'TypeError' && error.message.includes('fetch')) {
-      throw new Error('Error de conexión con el servidor')
-    }
-    throw error
-  }
-}
-
-// Función helper para agregar token de autorización
-const getAuthHeaders = () => {
-  const token = localStorage.getItem(AUTH_CONFIG.storage.tokenKey)
-  return token ? { Authorization: `Bearer ${token}` } : {}
+// Función helper para limpiar localStorage (centralizada)
+const clearLocalStorage = () => {
+  localStorage.removeItem(AUTH_CONFIG.storage.tokenKey)
+  localStorage.removeItem(AUTH_CONFIG.storage.userKey)
 }
 
 // Función mock temporal para desarrollo (sin backend)
@@ -52,18 +19,17 @@ const mockLogin = async (credentials) => {
   // Simular delay de red
   await new Promise(resolve => setTimeout(resolve, 500))
   
-  // Credenciales hardcodeadas para desarrollo
-  if (credentials.usuario === 'admin' && credentials.contraseña === 'admin123') {
+  // ✅ CREDENCIALES CORREGIDAS: Usar las del backend real
+  if (credentials.username === 'indiana-autos' && credentials.password === '12345678') {
     return {
       success: true,
       data: {
         token: 'mock_jwt_token_' + Date.now(),
         user: {
           id: 1,
-          username: 'admin',
-          email: 'admin@indiana.com',
-          role: 'admin',
-          name: 'Administrador'
+          username: 'indiana-autos',
+          role: 'user',
+          name: 'Indiana Autos'
         }
       }
     }
@@ -76,7 +42,7 @@ const mockLogin = async (credentials) => {
  * Servicios de autenticación
  */
 export const authService = {
-  // Login - Listo para backend Node.js
+  // Login - Listo para backend Node.js REAL con axiosInstance
   login: async (credentials) => {
     // Verificar si estamos en modo desarrollo (sin backend)
     const isDevelopment = AUTH_CONFIG.development.enableMock
@@ -86,59 +52,77 @@ export const authService = {
       return mockLogin(credentials)
     }
 
-    // Backend real - adaptar credenciales al formato esperado
+    // ✅ BACKEND REAL: Enviar datos en formato correcto
     const loginData = {
-      email: credentials.usuario, // Asumiendo que el backend espera 'email'
-      password: credentials.contraseña
+      username: credentials.username,
+      password: credentials.password
     }
 
     try {
-      const response = await apiRequest(AUTH_CONFIG.api.endpoints.login, {
-        method: 'POST',
-        body: JSON.stringify(loginData)
+      // ✅ LOG ESENCIAL: Intentando login
+      console.log('🔐 LOGIN:', {
+        endpoint: AUTH_CONFIG.api.endpoints.login,
+        baseURL: AUTH_CONFIG.api.baseURL
       })
+
+      // ✅ USAR AXIOS INSTANCE EN LUGAR DE FETCH
+      const response = await authAxiosInstance.post(AUTH_CONFIG.api.endpoints.login, loginData)
+
+      // ✅ LOG ESENCIAL: Respuesta del backend
+      console.log('📥 RESPUESTA:', {
+        status: response.status,
+        hasError: !!response.data.error,
+        hasToken: !!response.data.token
+      })
+
+      // ✅ ADAPTAR A LA RESPUESTA REAL DEL BACKEND
+      if (response.data.error) {
+        throw new Error(response.data.msg || 'Error en el login')
+      }
 
       return {
         success: true,
         data: {
-          token: response.token || response.data?.token,
-          user: response.user || response.data?.user
+          token: response.data.token,
+          user: {
+            username: credentials.username,
+            role: 'user'
+          }
         }
       }
     } catch (error) {
+      // ✅ LOG ESENCIAL: Error
+      console.error('❌ ERROR:', {
+        message: error.message,
+        status: error.response?.status
+      })
+
       return {
         success: false,
-        message: error.message
+        message: error.response?.data?.msg || error.message || 'Error de conexión'
       }
     }
   },
 
-  // Logout - Listo para backend Node.js
+  // Logout - Simplificado para backend real (sin endpoint de logout)
   logout: async () => {
     const token = localStorage.getItem(AUTH_CONFIG.storage.tokenKey)
     
     if (token) {
       try {
-        // Verificar si estamos en modo desarrollo
-        const isDevelopment = !AUTH_CONFIG.api.baseURL || AUTH_CONFIG.api.baseURL.includes('localhost:3001')
-        
-        if (!isDevelopment) {
-          // Llamar al backend para invalidar el token
-          await apiRequest(AUTH_CONFIG.api.endpoints.logout, {
-            method: 'POST',
-            headers: getAuthHeaders()
-          })
-        } else {
-          // Log removido para limpiar debug info
-        }
+        // ✅ BACKEND REAL: No hay endpoint de logout, solo limpiar local
+        console.log('Logout: Token encontrado, limpiando localStorage')
       } catch (error) {
-        console.error('Error during logout API call:', error)
-        // Continuar con la limpieza local aunque falle la API
+        console.error('Error durante logout:', error)
+        // Continuar con la limpieza local aunque falle
       }
     }
+    
+    // Limpiar localStorage (centralizado)
+    clearLocalStorage()
   },
 
-  // Verificar token (opcional)
+  // Verificar token (simplificado para backend real)
   verifyToken: async () => {
     const token = localStorage.getItem(AUTH_CONFIG.storage.tokenKey)
     
@@ -147,14 +131,14 @@ export const authService = {
     }
 
     try {
-      const response = await apiRequest('/auth/verify', {
-        method: 'GET',
-        headers: getAuthHeaders()
-      })
-      
-      return { valid: true, user: response.user }
+      // ✅ BACKEND REAL: No hay endpoint de verificación, solo verificar existencia local
+      // En el futuro se puede implementar verificación JWT en el frontend
+      return { valid: true, user: { username: 'indiana-autos', role: 'user' } }
     } catch (error) {
       return { valid: false, error: error.message }
     }
-  }
+  },
+
+  // Función helper para limpiar localStorage (exportada para uso externo)
+  clearLocalStorage
 } 

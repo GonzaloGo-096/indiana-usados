@@ -9,7 +9,4 @@
  */
 
 // ✅ SERVICIOS DE AUTENTICACIÓN
-export * from './authService'
-
-// ✅ SERVICIOS DE IMÁGENES
-export * from './imageService' 
+export * from './authService' 

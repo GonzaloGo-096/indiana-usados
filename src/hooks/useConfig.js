@@ -12,7 +12,7 @@
  */
 
 import { useMemo } from 'react'
-import { config, validateConfig } from '@config'
+import { config, validateConfig } from '../config'
 
 /**
  * Hook para acceder a la configuración de manera limpia
@@ -66,36 +66,4 @@ export const useConfig = (section = null) => {
     // ✅ MÉTODOS DE VALIDACIÓN
     validate: validateConfig
   }
-}
-
-/**
- * Hook especializado para configuración de API
- * @returns {Object} - Configuración específica de API
- */
-export const useApiConfig = () => {
-  return useConfig('api')
-}
-
-/**
- * Hook especializado para configuración de features
- * @returns {Object} - Configuración específica de features
- */
-export const useFeaturesConfig = () => {
-  return useConfig('features')
-}
-
-/**
- * Hook especializado para configuración de autenticación
- * @returns {Object} - Configuración específica de auth
- */
-export const useAuthConfig = () => {
-  return useConfig('auth')
-}
-
-/**
- * Hook especializado para configuración de contacto
- * @returns {Object} - Configuración específica de contacto
- */
-export const useContactConfig = () => {
-  return useConfig('contact')
 } 
