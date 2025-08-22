@@ -15,6 +15,7 @@ import React from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, useCallback, useMemo } from 'react'
 import { vehiclesApi } from '@api'
+// import { mapListResponse } from '../../mappers/vehicleMapper.js' // TEMPORALMENTE COMENTADO
 
 /**
  * Hook unificado para listas de vehículos
@@ -42,7 +43,7 @@ export const useVehiclesList = (filters = {}, options = {}) => {
   
   // ✅ ESTADO LOCAL para acumular vehículos
   const [accumulatedVehicles, setAccumulatedVehicles] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentCursor, setCurrentCursor] = useState(null)
   const [hasMoreData, setHasMoreData] = useState(true)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
 
@@ -61,8 +62,8 @@ export const useVehiclesList = (filters = {}, options = {}) => {
 
   // ✅ QUERY PRINCIPAL - siempre se ejecuta
   const query = useQuery({
-    queryKey: ['vehicles-list', filtersHash, currentPage],
-    queryFn: () => vehiclesApi.getVehicles(filters), // ✅ Solo filtros, sin paginación
+    queryKey: ['vehicles-list', filtersHash, currentCursor],
+    queryFn: () => vehiclesApi.getVehicles({ ...filters, cursor: currentCursor, limit: 50 }), // ✅ Aumentar límite para ver más datos
     enabled,
     staleTime: hasActiveFilters ? 1000 * 60 * 2 : 1000 * 60 * 10, // ✅ Cache inteligente
     gcTime,
@@ -84,8 +85,34 @@ export const useVehiclesList = (filters = {}, options = {}) => {
 
   // ✅ EFECTO para manejar nuevos datos
   React.useEffect(() => {
-    if (query.data?.data && Array.isArray(query.data.data)) {
-      if (currentPage === 1) {
+    if (!query.data) return
+    
+    console.log('🔍 HOOK DEBUG - query.data recibido:', query.data)
+    
+    // ✅ DETECTAR SI ES RESPUESTA DEL BACKEND (ROLLBACK AL ESTADO FUNCIONAL)
+    if (query.data?.allPhotos?.docs && Array.isArray(query.data.allPhotos.docs)) {
+      // Respuesta del backend
+      const backendData = query.data.allPhotos
+      console.log('🔍 HOOK DEBUG - Respuesta del backend detectada:', {
+        totalDocs: backendData.docs.length,
+        firstVehicle: backendData.docs[0],
+        hasNextPage: backendData.hasNextPage,
+        fuente: 'BACKEND REAL - MongoDB',
+        timestamp: new Date().toISOString()
+      })
+      
+      if (!currentCursor) {
+        // ✅ PRIMERA CARGA: Reemplazar lista
+        setAccumulatedVehicles(backendData.docs)
+        setHasMoreData(backendData.hasNextPage || false)
+      } else {
+        // ✅ CARGAR MÁS: Acumular vehículos
+        setAccumulatedVehicles(prev => [...prev, ...backendData.docs])
+        setHasMoreData(backendData.hasNextPage || false)
+      }
+    } else if (query.data?.data && Array.isArray(query.data.data)) {
+      // Respuesta mock (mantener compatibilidad)
+      if (!currentCursor) {
         // ✅ PRIMERA CARGA: Reemplazar lista
         setAccumulatedVehicles(query.data.data)
         setHasMoreData(query.data.hasNextPage || false)
@@ -95,7 +122,7 @@ export const useVehiclesList = (filters = {}, options = {}) => {
         setHasMoreData(query.data.hasNextPage || false)
       }
     }
-  }, [query.data, currentPage])
+  }, [query.data]) // ✅ SOLO query.data, NO currentCursor
 
   // ✅ FUNCIÓN para cargar más vehículos
   const loadMore = useCallback(async () => {
@@ -105,26 +132,32 @@ export const useVehiclesList = (filters = {}, options = {}) => {
 
     setIsLoadingMore(true)
     try {
-      // ✅ INCREMENTAR página y hacer nueva query
-      const nextPage = currentPage + 1
-      setCurrentPage(nextPage)
+      // ✅ OBTENER CURSOR del último vehículo para paginación
+      const lastVehicle = accumulatedVehicles[accumulatedVehicles.length - 1]
+      const nextCursor = lastVehicle?._id || lastVehicle?.id || null
       
-      // ✅ La query se ejecutará automáticamente con nueva página
-      await query.refetch()
+      if (nextCursor) {
+        setCurrentCursor(nextCursor)
+        // ✅ La query se ejecutará automáticamente con nuevo cursor
+        await query.refetch()
+      } else {
+        console.warn('⚠️ No se pudo obtener cursor para la siguiente página')
+        setHasMoreData(false)
+      }
     } catch (error) {
       console.error('❌ Error al cargar más vehículos:', error)
-      // ✅ REVERTIR página en caso de error
-      setCurrentPage(prev => prev - 1)
+      // ✅ REVERTIR cursor en caso de error
+      setCurrentCursor(null)
     } finally {
       setIsLoadingMore(false)
     }
-  }, [hasMoreData, isLoadingMore, query.isFetching, currentPage, query.refetch])
+  }, [hasMoreData, isLoadingMore, query.isFetching, accumulatedVehicles, query.refetch])
 
   // ✅ FUNCIÓN para limpiar cache y resetear
   const clearCache = useCallback(() => {
     queryClient.removeQueries(['vehicles-list'])
     setAccumulatedVehicles([])
-    setCurrentPage(1)
+    setCurrentCursor(null)
     setHasMoreData(true) // ✅ Solo para limpieza manual
     setIsLoadingMore(false)
   }, [queryClient])
@@ -135,7 +168,7 @@ export const useVehiclesList = (filters = {}, options = {}) => {
     queryClient.removeQueries(['vehicles-list'])
     // ✅ RESETEAR estado local
     setAccumulatedVehicles([])
-    setCurrentPage(1)
+    setCurrentCursor(null)
     // ✅ NO resetear hasMoreData aquí - el backend lo determinará
     setIsLoadingMore(false)
     // ✅ FORZAR nueva query
@@ -144,7 +177,7 @@ export const useVehiclesList = (filters = {}, options = {}) => {
 
   // ✅ FUNCIÓN para resetear a primera página
   const resetToFirstPage = useCallback(() => {
-    setCurrentPage(1)
+    setCurrentCursor(null)
     setAccumulatedVehicles([])
     // ✅ NO resetear hasMoreData aquí - el backend lo determinará
     setIsLoadingMore(false)
@@ -155,11 +188,11 @@ export const useVehiclesList = (filters = {}, options = {}) => {
     // ✅ DATOS ACUMULADOS
     vehicles: accumulatedVehicles,
     total: query.data?.total || 0,
-    currentPage,
+    currentCursor,
     hasNextPage: hasMoreData,
     
     // ✅ ESTADOS
-    isLoading: query.isLoading && currentPage === 1, // ✅ Solo loading inicial
+    isLoading: query.isLoading && !currentCursor, // ✅ Solo loading inicial
     isLoadingMore,
     isError: query.isError,
     error: query.error,

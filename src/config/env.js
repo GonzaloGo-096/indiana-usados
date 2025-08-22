@@ -65,7 +65,7 @@ export const isFeatureEnabled = (featureKey) => {
 
 // Helper para obtener configuración de API
 export const getApiConfig = () => ({
-  baseURL: env.VITE_API_URL || (isDevelopment() ? 'http://localhost:3000/api' : 'https://tu-backend-real.com/api'),
+  baseURL: env.VITE_API_URL || (isDevelopment() ? 'http://localhost:3001' : 'https://tu-backend-real.com'),
   timeout: Number(env.VITE_API_TIMEOUT) || 10000,
   mock: isFeatureEnabled('VITE_MOCK_ENABLED') || isDevelopment(),
   postman: isFeatureEnabled('VITE_USE_POSTMAN_MOCK')

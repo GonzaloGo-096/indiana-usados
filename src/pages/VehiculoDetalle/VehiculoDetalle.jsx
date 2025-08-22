@@ -6,7 +6,7 @@
  */
 
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { useAutoDetail } from '@hooks'
 import { CardDetalle } from '@vehicles'
 import { ErrorState } from '@ui'
@@ -16,7 +16,11 @@ import styles from './VehiculoDetalle.module.css'
 
 const VehiculoDetalle = () => {
     const { id } = useParams()
-
+    const { state } = useLocation()
+    
+    // ✅ OBTENER DATOS DEL NAVIGATE (cache)
+    const vehicleDataFromCache = state?.vehicleData
+    
     // Hook para preservar scroll
     const { navigateWithScroll } = useScrollPosition({
         key: 'vehicles-list',
@@ -28,13 +32,32 @@ const VehiculoDetalle = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    // ✅ USAR DATOS DEL CACHE SI ESTÁN DISPONIBLES
     const { 
-        auto,
+        auto: autoFromAPI,
         formattedData,
         isLoading, 
         isError, 
         error 
-    } = useAutoDetail(id)
+    } = useAutoDetail(id, { 
+        enabled: !vehicleDataFromCache // Solo hacer API call si no hay datos en cache
+    })
+    
+    // ✅ PRIORIZAR DATOS DEL CACHE
+    const auto = vehicleDataFromCache || autoFromAPI
+    
+    // ✅ DEBUG: Confirmar fuente de datos
+    console.log('🔍 VEHICULO DETALLE DEBUG:', {
+        id,
+        tieneDatosCache: Boolean(vehicleDataFromCache),
+        tieneDatosAPI: Boolean(autoFromAPI),
+        fuenteFinal: vehicleDataFromCache ? 'CACHE (navigate)' : 'API (backend)',
+        datosCache: vehicleDataFromCache ? {
+            marca: vehicleDataFromCache.marca,
+            modelo: vehicleDataFromCache.modelo,
+            precio: vehicleDataFromCache.precio
+        } : null
+    })
 
     // Función para volver preservando scroll
     const handleBack = () => {

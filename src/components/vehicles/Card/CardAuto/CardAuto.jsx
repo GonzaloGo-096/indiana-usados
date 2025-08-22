@@ -12,7 +12,7 @@
  */
 
 import React, { memo, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { 
     formatPrice, 
     formatKilometraje, 
@@ -28,20 +28,39 @@ import styles from './CardAuto.module.css'
  * @param {Object} props.auto - Objeto con información del vehículo
  */
 export const CardAuto = memo(({ auto }) => {
+    const navigate = useNavigate()
+    
+    // ✅ DEBUG: Mostrar datos recibidos
+    console.log('🚗 CARD AUTO DEBUG - Datos recibidos:', {
+        id: auto?.id || auto?._id,
+        marca: auto?.marca,
+        modelo: auto?.modelo,
+        version: auto?.version,
+        precio: auto?.precio,
+        anio: auto?.anio,
+        kilometraje: auto?.kilometraje,
+        caja: auto?.caja,
+        fotoFrontal: auto?.fotoFrontal?.url,
+        fuente: 'backend' // Confirmar que viene del backend
+    })
+    
     // ✅ VALIDAR DATOS DEL VEHÍCULO
-    if (!auto || !auto.id) {
+    if (!auto || (!auto.id && !auto._id)) {
         console.warn('⚠️ CardAuto: Datos de vehículo inválidos', auto)
         return null
     }
 
+    // Normalizar ID para compatibilidad
+    const vehicleId = auto.id || auto._id
+
     // ✅ MEMOIZAR DATOS FORMATEADOS
     const formattedData = useMemo(() => ({
         price: formatPrice(auto.precio),
-        kilometers: formatKilometraje(auto.kms),
-        year: formatYear(auto.año),
+        kilometers: formatKilometraje(auto.kilometraje || auto.kms),
+        year: formatYear(auto.anio || auto.año),
         caja: formatCaja(auto.caja),
         brandModel: formatBrandModel(auto.marca, auto.modelo)
-    }), [auto.precio, auto.kms, auto.año, auto.caja, auto.marca, auto.modelo])
+    }), [auto.precio, auto.kilometraje, auto.kms, auto.anio, auto.año, auto.caja, auto.marca, auto.modelo])
 
     // ✅ MEMOIZAR ALT TEXT
     const altText = useMemo(() => {
@@ -49,14 +68,14 @@ export const CardAuto = memo(({ auto }) => {
     }, [formattedData.brandModel, formattedData.year])
 
     // ✅ OPTIMIZADO: Memoizar URL de navegación
-    const vehicleUrl = useMemo(() => `/vehiculo/${auto.id}`, [auto.id])
+    const vehicleUrl = useMemo(() => `/vehiculo/${vehicleId}`, [vehicleId])
 
     return (
         <div className={styles.card} data-testid="vehicle-card">
             {/* ===== IMAGEN ===== */}
             <div className={styles['card__image-container']}>
                 <img 
-                    src={auto.imagen || '/src/assets/auto1.jpg'} 
+                    src={auto.imagen || auto.fotoFrontal?.url || '/src/assets/auto1.jpg'} 
                     alt={altText}
                     className={styles['card__image']}
                     loading="lazy"
@@ -116,13 +135,15 @@ export const CardAuto = memo(({ auto }) => {
                 {/* ===== BOTÓN VER DETALLE ===== */}
                 <div className={styles['card__footer']}>
                     <div className={styles['card__footer_border']}></div>
-                    <Link 
-                        to={vehicleUrl}
+                    <button 
+                        onClick={() => navigate(`/vehiculo/${vehicleId}`, { 
+                            state: { vehicleData: auto }
+                        })}
                         className={styles['card__button']}
                         data-testid="link-detalle"
                     >
                         Ver más
-                    </Link>
+                    </button>
                 </div>
             </div>
         </div>

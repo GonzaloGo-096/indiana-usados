@@ -112,15 +112,14 @@ export const mapApiVehicleToModel = (apiVehicle) => {
  * @param {number} currentPage - Página actual
  * @returns {Object} - Respuesta normalizada
  */
-export const mapListResponse = (apiResponse, currentPage = 1) => {
+export const mapListResponse = (apiResponse, currentCursor = null) => {
   try {
     console.log('🔍 MAPPER DEBUG - Respuesta recibida:', {
-      hasData: Boolean(apiResponse?.data),
-      dataType: Array.isArray(apiResponse?.data) ? 'array' : typeof apiResponse?.data,
-      dataLength: Array.isArray(apiResponse?.data) ? apiResponse.data.length : 'N/A',
-      total: apiResponse?.total,
-      hasNextPage: apiResponse?.hasNextPage,
-      nextPage: apiResponse?.nextPage
+              hasData: Boolean(apiResponse?.data),
+        hasAllPhotos: Boolean(apiResponse?.allPhotos),
+        dataType: Array.isArray(apiResponse?.data) ? 'array' : typeof apiResponse?.data,
+        allPhotosType: typeof apiResponse?.allPhotos,
+        currentCursor
     })
 
     let vehicles = []
@@ -128,29 +127,60 @@ export const mapListResponse = (apiResponse, currentPage = 1) => {
     let hasNextPage = false
     let nextPage = null
 
-    if (apiResponse && typeof apiResponse === 'object') {
-      if (Array.isArray(apiResponse)) {
-        vehicles = apiResponse
-        total = vehicles.length
-      } else if (apiResponse.data && Array.isArray(apiResponse.data)) {
-        vehicles = apiResponse.data
-        total = Number(apiResponse.total) || vehicles.length
-        hasNextPage = Boolean(apiResponse.hasNextPage)
-        nextPage = apiResponse.nextPage || null
-      }
+    // ✅ DETECTAR SI ES RESPUESTA DEL BACKEND
+    if (apiResponse?.allPhotos?.docs && Array.isArray(apiResponse.allPhotos.docs)) {
+      // Respuesta del backend
+      const backendData = apiResponse.allPhotos
+      vehicles = backendData.docs
+      total = Number(backendData.totalDocs) || vehicles.length
+      hasNextPage = Boolean(backendData.hasNextPage)
+      nextPage = backendData.nextPage || null
+      
+      console.log('🔍 MAPPER DEBUG - Respuesta del backend detectada:', {
+        totalVehicles: vehicles.length,
+        totalDocs: backendData.totalDocs,
+        hasNextPage: backendData.hasNextPage,
+        nextPage: backendData.nextPage
+      })
+    } else if (apiResponse?.data && Array.isArray(apiResponse.data)) {
+      // Respuesta mock (mantener compatibilidad)
+      vehicles = apiResponse.data
+      total = Number(apiResponse.total) || vehicles.length
+      hasNextPage = Boolean(apiResponse.hasNextPage)
+      nextPage = apiResponse.nextPage || null
+      
+      console.log('🔍 MAPPER DEBUG - Respuesta mock detectada:', {
+        totalVehicles: vehicles.length,
+        total: apiResponse.total,
+        hasNextPage: apiResponse.hasNextPage
+      })
+    } else if (Array.isArray(apiResponse)) {
+      // Array directo
+      vehicles = apiResponse
+      total = vehicles.length
+      hasNextPage = false
+      nextPage = null
     }
 
-    // Normalizar cada vehículo
+    // Normalizar cada vehículo según el tipo de respuesta
     const normalizedVehicles = vehicles
-      .map(mapApiVehicleToModel)
+      .map(vehicle => {
+        // Si es respuesta del backend, usar mapeo específico
+        if (apiResponse?.allPhotos?.docs) {
+          return mapBackendVehicleToFrontend(vehicle)
+        }
+        // Si es mock, usar mapeo existente
+        return mapApiVehicleToModel(vehicle)
+      })
       .filter(vehicle => vehicle !== null)
 
     console.log('🔍 MAPPER DEBUG - Resultado final:', {
       totalVehicles: vehicles.length,
       normalizedCount: normalizedVehicles.length,
-      currentPage,
+      currentCursor,
       hasNextPage,
-      nextPage
+      nextPage,
+      source: apiResponse?.allPhotos?.docs ? 'backend' : 'mock'
     })
 
     return {
@@ -158,14 +188,14 @@ export const mapListResponse = (apiResponse, currentPage = 1) => {
       data: normalizedVehicles, // Mantener compatibilidad
       total: normalizedVehicles.length,
       totalItems: normalizedVehicles.length,
-      currentPage,
+      currentCursor,
       hasNextPage,
       nextPage,
       totalPages: Math.ceil(normalizedVehicles.length / 12)
     }
   } catch (error) {
     console.error('❌ Vehicle mapper: error procesando respuesta:', error, apiResponse)
-    return { data: [], total: 0, currentPage, hasNextPage: false, nextPage: null, totalPages: 0 }
+    return { data: [], total: 0, currentCursor, hasNextPage: false, nextPage: null, totalPages: 0 }
   }
 }
 
@@ -188,6 +218,96 @@ export const mapDetailResponse = (apiResponse) => {
     return null
   } catch (error) {
     console.error('❌ Vehicle mapper: error procesando detalle:', error, apiResponse)
+    return null
+  }
+}
+
+/**
+ * Mapea un vehículo del backend al modelo interno del frontend
+ * @param {Object} backendVehicle - Vehículo tal como viene del backend
+ * @returns {Object} - Vehículo normalizado para el frontend
+ */
+export const mapBackendVehicleToFrontend = (backendVehicle) => {
+  if (!backendVehicle || typeof backendVehicle !== 'object') {
+    console.warn('⚠️ Backend mapper: datos inválidos recibidos:', backendVehicle)
+    return null
+  }
+
+  try {
+    // Mapeo de campos principales
+    const normalized = {
+      // Identificación
+      id: backendVehicle._id || backendVehicle.id || 0,
+      
+      // Información básica (mapeo directo)
+      marca: String(backendVehicle.marca || '').trim(),
+      modelo: String(backendVehicle.modelo || '').trim(),
+      version: String(backendVehicle.version || '').trim(),
+      anio: Number(backendVehicle.anio || 0),
+      
+      // Características técnicas
+      kilometraje: Number(backendVehicle.kilometraje || 0),
+      caja: String(backendVehicle.caja || '').trim(),
+      combustible: String(backendVehicle.combustible || '').trim(),
+      transmision: String(backendVehicle.transmision || '').trim(),
+      cilindrada: Number(backendVehicle.cilindrada || 0),
+      color: String(backendVehicle.color || '').trim(),
+      
+      // Precio y estado
+      precio: Number(backendVehicle.precio || 0),
+      segmento: String(backendVehicle.segmento || '').trim(),
+      
+      // Características adicionales
+      traccion: String(backendVehicle.traccion || '').trim(),
+      tapizado: String(backendVehicle.tapizado || '').trim(),
+      categoriaVehiculo: String(backendVehicle.categoriaVehiculo || '').trim(),
+      frenos: String(backendVehicle.frenos || '').trim(),
+      turbo: String(backendVehicle.turbo || '').trim(),
+      llantas: String(backendVehicle.llantas || '').trim(),
+      HP: String(backendVehicle.HP || '').trim(),
+      detalle: String(backendVehicle.detalle || '').trim(),
+      
+      // Imágenes (estructura del backend)
+      fotoFrontal: backendVehicle.fotoFrontal || null,
+      fotoTrasera: backendVehicle.fotoTrasera || null,
+      fotoLateralIzquierda: backendVehicle.fotoLateralIzquierda || null,
+      fotoLateralDerecha: backendVehicle.fotoLateralDerecha || null,
+      fotoInterior: backendVehicle.fotoInterior || null,
+      
+      // Imágenes para compatibilidad con frontend actual
+      imagen: backendVehicle.fotoFrontal?.url || '',
+      gallery: [
+        backendVehicle.fotoFrontal?.url,
+        backendVehicle.fotoTrasera?.url,
+        backendVehicle.fotoLateralIzquierda?.url,
+        backendVehicle.fotoLateralDerecha?.url,
+        backendVehicle.fotoInterior?.url
+      ].filter(Boolean),
+      
+      // Campos derivados
+      title: `${backendVehicle.marca} ${backendVehicle.modelo}`.trim(),
+      slug: `${backendVehicle.marca}-${backendVehicle.modelo}-${backendVehicle.anio}`.toLowerCase().replace(/\s+/g, '-'),
+      
+      // Metadatos
+      createdAt: backendVehicle.createdAt || new Date().toISOString(),
+      updatedAt: backendVehicle.updatedAt || new Date().toISOString(),
+      
+      // Datos originales para debugging
+      raw: backendVehicle
+    }
+
+    // Validar campos requeridos
+    if (!normalized.marca || !normalized.modelo) {
+      console.warn('⚠️ Backend mapper: campos requeridos faltantes:', { 
+        marca: normalized.marca, 
+        modelo: normalized.modelo 
+      })
+      return null
+    }
+
+    return normalized
+  } catch (error) {
+    console.error('❌ Backend mapper: error procesando vehículo:', error, backendVehicle)
     return null
   }
 }

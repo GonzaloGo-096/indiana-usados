@@ -56,7 +56,8 @@ export default defineConfig({
   },
   
   server: {
-    port: 3000,
+    port: 8080,
+    strictPort: true,
     open: true,
     cors: true
   },

@@ -39,32 +39,57 @@ class VehiclesApiService {
      * @param {Object} params - Parámetros de paginación
      * @returns {Promise<Object>} - Respuesta con datos y metadatos
      */
-    async getVehiclesMain({ limit = 6, page = 1 } = {}) {
+    async getVehiclesMain({ limit = 6, cursor = null } = {}) {
+        console.log('🚀 DEBUG: getVehiclesMain ejecutándose', { limit, cursor, USE_MOCK_API, USE_POSTMAN_MOCK })
+        
         // ✅ DETECTAR ENTORNO Y USAR ESTRATEGIA APROPIADA
         if (USE_MOCK_API && !USE_POSTMAN_MOCK) {
             // ✅ MOCK LOCAL IMPLEMENTADO
-            console.log('🔄 MOCK LOCAL: Obteniendo vehículos sin filtros', { limit, page })
-            const result = getMockVehicles(page, limit)
+            console.log('🔄 MOCK LOCAL: Obteniendo vehículos sin filtros', { limit, cursor })
+            const result = getMockVehicles(cursor ? 1 : 1, limit) // Mantener compatibilidad con mock
             console.log('✅ MOCK LOCAL: Vehículos obtenidos', result)
             return result
         }
         
-        // ✅ POSTMAN MOCK O BACKEND REAL
-        const response = await axiosInstance.get('/api/vehicles', {
-            params: { limit, page }
-        })
+        console.log('🔗 DEBUG: Llamando al BACKEND REAL')
+        console.log('🌐 DEBUG: URL completa:', `${axiosInstance.defaults.baseURL}/photos/getallphotos`)
+        console.log('📡 DEBUG: Parámetros enviados:', { limit, cursor })
         
-        // ✅ VALIDAR RESPUESTA SEGÚN ENTORNO
-        if (USE_POSTMAN_MOCK) {
-            if (validatePostmanResponse(response.data)) {
-                const result = extractPostmanData(response.data, page)
-                return result
+        try {
+            // ✅ POSTMAN MOCK O BACKEND REAL
+            const response = await axiosInstance.get('/photos/getallphotos', {
+                params: { limit, ...(cursor && { cursor }) }
+            })
+            
+            console.log('✅ DEBUG: Respuesta del backend recibida:', {
+                status: response.status,
+                statusText: response.statusText,
+                data: response.data,
+                headers: response.headers
+            })
+            
+            // ✅ VALIDAR RESPUESTA SEGÚN ENTORNO
+            if (USE_POSTMAN_MOCK) {
+                if (validatePostmanResponse(response.data)) {
+                    const result = extractPostmanData(response.data, page)
+                    return result
+                }
+                throw new Error('Respuesta inválida de Postman')
             }
-            throw new Error('Respuesta inválida de Postman')
+            
+            // ✅ BACKEND REAL - asumir estructura estándar
+            return response.data
+            
+        } catch (error) {
+            console.error('❌ DEBUG: Error en llamada al backend:', {
+                message: error.message,
+                status: error.response?.status,
+                statusText: error.response?.statusText,
+                data: error.response?.data,
+                config: error.config
+            })
+            throw error
         }
-        
-        // ✅ BACKEND REAL - asumir estructura estándar
-        return response.data
     }
 
     /**
@@ -72,16 +97,16 @@ class VehiclesApiService {
      * @param {Object} params - Parámetros de filtros y paginación
      * @returns {Promise<Object>} - Respuesta con datos filtrados
      */
-    async getVehiclesWithFilters({ limit = 6, page = 1, filters = {} } = {}) {
+    async getVehiclesWithFilters({ limit = 6, cursor = null, filters = {} } = {}) {
         if (IS_DEVELOPMENT) {
-            console.log('🔍 API: Intentando obtener vehículos con filtros', { filters, limit, page })
+            console.log('🔍 API: Intentando obtener vehículos con filtros', { filters, limit, cursor })
         }
         
         // ✅ DETECTAR ENTORNO Y USAR ESTRATEGIA APROPIADA
         if (USE_MOCK_API && !USE_POSTMAN_MOCK) {
             // ✅ MOCK LOCAL IMPLEMENTADO CON FILTROS
             console.log('🔄 MOCK LOCAL: Aplicando filtros', filters)
-            const result = getMockVehicles(page, limit, filters)
+            const result = getMockVehicles(cursor ? 1 : 1, limit, filters) // Mantener compatibilidad con mock
             if (IS_DEVELOPMENT) {
                 console.log('✅ MOCK LOCAL: Vehículos filtrados obtenidos', result)
             }
@@ -89,9 +114,9 @@ class VehiclesApiService {
         }
         
         // ✅ POSTMAN MOCK O BACKEND REAL
-        const response = await axiosInstance.post('/api/vehicles', {
+        const response = await axiosInstance.post('/photos/getallphotos', {
             filters,
-            pagination: { limit, page }
+            pagination: { limit, ...(cursor && { cursor }) }
         })
         
         if (IS_DEVELOPMENT) {
@@ -143,10 +168,10 @@ class VehiclesApiService {
             
             // ✅ POSTMAN MOCK O BACKEND REAL
             if (IS_DEVELOPMENT) {
-                console.log('🔗 DEBUG: URL completa:', `${detailAxiosInstance.defaults.baseURL}/api/vehicles/${id}`)
+                console.log('🔗 DEBUG: URL completa:', `${detailAxiosInstance.defaults.baseURL}/photos/getonephoto/${id}`)
             }
             
-            const response = await detailAxiosInstance.get(`/api/vehicles/${id}`)
+            const response = await detailAxiosInstance.get(`/photos/getonephoto/${id}`)
             
             if (IS_DEVELOPMENT) {
                 console.log('✅ DEBUG: Respuesta recibida:', response)
@@ -208,11 +233,11 @@ class VehiclesApiService {
      * @param {Object} params - Parámetros de consulta
      * @returns {Promise<Object>} - Respuesta con datos
      */
-    async getVehicles({ limit = 6, page = 1, filters = {} } = {}) {
+    async getVehicles({ limit = 6, cursor = null, filters = {} } = {}) {
         if (Object.keys(filters).length === 0) {
-            return this.getVehiclesMain({ limit, page })
+            return this.getVehiclesMain({ limit, cursor })
         } else {
-            return this.getVehiclesWithFilters({ limit, page, filters })
+            return this.getVehiclesWithFilters({ limit, cursor, filters })
         }
     }
 
@@ -222,10 +247,10 @@ class VehiclesApiService {
      * @param {Object} pagination - Parámetros de paginación
      * @returns {Promise<Object>} - Respuesta con datos filtrados
      */
-    async applyFilters(filters, pagination = { limit: 6, page: 1 }) {
+    async applyFilters(filters, pagination = { limit: 6, cursor: null }) {
         return this.getVehiclesWithFilters({
             limit: pagination.limit,
-            page: pagination.page,
+            cursor: pagination.cursor,
             filters
         })
     }
