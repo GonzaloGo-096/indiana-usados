@@ -196,7 +196,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -205,7 +205,7 @@
 }
 
 .modal {
-    background: #2c3e50;
+    background: #f8f9fa;
     border-radius: 12px;
     width: 100%;
     max-width: 1400px;
@@ -263,8 +263,8 @@
     position: absolute;
     top: 10px;
     right: 15px;
-    background: #495057;
-    border: none;
+    background: #6c757d;
+    border: 2px solid #495057;
     color: white;
     font-size: 20px;
     font-weight: 400;
@@ -281,7 +281,7 @@
 }
 
 .modalCloseButton:hover {
-    background: #6c757d;
+    background: #495057;
     transform: scale(1.05);
 }
 
