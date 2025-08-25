@@ -12,6 +12,9 @@
 export { useVehiclesQuery } from './vehicles/useVehiclesQuery'
 export { useAutoDetail } from './useAutoDetail'
 
+// ✅ HOOKS DE MUTACIONES
+export { useCarMutation } from './useCarMutation'
+
 // ✅ HOOKS DE ERROR HANDLING
 export { useErrorBase } from './useErrorBase'
 export { 

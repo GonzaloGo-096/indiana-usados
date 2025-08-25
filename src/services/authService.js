@@ -14,29 +14,9 @@ const clearLocalStorage = () => {
   localStorage.removeItem(AUTH_CONFIG.storage.userKey)
 }
 
-// Función mock temporal para desarrollo (sin backend)
-const mockLogin = async (credentials) => {
-  // Simular delay de red
-  await new Promise(resolve => setTimeout(resolve, 500))
-  
-  // ✅ CREDENCIALES CORREGIDAS: Usar las del backend real
-  if (credentials.username === 'indiana-autos' && credentials.password === '12345678') {
-    return {
-      success: true,
-      data: {
-        token: 'mock_jwt_token_' + Date.now(),
-        user: {
-          id: 1,
-          username: 'indiana-autos',
-          role: 'user',
-          name: 'Indiana Autos'
-        }
-      }
-    }
-  } else {
-    throw new Error('Credenciales inválidas')
-  }
-}
+
+
+
 
 /**
  * Servicios de autenticación
@@ -44,13 +24,6 @@ const mockLogin = async (credentials) => {
 export const authService = {
   // Login - Listo para backend Node.js REAL con axiosInstance
   login: async (credentials) => {
-    // Verificar si estamos en modo desarrollo (sin backend)
-    const isDevelopment = AUTH_CONFIG.development.enableMock
-    
-    if (isDevelopment) {
-      // Usar mock para desarrollo
-      return mockLogin(credentials)
-    }
 
     // ✅ BACKEND REAL: Enviar datos en formato correcto
     const loginData = {
@@ -62,10 +35,13 @@ export const authService = {
       // ✅ LOG ESENCIAL: Intentando login
       console.log('🔐 LOGIN:', {
         endpoint: AUTH_CONFIG.api.endpoints.login,
-        baseURL: AUTH_CONFIG.api.baseURL
+        baseURL: AUTH_CONFIG.api.baseURL,
+        timeout: AUTH_CONFIG.api.timeout,
+        credentials: { username: credentials.username, password: '***' }
       })
 
       // ✅ USAR AXIOS INSTANCE EN LUGAR DE FETCH
+      console.log('🚀 Enviando request al backend...')
       const response = await authAxiosInstance.post(AUTH_CONFIG.api.endpoints.login, loginData)
 
       // ✅ LOG ESENCIAL: Respuesta del backend
@@ -91,11 +67,30 @@ export const authService = {
         }
       }
     } catch (error) {
-      // ✅ LOG ESENCIAL: Error
+      // ✅ LOG ESENCIAL: Error detallado
       console.error('❌ ERROR:', {
         message: error.message,
-        status: error.response?.status
+        status: error.response?.status,
+        code: error.code,
+        isTimeout: error.code === 'ECONNABORTED',
+        isNetworkError: !error.response
       })
+
+      // ✅ MANEJO ESPECÍFICO DE TIMEOUT
+      if (error.code === 'ECONNABORTED') {
+        return {
+          success: false,
+          message: `Timeout: El backend no respondió en ${AUTH_CONFIG.api.timeout}ms. Verifica que esté ejecutándose en ${AUTH_CONFIG.api.baseURL}`
+        }
+      }
+
+      // ✅ MANEJO DE ERRORES DE RED
+      if (!error.response) {
+        return {
+          success: false,
+          message: `Error de conexión: No se pudo conectar con ${AUTH_CONFIG.api.baseURL}. Verifica que el backend esté ejecutándose.`
+        }
+      }
 
       return {
         success: false,
@@ -138,6 +133,8 @@ export const authService = {
       return { valid: false, error: error.message }
     }
   },
+
+
 
   // Función helper para limpiar localStorage (exportada para uso externo)
   clearLocalStorage

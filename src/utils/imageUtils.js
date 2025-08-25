@@ -145,3 +145,223 @@ export const getAllValidImages = (auto) => {
         .filter(isValidImage)
         .map(img => img.url);
 } 
+
+/**
+ * imageUtils.js - Utilidades para procesamiento de imágenes
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/**
+ * Convierte un File del navegador al formato que espera Cloudinary
+ * @param {File} file - Archivo del navegador
+ * @param {string} fieldName - Nombre del campo (ej: 'fotoFrontal')
+ * @returns {Object} Objeto compatible con Cloudinary
+ */
+export const prepareFileForCloudinary = (file, fieldName) => {
+  if (!file || !(file instanceof File)) {
+    throw new Error(`Archivo inválido para ${fieldName}`)
+  }
+
+  // ✅ VALIDAR TIPO DE ARCHIVO (EXACTAMENTE COMO EL BACKEND)
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png']
+  if (!allowedTypes.includes(file.type)) {
+    throw new Error(`Tipo de archivo no soportado: ${file.type}. Solo se permiten: ${allowedTypes.join(', ')}`)
+  }
+
+  // ✅ VALIDAR TAMAÑO (máximo 10MB)
+  const maxSize = 10 * 1024 * 1024 // 10MB
+  if (file.size > maxSize) {
+    throw new Error(`Archivo demasiado grande: ${(file.size / 1024 / 1024).toFixed(2)}MB. Máximo: 10MB`)
+  }
+
+  // ✅ CREAR OBJETO COMPATIBLE CON CLOUDINARY
+  return {
+    fieldname: fieldName,
+    originalname: file.name,
+    mimetype: file.type,
+    size: file.size,
+    // ✅ SIMULAR file.path PARA CLOUDINARY
+    path: `temp/${fieldName}_${Date.now()}_${file.name}`,
+    // ✅ AGREGAR BUFFER PARA PROCESAMIENTO
+    buffer: null, // Se llenará después
+    // ✅ MÉTODOS COMPATIBLES
+    toJSON: () => ({
+      fieldname: fieldName,
+      originalname: file.name,
+      mimetype: file.type,
+      size: file.size,
+      path: `temp/${fieldName}_${Date.now()}_${file.name}`
+    })
+  }
+}
+
+/**
+ * Prepara múltiples archivos para Cloudinary
+ * @param {Object} imageFiles - Objeto con FileList por campo
+ * @returns {Array} Array de archivos preparados
+ */
+export const prepareMultipleFilesForCloudinary = (imageFiles) => {
+  const preparedFiles = []
+  
+  // ✅ PROCESAR CADA CAMPO DE IMAGEN
+  Object.entries(imageFiles).forEach(([fieldName, fileList]) => {
+    if (fileList && fileList.length > 0) {
+      const file = fileList[0] // Tomar el primer archivo
+      try {
+        const preparedFile = prepareFileForCloudinary(file, fieldName)
+        preparedFiles.push(preparedFile)
+      } catch (error) {
+        console.error(`❌ Error preparando ${fieldName}:`, error.message)
+        throw error
+      }
+    }
+  })
+
+  return preparedFiles
+}
+
+/**
+ * Valida que todos los campos de imagen tengan archivos
+ * @param {Object} imageFiles - Objeto con FileList por campo
+ * @returns {Object} Objeto con errores de validación
+ */
+export const validateImageFields = (imageFiles) => {
+  const errors = {}
+  const requiredFields = [
+    'fotoFrontal',
+    'fotoTrasera', 
+    'fotoLateralIzquierda',
+    'fotoLateralDerecha',
+    'fotoInterior'
+  ]
+
+  // ✅ FORMATOS DE IMAGEN SOPORTADOS (EXACTAMENTE COMO EL BACKEND)
+  const supportedTypes = [
+    'image/jpeg',
+    'image/jpg', 
+    'image/png'
+    // ❌ REMOVIDO: 'image/webp', 'image/gif' - NO SOPORTADOS POR EL BACKEND
+  ]
+  
+  // ✅ TAMAÑO MÁXIMO (10MB)
+  const maxSize = 10 * 1024 * 1024
+
+  requiredFields.forEach(field => {
+    if (!imageFiles[field] || imageFiles[field].length === 0) {
+      errors[field] = `Campo ${field} es requerido`
+    } else {
+      const file = imageFiles[field][0]
+      
+      // ✅ VALIDAR TIPO MIME (EXACTAMENTE COMO EL BACKEND)
+      if (!supportedTypes.includes(file.type)) {
+        errors[field] = `Formato no soportado: ${file.type}. Solo se permiten: ${supportedTypes.join(', ')}`
+      }
+      
+      // ✅ VALIDAR TAMAÑO
+      if (file.size > maxSize) {
+        errors[field] = `Archivo muy grande: ${(file.size / 1024 / 1024).toFixed(2)}MB. Máximo: 10MB`
+      }
+      
+      // ✅ VALIDAR NOMBRE DE ARCHIVO
+      if (!file.name || file.name.trim() === '') {
+        errors[field] = `Nombre de archivo inválido`
+      }
+      
+      // ✅ VALIDAR EXTENSIÓN (EXACTAMENTE COMO EL BACKEND)
+      const extension = file.name.split('.').pop()?.toLowerCase()
+      const supportedExtensions = ['jpg', 'jpeg', 'png'] // ❌ REMOVIDO: 'webp', 'gif'
+      if (!supportedExtensions.includes(extension)) {
+        errors[field] = `Extensión no soportada: .${extension}. Solo se permiten: ${supportedExtensions.join(', ')}`
+      }
+    }
+  })
+
+  return errors
+}
+
+/**
+ * Convierte archivos a FormData optimizado para Cloudinary
+ * @param {Object} formData - FormData existente
+ * @param {Object} imageFiles - Archivos de imagen
+ * @returns {FormData} FormData optimizado
+ */
+export const createCloudinaryFormData = (formData, imageFiles) => {
+  const cloudinaryFormData = new FormData()
+  
+  // ✅ COPIAR DATOS NO-IMAGEN
+  for (let [key, value] of formData.entries()) {
+    if (!key.startsWith('foto')) {
+      cloudinaryFormData.append(key, value)
+    }
+  }
+
+  // ✅ AGREGAR ARCHIVOS PREPARADOS
+  Object.entries(imageFiles).forEach(([fieldName, fileList]) => {
+    if (fileList && fileList.length > 0) {
+      const file = fileList[0]
+      cloudinaryFormData.append(fieldName, file)
+    }
+  })
+
+  return cloudinaryFormData
+}
+
+/**
+ * Prepara un archivo de imagen para envío al backend
+ * @param {File} file - Archivo de imagen
+ * @param {string} fieldName - Nombre del campo
+ * @returns {File} Archivo preparado
+ */
+export const prepareImageForUpload = (file, fieldName) => {
+  // ✅ VERIFICAR QUE SEA UN ARCHIVO VÁLIDO
+  if (!(file instanceof File)) {
+    throw new Error(`Archivo inválido para ${fieldName}`)
+  }
+  
+  // ✅ VERIFICAR TIPO MIME (EXACTAMENTE COMO EL BACKEND)
+  const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png']
+  if (!supportedTypes.includes(file.type)) {
+    throw new Error(`Formato no soportado para ${fieldName}: ${file.type}. Solo se permiten: ${supportedTypes.join(', ')}`)
+  }
+  
+  // ✅ VERIFICAR TAMAÑO
+  const maxSize = 10 * 1024 * 1024 // 10MB
+  if (file.size > maxSize) {
+    throw new Error(`Archivo ${fieldName} muy grande: ${(file.size / 1024 / 1024).toFixed(2)}MB`)
+  }
+  
+  // ✅ VERIFICAR EXTENSIÓN (EXACTAMENTE COMO EL BACKEND)
+  const extension = file.name.split('.').pop()?.toLowerCase()
+  const supportedExtensions = ['jpg', 'jpeg', 'png']
+  if (!supportedExtensions.includes(extension)) {
+    throw new Error(`Extensión no soportada para ${fieldName}: .${extension}. Solo se permiten: ${supportedExtensions.join(', ')}`)
+  }
+  
+  // ✅ RETORNAR ARCHIVO VALIDADO
+  return file
+}
+
+/**
+ * Prepara múltiples archivos de imagen para envío
+ * @param {Object} imageFiles - Objeto con FileList por campo
+ * @returns {Object} Objeto con archivos preparados
+ */
+export const prepareMultipleImagesForUpload = (imageFiles) => {
+  const preparedFiles = {}
+  
+  Object.entries(imageFiles).forEach(([fieldName, fileList]) => {
+    if (fileList && fileList.length > 0) {
+      try {
+        const preparedFile = prepareImageForUpload(fileList[0], fieldName)
+        preparedFiles[fieldName] = [preparedFile]
+      } catch (error) {
+        console.error(`❌ Error preparando ${fieldName}:`, error.message)
+        throw error
+      }
+    }
+  })
+  
+  return preparedFiles
+} 

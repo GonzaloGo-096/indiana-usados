@@ -33,24 +33,14 @@ export const useAuth = () => {
       const userData = localStorage.getItem(AUTH_CONFIG.storage.userKey)
 
       if (token && userData) {
-        // En desarrollo, solo verificamos que exista el token
-        // En producción, podríamos verificar con el backend
-        const isDevelopment = AUTH_CONFIG.development.enableMock
-        
-        if (isDevelopment) {
+        // ✅ SIMPLIFICADO: Solo verificar que exista el token
+        try {
           const parsedUser = JSON.parse(userData)
           setUser(parsedUser)
           setIsAuthenticated(true)
-        } else {
-          // Verificar token con el backend
-          const verification = await authService.verifyToken()
-          if (verification.valid) {
-            setUser(verification.user || JSON.parse(userData))
-            setIsAuthenticated(true)
-          } else {
-            // Token inválido, limpiar
-            logout()
-          }
+        } catch (error) {
+          console.error('Error parsing user data:', error)
+          logout()
         }
       } else {
         // No está autenticado

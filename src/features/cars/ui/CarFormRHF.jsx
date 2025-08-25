@@ -7,6 +7,7 @@
 
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useCarMutation } from '@hooks'
 import styles from './CarFormRHF.module.css'
 
 // ✅ CONSTANTES
@@ -30,7 +31,7 @@ const validateImagesRequired = (mode, files, urls = {}) => {
     
     IMAGE_FIELDS.forEach(field => {
         const hasFile = files[field] && files[field].length > 0
-        const hasUrl = urls[field] && urls[field].trim() !== ''
+        const hasUrl = urls && urls[field] && urls[field].trim() !== ''
         
         if (mode === MODE.CREATE) {
             // ✅ CREATE: Cada slot debe tener archivo
@@ -116,12 +117,16 @@ const CarFormRHF = ({
         }
     }, [mode, initialData, setValue, reset])
 
+    // ✅ HOOK DE MUTACIÓN
+    const { createCar, isLoading: mutationLoading, error: mutationError, success, resetState } = useCarMutation()
+    
     // ✅ MANEJAR SUBMIT
     const onSubmit = async (data) => {
         console.log('🚀 CarFormRHF onSubmit:', { mode, data: Object.keys(data) })
         
         try {
             clearErrors()
+            resetState()
             
             // ✅ VALIDAR CAMPOS REQUERIDOS
             const requiredFields = [
@@ -159,8 +164,13 @@ const CarFormRHF = ({
                 }
             })
             
-            const imageUrls = initialData.urls || {}
+            console.log('📸 Imágenes subidas:', imageFiles)
+            console.log('🔗 URLs existentes:', initialData?.urls)
+            
+            const imageUrls = initialData?.urls || {}
             const imageErrors = validateImagesRequired(mode, imageFiles, imageUrls)
+            
+            console.log('❌ Errores de imagen:', imageErrors)
             
             // ✅ COMBINAR ERRORES
             const allErrors = { ...fieldErrors, ...imageErrors }
@@ -176,28 +186,47 @@ const CarFormRHF = ({
             // ✅ CONSTRUIR FORMDATA
             const formData = new FormData()
             
+            console.log('🏗️ Construyendo FormData...')
+            
             // ✅ AGREGAR CAMPOS DE DATOS
             Object.entries(data).forEach(([key, value]) => {
                 if (key === 'precio' || key === 'cilindrada' || key === 'anio' || key === 'kilometraje') {
                     // ✅ COERCIÓN NUMÉRICA
-                    formData.append(key, Number(value).toString())
+                    const numValue = Number(value).toString()
+                    formData.append(key, numValue)
+                    console.log(`📊 ${key}: ${value} → ${numValue}`)
                 } else {
                     formData.append(key, value)
+                    console.log(`📝 ${key}: ${value}`)
                 }
             })
             
             // ✅ AGREGAR SOLO ARCHIVOS PRESENTES
             IMAGE_FIELDS.forEach(field => {
                 if (imageFiles[field] && imageFiles[field].length > 0) {
-                    formData.append(field, imageFiles[field][0])
+                    const file = imageFiles[field][0]
+                    formData.append(field, file)
+                    console.log(`📁 ${field}: ${file.name} (${file.type}, ${(file.size / 1024 / 1024).toFixed(2)}MB)`)
+                } else {
+                    console.log(`❌ ${field}: No se subió imagen`)
                 }
             })
             
-            // ✅ ENVIAR FORMULARIO
-            await onSubmitFormData(formData, mode, initialData._id)
+            console.log('✅ FormData construido exitosamente')
             
-            // ✅ RESETEAR FORMULARIO
-            reset()
+            // ✅ ENVIAR FORMULARIO CON NUESTRO HOOK
+            const result = await createCar(formData)
+            
+            if (result.success) {
+                // ✅ ÉXITO: RESETEAR FORMULARIO Y CERRAR MODAL
+                reset()
+                if (onClose) {
+                    onClose()
+                }
+            } else {
+                // ✅ ERROR: Mostrar error del hook
+                console.error('❌ Error del hook:', result.error)
+            }
             
         } catch (error) {
             console.error('❌ Error en submit:', error)
@@ -209,6 +238,19 @@ const CarFormRHF = ({
             <div className={styles.formHeader}>
                 <h2>{mode === MODE.CREATE ? 'Crear Nuevo Auto' : 'Editar Auto'}</h2>
                 <p>Complete todos los campos requeridos</p>
+                
+                {/* ✅ MENSAJES DE ESTADO */}
+                {mutationError && (
+                    <div className={styles.errorMessage}>
+                        ❌ Error: {mutationError}
+                    </div>
+                )}
+                
+                {success && (
+                    <div className={styles.successMessage}>
+                        ✅ Auto creado exitosamente
+                    </div>
+                )}
             </div>
             
 
@@ -216,6 +258,14 @@ const CarFormRHF = ({
             {/* ✅ SECCIÓN DE IMÁGENES */}
             <div className={styles.imageSection}>
                 <h3>Imágenes del Vehículo</h3>
+                
+                {/* ✅ INFORMACIÓN SOBRE FORMATOS ACEPTADOS */}
+                <div className={styles.formatInfo}>
+                    <p><strong>Formatos aceptados:</strong> Solo archivos .jpg, .jpeg y .png</p>
+                    <p><strong>Tamaño máximo:</strong> 10MB por imagen</p>
+                    <p><strong>Todas las imágenes son obligatorias</strong></p>
+                </div>
+                
                 <div className={styles.imageGrid}>
                     {IMAGE_FIELDS.map(field => (
                         <div key={field} className={styles.imageField}>
@@ -238,7 +288,7 @@ const CarFormRHF = ({
                             
                             <input
                                 type="file"
-                                accept="image/*"
+                                accept=".jpg,.jpeg,.png"
                                 {...register(field)}
                                 className={styles.fileInput}
                             />
@@ -477,9 +527,9 @@ const CarFormRHF = ({
                 <button 
                     type="submit" 
                     className={styles.submitButton}
-                    disabled={isLoading}
+                    disabled={mutationLoading}
                 >
-                    {isLoading ? (
+                    {mutationLoading ? (
                         'Procesando...'
                     ) : (
                         mode === MODE.CREATE ? 'Crear Auto' : 'Actualizar Auto'

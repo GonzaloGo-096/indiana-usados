@@ -32,16 +32,7 @@ export const AUTH_CONFIG = {
     home: '/'
   },
 
-  // Configuración de desarrollo
-  development: {
-    // Habilitar modo mock cuando no hay backend
-    enableMock: import.meta.env.VITE_MOCK_ENABLED === 'true',
-    // Credenciales de desarrollo (mantener para fallback)
-    mockCredentials: {
-      username: 'indiana-autos', // ✅ CAMBIADO A username
-      password: '12345678'       // ✅ CREDENCIALES REALES
-    }
-  },
+
 
   // ✅ NUEVO: Configuración de headers para autorización
   headers: {

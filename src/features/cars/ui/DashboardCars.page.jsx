@@ -245,13 +245,13 @@ const DashboardCars = () => {
                             </button>
                         </div>
                         
-                        <div className={styles.modalBody}>
-                            <CarFormRHF
-                                mode={modalState.mode}
-                                initialData={modalState.initialData}
-                                onSubmitFormData={handleSubmitFormData}
-                            />
-                        </div>
+                                                 <div className={styles.modalBody}>
+                             <CarFormRHF
+                                 mode={modalState.mode}
+                                 initialData={modalState.initialData}
+                                 onClose={handleCloseModal}
+                             />
+                         </div>
                     </div>
                 </div>
             )}
