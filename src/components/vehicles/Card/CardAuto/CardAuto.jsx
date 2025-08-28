@@ -22,6 +22,7 @@ import {
 } from '@utils/formatters'
 import axiosInstance from '@api/axiosInstance'
 import styles from './CardAuto.module.css'
+import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
 
 /**
  * Componente CardAuto optimizado
@@ -195,16 +196,25 @@ export const CardAuto = memo(({ auto }) => {
                 <div className={styles['card__details']}>
                     <div className={styles['card__data_container']}>
                         <div className={styles['card__data_item']}>
+                            <div className={styles['card__data_icon']}>
+                                <CalendarIcon size={16} color="currentColor" />
+                            </div>
                             <span className={styles['card__data_label']}>Año</span>
                             <span className={styles['card__data_value']}>{formattedData.year}</span>
                         </div>
                         
                         <div className={`${styles['card__data_item']} ${styles['card__data_item_border']}`}>
+                            <div className={styles['card__data_icon']}>
+                                <RouteIcon size={16} color="currentColor" />
+                            </div>
                             <span className={styles['card__data_label']}>Km</span>
                             <span className={styles['card__data_value']}>{formattedData.kilometers}</span>
                         </div>
                         
                         <div className={styles['card__data_item']}>
+                            <div className={styles['card__data_icon']}>
+                                <GearboxIcon size={16} color="currentColor" />
+                            </div>
                             <span className={styles['card__data_label']}>Caja</span>
                             <span className={styles['card__data_value']}>{formattedData.caja}</span>
                         </div>

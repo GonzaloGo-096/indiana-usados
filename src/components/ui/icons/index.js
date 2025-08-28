@@ -12,4 +12,9 @@ export { WhatsAppIconPNG } from './WhatsAppIconPNG'
 export { EmailIconSVG } from './EmailIconSVG'
 export { WhatsAppIconSVG } from './WhatsAppIconSVG'
 export { default as GmailIconOptimized } from './GmailIconOptimized'
-export { default as WhatsAppIconOptimized } from './WhatsAppIconOptimized' 
+export { default as WhatsAppIconOptimized } from './WhatsAppIconOptimized'
+
+// 🎨 NUEVOS: Iconos para vehículos
+export { CalendarIcon } from './CalendarIcon'
+export { RouteIcon } from './RouteIcon'
+export { GearboxIcon } from './GearboxIcon' 

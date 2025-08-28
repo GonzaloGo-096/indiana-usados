@@ -15,7 +15,7 @@
     background-color: #0a0d14; /* 🎨 NUEVO: Negro profundo */
     color: white;
     padding: 2rem 0;
-    margin-top: auto;
+    margin-top: 3rem; /* 🎨 NUEVO: Agregado margin-top */
 }
 
 .container {

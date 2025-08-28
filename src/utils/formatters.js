@@ -32,12 +32,12 @@ export const formatPrice = (price) => {
  * @returns {string} - Kilómetros formateados
  */
 export const formatKilometraje = (kilometers) => {
-    if (!kilometers || kilometers === 0) return '0 km'
+    if (!kilometers || kilometers === 0) return '0'
     
     const numKm = typeof kilometers === 'string' ? parseFloat(kilometers) : kilometers
-    if (isNaN(numKm)) return '0 km'
+    if (isNaN(numKm)) return '0'
     
-    return new Intl.NumberFormat('es-AR').format(numKm) + ' km'
+    return new Intl.NumberFormat('es-AR').format(numKm)
 }
 
 /**
