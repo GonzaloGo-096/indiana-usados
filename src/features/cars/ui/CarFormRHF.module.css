@@ -159,12 +159,13 @@
     text-transform: capitalize;
 }
 
-.existingImage {
+.imagePreview {
     text-align: center;
     padding: 10px;
-    background: #e9ecef;
+    background: #f8f9fa;
     border-radius: 6px;
     border: 1px solid #dee2e6;
+    margin-bottom: 10px;
 }
 
 .previewImage {
@@ -175,9 +176,40 @@
     margin-bottom: 8px;
 }
 
-.existingImage small {
+.previewInfo small {
     color: #6c757d;
     font-size: 12px;
+    font-weight: 500;
+}
+
+.imageActions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.removeButton {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.removeButton:hover {
+    background: #c82333;
+}
+
+.removedLabel {
+    color: #dc3545;
+    font-size: 12px;
+    font-weight: 500;
+    font-style: italic;
 }
 
 .fileInput {

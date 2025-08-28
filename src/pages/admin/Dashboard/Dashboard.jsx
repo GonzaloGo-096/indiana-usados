@@ -10,6 +10,8 @@ import { useAuth } from '@hooks/useAuth'
 import { useAutoLogout } from '@hooks/useAutoLogout'
 import { useVehicleData } from '@hooks/useVehicleData'
 import { getVehicleImageUrl } from '@hooks/useVehicleImage'
+import { useCarMutation } from '@hooks/useCarMutation'
+import axiosInstance from '@api/axiosInstance'
 
 import { useNavigate } from 'react-router-dom'
 import CarFormRHF from '../../../features/cars/ui/CarFormRHF'
@@ -25,6 +27,78 @@ import {
 } from '../../../features/cars/ui/useCarModal.reducer'
 import styles from './Dashboard.module.css'
 
+// Helper: obtener string URL desde distintos formatos
+const resolveUrlString = (val) => {
+    if (!val) return ''
+    if (typeof val === 'string') return val
+    if (Array.isArray(val)) {
+        for (const item of val) {
+            const s = resolveUrlString(item)
+            if (s) return s
+        }
+        return ''
+    }
+    if (typeof val === 'object') {
+        // intentar campos comunes
+        return (
+            val.url || val.secure_url || val.path || val.src || val.href || ''
+        )
+    }
+    return ''
+}
+
+// Helper: prefijar baseURL cuando no es absoluta
+const withBaseUrl = (url) => {
+    const s = resolveUrlString(url)
+    if (!s) return ''
+    if (s.startsWith('http://') || s.startsWith('https://')) return s
+    const base = axiosInstance?.defaults?.baseURL || ''
+    if (!base) return s
+    // si es relativo (con o sin "/" inicial), unir correctamente
+    const left = base.endsWith('/') ? base.slice(0, -1) : base
+    const right = s.startsWith('/') ? s : `/${s}`
+    return `${left}${right}`
+}
+
+const pickFirst = (...candidates) => {
+    for (const c of candidates) {
+        const s = resolveUrlString(c)
+        if (s) return s
+    }
+    return ''
+}
+
+const extractImageUrls = (vehicle) => {
+    const v = vehicle || {}
+    const o = v._original || {}
+    const urls = {
+        fotoFrontal: withBaseUrl(pickFirst(
+            v.fotoFrontal, v.imagen, v.image, v.foto, v.photo,
+            v.fotos?.fotoFrontal, v.photos?.frontal,
+            o.fotoFrontal, o.imagen, o.image, o.foto, o.photo,
+            o.fotos?.fotoFrontal, o.photos?.frontal
+        )),
+        fotoTrasera: withBaseUrl(pickFirst(
+            v.fotoTrasera, v.fotos?.fotoTrasera, v.photos?.trasera,
+            o.fotoTrasera, o.fotos?.fotoTrasera, o.photos?.trasera
+        )),
+        fotoLateralIzquierda: withBaseUrl(pickFirst(
+            v.fotoLateralIzquierda, v.fotos?.fotoLateralIzquierda, v.photos?.lateralIzquierda,
+            o.fotoLateralIzquierda, o.fotos?.fotoLateralIzquierda, o.photos?.lateralIzquierda
+        )),
+        fotoLateralDerecha: withBaseUrl(pickFirst(
+            v.fotoLateralDerecha, v.fotos?.fotoLateralDerecha, v.photos?.lateralDerecha,
+            o.fotoLateralDerecha, o.fotos?.fotoLateralDerecha, o.photos?.lateralDerecha
+        )),
+        fotoInterior: withBaseUrl(pickFirst(
+            v.fotoInterior, v.fotos?.fotoInterior, v.photos?.interior,
+            o.fotoInterior, o.fotos?.fotoInterior, o.photos?.interior
+        ))
+    }
+    console.log('🖼️ extractImageUrls ->', { vehicleId: v.id || v._id, urls, v, o })
+    return urls
+}
+
 const Dashboard = () => {
     const { logout, isAuthenticated } = useAuth()
     const navigate = useNavigate()
@@ -34,6 +108,9 @@ const Dashboard = () => {
         limit: 50, 
         enabled: isAuthenticated 
     })
+    
+    // ✅ HOOK PARA MUTACIONES DE AUTOS
+    const { deleteCar } = useCarMutation()
 
     // ✅ ESTADO DEL MODAL CON REDUCER SIMPLIFICADO
     const [modalState, dispatch] = useReducer(carModalReducer, initialCarModalState)
@@ -53,7 +130,7 @@ const Dashboard = () => {
     }, [])
 
     const handleOpenEditForm = useCallback((vehicle) => {
-        // ✅ CONVERTIR VEHICLE A FORMATO DE AUTO
+        const urls = extractImageUrls(vehicle)
         const carData = {
             _id: vehicle.id,
             marca: vehicle.marca,
@@ -76,15 +153,9 @@ const Dashboard = () => {
             llantas: vehicle.llantas || 'Aleación 16"',
             HP: vehicle.HP || '150',
             detalle: vehicle.detalle || 'Vehículo en buen estado',
-            urls: {
-                fotoFrontal: '/src/assets/auto1.jpg',
-                fotoTrasera: '/src/assets/auto1.jpg',
-                fotoLateralIzquierda: '/src/assets/auto1.jpg',
-                fotoLateralDerecha: '/src/assets/auto1.jpg',
-                fotoInterior: '/src/assets/auto1.jpg'
-            }
+            urls
         }
-        
+        console.log('🔍 DEBUG Dashboard -> urls extraídas:', urls)
         dispatch(openEditForm(carData))
     }, [])
 
@@ -97,73 +168,53 @@ const Dashboard = () => {
         try {
             dispatch(setLoading())
             
-            // ✅ SIMULAR LLAMADA A API (REEMPLAZAR CON useMutation)
-            console.log('🚀 CREAR VEHÍCULO:', { formData })
-            console.log('📋 FORMDATA ENTRIES:')
+            console.log('🚀 CREANDO VEHÍCULO:', { formData })
             
-            for (let [key, value] of formData.entries()) {
-                if (value instanceof File) {
-                    console.log(`📁 ${key}:`, {
-                        name: value.name,
-                        size: value.size,
-                        type: value.type
-                    })
-                } else {
-                    console.log(`📝 ${key}:`, value)
-                }
-            }
+            // ✅ USAR LA FUNCIÓN REAL createCar
+            const { createCar } = await import('@hooks/useCarMutation')
+            const result = await createCar(formData)
             
-            // ✅ SIMULAR ÉXITO
-            await new Promise(resolve => setTimeout(resolve, 1000)) // Simular delay
-            console.log('✅ Vehículo creado exitosamente')
-            
-            // ✅ REFRESCAR LISTA Y CERRAR MODAL
-            setTimeout(() => {
+            if (result.success) {
+                console.log('✅ Vehículo creado exitosamente')
+                // ✅ REFRESCAR LISTA Y CERRAR MODAL
                 refetch()
                 handleCloseModal()
-            }, 1500)
+            } else {
+                console.error('❌ Error al crear vehículo:', result.error)
+                dispatch(setError(`No se pudo crear el vehículo: ${result.error}`))
+            }
             
         } catch (error) {
             console.error('❌ Error al crear vehículo:', error)
-            dispatch(setError('No se pudo crear el vehículo. Intente nuevamente.'))
+            dispatch(setError('Error inesperado al crear el vehículo'))
         }
-    }, [refetch, handleCloseModal])
+    }, [refetch, handleCloseModal, dispatch])
 
     const handleUpdateVehicle = useCallback(async (formData, vehicleId) => {
         try {
             dispatch(setLoading())
             
-            // ✅ SIMULAR LLAMADA A API (REEMPLAZAR CON useMutation)
-            console.log('🚀 ACTUALIZAR VEHÍCULO:', { vehicleId, formData })
-            console.log('📋 FORMDATA ENTRIES:')
+            console.log('🚀 ACTUALIZANDO VEHÍCULO:', { vehicleId, formData })
             
-            for (let [key, value] of formData.entries()) {
-                if (value instanceof File) {
-                    console.log(`📁 ${key}:`, {
-                        name: value.name,
-                        size: value.size,
-                        type: value.type
-                    })
-                } else {
-                    console.log(`📝 ${key}:`, value)
-                }
-            }
+            // ✅ USAR LA FUNCIÓN REAL updateCar
+            const { updateCar } = await import('@hooks/useCarMutation')
+            const result = await updateCar(vehicleId, formData)
             
-            // ✅ SIMULAR ÉXITO
-            await new Promise(resolve => setTimeout(resolve, 1000)) // Simular delay
-            console.log('✅ Vehículo actualizado exitosamente')
-            
-            // ✅ REFRESCAR LISTA Y CERRAR MODAL
-            setTimeout(() => {
+            if (result.success) {
+                console.log('✅ Vehículo actualizado exitosamente')
+                // ✅ REFRESCAR LISTA Y CERRAR MODAL
                 refetch()
                 handleCloseModal()
-            }, 1500)
+            } else {
+                console.error('❌ Error al actualizar vehículo:', result.error)
+                dispatch(setError(`No se pudo actualizar el vehículo: ${result.error}`))
+            }
             
         } catch (error) {
             console.error('❌ Error al actualizar vehículo:', error)
-            dispatch(setError('No se pudo actualizar el vehículo. Intente nuevamente.'))
+            dispatch(setError('Error inesperado al actualizar el vehículo'))
         }
-    }, [refetch, handleCloseModal])
+    }, [refetch, handleCloseModal, dispatch])
 
     // ✅ MANEJADORES DE ACCIONES ADICIONALES (PREPARADOS PARA FUTURAS MUTATIONS)
     const handlePauseVehicle = useCallback(async (vehicleId) => {
@@ -185,20 +236,33 @@ const Dashboard = () => {
 
     const handleDeleteVehicle = useCallback(async (vehicleId) => {
         try {
-            // ✅ SIMULAR LLAMADA A API (REEMPLAZAR CON useMutation)
-            console.log('🗑️ ELIMINAR VEHÍCULO:', vehicleId)
+            // ✅ CONFIRMACIÓN ANTES DE ELIMINAR
+            const confirmed = window.confirm('¿Está seguro de que desea eliminar este vehículo? Esta acción no se puede deshacer.')
+            if (!confirmed) {
+                return
+            }
             
-            // ✅ SIMULAR ÉXITO
-            await new Promise(resolve => setTimeout(resolve, 500))
-            console.log('✅ Vehículo eliminado exitosamente')
+            console.log('🗑️ ELIMINANDO VEHÍCULO:', vehicleId)
             
-            // ✅ REFRESCAR LISTA
-            refetch()
+            // ✅ USAR LA FUNCIÓN deleteCar DEL HOOK
+            const result = await deleteCar(vehicleId)
+            
+            if (result.success) {
+                console.log('✅ Vehículo eliminado exitosamente')
+                // ✅ REFRESCAR LISTA
+                refetch()
+            } else {
+                console.error('❌ Error al eliminar vehículo:', result.error)
+                alert(`Error al eliminar: ${result.error}`)
+            }
             
         } catch (error) {
             console.error('❌ Error al eliminar vehículo:', error)
+            alert('Error inesperado al eliminar el vehículo')
         }
     }, [refetch])
+
+
 
     // ✅ MANEJADOR DE NAVEGACIÓN
     const handleGoBack = useCallback(() => {
@@ -327,26 +391,26 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             
-                            <div className={styles.vehicleActions}>
-                                <button 
-                                        onClick={() => handleOpenEditForm(vehicle)} 
-                                    className={styles.editButton}
-                                >
-                                    Editar
-                                </button>
-                                <button 
-                                        onClick={() => handlePauseVehicle(vehicle.id)} 
-                                    className={styles.pauseButton}
-                                >
-                                    Pausar
-                                </button>
-                                <button 
-                                        onClick={() => handleDeleteVehicle(vehicle.id)} 
-                                    className={styles.deleteButton}
-                                >
-                                    Eliminar
-                                </button>
-                            </div>
+                                                         <div className={styles.vehicleActions}>
+                                 <button 
+                                         onClick={() => handleOpenEditForm(vehicle)} 
+                                     className={styles.editButton}
+                                 >
+                                     Editar
+                                 </button>
+                                 <button 
+                                         onClick={() => handlePauseVehicle(vehicle.id)} 
+                                     className={styles.pauseButton}
+                                 >
+                                     Pausar
+                                 </button>
+                                 <button 
+                                         onClick={() => handleDeleteVehicle(vehicle.id)} 
+                                     className={styles.deleteButton}
+                                 >
+                                     Eliminar
+                                 </button>
+                             </div>
                         </div>
                         ))
                     )}

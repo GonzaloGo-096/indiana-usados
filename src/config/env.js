@@ -17,8 +17,6 @@ export const env = {
   // API
   VITE_API_URL: import.meta.env.VITE_API_URL,
   VITE_API_TIMEOUT: import.meta.env.VITE_API_TIMEOUT,
-  VITE_MOCK_ENABLED: import.meta.env.VITE_MOCK_ENABLED,
-  VITE_USE_POSTMAN_MOCK: import.meta.env.VITE_USE_POSTMAN_MOCK,
   
   // Features
   VITE_DEBUG: import.meta.env.VITE_DEBUG,
@@ -66,9 +64,7 @@ export const isFeatureEnabled = (featureKey) => {
 // Helper para obtener configuración de API
 export const getApiConfig = () => ({
   baseURL: env.VITE_API_URL || (isDevelopment() ? 'http://localhost:3001' : 'https://tu-backend-real.com'),
-  timeout: Number(env.VITE_API_TIMEOUT) || 10000,
-  mock: isFeatureEnabled('VITE_MOCK_ENABLED') || false, // ✅ CAMBIADO: No mock por defecto
-  postman: isFeatureEnabled('VITE_USE_POSTMAN_MOCK')
+  timeout: Number(env.VITE_API_TIMEOUT) || 10000
 })
 
 // Helper para obtener configuración de performance

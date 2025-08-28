@@ -22,6 +22,9 @@ import styles from './CardDetalle.module.css'
  * Componente CardDetalle basado en CardAuto
  */
 export const CardDetalle = memo(({ auto, contactInfo }) => {
+    // ✅ DEBUG: Ver qué datos llegan al componente
+    console.log('🔍 CardDetalle: Datos recibidos en auto:', auto)
+    
     // Hooks
     const carouselImages = useCarouselImages(auto)
     
@@ -35,19 +38,20 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
             version: auto.version || '',
             cilindrada: auto.cilindrada || '',
             precio: auto.precio || '',
-            año: auto.año || '',
-            kms: auto.kms || '',
+            año: auto.anio || auto.año || '', // ✅ CORREGIDO: anio es el campo del backend
+            kms: auto.kilometraje || auto.kms || '', // ✅ CORREGIDO: kilometraje es el campo del backend
             caja: auto.caja || '',
             color: auto.color || '',
-            categoria: auto.categoria || '',
+            categoria: auto.segmento || auto.categoria || '', // ✅ CORREGIDO: segmento es el campo del backend
             combustible: auto.combustible || '',
-            traccion: auto.tracción || '',
+            traccion: auto.traccion || '', // ✅ CORREGIDO: traccion (sin tilde)
             tapizado: auto.tapizado || '',
             categoriaVehiculo: auto.categoriaVehiculo || '',
             frenos: auto.frenos || '',
             turbo: auto.turbo || '',
             llantas: auto.llantas || '',
-            HP: auto.HP || ''
+            HP: auto.HP || '',
+            detalle: auto.detalle || '' // ✅ AGREGADO: campo detalle del backend
         }
     }, [auto])
     
@@ -105,7 +109,8 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
         { label: 'Frenos', value: vehicleData.frenos },
         { label: 'Turbo', value: vehicleData.turbo },
         { label: 'Llantas', value: vehicleData.llantas },
-        { label: 'HP', value: vehicleData.HP }
+        { label: 'HP', value: vehicleData.HP },
+        { label: 'Detalle', value: vehicleData.detalle } // ✅ AGREGADO: campo detalle
     ], [vehicleData])
 
     return (

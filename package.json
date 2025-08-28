@@ -8,12 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview --port 4173",
-    "env:postman": "node scripts/switch-env.js postman",
-    "env:mock-local": "node scripts/switch-env.js mock-local",
-    "env:local": "node scripts/switch-env.js local",
-    "env:production": "node scripts/switch-env.js production",
-    "env:testing": "node scripts/switch-env.js testing",
-    "env:show": "node scripts/switch-env.js",
+
+
+
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

@@ -14,5 +14,4 @@ export { default as vehiclesApi } from './vehiclesApi'
 // ✅ INSTANCIAS DE AXIOS
 export { default as axiosInstance } from './axiosInstance'
 
-// ✅ DATOS MOCK
-export * from './mockData' 
+ 

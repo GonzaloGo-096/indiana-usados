@@ -27,7 +27,6 @@ const validateEnvironment = () => {
 // ===== CONFIGURACIÓN DE API =====
 const getApiConfig = () => {
   const environment = validateEnvironment()
-  const mockEnabled = import.meta.env.VITE_MOCK_ENABLED === 'true'
   
   // Configuración base
   const baseConfig = {
@@ -39,22 +38,12 @@ const getApiConfig = () => {
     }
   }
   
-  // Configuración por entorno
-  if (mockEnabled) {
-    return {
-      ...baseConfig,
-      baseURL: 'http://localhost:3000/api',
-      mock: true
-    }
-  }
-  
   // Backend real
   const apiURL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
   
   return {
     ...baseConfig,
-    baseURL: apiURL,
-    mock: false
+    baseURL: apiURL
   }
 }
 
@@ -116,7 +105,6 @@ if (config.isDevelopment && config.features.debug) {
     environment: config.environment,
     api: {
       baseURL: config.api.baseURL,
-      mock: config.api.mock,
       timeout: config.api.timeout
     },
     features: config.features,

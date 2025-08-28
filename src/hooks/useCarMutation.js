@@ -2,7 +2,7 @@
  * useCarMutation.js - Hook simple para mutación de autos
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Agregado updateCar para modo EDIT
  */
 
 import { useState } from 'react'
@@ -168,7 +168,7 @@ export const useCarMutation = () => {
                         console.log('🔍 Mensaje de error específico:', err.response.data.msg)
                         if (err.response.data.msg.includes('format')) {
                             console.log('🔍 PROBLEMA IDENTIFICADO: Formato de imagen incorrecto')
-                            console.log('�� Posibles causas:')
+                            console.log('🔍 Posibles causas:')
                             console.log('   - Tipo MIME no soportado')
                             console.log('   - Extensión de archivo inválida')
                             console.log('   - Archivo corrupto o dañado')
@@ -201,6 +201,222 @@ export const useCarMutation = () => {
         }
     }
 
+    // ✅ NUEVA FUNCIÓN: updateCar para modo EDIT - USANDO MISMA ESTRUCTURA QUE CREATE
+    const updateCar = async (id, formData) => {
+        setIsLoading(true)
+        setError(null)
+        setSuccess(false)
+
+        try {
+            console.log('🔄 Enviando actualización al endpoint...', { id })
+            
+            // ✅ OBTENER TOKEN DE AUTORIZACIÓN
+            const token = getAuthToken()
+            if (!token) {
+                throw new Error('❌ No se encontró token de autorización')
+            }
+            
+            // ✅ DEBUG: LOGGING DEL FORMDATA PARA EDIT
+            console.log('🔍 DEBUG: Contenido del FormData para actualización:')
+            for (let [key, value] of formData.entries()) {
+                if (value instanceof File) {
+                    console.log(`📁 ${key}:`, {
+                        name: value.name,
+                        size: value.size,
+                        type: value.type
+                    })
+                } else {
+                    console.log(`📝 ${key}:`, value)
+                }
+            }
+            
+            // ✅ INTENTAR PRIMER ENDPOINT: PUT /photos/updatephoto/:id
+            let response
+            try {
+                console.log('🔄 Intentando PUT /photos/updatephoto/:id...')
+                
+                // ✅ DEBUG EXTENDIDO: Logging completo del FormData antes del envío
+                console.log('🔍 DEBUG COMPLETO - FormData que se enviará:')
+                console.log('🔍 ID del vehículo:', id)
+                console.log('🔍 Headers:', {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token.substring(0, 20)}...`
+                })
+                
+                // ✅ LOGGING DETALLADO DE CADA CAMPO
+                for (let [key, value] of formData.entries()) {
+                    if (value instanceof File) {
+                        console.log(`📁 ${key}:`, {
+                            name: value.name,
+                            size: value.size,
+                            type: value.type,
+                            lastModified: value.lastModified
+                        })
+                    } else {
+                        console.log(`📝 ${key}:`, value)
+                    }
+                }
+                
+                response = await axios.put(`http://localhost:3001/photos/updatephoto/${id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                console.log('✅ Éxito con PUT /photos/updatephoto/:id')
+            } catch (putError) {
+                console.log('⚠️ PUT /photos/updatephoto/:id falló, intentando POST...')
+                
+                // ✅ INTENTAR SEGUNDO ENDPOINT: POST /photos/updatephoto/:id
+                try {
+                    console.log('🔄 Intentando POST /photos/updatephoto/:id...')
+                    response = await axios.post(`http://localhost:3001/photos/updatephoto/${id}`, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                    console.log('✅ Éxito con POST /photos/updatephoto/:id')
+                } catch (postError) {
+                    console.log('⚠️ POST /photos/updatephoto/:id también falló, intentando PUT /photos/:id...')
+                    
+                    // ✅ INTENTAR TERCER ENDPOINT: PUT /photos/:id
+                    try {
+                        console.log('🔄 Intentando PUT /photos/:id...')
+                        response = await axios.put(`http://localhost:3001/photos/${id}`, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                                'Authorization': `Bearer ${token}`
+                            }
+                        })
+                        console.log('✅ Éxito con PUT /photos/:id')
+                    } catch (finalError) {
+                        // ✅ TODOS LOS ENDPOINTS FALLARON
+                        console.error('❌ Todos los endpoints fallaron:')
+                        console.error('PUT /photos/updatephoto/:id:', putError.response?.status, putError.response?.statusText)
+                        console.error('POST /photos/updatephoto/:id:', postError.response?.status, postError.response?.statusText)
+                        console.error('PUT /photos/:id:', finalError.response?.status, finalError.response?.statusText)
+                        
+                        // ✅ LANZAR ERROR CON INFORMACIÓN DETALLADA
+                        throw new Error(`Todos los endpoints de actualización fallaron. Verificar configuración del backend. Último error: ${finalError.response?.status} ${finalError.response?.statusText}`)
+                    }
+                }
+            }
+
+            console.log('✅ Respuesta de actualización:', response.data)
+            setSuccess(true)
+            return { success: true, data: response.data }
+
+        } catch (err) {
+            console.error('❌ Error al actualizar auto:', err)
+            
+            // ✅ DEBUG EXTENDIDO: Logging detallado del error 400
+            if (err.response?.status === 400) {
+                console.error('🚨 ERROR 400 - Análisis detallado:')
+                console.error('📡 Status:', err.response.status)
+                console.error('📡 StatusText:', err.response.statusText)
+                console.error('📡 Data completo:', err.response.data)
+                console.error('📡 Headers de respuesta:', err.response.headers)
+                
+                // ✅ INTENTAR EXTRAER MENSAJE DE ERROR ESPECÍFICO
+                if (err.response.data) {
+                    if (err.response.data.message) {
+                        console.error('🔍 Mensaje de error:', err.response.data.message)
+                    }
+                    if (err.response.data.error) {
+                        console.error('🔍 Error específico:', err.response.data.error)
+                    }
+                    if (err.response.data.errors) {
+                        console.error('🔍 Errores de validación:', err.response.data.errors)
+                    }
+                    if (err.response.data.msg) {
+                        console.error('🔍 Mensaje del backend:', err.response.data.msg)
+                    }
+                }
+            }
+            
+            let errorMessage = 'Error desconocido al actualizar el auto'
+            
+            if (err.response?.status === 401) {
+                errorMessage = '🔐 Error de autorización: Token inválido o expirado'
+            } else if (err.response?.status === 403) {
+                errorMessage = '🚫 Error de permisos: No tienes acceso a este recurso'
+            } else if (err.response?.status === 404) {
+                errorMessage = '❌ Vehículo no encontrado o endpoint incorrecto'
+            } else if (err.response?.status === 400) {
+                // ✅ MENSAJE ESPECÍFICO PARA ERROR 400
+                if (err.response.data?.message) {
+                    errorMessage = `❌ Error de validación: ${err.response.data.message}`
+                } else if (err.response.data?.error) {
+                    errorMessage = `❌ Error del backend: ${err.response.data.error}`
+                } else if (err.response.data?.msg) {
+                    errorMessage = `❌ Error: ${err.response.data.msg}`
+                } else {
+                    errorMessage = '❌ Error 400: Datos enviados no son válidos para el backend'
+                }
+            } else if (err.response?.data?.message) {
+                errorMessage = err.response.data.message
+            } else if (err.message) {
+                errorMessage = err.message
+            }
+            
+            setError(errorMessage)
+            return { success: false, error: errorMessage }
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    // ✅ NUEVA FUNCIÓN: deleteCar para eliminar vehículos
+    const deleteCar = async (id) => {
+        setIsLoading(true)
+        setError(null)
+        setSuccess(false)
+
+        try {
+            console.log('🗑️ Enviando eliminación al endpoint...', { id })
+            
+            // ✅ OBTENER TOKEN DE AUTORIZACIÓN
+            const token = getAuthToken()
+            if (!token) {
+                throw new Error('❌ No se encontró token de autorización')
+            }
+            
+            // ✅ ENVIAR ELIMINACIÓN
+            const response = await axios.delete(`http://localhost:3001/photos/deletephoto/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            console.log('✅ Respuesta de eliminación:', response.data)
+            setSuccess(true)
+            return { success: true, data: response.data }
+
+        } catch (err) {
+            console.error('❌ Error al eliminar auto:', err)
+            
+            let errorMessage = 'Error desconocido al eliminar el auto'
+            
+            if (err.response?.status === 401) {
+                errorMessage = '🔐 Error de autorización: Token inválido o expirado'
+            } else if (err.response?.status === 403) {
+                errorMessage = '🚫 Error de permisos: No tienes acceso a este recurso'
+            } else if (err.response?.status === 404) {
+                errorMessage = '❌ Vehículo no encontrado'
+            } else if (err.response?.data?.message) {
+                errorMessage = err.response.data.message
+            } else if (err.message) {
+                errorMessage = err.message
+            }
+            
+            setError(errorMessage)
+            return { success: false, error: errorMessage }
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     const resetState = () => {
         setError(null)
         setSuccess(false)
@@ -208,6 +424,8 @@ export const useCarMutation = () => {
 
     return {
         createCar,
+        updateCar,    // ✅ NUEVO
+        deleteCar,    // ✅ NUEVO
         isLoading,
         error,
         success,

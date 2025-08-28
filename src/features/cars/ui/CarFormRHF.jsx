@@ -2,51 +2,19 @@
  * CarFormRHF - Formulario de autos con React Hook Form
  * 
  * @author Indiana Usados
- * @version 1.0.0 - Form with RHF and image validation
+ * @version 2.0.0 - Restaurado con useImageReducer y lógica avanzada de imágenes
  */
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useCarMutation } from '@hooks'
+import { useImageReducer } from './useImageReducer'
 import styles from './CarFormRHF.module.css'
 
 // ✅ CONSTANTES
 const MODE = {
     CREATE: 'create',
     EDIT: 'edit'
-}
-
-// ✅ CAMPOS DE IMAGEN EXACTOS DEL BACKEND
-const IMAGE_FIELDS = [
-    'fotoFrontal',
-    'fotoTrasera', 
-    'fotoLateralIzquierda',
-    'fotoLateralDerecha',
-    'fotoInterior'
-]
-
-// ✅ VALIDACIÓN GRUPAL DE IMÁGENES
-const validateImagesRequired = (mode, files, urls = {}) => {
-    const errors = {}
-    
-    IMAGE_FIELDS.forEach(field => {
-        const hasFile = files[field] && files[field].length > 0
-        const hasUrl = urls && urls[field] && urls[field].trim() !== ''
-        
-        if (mode === MODE.CREATE) {
-            // ✅ CREATE: Cada slot debe tener archivo
-            if (!hasFile) {
-                errors[field] = `La ${field} es requerida`
-            }
-        } else {
-            // ✅ EDIT: Cada slot debe tener archivo O URL existente
-            if (!hasFile && !hasUrl) {
-                errors[field] = `La ${field} debe tener una imagen existente o subir una nueva`
-            }
-        }
-    })
-    
-    return errors
 }
 
 // ✅ PROPS DEL COMPONENTE
@@ -57,6 +25,19 @@ const CarFormRHF = ({
     isLoading = false,
     onClose
 }) => {
+    // ✅ HOOK PERSONALIZADO PARA MANEJO DE IMÁGENES
+    const {
+        imageState,
+        initImageState,
+        setFile,
+        removeImage,
+        resetImages,
+        validateImages,
+        buildImageFormData,
+        getPreviewFor,
+        cleanupObjectUrls
+    } = useImageReducer(mode, initialData)
+
     const {
         register,
         handleSubmit,
@@ -91,11 +72,15 @@ const CarFormRHF = ({
         }
     })
 
-    // ✅ CARGAR DATOS INICIALES
+    // ✅ CARGAR DATOS INICIALES (campos básicos) y sincronizar imágenes
     useEffect(() => {
         console.log('🔄 CarFormRHF useEffect:', { mode, initialData: !!initialData })
         
         if (mode === MODE.EDIT && initialData) {
+            // ✅ DEBUG: Ver qué URLs se están pasando
+            console.log('🔍 DEBUG - initialData.urls:', initialData.urls)
+            console.log('🔍 DEBUG - initialData completo:', initialData)
+            
             // ✅ CARGAR DATOS BÁSICOS
             const basicFields = [
                 'marca', 'modelo', 'version', 'precio', 'caja', 'segmento',
@@ -110,16 +95,92 @@ const CarFormRHF = ({
                 }
             })
             console.log('✅ Datos cargados para edición')
+            
+            // ✅ Sincronizar estado de imágenes desde initialData
+            initImageState(mode, initialData)
         } else if (mode === MODE.CREATE) {
             // ✅ RESETEAR FORMULARIO EN MODO CREATE
             reset()
             console.log('✅ Formulario reseteado para crear')
+            initImageState(mode, {})
         }
-    }, [mode, initialData, setValue, reset])
+    }, [mode, initialData, setValue, reset, initImageState])
 
     // ✅ HOOK DE MUTACIÓN
-    const { createCar, isLoading: mutationLoading, error: mutationError, success, resetState } = useCarMutation()
+    const { createCar, updateCar, deleteCar, isLoading: mutationLoading, error: mutationError, success, resetState } = useCarMutation()
     
+    // ✅ MANEJADORES DE IMAGENES
+    const handleFileChange = useCallback((key) => (event) => {
+        const file = event.target.files && event.target.files[0] ? event.target.files[0] : null
+        setFile(key, file)
+    }, [setFile])
+
+    const handleRemoveImage = useCallback((key) => () => {
+        removeImage(key)
+    }, [removeImage])
+
+    // ✅ VALIDACIÓN CONDICIONAL POR MODO
+    const validateForm = useCallback((data) => {
+        const errors = {}
+        
+        // ✅ VALIDAR CAMPOS REQUERIDOS
+        const requiredFields = [
+            'marca', 'modelo', 'version', 'precio', 'caja', 'segmento',
+            'cilindrada', 'color', 'anio', 'combustible', 'transmision',
+            'kilometraje', 'traccion', 'tapizado', 'categoriaVehiculo',
+            'frenos', 'turbo', 'llantas', 'HP', 'detalle'
+        ]
+        
+        requiredFields.forEach(field => {
+            const value = data[field]
+            
+            if (field === 'precio' || field === 'cilindrada' || field === 'anio' || field === 'kilometraje') {
+                // ✅ VALIDAR NÚMEROS
+                const numValue = Number(value)
+                if (!value || isNaN(numValue)) {
+                    errors[field] = `${field} es requerido y debe ser un número`
+                }
+            } else {
+                // ✅ VALIDAR STRINGS
+                if (!value || value.trim() === '') {
+                    errors[field] = `${field} es requerido`
+                }
+            }
+        })
+        
+        // ✅ VALIDAR IMÁGENES SEGÚN MODO
+        const imageErrors = validateImages(mode)
+        Object.assign(errors, imageErrors)
+        
+        return errors
+    }, [mode, validateImages])
+
+    // ✅ CONSTRUIR FORMDATA SEGÚN MODO
+    const buildVehicleFormData = useCallback((data) => {
+        const formData = new FormData()
+        
+        console.log('🏗️ Construyendo FormData para modo:', mode)
+        
+        // ✅ AGREGAR CAMPOS DE DATOS PRIMITIVOS
+        Object.entries(data).forEach(([key, value]) => {
+            if (key === 'precio' || key === 'cilindrada' || key === 'anio' || key === 'kilometraje') {
+                // ✅ COERCIÓN NUMÉRICA
+                const numValue = Number(value).toString()
+                formData.append(key, numValue)
+                console.log(`📊 ${key}: ${value} → ${numValue}`)
+            } else {
+                formData.append(key, value)
+                console.log(`📝 ${key}: ${value}`)
+            }
+        })
+        
+        // ✅ AGREGAR IMÁGENES SEGÚN ESTADO
+        buildImageFormData(formData)
+        
+        console.log('✅ FormData construido exitosamente')
+        return formData
+    }, [mode, buildImageFormData])
+
     // ✅ MANEJAR SUBMIT
     const onSubmit = async (data) => {
         console.log('🚀 CarFormRHF onSubmit:', { mode, data: Object.keys(data) })
@@ -128,110 +189,56 @@ const CarFormRHF = ({
             clearErrors()
             resetState()
             
-            // ✅ VALIDAR CAMPOS REQUERIDOS
-            const requiredFields = [
-                'marca', 'modelo', 'version', 'precio', 'caja', 'segmento',
-                'cilindrada', 'color', 'anio', 'combustible', 'transmision',
-                'kilometraje', 'traccion', 'tapizado', 'categoriaVehiculo',
-                'frenos', 'turbo', 'llantas', 'HP', 'detalle'
-            ]
+            // ✅ VALIDAR FORMULARIO
+            const validationErrors = validateForm(data)
             
-            const fieldErrors = {}
-            
-            requiredFields.forEach(field => {
-                const value = data[field]
+            if (Object.keys(validationErrors).length > 0) {
+                console.log('❌ Errores de validación:', validationErrors)
                 
-                if (field === 'precio' || field === 'cilindrada' || field === 'anio' || field === 'kilometraje') {
-                    // ✅ VALIDAR NÚMEROS
-                    const numValue = Number(value)
-                    if (!value || isNaN(numValue)) {
-                        fieldErrors[field] = `${field} es requerido y debe ser un número`
-                    }
-                } else {
-                    // ✅ VALIDAR STRINGS
-                    if (!value || value.trim() === '') {
-                        fieldErrors[field] = `${field} es requerido`
-                    }
-                }
-            })
-            
-            // ✅ VALIDAR IMÁGENES
-            const imageFiles = {}
-            IMAGE_FIELDS.forEach(field => {
-                const fileInput = document.querySelector(`input[name="${field}"]`)
-                if (fileInput && fileInput.files.length > 0) {
-                    imageFiles[field] = fileInput.files
-                }
-            })
-            
-            console.log('📸 Imágenes subidas:', imageFiles)
-            console.log('🔗 URLs existentes:', initialData?.urls)
-            
-            const imageUrls = initialData?.urls || {}
-            const imageErrors = validateImagesRequired(mode, imageFiles, imageUrls)
-            
-            console.log('❌ Errores de imagen:', imageErrors)
-            
-            // ✅ COMBINAR ERRORES
-            const allErrors = { ...fieldErrors, ...imageErrors }
-            
-            if (Object.keys(allErrors).length > 0) {
                 // ✅ MOSTRAR ERRORES
-                Object.entries(allErrors).forEach(([field, message]) => {
+                Object.entries(validationErrors).forEach(([field, message]) => {
                     setError(field, { type: 'manual', message })
                 })
                 return
             }
             
             // ✅ CONSTRUIR FORMDATA
-            const formData = new FormData()
+            const formData = buildVehicleFormData(data)
             
-            console.log('🏗️ Construyendo FormData...')
+            // ✅ ENVIAR FORMULARIO SEGÚN MODO
+            let result
             
-            // ✅ AGREGAR CAMPOS DE DATOS
-            Object.entries(data).forEach(([key, value]) => {
-                if (key === 'precio' || key === 'cilindrada' || key === 'anio' || key === 'kilometraje') {
-                    // ✅ COERCIÓN NUMÉRICA
-                    const numValue = Number(value).toString()
-                    formData.append(key, numValue)
-                    console.log(`📊 ${key}: ${value} → ${numValue}`)
-                } else {
-                    formData.append(key, value)
-                    console.log(`📝 ${key}: ${value}`)
-                }
-            })
+            if (mode === MODE.CREATE) {
+                result = await createCar(formData)
+            } else if (mode === MODE.EDIT) {
+                // ✅ USAR updateCar CON EL ID DEL VEHÍCULO
+                const vehicleId = initialData._id || initialData.id
+                result = await updateCar(vehicleId, formData)
+            }
             
-            // ✅ AGREGAR SOLO ARCHIVOS PRESENTES
-            IMAGE_FIELDS.forEach(field => {
-                if (imageFiles[field] && imageFiles[field].length > 0) {
-                    const file = imageFiles[field][0]
-                    formData.append(field, file)
-                    console.log(`📁 ${field}: ${file.name} (${file.type}, ${(file.size / 1024 / 1024).toFixed(2)}MB)`)
-                } else {
-                    console.log(`❌ ${field}: No se subió imagen`)
-                }
-            })
-            
-            console.log('✅ FormData construido exitosamente')
-            
-            // ✅ ENVIAR FORMULARIO CON NUESTRO HOOK
-            const result = await createCar(formData)
-            
-            if (result.success) {
+            if (result && result.success) {
                 // ✅ ÉXITO: RESETEAR FORMULARIO Y CERRAR MODAL
                 reset()
+                resetImages()
                 if (onClose) {
                     onClose()
                 }
             } else {
                 // ✅ ERROR: Mostrar error del hook
-                console.error('❌ Error del hook:', result.error)
+                console.error('❌ Error del hook:', result?.error)
             }
             
         } catch (error) {
             console.error('❌ Error en submit:', error)
         }
     }
+
+    // ✅ LIMPIAR OBJETOS URL AL DESMONTAJE
+    useEffect(() => {
+        return () => {
+            cleanupObjectUrls()
+        }
+    }, [cleanupObjectUrls])
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
@@ -248,12 +255,10 @@ const CarFormRHF = ({
                 
                 {success && (
                     <div className={styles.successMessage}>
-                        ✅ Auto creado exitosamente
+                        ✅ Auto {mode === MODE.CREATE ? 'creado' : 'actualizado'} exitosamente
                     </div>
                 )}
             </div>
-            
-
 
             {/* ✅ SECCIÓN DE IMÁGENES */}
             <div className={styles.imageSection}>
@@ -267,37 +272,81 @@ const CarFormRHF = ({
                 </div>
                 
                 <div className={styles.imageGrid}>
-                    {IMAGE_FIELDS.map(field => (
-                        <div key={field} className={styles.imageField}>
-                            <label className={styles.imageLabel}>
-                                {field.replace(/([A-Z])/g, ' $1').trim()}
-                                {errors[field] && <span className={styles.error}>*</span>}
-                            </label>
-                            
-                            {/* ✅ MOSTRAR IMAGEN EXISTENTE SI ESTÁ EN EDIT */}
-                            {mode === MODE.EDIT && initialData.urls?.[field] && (
-                                <div className={styles.existingImage}>
-                                    <img 
-                                        src={initialData.urls[field]} 
-                                        alt={`${field} existente`}
-                                        className={styles.previewImage}
-                                    />
-                                    <small>Imagen existente</small>
-                                </div>
-                            )}
-                            
-                            <input
-                                type="file"
-                                accept=".jpg,.jpeg,.png"
-                                {...register(field)}
-                                className={styles.fileInput}
-                            />
-                            
-                            {errors[field] && (
-                                <span className={styles.error}>{errors[field].message}</span>
-                            )}
-                        </div>
-                    ))}
+                    {useMemo(() => {
+                        const fields = Object.keys(imageState)
+                        return fields.map(field => (
+                            <div key={field} className={styles.imageField}>
+                                <label className={styles.imageLabel}>
+                                    {field.replace(/([A-Z])/g, ' $1').trim()}
+                                    {errors[field] && <span className={styles.error}>*</span>}
+                                </label>
+                                
+                                {/* ✅ PREVIEW DE IMAGEN: file → URL.createObjectURL, si no existingUrl, oculto si remove */}
+                                {(() => {
+                                    const preview = getPreviewFor(field)
+                                    if (!preview) return null
+                                    
+                                    return (
+                                        <div className={styles.imagePreview}>
+                                            <img 
+                                                src={preview} 
+                                                alt={`${field} preview`}
+                                                className={styles.previewImage}
+                                            />
+                                            <div className={styles.previewInfo}>
+                                                {imageState[field]?.file ? (
+                                                    <small>Nueva imagen seleccionada</small>
+                                                ) : (
+                                                    <small>Imagen existente</small>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                })()}
+                                
+                                {/* ✅ INPUT DE ARCHIVO */}
+                                <input
+                                    type="file"
+                                    accept=".jpg,.jpeg,.png"
+                                    onChange={handleFileChange(field)}
+                                    className={styles.fileInput}
+                                />
+                                
+                                {/* ✅ BOTONES DE ACCIÓN PARA EDIT */}
+                                {mode === MODE.EDIT && (
+                                    <div className={styles.imageActions}>
+                                        {imageState[field]?.file && (
+                                            <button
+                                                type="button"
+                                                onClick={handleRemoveImage(field)}
+                                                className={styles.removeButton}
+                                            >
+                                                Quitar nueva imagen
+                                            </button>
+                                        )}
+                                        {imageState[field]?.existingUrl && !imageState[field]?.remove && (
+                                            <button
+                                                type="button"
+                                                onClick={handleRemoveImage(field)}
+                                                className={styles.removeButton}
+                                            >
+                                                Quitar imagen existente
+                                            </button>
+                                        )}
+                                        {imageState[field]?.remove && (
+                                            <span className={styles.removedLabel}>
+                                                Imagen marcada para quitar
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
+                                
+                                {errors[field] && (
+                                    <span className={styles.error}>{errors[field].message}</span>
+                                )}
+                            </div>
+                        ))
+                    }, [imageState, errors, mode, getPreviewFor, handleFileChange, handleRemoveImage])}
                 </div>
             </div>
 

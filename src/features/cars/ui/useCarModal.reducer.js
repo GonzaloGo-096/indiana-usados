@@ -2,7 +2,7 @@
  * useCarModal.reducer - Reducer simple para manejar el estado del modal de autos
  * 
  * @author Indiana Usados
- * @version 3.0.0 - Simplificado para manejo básico del modal
+ * @version 4.0.0 - Agregado manejo de imágenes con patrón {existingUrl, file, remove}
  */
 
 // ✅ ACCIONES DEL REDUCER
@@ -12,7 +12,11 @@ export const ACTIONS = {
     CLOSE_MODAL: 'CLOSE_MODAL',
     SET_LOADING: 'SET_LOADING',
     SET_ERROR: 'SET_ERROR',
-    CLEAR_ERROR: 'CLEAR_ERROR'
+    CLEAR_ERROR: 'CLEAR_ERROR',
+    // ✅ NUEVAS ACCIONES PARA MANEJO DE IMÁGENES
+    SET_FILE: 'SET_FILE',
+    REMOVE_IMAGE: 'REMOVE_IMAGE',
+    UPDATE_FIELD: 'UPDATE_FIELD'
 }
 
 // ✅ ESTADO INICIAL SIMPLE
@@ -107,4 +111,20 @@ export const setError = (errorMessage) => ({
 
 export const clearError = () => ({
     type: ACTIONS.CLEAR_ERROR
+})
+
+// ✅ NUEVOS ACTION CREATORS PARA IMÁGENES
+export const setFile = (key, file) => ({
+    type: ACTIONS.SET_FILE,
+    payload: { key, file }
+})
+
+export const removeImage = (key) => ({
+    type: ACTIONS.REMOVE_IMAGE,
+    payload: { key }
+})
+
+export const updateField = (name, value) => ({
+    type: ACTIONS.UPDATE_FIELD,
+    payload: { name, value }
 })

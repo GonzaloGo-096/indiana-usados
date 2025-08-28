@@ -17,6 +17,15 @@ const Login = () => {
     const { login, isAuthenticated, isLoading, error, clearError } = useAuth()
     const [errors, setErrors] = React.useState({})
     const [isSubmitting, setIsSubmitting] = React.useState(false) // ✅ ESTADO SEPARADO PARA SUBMIT
+    
+    // ✅ DEBUG TEMPORAL: Ver estado del hook
+    console.log('🔍 LOGIN DEBUG:', {
+        isAuthenticated,
+        isLoading,
+        error,
+        hasToken: !!localStorage.getItem('auth_token'),
+        hasUser: !!localStorage.getItem('auth_user')
+    })
 
     // Si ya está autenticado, redirigir
     React.useEffect(() => {

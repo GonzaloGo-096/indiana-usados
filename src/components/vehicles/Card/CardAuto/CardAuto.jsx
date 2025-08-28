@@ -11,7 +11,7 @@
  * @version 5.1.0 - Performance optimizada
  */
 
-import React, { memo, useMemo } from 'react'
+import React, { memo, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
     formatPrice, 
@@ -20,6 +20,7 @@ import {
     formatCaja,
     formatBrandModel
 } from '@utils/formatters'
+import axiosInstance from '@api/axiosInstance'
 import styles from './CardAuto.module.css'
 
 /**
@@ -30,23 +31,101 @@ import styles from './CardAuto.module.css'
 export const CardAuto = memo(({ auto }) => {
     const navigate = useNavigate()
     
-    // ✅ DEBUG: Mostrar datos recibidos
-    console.log('🚗 CARD AUTO DEBUG - Datos recibidos:', {
+    // ✅ DEBUG: Verificar que el componente se renderiza
+    console.log('🎬 CardAuto: Componente renderizado con auto:', {
         id: auto?.id || auto?._id,
         marca: auto?.marca,
-        modelo: auto?.modelo,
-        version: auto?.version,
-        precio: auto?.precio,
-        anio: auto?.anio,
-        kilometraje: auto?.kilometraje,
-        caja: auto?.caja,
-        fotoFrontal: auto?.fotoFrontal?.url,
-        fuente: 'backend' // Confirmar que viene del backend
+        modelo: auto?.modelo
     })
+    
+
+
+    // ✅ FUNCIÓN SIMPLE PARA "VER MÁS"
+    const handleVerMas = useCallback(async () => {
+        console.log('🚀 CardAuto: handleVerMas ejecutándose')
+        console.log('📋 CardAuto: Datos del auto:', auto)
+        
+        try {
+            const vehicleId = auto.id || auto._id
+            console.log('🆔 CardAuto: ID del vehículo:', vehicleId)
+            
+            if (!vehicleId) {
+                console.error('❌ CardAuto: ID del vehículo no válido')
+                return
+            }
+            
+            console.log('🔍 CardAuto: Obteniendo detalles del vehículo:', vehicleId)
+            console.log('🌐 CardAuto: Endpoint:', `/photos/getonephoto/${vehicleId}`)
+            
+            // ✅ HACER GET AL ENDPOINT
+            const response = await axiosInstance.get(`/photos/getonephoto/${vehicleId}`)
+            
+            console.log('✅ CardAuto: Respuesta completa:', response)
+            console.log('📊 CardAuto: Datos recibidos:', response.data)
+            
+            // ✅ EXTRAER DATOS DE LA ESTRUCTURA CORRECTA
+            let vehicleData = response.data
+            
+                         // ✅ SI LA RESPUESTA TIENE ESTRUCTURA {error: null, getOnePhoto: {...}}
+             if (response.data && response.data.getOnePhoto) {
+                 vehicleData = response.data.getOnePhoto
+                 console.log('✅ CardAuto: Datos extraídos de getOnePhoto:', vehicleData)
+                 
+                 // ✅ DEBUG DETALLADO: Ver todos los campos disponibles
+                 console.log('🔍 CardAuto: Campos disponibles en vehicleData:', {
+                     id: vehicleData._id || vehicleData.id,
+                     marca: vehicleData.marca,
+                     modelo: vehicleData.modelo,
+                     version: vehicleData.version,
+                     precio: vehicleData.precio,
+                     anio: vehicleData.anio,
+                     kilometraje: vehicleData.kilometraje,
+                     caja: vehicleData.caja,
+                     combustible: vehicleData.combustible,
+                     transmision: vehicleData.transmision,
+                     traccion: vehicleData.traccion,
+                     cilindrada: vehicleData.cilindrada,
+                     color: vehicleData.color,
+                     segmento: vehicleData.segmento,
+                     categoriaVehiculo: vehicleData.categoriaVehiculo,
+                     frenos: vehicleData.frenos,
+                     turbo: vehicleData.turbo,
+                     llantas: vehicleData.llantas,
+                     HP: vehicleData.HP,
+                     detalle: vehicleData.detalle,
+                     highlighted: vehicleData.highlighted,
+                     // Imágenes
+                     fotoFrontal: vehicleData.fotoFrontal,
+                     fotoTrasera: vehicleData.fotoTrasera,
+                     fotoLateralIzquierda: vehicleData.fotoLateralIzquierda,
+                     fotoLateralDerecha: vehicleData.fotoLateralDerecha,
+                     fotoInterior: vehicleData.fotoInterior
+                 })
+             }
+            
+            // ✅ NAVEGAR CON LOS DATOS COMPLETOS
+            navigate(`/vehiculo/${vehicleId}`, { 
+                state: { vehicleData: vehicleData }
+            })
+            
+        } catch (error) {
+            console.error('❌ CardAuto: Error completo:', error)
+            console.error('❌ CardAuto: Mensaje de error:', error.message)
+            
+            if (error.response) {
+                console.error('📡 CardAuto: Error del servidor:', error.response.data)
+            }
+            
+            // ✅ FALLBACK: Navegar con datos básicos
+            const vehicleId = auto.id || auto._id
+            navigate(`/vehiculo/${vehicleId}`, { 
+                state: { vehicleData: auto }
+            })
+        }
+    }, [auto, navigate])
     
     // ✅ VALIDAR DATOS DEL VEHÍCULO
     if (!auto || (!auto.id && !auto._id)) {
-        console.warn('⚠️ CardAuto: Datos de vehículo inválidos', auto)
         return null
     }
 
@@ -136,9 +215,7 @@ export const CardAuto = memo(({ auto }) => {
                 <div className={styles['card__footer']}>
                     <div className={styles['card__footer_border']}></div>
                     <button 
-                        onClick={() => navigate(`/vehiculo/${vehicleId}`, { 
-                            state: { vehicleData: auto }
-                        })}
+                        onClick={handleVerMas}
                         className={styles['card__button']}
                         data-testid="link-detalle"
                     >
