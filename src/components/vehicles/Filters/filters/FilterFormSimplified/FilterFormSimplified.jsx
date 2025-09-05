@@ -100,14 +100,11 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   } = useForm({
     defaultValues: {
       marca: [],
-      añoDesde: 1990,
-      añoHasta: 2024,
-      precioDesde: 5000000,
-      precioHasta: 100000000,
-      kilometrajeDesde: 0,
-      kilometrajeHasta: 200000,
+      caja: [],
       combustible: [],
-      caja: []
+      año: [1990, 2024],           // ✅ RANGO ÚNICO
+      precio: [5000000, 100000000], // ✅ RANGO ÚNICO
+      kilometraje: [0, 200000]      // ✅ RANGO ÚNICO
     }
   })
 
@@ -115,16 +112,18 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   const marca = watch('marca')
   const combustible = watch('combustible')
   const caja = watch('caja')
-  const añoDesde = watch('añoDesde')
-  const precioDesde = watch('precioDesde')
-  const kilometrajeDesde = watch('kilometrajeDesde')
+  const año = watch('año') || [1990, 2024]
+  const precio = watch('precio') || [5000000, 100000000]
+  const kilometraje = watch('kilometraje') || [0, 200000]
   
   // Cálculo de filtros activos
   const activeFiltersCount = (() => {
     const hasMarca = marca?.length > 0
     const hasCombustible = combustible?.length > 0
     const hasCaja = caja?.length > 0
-    const hasRanges = añoDesde !== 1990 || precioDesde !== 5000000 || kilometrajeDesde !== 0
+    const hasRanges = año[0] !== 1990 || año[1] !== 2024 || 
+                     precio[0] !== 5000000 || precio[1] !== 100000000 || 
+                     kilometraje[0] !== 0 || kilometraje[1] !== 200000
     
     return [hasMarca, hasCombustible, hasCaja, hasRanges].filter(Boolean).length
   })()
@@ -133,15 +132,17 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   const onSubmit = async (data) => {
     setSubmitting(true)
     try {
-      const validData = Object.entries(data).reduce((acc, [key, value]) => {
-        if (Array.isArray(value) && value.length > 0) {
-          acc[key] = value
-        } else if (value && value !== '' && value !== 0 && value !== '0') {
-          acc[key] = value
-        }
-        return acc
-      }, {})
+      // ✅ RESTRUCTURADO: Ranges como arrays únicos
+      const validData = {
+        marca: data.marca || [],
+        caja: data.caja || [],
+        combustible: data.combustible || [],
+        año: data.año || [1990, 2024],
+        precio: data.precio || [5000000, 100000000],
+        kilometraje: data.kilometraje || [0, 200000]
+      }
 
+      console.log('🔍 FilterFormSimplified - Datos transformados (onSubmit):', JSON.stringify(validData, null, 2));
       await onApplyFilters(validData)
       closeDrawer()
     } catch (error) {
@@ -154,15 +155,12 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   const handleClear = () => {
     reset({
       marca: [],
-      añoDesde: 1990,
-      añoHasta: 2024,
-      precioDesde: 5000000,
-      precioHasta: 100000000,
-      kilometrajeDesde: 0,
-      kilometrajeHasta: 200000,
+      caja: [],
       combustible: [],
-          caja: []
-  })
+      año: [1990, 2024],
+      precio: [5000000, 100000000],
+      kilometraje: [0, 200000]
+    })
   }
 
   // Formateadores
@@ -170,29 +168,22 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   const formatKms = (value) => `${value.toLocaleString()} km`
   const formatYear = (value) => value.toString()
 
-  // Arrays simples sin memoización innecesaria
-  const añoHasta = watch('añoHasta')
-  const precioHasta = watch('precioHasta')
-  const kilometrajeHasta = watch('kilometrajeHasta')
-  
-  const añoRange = [añoDesde || 1990, añoHasta || 2024]
-  const precioRange = [precioDesde || 5000000, precioHasta || 100000000]
-  const kilometrajeRange = [kilometrajeDesde || 0, kilometrajeHasta || 200000]
+  // Ranges como arrays únicos
+  const añoRange = año
+  const precioRange = precio
+  const kilometrajeRange = kilometraje
 
-  // Handlers simples
+  // Handlers simples para ranges únicos
   const handleAñoChange = ([min, max]) => {
-    setValue('añoDesde', min)
-    setValue('añoHasta', max)
+    setValue('año', [min, max])
   }
 
   const handlePrecioChange = ([min, max]) => {
-    setValue('precioDesde', min)
-    setValue('precioHasta', max)
+    setValue('precio', [min, max])
   }
 
   const handleKilometrajeChange = ([min, max]) => {
-    setValue('kilometrajeDesde', min)
-    setValue('kilometrajeHasta', max)
+    setValue('kilometraje', [min, max])
   }
 
   const handleMarcaChange = (values) => {

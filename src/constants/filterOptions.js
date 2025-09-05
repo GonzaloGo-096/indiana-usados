@@ -4,10 +4,10 @@
  * Constantes utilizadas en los filtros de búsqueda
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0 - Opciones duplicadas eliminadas
  */
 
-// Marcas de vehículos
+// Marcas de vehículos (sin duplicados)
 export const marcas = [
     'Toyota',
     'Honda',
@@ -63,9 +63,6 @@ export const marcas = [
     'NIO',
     'XPeng',
     'Li Auto',
-    'Xpeng',
-    'Nio',
-    'Byd',
     'Tesla',
     'Lucid',
     'Rivian',
@@ -73,119 +70,20 @@ export const marcas = [
     'Nikola',
     'Lordstown',
     'Canoo',
-    'Arrival',
-    'Arrival',
-    'Arrival',
-    'Arrival',
-    'Arrival',
-    'Arrival',
-    'Arrival',
-    'Arrival',
-    'Arrival',
     'Arrival'
 ]
 
-// Tipos de combustible
+// Tipos de combustible (simplificados)
 export const combustibles = [
     'Nafta',
     'Diesel',
-    'Híbrido',
-    'Eléctrico',
-    'GNC',
-    'GLP',
-    'Hidrógeno',
-    'Etanol',
-    'Biodiesel',
-    'Gasolina',
-    'Petróleo',
-    'Carbón',
-    'Gas natural',
-    'Propano',
-    'Butano',
-    'Metano',
-    'Biogás',
-    'Biomasa',
-    'Solar',
-    'Eólica',
-    'Hidráulica',
-    'Nuclear',
-    'Geotérmica',
-    'Marina',
-    'Undimotriz',
-    'Corriente marina',
-    'Gradiente térmico oceánico',
-    'Gradiente salino oceánico',
-    'Conversión de energía térmica oceánica',
-    'Conversión de energía térmica oceánica',
-    'Conversión de energía térmica oceánica'
+    'Gas'
 ]
 
-// Tipos de caja de cambios
+// Tipos de caja de cambios (simplificados)
 export const cajas = [
     'Manual',
-    'Automática',
-    'CVT',
-    'Semi-automática',
-    'Secuencial',
-    'Doble embrague',
-    'Tiptronic',
-    'Steptronic',
-    'S-tronic',
-    'DSG',
-    'PDK',
-    'SMG',
-    'Sequential',
-    'Paddle shift',
-    'Automated manual',
-    'Continuously variable',
-    'Variable',
-    'Infinite',
-    'Stepless',
-    'Pulley-based',
-    'Toroidal',
-    'Hydrostatic',
-    'Electric',
-    'Hybrid',
-    'Dual-clutch',
-    'Twin-clutch',
-    'Power-shift',
-    'Easytronic',
-    'Allshift',
-    'Invincible',
-    'Sportronic',
-    'Touchshift',
-    'Shiftronic',
-    'Geartronic',
-    'Autostick',
-    'Tiptronic',
-    'Steptronic',
-    'S-tronic',
-    'DSG',
-    'PDK',
-    'SMG',
-    'Sequential',
-    'Paddle shift',
-    'Automated manual',
-    'Continuously variable',
-    'Variable',
-    'Infinite',
-    'Stepless',
-    'Pulley-based',
-    'Toroidal',
-    'Hydrostatic',
-    'Electric',
-    'Hybrid',
-    'Dual-clutch',
-    'Twin-clutch',
-    'Power-shift',
-    'Easytronic',
-    'Allshift',
-    'Invincible',
-    'Sportronic',
-    'Touchshift',
-    'Shiftronic',
-    'Geartronic',
-    'Autostick'
+    'Automático'
 ]
 
 // Años disponibles

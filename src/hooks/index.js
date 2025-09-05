@@ -5,11 +5,12 @@
  * para facilitar las importaciones
  * 
  * @author Indiana Usados
- * @version 3.3.0 - SISTEMA DE CONFIGURACIÓN CENTRALIZADO
+ * @version 3.4.0 - Hook unificado de vehículos agregado
  */
 
 // ✅ HOOKS DE VEHÍCULOS
-export { useVehiclesQuery } from './vehicles/useVehiclesQuery'
+export { useVehiclesList } from './vehicles/useVehiclesList'
+export { useVehiclesFeed } from './useVehiclesFeed'
 export { useAutoDetail } from './useAutoDetail'
 
 // ✅ HOOKS DE MUTACIONES

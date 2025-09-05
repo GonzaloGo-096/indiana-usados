@@ -17,4 +17,4 @@ export { useVehiclesList } from './useVehiclesList'
 export { useVehicleDetail } from './useVehicleDetail'
 
 // ✅ Hook unificador (mantiene compatibilidad)
-export { useVehiclesQuery } from './useVehiclesQuery' 
+export { useVehiclesList as useVehiclesQuery } from './useVehiclesList' 

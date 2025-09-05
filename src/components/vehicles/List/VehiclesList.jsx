@@ -13,7 +13,7 @@
  */
 
 import React, { memo, useCallback, useState, useMemo } from 'react'
-import { useVehiclesQuery } from '@hooks'
+import { useVehiclesList } from '@hooks'
 import { useErrorHandler } from '@hooks'
 import { FilterFormSimplified } from '@vehicles'
 import { AutosGrid } from '@vehicles'
@@ -37,11 +37,8 @@ const VehiclesList = memo(() => {
         isError: isQueryError,
         error: queryError,
         hasNextPage,
-        isLoadingMore,
-        loadMore,
-        refetch,
-        invalidateCache
-    } = useVehiclesQuery()
+        refetch
+    } = useVehiclesList()
 
     // Manejar errores de query
     React.useEffect(() => {
@@ -56,15 +53,15 @@ const VehiclesList = memo(() => {
         clearError()
         
         try {
-            // ✅ INVALIDAR cache y recargar con nuevos filtros
-            invalidateCache()
+            // ✅ RECARGAR con nuevos filtros
+            refetch()
         } catch (error) {
             handleError(error, 'apply-filters')
             throw error
         } finally {
             setIsFiltering(false)
         }
-    }, [invalidateCache, handleError, clearError])
+    }, [refetch, handleError, clearError])
 
     // ✅ OPTIMIZADO: Manejar reintento memoizado
     const handleRetry = useCallback(() => {
@@ -85,10 +82,8 @@ const VehiclesList = memo(() => {
         isError,
         error,
         hasNextPage,
-        isLoadingMore,
-        onLoadMore: loadMore,
         onRetry: handleRetry
-    }), [vehicles, isLoading, isError, error, hasNextPage, isLoadingMore, loadMore, handleRetry])
+    }), [vehicles, isLoading, isError, error, hasNextPage, handleRetry])
 
     return (
         <VehiclesErrorBoundary>

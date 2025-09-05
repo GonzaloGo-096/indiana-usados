@@ -1,12 +1,9 @@
 /**
- * Services - Exportaciones centralizadas
- * 
- * Agrupa todos los servicios de la aplicación
- * para facilitar las importaciones
+ * services/index.js - Exportaciones centralizadas de servicios
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0 - Servicios de API y autenticación
  */
 
-// ✅ SERVICIOS DE AUTENTICACIÓN
+export * from './vehiclesApi'
 export * from './authService' 
