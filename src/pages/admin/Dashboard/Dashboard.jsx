@@ -71,30 +71,70 @@ const pickFirst = (...candidates) => {
 const extractImageUrls = (vehicle) => {
     const v = vehicle || {}
     const o = v._original || {}
+    
+    // ✅ NUEVA ESTRUCTURA: Mapear a los nombres que espera el formulario
     const urls = {
-        fotoFrontal: withBaseUrl(pickFirst(
-            v.fotoFrontal, v.imagen, v.image, v.foto, v.photo,
+        // Imágenes principales (nueva estructura)
+        fotoPrincipal: withBaseUrl(pickFirst(
+            v.fotoPrincipal?.url, v.fotoPrincipal,
+            v.fotoFrontal?.url, v.fotoFrontal, v.imagen, v.image, v.foto, v.photo,
             v.fotos?.fotoFrontal, v.photos?.frontal,
+            o.fotoPrincipal?.url, o.fotoPrincipal,
             o.fotoFrontal, o.imagen, o.image, o.foto, o.photo,
             o.fotos?.fotoFrontal, o.photos?.frontal
         )),
-        fotoTrasera: withBaseUrl(pickFirst(
-            v.fotoTrasera, v.fotos?.fotoTrasera, v.photos?.trasera,
+        fotoHover: withBaseUrl(pickFirst(
+            v.fotoHover?.url, v.fotoHover,
+            v.fotoTrasera?.url, v.fotoTrasera,
+            v.fotos?.fotoTrasera, v.photos?.trasera,
+            o.fotoHover?.url, o.fotoHover,
             o.fotoTrasera, o.fotos?.fotoTrasera, o.photos?.trasera
         )),
-        fotoLateralIzquierda: withBaseUrl(pickFirst(
-            v.fotoLateralIzquierda, v.fotos?.fotoLateralIzquierda, v.photos?.lateralIzquierda,
+        
+        // Fotos extras (nueva estructura)
+        fotoExtra1: withBaseUrl(pickFirst(
+            v.fotosExtra?.[0]?.url, v.fotosExtra?.[0],
+            v.fotoLateralIzquierda?.url, v.fotoLateralIzquierda,
+            v.fotos?.fotoLateralIzquierda, v.photos?.lateralIzquierda,
+            o.fotosExtra?.[0]?.url, o.fotosExtra?.[0],
             o.fotoLateralIzquierda, o.fotos?.fotoLateralIzquierda, o.photos?.lateralIzquierda
         )),
-        fotoLateralDerecha: withBaseUrl(pickFirst(
-            v.fotoLateralDerecha, v.fotos?.fotoLateralDerecha, v.photos?.lateralDerecha,
+        fotoExtra2: withBaseUrl(pickFirst(
+            v.fotosExtra?.[1]?.url, v.fotosExtra?.[1],
+            v.fotoLateralDerecha?.url, v.fotoLateralDerecha,
+            v.fotos?.fotoLateralDerecha, v.photos?.lateralDerecha,
+            o.fotosExtra?.[1]?.url, o.fotosExtra?.[1],
             o.fotoLateralDerecha, o.fotos?.fotoLateralDerecha, o.photos?.lateralDerecha
         )),
-        fotoInterior: withBaseUrl(pickFirst(
-            v.fotoInterior, v.fotos?.fotoInterior, v.photos?.interior,
+        fotoExtra3: withBaseUrl(pickFirst(
+            v.fotosExtra?.[2]?.url, v.fotosExtra?.[2],
+            v.fotoInterior?.url, v.fotoInterior,
+            v.fotos?.fotoInterior, v.photos?.interior,
+            o.fotosExtra?.[2]?.url, o.fotosExtra?.[2],
             o.fotoInterior, o.fotos?.fotoInterior, o.photos?.interior
+        )),
+        fotoExtra4: withBaseUrl(pickFirst(
+            v.fotosExtra?.[3]?.url, v.fotosExtra?.[3],
+            o.fotosExtra?.[3]?.url, o.fotosExtra?.[3]
+        )),
+        fotoExtra5: withBaseUrl(pickFirst(
+            v.fotosExtra?.[4]?.url, v.fotosExtra?.[4],
+            o.fotosExtra?.[4]?.url, o.fotosExtra?.[4]
+        )),
+        fotoExtra6: withBaseUrl(pickFirst(
+            v.fotosExtra?.[5]?.url, v.fotosExtra?.[5],
+            o.fotosExtra?.[5]?.url, o.fotosExtra?.[5]
+        )),
+        fotoExtra7: withBaseUrl(pickFirst(
+            v.fotosExtra?.[6]?.url, v.fotosExtra?.[6],
+            o.fotosExtra?.[6]?.url, o.fotosExtra?.[6]
+        )),
+        fotoExtra8: withBaseUrl(pickFirst(
+            v.fotosExtra?.[7]?.url, v.fotosExtra?.[7],
+            o.fotosExtra?.[7]?.url, o.fotosExtra?.[7]
         ))
     }
+    
     console.log('🖼️ extractImageUrls ->', { vehicleId: v.id || v._id, urls, v, o })
     return urls
 }
@@ -141,10 +181,10 @@ const Dashboard = () => {
             segmento: vehicle.segmento || 'Sedán',
             cilindrada: vehicle.cilindrada || 2000,
             color: vehicle.color || 'Blanco',
-            anio: vehicle.año,
+            anio: vehicle.anio || vehicle.año,
             combustible: vehicle.combustible || 'Gasolina',
             transmision: vehicle.transmision || 'CVT',
-            kilometraje: vehicle.kms,
+            kilometraje: vehicle.kilometraje || vehicle.kms,
             traccion: vehicle.traccion || 'Delantera',
             tapizado: vehicle.tapizado || 'Tela',
             categoriaVehiculo: vehicle.categoriaVehiculo || 'Particular',

@@ -18,6 +18,7 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
+    max-width: 400px; /* ✅ NUEVO: Ancho máximo para evitar distorsión */
     background: #fafafa; /* ✅ NUEVO: Background sutil agregado */
     border-radius: 12px;
     overflow: hidden;
@@ -25,6 +26,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     position: relative;
+    margin: 0 auto; /* ✅ NUEVO: Centrar cuando hay pocas cards */
 }
 
 .card:hover {

@@ -59,21 +59,95 @@ export const getCarouselImages = (auto) => {
     }
     
     try {
+        // ✅ NUEVO: Lista de propiedades de imagen conocidas
+        const imageProperties = [
+            'fotoPrincipal',
+            'fotoHover', 
+            'fotoFrontal',
+            'fotoTrasera',
+            'fotoLateralDerecha',
+            'fotoLateralIzquierda',
+            'fotoInterior',
+            'imagen',
+            'foto1',
+            'foto2',
+            'foto3',
+            'foto4',
+            'foto5',
+            'fotosExtras', // ✅ NUEVO: Array de fotos extras
+            'fotosExtra',  // ✅ NUEVO: Variación singular
+            'gallery',     // ✅ NUEVO: Galería de imágenes
+            'imagenes',    // ✅ NUEVO: Array de imágenes
+            'photos',      // ✅ NUEVO: Fotos en inglés
+            'images'       // ✅ NUEVO: Imágenes en inglés
+        ]
         
-        // ✅ ARREGLADO: Manejar tanto objetos como arrays de URLs
+        // ✅ NUEVO: Extraer imágenes de propiedades conocidas
+        const extractedImages = []
+        
+        imageProperties.forEach(prop => {
+            const value = auto[prop]
+            if (value) {
+                // Si es un array de imágenes (como fotosExtras)
+                if (Array.isArray(value)) {
+                    value.forEach(img => {
+                        if (typeof img === 'string' && img.trim() !== '') {
+                            extractedImages.push(img.trim())
+                        } else if (typeof img === 'object' && img.url) {
+                            extractedImages.push(img.url)
+                        }
+                    })
+                }
+                // Si es un objeto con URL
+                else if (typeof value === 'object' && value.url) {
+                    extractedImages.push(value.url)
+                }
+                // Si es una URL directa
+                else if (typeof value === 'string' && value.trim() !== '') {
+                    extractedImages.push(value.trim())
+                }
+            }
+        })
+        
+        // ✅ NUEVO: Buscar en array de imágenes si existe
         if (auto.imágenes && Array.isArray(auto.imágenes)) {
-            // Si hay array de imágenes, usarlo
-            return auto.imágenes.length > 0 ? auto.imágenes : [defaultCarImage]
+            auto.imágenes.forEach(img => {
+                if (typeof img === 'string' && img.trim() !== '') {
+                    extractedImages.push(img.trim())
+                } else if (typeof img === 'object' && img.url) {
+                    extractedImages.push(img.url)
+                }
+            })
         }
         
-        // ✅ ARREGLADO: Buscar imágenes en propiedades del objeto
-        const allImages = Object.values(auto)
+        // ✅ NUEVO: Buscar imágenes estructuradas (formato anterior)
+        const structuredImages = Object.values(auto)
             .filter(img => isValidImage(img))
             .map(img => img.url);
         
-        // ✅ ARREGLADO: Si no hay imágenes estructuradas, usar imagen principal
-        if (allImages.length > 0) {
-            return allImages
+        // ✅ NUEVO: Combinar todas las fuentes de imágenes
+        const allImages = [...extractedImages, ...structuredImages]
+        
+        // ✅ NUEVO: Eliminar duplicados y filtrar URLs válidas
+        const uniqueImages = [...new Set(allImages)].filter(url => 
+            url && typeof url === 'string' && url.trim() !== '' && url !== 'undefined'
+        )
+        
+        console.log('🖼️ getCarouselImages: Imágenes extraídas:', {
+            extracted: extractedImages.length,
+            structured: structuredImages.length,
+            unique: uniqueImages.length,
+            images: uniqueImages,
+            autoKeys: Object.keys(auto).filter(key => key.includes('foto') || key.includes('imagen') || key.includes('gallery') || key.includes('photos')),
+            fotosExtras: auto.fotosExtras,
+            fotosExtra: auto.fotosExtra,
+            gallery: auto.gallery,
+            imagenes: auto.imagenes
+        })
+        
+        // ✅ NUEVO: Si hay imágenes válidas, usarlas
+        if (uniqueImages.length > 0) {
+            return uniqueImages
         }
         
         // ✅ ARREGLADO: Fallback a imagen principal

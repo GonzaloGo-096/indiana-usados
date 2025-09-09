@@ -145,6 +145,49 @@ class VehiclesApiService {
             filters
         })
     }
+
+    /**
+     * Actualizar vehículo con fotos
+     * @param {string} id - ID del vehículo
+     * @param {FormData} formData - Datos del formulario
+     * @returns {Promise<Object>} - Respuesta de la actualización
+     */
+    async updatePhoto(id, formData) {
+        try {
+            console.log('🔄 vehiclesApi.updatePhoto:', { id, formDataKeys: Array.from(formData.keys()) })
+            
+            const response = await axiosInstance.put(`/photos/updatephoto/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            
+            console.log('✅ vehiclesApi.updatePhoto success:', response.data)
+            return response.data
+        } catch (error) {
+            console.error('❌ vehiclesApi.updatePhoto error:', error)
+            throw error
+        }
+    }
+
+    /**
+     * Eliminar vehículo
+     * @param {string} id - ID del vehículo
+     * @returns {Promise<Object>} - Respuesta de la eliminación
+     */
+    async deletePhoto(id) {
+        try {
+            console.log('🔄 vehiclesApi.deletePhoto:', { id })
+            
+            const response = await axiosInstance.delete(`/photos/deletephoto/${id}`)
+            
+            console.log('✅ vehiclesApi.deletePhoto success:', response.data)
+            return response.data
+        } catch (error) {
+            console.error('❌ vehiclesApi.deletePhoto error:', error)
+            throw error
+        }
+    }
 }
 
 export default new VehiclesApiService() 

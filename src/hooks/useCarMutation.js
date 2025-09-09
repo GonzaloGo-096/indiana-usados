@@ -9,6 +9,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { AUTH_CONFIG } from '@config/auth'
 import { validateImageFields, prepareMultipleImagesForUpload } from '@utils/imageUtils'
+import vehiclesApi from '@api/vehiclesApi'
 
 // ✅ FUNCIÓN SIMPLE PARA OBTENER TOKEN
 const getAuthToken = () => {

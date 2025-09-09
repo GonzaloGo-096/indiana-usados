@@ -89,8 +89,8 @@ const Vehiculos = () => {
             <div style={{
                 textAlign: 'center',
                 marginBottom: '30px',
-                padding: '20px 0',
-                borderBottom: '2px solid #f0f0f0'
+                padding: '20px 0'
+                /* ✅ ELIMINADO: borderBottom para quitar la línea */
             }}>
                 <h1 style={{
                     fontSize: '2.5rem',

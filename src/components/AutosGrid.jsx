@@ -36,9 +36,10 @@ export default function AutosGrid({
       {/* Grid de vehículos */}
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 400px))', 
         gap: '20px',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        justifyContent: 'center' /* ✅ NUEVO: Centrar el grid cuando hay pocas cards */
       }}>
         {vehicles.map((vehicle) => (
           <CardAuto key={vehicle.id || vehicle._id} auto={vehicle} />

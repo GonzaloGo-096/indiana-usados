@@ -13,7 +13,7 @@
  * @version 1.0.0
  */
 
-import React, { useState, useCallback, useMemo, useEffect } from 'react'
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx'
 import { processImages } from '@utils/imageUtils'
 import defaultCarImage from '@assets/auto1.jpg'
@@ -40,11 +40,19 @@ export const ImageCarousel = ({
     autoPlayInterval = 5000
 }) => {
     const [currentIndex, setCurrentIndex] = useState(0)
+    const thumbnailsRef = useRef(null) // ✅ NUEVO: Ref para el contenedor de miniaturas
     
     // Si no hay imágenes, usar imagen por defecto - MEMOIZADO
     const allImages = useMemo(() => {
         console.log('🖼️ ImageCarousel: images recibidas', images)
         console.log('🖼️ ImageCarousel: images.length', images?.length)
+        console.log('🖼️ ImageCarousel: Detalle de cada imagen:', images?.map((img, index) => ({
+            index,
+            img,
+            type: typeof img,
+            isObject: typeof img === 'object',
+            hasUrl: img?.url
+        })))
         
         if (!images || images.length === 0) {
             console.log('⚠️ ImageCarousel: No hay imágenes, usando default')
@@ -54,6 +62,7 @@ export const ImageCarousel = ({
         // Procesar imágenes que pueden ser objetos o URLs
         const processedImages = processImages(images);
         console.log('🖼️ ImageCarousel: Imágenes procesadas', processedImages)
+        console.log('🖼️ ImageCarousel: Total de imágenes finales:', processedImages.length)
         
         return processedImages;
     }, [images])
@@ -76,6 +85,54 @@ export const ImageCarousel = ({
     const goToImage = useCallback((index) => {
         setCurrentIndex(index)
     }, [])
+
+    // ✅ NUEVO: Estado para el offset del visor fijo
+    const [thumbnailOffset, setThumbnailOffset] = useState(0)
+    
+    // ✅ NUEVO: Funciones para el slider de miniaturas con visor fijo
+    const scrollThumbnailsLeft = useCallback(() => {
+        const thumbnailWidth = 90 + 16 // width + gap (Netflix style)
+        const visibleThumbnails = Math.floor(thumbnailsRef.current?.clientWidth / thumbnailWidth) || 3
+        const maxOffset = Math.max(0, allImages.length - visibleThumbnails)
+        
+        setThumbnailOffset(prev => Math.max(0, prev - visibleThumbnails))
+    }, [allImages.length])
+
+    const scrollThumbnailsRight = useCallback(() => {
+        const thumbnailWidth = 90 + 16 // width + gap (Netflix style)
+        const visibleThumbnails = Math.floor(thumbnailsRef.current?.clientWidth / thumbnailWidth) || 3
+        const maxOffset = Math.max(0, allImages.length - visibleThumbnails)
+        
+        setThumbnailOffset(prev => Math.min(maxOffset, prev + visibleThumbnails))
+    }, [allImages.length])
+
+    // ✅ NUEVO: Verificar si se puede hacer scroll con visor fijo
+    const [canScrollLeft, setCanScrollLeft] = useState(false)
+    const [canScrollRight, setCanScrollRight] = useState(false)
+
+    const checkScrollButtons = useCallback(() => {
+        const thumbnailWidth = 90 + 16 // width + gap (Netflix style)
+        const visibleThumbnails = Math.floor(thumbnailsRef.current?.clientWidth / thumbnailWidth) || 3
+        const maxOffset = Math.max(0, allImages.length - visibleThumbnails)
+        
+        setCanScrollLeft(thumbnailOffset > 0)
+        setCanScrollRight(thumbnailOffset < maxOffset)
+    }, [thumbnailOffset, allImages.length])
+
+    // ✅ NUEVO: Efecto para verificar scroll al cambiar offset
+    useEffect(() => {
+        checkScrollButtons()
+    }, [checkScrollButtons])
+
+    // ✅ NUEVO: Efecto para aplicar transform al visor fijo
+    useEffect(() => {
+        if (thumbnailsRef.current) {
+            const thumbnailWidth = 90 + 16 // width + gap (Netflix style)
+            const translateX = -thumbnailOffset * thumbnailWidth
+            thumbnailsRef.current.style.transform = `translateX(${translateX}px)`
+        }
+    }, [thumbnailOffset])
+
 
     // AutoPlay effect - OPTIMIZADO
     useEffect(() => {
@@ -145,19 +202,12 @@ export const ImageCarousel = ({
                     </>
                 )}
 
-                {/* Indicadores de posición */}
+                {/* ✅ NUEVO: Contador de posición elegante */}
                 {showIndicators && allImages.length > 1 && (
                     <div className={styles.indicators}>
-                        {allImages.map((_, index) => (
-                            <button
-                                key={index}
-                                className={`${styles.indicator} ${index === currentIndex ? styles.active : ''}`}
-                                onClick={() => goToImage(index)}
-                                aria-label={`Ir a imagen ${index + 1}`}
-                                aria-current={index === currentIndex ? 'true' : 'false'}
-                                type="button"
-                            />
-                        ))}
+                        <div className={styles.positionCounter}>
+                            {currentIndex + 1} / {allImages.length}
+                        </div>
                     </div>
                 )}
                 
@@ -167,7 +217,30 @@ export const ImageCarousel = ({
             {/* Miniaturas */}
             {allImages.length > 1 && (
                 <div className={styles.thumbnailsContainer}>
-                    <div className={styles.thumbnails}>
+                    {/* ✅ NUEVO: Controles del slider de miniaturas */}
+                    {canScrollLeft && (
+                        <button
+                            className={`${styles.thumbnailControls} ${styles.thumbnailControlsLeft}`}
+                            onClick={scrollThumbnailsLeft}
+                            aria-label="Scroll miniaturas izquierda"
+                            type="button"
+                        >
+                            <ChevronLeftIcon />
+                        </button>
+                    )}
+                    
+                    {canScrollRight && (
+                        <button
+                            className={`${styles.thumbnailControls} ${styles.thumbnailControlsRight}`}
+                            onClick={scrollThumbnailsRight}
+                            aria-label="Scroll miniaturas derecha"
+                            type="button"
+                        >
+                            <ChevronRightIcon />
+                        </button>
+                    )}
+
+                    <div className={styles.thumbnails} ref={thumbnailsRef} style={{ transform: `translateX(${-thumbnailOffset * (90 + 16)}px)` }}>
                         {allImages.map((image, index) => (
                             <button
                                 key={index}

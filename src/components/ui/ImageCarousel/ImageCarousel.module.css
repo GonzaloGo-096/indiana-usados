@@ -1,15 +1,15 @@
 /**
- * ImageCarousel.module.css - Estilos para el carrusel de imágenes
+ * ImageCarousel.module.css - Estilo Netflix/Spotify con máximo rendimiento
  * 
  * Características:
- * - Imagen principal grande
- * - Miniaturas navegables
- * - Flechas de navegación
- * - Indicadores de posición
- * - Responsive design
+ * - GPU acceleration optimizado
+ * - Transiciones suaves con cubic-bezier
+ * - Controles elegantes y profesionales
+ * - Efecto de desvanecimiento en bordes
+ * - Responsive design perfecto
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 3.0.0 - Estilo Netflix/Spotify
  */
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
@@ -18,6 +18,7 @@
     flex-direction: column;
     gap: 0;
     width: 100%;
+    contain: layout style paint; /* ✅ OPTIMIZACIÓN: Contención para mejor rendimiento */
 }
 
 /* ===== CONTENEDOR DE IMAGEN PRINCIPAL ===== */
@@ -27,46 +28,53 @@
     height: 400px;
     border-radius: 12px;
     overflow: hidden;
-    background-color: var(--color-neutral-100);
+    background-color: #f3f4f6;
+    contain: layout style paint; /* ✅ OPTIMIZACIÓN: Contención */
 }
 
 .mainImage {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform var(--transition-normal);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     background-color: #f3f4f6;
     min-height: 200px;
+    will-change: transform; /* ✅ OPTIMIZACIÓN: GPU acceleration */
 }
 
 .mainImageContainer:hover .mainImage {
-    /* transform: scale(1.05); */
+    transform: scale(1.02); /* ✅ NUEVO: Zoom sutil en hover */
 }
 
-/* ===== FLECHAS DE NAVEGACIÓN ===== */
+/* ===== FLECHAS DE NAVEGACIÓN NETFLIX ===== */
 .arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.7);
+    width: 36px; /* ✅ REDUCIDO: De 44px a 36px */
+    height: 36px; /* ✅ REDUCIDO: De 44px a 36px */
+    background: rgba(0, 0, 0, 0.8);
     border: none;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: 10;
     color: #ffffff;
-    opacity: 1;
-    visibility: visible;
+    opacity: 1; /* ✅ CAMBIADO: Siempre visible */
+    visibility: visible; /* ✅ CAMBIADO: Siempre visible */
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* ✅ REMOVIDO: Las flechas ahora son siempre visibles */
+
 .arrow:hover {
-    background: rgba(0, 0, 0, 0.9);
-    transform: translateY(-50%) scale(1.05);
+    background: rgba(0, 0, 0, 0.95);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .arrowLeft {
@@ -77,170 +85,268 @@
     right: 16px;
 }
 
-/* ===== INDICADORES DE POSICIÓN ===== */
+/* ===== INDICADOR DE POSICIÓN NETFLIX ===== */
 .indicators {
     position: absolute;
-    bottom: 16px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 16px; /* ✅ CAMBIADO: De bottom a top */
+    right: 16px;
     display: flex;
+    align-items: center;
     gap: 8px;
     z-index: 10;
     opacity: 1;
     visibility: visible;
 }
 
-.indicator {
-    width: 20px;
-    height: 2px;
-    border-radius: 1px;
-    border: none;
-    background: rgba(255, 255, 255, 0.4);
-    cursor: pointer;
-    transition: background 0.2s ease;
+.positionCounter {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 16px; /* ✅ AUMENTADO: Más padding como Netflix */
+    border-radius: 24px; /* ✅ MÁS REDONDEADO: Estilo Netflix */
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: 'Barlow', sans-serif;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.indicator:hover {
-    background: rgba(255, 255, 255, 0.7);
+.positionCounter:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: scale(1.05);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
 }
 
-.indicator.active {
-    background: rgba(255, 255, 255, 1);
-}
-
-/* ===== CONTENEDOR DE MINIATURAS ===== */
+/* ===== VISOR FIJO NETFLIX/SPOTIFY ===== */
 .thumbnailsContainer {
     width: 100%;
-    overflow: hidden; /* ✅ CAMBIADO: Ocultar scroll */
+    height: 120px; /* ✅ AUMENTADO: Más alto como Netflix */
+    overflow: visible; /* ✅ CORREGIDO: Visible para que no corte el hover */
     display: flex;
     justify-content: center;
-    background: #ffffff;
-    border-radius: 8px;
-    padding: 12px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); /* ✅ NUEVO: Fondo oscuro como Netflix */
+    border-radius: 12px;
+    padding: 0; /* ✅ REMOVIDO: Sin padding para que no corte el hover */
+    margin-top: 30px; /* ✅ NUEVO: Separación de la imagen principal */
     opacity: 1;
     visibility: visible;
     z-index: 5;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    contain: layout style paint; /* ✅ OPTIMIZACIÓN: Contención */
 }
 
 .thumbnails {
     display: flex;
-    gap: 8px;
-    padding: 4px;
-    justify-content: center;
-    flex-wrap: wrap; /* ✅ AGREGADO: Para que las miniaturas se ajusten */
-    max-width: 100%; /* ✅ AGREGADO: Limitar ancho */
+    gap: 16px; /* ✅ AUMENTADO: Más espacio como Netflix */
+    padding: 20px; /* ✅ AGREGADO: Padding interno para compensar */
+    justify-content: flex-start;
+    align-items: center; /* ✅ NUEVO: Centrar verticalmente la fila de miniaturas */
+    flex-wrap: nowrap;
+    height: 100%;
+    overflow: hidden; /* ✅ CORREGIDO: Hidden aquí para el scroll */
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ✅ OPTIMIZADO: Solo transform */
+    will-change: transform; /* ✅ OPTIMIZACIÓN: GPU acceleration */
+    /* ✅ NUEVO: Efecto de desvanecimiento más pronunciado */
+    mask-image: linear-gradient(
+        to right,
+        transparent 0px,
+        black 40px,
+        black calc(100% - 40px),
+        transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0px,
+        black 40px,
+        black calc(100% - 40px),
+        transparent 100%
+    );
 }
 
-/* ===== MINIATURAS ===== */
+/* ===== CONTROLES NETFLIX/SPOTIFY ===== */
+.thumbnailControls {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 32px; /* ✅ REDUCIDO: De 40px a 32px */
+    height: 32px; /* ✅ REDUCIDO: De 40px a 32px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 10;
+    opacity: 0.9;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    will-change: transform; /* ✅ OPTIMIZACIÓN: GPU acceleration */
+    font-size: 0.9rem; /* ✅ REDUCIDO: Tamaño de icono más pequeño */
+}
+
+.thumbnailControls:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-50%) scale(1.1); /* ✅ SIMPLIFICADO: Menos escala */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    border-color: #ffffff; /* ✅ CORREGIDO: Color blanco */
+    color: #1a1a1a; /* ✅ CORREGIDO: Texto oscuro */
+}
+
+.thumbnailControlsLeft {
+    left: 16px;
+}
+
+.thumbnailControlsRight {
+    right: 16px;
+}
+
+.thumbnailControls:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.3);
+    color: #666;
+}
+
+.thumbnailControls:disabled:hover {
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #666;
+}
+
+/* ===== MINIATURAS NETFLIX/SPOTIFY ===== */
 .thumbnail {
     flex-shrink: 0;
-    width: 80px;
-    height: 56px;
-    border-radius: 8px;
-    overflow: hidden;
+    width: 90px; /* ✅ REDUCIDO: Un poco más pequeñas */
+    height: 63px; /* ✅ REDUCIDO: Un poco más pequeñas */
+    border-radius: 8px; /* ✅ REDUCIDO: Menos redondeado como Netflix */
+    overflow: hidden; /* ✅ RESTAURADO: Hidden para contener la imagen */
     border: 2px solid transparent;
     cursor: pointer;
-    transition: transform 0.2s ease;
-    background: #ffffff;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: #1a1a1a; /* ✅ RESTAURADO: Fondo para crear márgenes uniformes */
     position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    will-change: transform; /* ✅ OPTIMIZACIÓN: GPU acceleration */
+    z-index: 1; /* ✅ NUEVO: Z-index para hover */
+    padding: 2px; /* ✅ NUEVO: Padding para crear márgenes uniformes */
 }
 
 .thumbnail:hover {
-    border-color: transparent;
-    transform: scale(1.02);
+    border-color: #ffffff; /* ✅ CORREGIDO: Borde blanco */
+    transform: scale(1.05) translateY(-2px); /* ✅ SIMPLIFICADO: Menos escala y movimiento */
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2); /* ✅ CORREGIDO: Sombra blanca sutil */
+    z-index: 10; /* ✅ NUEVO: Z-index alto para hover */
 }
 
 .thumbnail.active {
-    transform: scale(1.05);
+    transform: scale(1.08) translateY(-3px); /* ✅ SIMPLIFICADO: Menos escala */
+    border-color: #ffffff; /* ✅ CORREGIDO: Borde blanco */
+    box-shadow: 0 12px 32px rgba(255, 255, 255, 0.3); /* ✅ CORREGIDO: Sombra blanca */
     position: relative;
+    z-index: 5; /* ✅ NUEVO: Z-index medio para activa */
 }
 
 .thumbnail.active::after {
     content: '';
     position: absolute;
-    bottom: -8px;
+    bottom: -6px; /* ✅ AJUSTADO: Menos separación */
     left: 50%;
     transform: translateX(-50%);
-    width: 20px;
-    height: 2px;
-    background-color: #6b7280;
-    border-radius: 1px;
+    width: 24px; /* ✅ REDUCIDO: Más pequeño */
+    height: 3px; /* ✅ REDUCIDO: Más delgado */
+    background: #ffffff; /* ✅ CORREGIDO: Blanco sólido */
+    border-radius: 2px;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.3); /* ✅ CORREGIDO: Sombra blanca */
 }
 
 .thumbnailImage {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.2s ease;
-    border-radius: 8px;
+    object-fit: cover; /* ✅ CUBRE TODO: La imagen llena completamente el contenedor */
+    object-position: center; /* ✅ CENTRADO: Enfoca el centro de la imagen */
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-radius: 6px; /* ✅ AJUSTADO: Bordes redondeados para el padding */
+    will-change: transform; /* ✅ OPTIMIZACIÓN: GPU acceleration */
+    display: block; /* ✅ AGREGADO: Para eliminar espacios en blanco */
 }
 
 .thumbnail:hover .thumbnailImage {
-    transform: scale(1.08);
+    transform: scale(1.02); /* ✅ SIMPLIFICADO: Muy sutil para que no se vea inconsistente */
+    filter: brightness(1.05); /* ✅ SIMPLIFICADO: Solo brillo sutil */
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+.thumbnail.active .thumbnailImage {
+    filter: brightness(1.08); /* ✅ SIMPLIFICADO: Brillo muy sutil */
+}
+
+/* ===== RESPONSIVE DESIGN NETFLIX ===== */
 @media (max-width: 1024px) {
-    .mainImageContainer {
-        height: 350px;
+    .thumbnailsContainer {
+        height: 100px;
+        margin-top: 25px; /* ✅ AJUSTADO: Menos separación en tablet */
     }
     
-    .arrow {
-        width: 40px;
-        height: 40px;
+    .thumbnails {
+        gap: 14px;
     }
     
     .thumbnail {
-        width: 65px;
-        height: 46px;
+        width: 80px;
+        height: 56px;
+    }
+    
+    .thumbnailControls {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .positionCounter {
+        font-size: 0.8rem;
+        padding: 6px 12px;
     }
 }
 
 @media (max-width: 768px) {
-    .mainImageContainer {
-        height: 300px;
-    }
-    
-    .arrow {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .arrowLeft {
-        left: 12px;
-    }
-    
-    .arrowRight {
-        right: 12px;
-    }
-    
-    .indicators {
-        bottom: 12px;
-    }
-    
-    .indicator {
-        width: 16px;
-        height: 2px;
-    }
-    
-    .thumbnail {
-        width: 60px;
-        height: 45px;
+    .thumbnailsContainer {
+        height: 90px;
+        margin-top: 20px; /* ✅ AJUSTADO: Menos separación en mobile */
     }
     
     .thumbnails {
-        gap: 8px;
-        justify-content: center;
+        gap: 12px;
+        padding: 12px;
     }
     
-    .thumbnailsContainer {
-        justify-content: center;
+    .thumbnail {
+        width: 70px;
+        height: 49px;
+    }
+    
+    .thumbnailControls {
+        width: 26px;
+        height: 26px;
+    }
+    
+    .positionCounter {
+        font-size: 0.75rem;
+        padding: 5px 10px;
     }
 }
 
 @media (max-width: 480px) {
     .mainImageContainer {
-        height: 250px;
+        height: 300px;
     }
     
     .arrow {
@@ -248,17 +354,27 @@
         height: 32px;
     }
     
-    .thumbnail {
-        width: 50px;
-        height: 37px;
+    .thumbnailsContainer {
+        height: 80px;
+        margin-top: 15px; /* ✅ AJUSTADO: Menos separación en mobile pequeño */
     }
     
     .thumbnails {
-        padding: 4px 0;
-        justify-content: center;
+        padding: 10px;
     }
     
-    .thumbnailsContainer {
-        justify-content: center;
+    .thumbnail {
+        width: 60px;
+        height: 42px;
     }
-} 
+    
+    .thumbnailControls {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .positionCounter {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+}
