@@ -39,7 +39,7 @@ const Vehiculos = () => {
     const isFiltered = hasAnyFilter(filters)
 
     // ✅ NUEVO: Hook unificado para vehículos
-    const { vehicles, total, hasNextPage, isLoading, isError, error, refetch } = useVehiclesList(filters)
+    const { vehicles, total, hasNextPage, loadMore, isLoadingMore, isLoading, isError, error, refetch } = useVehiclesList(filters)
 
 
 
@@ -117,7 +117,11 @@ const Vehiculos = () => {
                 vehicles={vehicles}
                 isLoading={isLoading}
                 hasNextPage={hasNextPage}
+                isLoadingMore={isLoadingMore}
+                onLoadMore={loadMore}
                 total={total}
+                isError={isError}
+                error={error}
             />
 
             {/* ✅ NUEVO: Botón para volver a lista principal */}

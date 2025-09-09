@@ -8,37 +8,56 @@
  * - Backend maneja paginación automáticamente
  * 
  * @author Indiana Usados
- * @version 1.0.0 - Hook unificado optimizado
+ * @version 2.0.0 - Migrado a useInfiniteQuery
  */
 
 import React from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { vehiclesApi } from '../../services/vehiclesApi'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { getMainVehicles } from '../../services/vehiclesApi'
+import { normalizeVehiclesPage } from '../../api/vehicles.normalizer'
 import { mapListResponse } from '../../mappers/vehicleMapper'
 
 export const useVehiclesList = (filters = {}) => {
-  // ✅ QUERY SIMPLE - sin complicaciones
-  const query = useQuery({
-    queryKey: ['vehicles', JSON.stringify(filters)],
-    queryFn: async () => {
-      const result = await vehiclesApi.getMainVehicles({ filters, limit: 50 });
+  // ✅ PAGE SIZE FIJO
+  const PAGE_SIZE = 8;
+  
+  // ✅ QUERY INFINITA - con paginación
+  const query = useInfiniteQuery({
+    queryKey: ['vehicles', JSON.stringify({ filters, limit: PAGE_SIZE })],
+    queryFn: async ({ pageParam, signal }) => {
+      const result = await getMainVehicles({ 
+        filters, 
+        limit: PAGE_SIZE,
+        cursor: pageParam, 
+        signal 
+      });
       return result;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutos
+    initialPageParam: 1,
+    getNextPageParam: (lastRaw) => {
+      const page = normalizeVehiclesPage(lastRaw);
+      return page.hasNextPage ? page.next : undefined;
+    },
+    select: (data) => {
+      const pages = data.pages.map(mapListResponse);
+      return {
+        vehicles: pages.flatMap(p => p.vehicles),
+        total: pages[0]?.total ?? 0
+      };
+    },
+    placeholderData: (prev) => prev,
+    staleTime: 5 * 60 * 1000, // 5 minutos
+    gcTime: 30 * 60 * 1000, // 30 minutos
+    retry: 2
   });
-
-  // ✅ APLICAR MAPPER A LOS DATOS
-  const mappedData = query.data ? mapListResponse(query.data) : {
-    vehicles: [],
-    total: 0,
-    hasNextPage: false
-  }
 
   // ✅ RETORNAR DATOS MAPEADOS
   return {
-    vehicles: mappedData.vehicles || [],
-    total: mappedData.total || 0,
-    hasNextPage: mappedData.hasNextPage || false,
+    vehicles: query.data?.vehicles ?? [],
+    total: query.data?.total ?? 0,
+    hasNextPage: query.hasNextPage,
+    loadMore: query.fetchNextPage,
+    isLoadingMore: query.isFetchingNextPage,
     isLoading: query.isLoading,
     isError: query.isError,
     error: query.error,

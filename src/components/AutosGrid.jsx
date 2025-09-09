@@ -7,8 +7,22 @@ export default function AutosGrid({
   hasNextPage,
   isLoadingMore,
   onLoadMore,
-  total
+  total,
+  isError,
+  error
 }) {
+  // ✅ Estado local para error de "cargar más"
+  const [loadMoreError, setLoadMoreError] = React.useState(null);
+
+  // ✅ Interceptar onLoadMore para capturar errores
+  const handleLoadMore = async () => {
+    setLoadMoreError(null);
+    try {
+      await onLoadMore?.();
+    } catch (e) {
+      setLoadMoreError(e ?? { message: 'No pudimos cargar más.' });
+    }
+  };
   if (isLoading && (!vehicles || vehicles.length === 0)) {
     return (
       <div style={{ textAlign: 'center', padding: '40px' }}>
@@ -50,7 +64,7 @@ export default function AutosGrid({
       {hasNextPage && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <button
-            onClick={onLoadMore}
+            onClick={handleLoadMore}
             disabled={isLoadingMore}
             style={{
               padding: '12px 24px',
@@ -63,8 +77,15 @@ export default function AutosGrid({
               opacity: isLoadingMore ? 0.6 : 1
             }}
           >
-            {isLoadingMore ? 'Cargando...' : 'Cargar más vehículos'}
+            {isLoadingMore ? 'Cargando…' : 'Cargar más'}
           </button>
+          
+          {/* ✅ Mensaje de error y botón de reintento */}
+          {loadMoreError && (
+            <div role="alert" style={{ marginTop: 8 }}>
+              No pudimos cargar más. <button onClick={handleLoadMore} disabled={isLoadingMore}>Reintentar</button>
+            </div>
+          )}
         </div>
       )}
     </div>

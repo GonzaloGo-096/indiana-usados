@@ -9,6 +9,5 @@ export {
   mapApiVehicleToModel,
   mapListResponse,
   mapDetailResponse,
-  validateVehicle,
-  filterVehicles
+  validateVehicle
 } from './vehicleMapper.js' 
