@@ -10,8 +10,7 @@
 
 // ✅ HOOKS DE VEHÍCULOS
 export { useVehiclesList } from './vehicles/useVehiclesList'
-export { useVehiclesFeed } from './useVehiclesFeed'
-export { useAutoDetail } from './useAutoDetail'
+export { useVehicleDetail } from './vehicles/useVehicleDetail'
 
 // ✅ HOOKS DE MUTACIONES
 export { useCarMutation } from './useCarMutation'
@@ -28,7 +27,7 @@ export {
 export { useFilterReducer } from './filters/useFilterReducer'
 
 // ✅ HOOKS DE CONFIGURACIÓN
-export { useConfig } from './useConfig'
+// export { useConfig } from './useConfig' // ❌ ELIMINADO
 
 // ✅ HOOKS DE SCROLL
 export { useScrollPosition } from './useScrollPosition'

@@ -6,7 +6,7 @@
  * @version 2.0.0 - LIMPIEZA Y OPTIMIZACIÓN
  */
 
-import { normalizeVehiclesPage } from '../api/vehicles.normalizer'
+import { normalizeVehiclesPage } from '@api/vehicles.normalizer'
 
 /**
  * Mapea un vehículo individual del backend al modelo interno

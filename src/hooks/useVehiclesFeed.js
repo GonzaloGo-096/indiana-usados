@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getMainVehicles } from '../services/vehiclesApi';
-import { hasAnyFilter, filtersKey } from '../utils/filters';
+import { getMainVehicles } from '@services/vehiclesApi';
+import { hasAnyFilter, filtersKey } from '@utils/filters';
 
 const lastId = (arr = []) =>
   arr.length ? (arr[arr.length - 1]._id || arr[arr.length - 1].id) : undefined;

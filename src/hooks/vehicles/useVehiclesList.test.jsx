@@ -24,8 +24,8 @@ vi.mock('../../mappers/vehicleMapper', () => ({
 
 // Importar el hook después de los mocks
 import { useVehiclesList } from './useVehiclesList';
-import { getMainVehicles } from '../../services/vehiclesApi';
-import { normalizeVehiclesPage } from '../../api/vehicles.normalizer';
+import { getMainVehicles } from '@services/vehiclesApi';
+import { normalizeVehiclesPage } from '@api/vehicles.normalizer';
 import { mapListResponse } from '../../mappers/vehicleMapper';
 
 describe('useVehiclesList', () => {

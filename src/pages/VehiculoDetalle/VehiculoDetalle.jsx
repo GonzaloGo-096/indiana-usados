@@ -7,7 +7,7 @@
 
 import React, { useEffect } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
-import { useAutoDetail } from '@hooks'
+import { useVehicleDetail } from '@hooks/vehicles'
 import { CardDetalle } from '@vehicles'
 import { ErrorState } from '@ui'
 import { DetalleSkeleton } from '@shared'
@@ -39,7 +39,7 @@ const VehiculoDetalle = () => {
         isLoading, 
         isError, 
         error 
-    } = useAutoDetail(id, { 
+    } = useVehicleDetail(id, { 
         enabled: !vehicleDataFromCache // Solo hacer API call si no hay datos en cache
     })
     

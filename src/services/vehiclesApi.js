@@ -1,5 +1,5 @@
-import axiosInstance from '../api/axiosInstance';
-import { buildFiltersForBackend } from '../utils/filters';
+import axiosInstance from '@api/axiosInstance';
+import { buildFiltersForBackend } from '@utils/filters';
 
 // ✅ FUNCIÓN SIMPLE para obtener vehículos
 export const getMainVehicles = async ({ filters = {}, limit = 12, cursor = null, signal } = {}) => {

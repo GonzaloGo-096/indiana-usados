@@ -12,7 +12,7 @@
  */
 
 import { useMemo } from 'react'
-import { config, validateConfig } from '../config'
+import { config, validateConfig } from '@config'
 
 /**
  * Hook para acceder a la configuración de manera limpia
