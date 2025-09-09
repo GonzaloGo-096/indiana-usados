@@ -86,9 +86,8 @@ const Nav = () => {
               onMouseEnter={handleHomePreload}
               onMouseLeave={() => cancelPreload('/')}
             >
-              Home
+              Inicio
             </Link>
-            <div className={styles.divider}></div>
             <Link 
               className={`${styles.navLink} ${isActive('/vehiculos') ? styles.active : ''}`} 
               to="/vehiculos"
@@ -96,9 +95,8 @@ const Nav = () => {
               onMouseEnter={handleVehiculosPreload}
               onMouseLeave={() => cancelPreload('/vehiculos')}
             >
-              Vehículos
+              Autos usados
             </Link>
-            <div className={styles.divider}></div>
             <Link 
               className={`${styles.navLink} ${isActive('/nosotros') ? styles.active : ''}`} 
               to="/nosotros"
@@ -106,8 +104,9 @@ const Nav = () => {
               onMouseEnter={handleNosotrosPreload}
               onMouseLeave={() => cancelPreload('/nosotros')}
             >
-              Nosotros
+              Contacto
             </Link>
+            <div className={styles.divider}></div>
           </div>
         </div>
       </div>

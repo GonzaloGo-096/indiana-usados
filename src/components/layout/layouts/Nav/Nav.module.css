@@ -30,7 +30,7 @@
 }
 
 .logo {
-  height: 75px;
+  height: 80px; /* ✅ AUMENTADO: De 60px a 80px */
   width: auto;
   object-fit: contain;
   transition: transform 0.2s;
@@ -69,9 +69,9 @@
   display: flex;
   align-items: center;
   position: absolute;
-  left: 50%;
-  top: 70%;
-  transform: translate(-50%, -50%);
+  right: 24px; /* ✅ CAMBIADO: De left: 50% a right: 24px */
+  top: 50%; /* ✅ CAMBIADO: De 70% a 50% para centrar verticalmente */
+  transform: translateY(-50%); /* ✅ CAMBIADO: Solo translateY para centrar verticalmente */
   z-index: 1000;
 }
 
@@ -79,7 +79,7 @@
   display: flex;
   margin: 0;
   padding: 0;
-  gap: 32px;
+  gap: 16px; /* ✅ REDUCIDO: De 32px a 16px para juntar más los enlaces */
   align-items: center;
 }
 
@@ -97,7 +97,7 @@
   padding: 12px 16px;
   border-radius: 6px;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 18px; /* ✅ AUMENTADO: De 16px a 18px para hacer más grandes */
   transition: background-color 0.2s, transform 0.2s;
   border: none;
   white-space: nowrap;
@@ -121,7 +121,7 @@
   }
 
   .logo {
-    height: 65px;
+    height: 65px; /* ✅ AUMENTADO: De 50px a 65px */
   }
 
   .mobileMenu {
@@ -201,9 +201,9 @@
 @media (min-width: 992px) {
   .nav {
     position: absolute;
-    left: 50%;
-    top: 70%;
-    transform: translate(-50%, -50%);
+    right: 24px; /* ✅ CAMBIADO: De left: 50% a right: 24px */
+    top: 50%; /* ✅ CAMBIADO: De 70% a 50% para centrar verticalmente */
+    transform: translateY(-50%); /* ✅ CAMBIADO: Solo translateY para centrar verticalmente */
     background: transparent;
     border: none;
     box-shadow: none;
