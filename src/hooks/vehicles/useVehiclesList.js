@@ -14,6 +14,7 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { vehiclesApi } from '../../services/vehiclesApi'
+import { mapListResponse } from '../../mappers/vehicleMapper'
 
 export const useVehiclesList = (filters = {}) => {
   // ✅ QUERY SIMPLE - sin complicaciones
@@ -26,11 +27,18 @@ export const useVehiclesList = (filters = {}) => {
     staleTime: 1000 * 60 * 5, // 5 minutos
   });
 
-  // ✅ RETORNAR DATOS SIMPLES
+  // ✅ APLICAR MAPPER A LOS DATOS
+  const mappedData = query.data ? mapListResponse(query.data) : {
+    vehicles: [],
+    total: 0,
+    hasNextPage: false
+  }
+
+  // ✅ RETORNAR DATOS MAPEADOS
   return {
-    vehicles: query.data?.allPhotos?.docs || [],
-    total: query.data?.allPhotos?.totalDocs || 0,
-    hasNextPage: query.data?.allPhotos?.hasNextPage || false,
+    vehicles: mappedData.vehicles || [],
+    total: mappedData.total || 0,
+    hasNextPage: mappedData.hasNextPage || false,
     isLoading: query.isLoading,
     isError: query.isError,
     error: query.error,

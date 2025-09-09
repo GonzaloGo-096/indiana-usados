@@ -41,17 +41,21 @@ export const useCarMutation = () => {
             
             for (let [key, value] of formData.entries()) {
                 if (value instanceof File) {
-                    imageFiles[key] = [value] // Convertir a FileList
-                    console.log(`📁 ${key}:`, {
-                        name: value.name,
-                        size: value.size,
-                        type: value.type
-                    })
+                    // ✅ MANEJAR MÚLTIPLES ARCHIVOS CON EL MISMO NOMBRE
+                    if (imageFiles[key]) {
+                        imageFiles[key].push(value)
+                    } else {
+                        imageFiles[key] = [value]
+                    }
                 } else {
                     dataFields[key] = value
-                    console.log(`📝 ${key}:`, value)
                 }
             }
+            
+            // ✅ LOG RESUMIDO DE ARCHIVOS
+            console.log('📁 Archivos extraídos:', Object.keys(imageFiles).map(key => 
+                `${key}: ${imageFiles[key].length} archivo(s)`
+            ).join(', '))
             
             // ✅ VALIDAR ARCHIVOS DE IMAGEN
             const imageErrors = validateImageFields(imageFiles)
@@ -60,9 +64,10 @@ export const useCarMutation = () => {
             }
             
             // ✅ PREPARAR ARCHIVOS PARA ENVÍO
-            console.log('🔧 Preparando archivos de imagen para envío...')
             const preparedImages = prepareMultipleImagesForUpload(imageFiles)
-            console.log('✅ Archivos preparados:', Object.keys(preparedImages))
+            console.log('✅ Archivos preparados:', Object.keys(preparedImages).map(key => 
+                `${key}: ${preparedImages[key].length} archivo(s)`
+            ).join(', '))
             
             // ✅ CREAR FORMDATA SIMPLE (NO necesitamos preparar archivos)
             const cloudinaryFormData = new FormData()
@@ -73,36 +78,40 @@ export const useCarMutation = () => {
             })
             
             // ✅ AGREGAR ARCHIVOS PREPARADOS CON NOMBRES DE CAMPO CORRECTOS
+            const filesAdded = []
             Object.entries(preparedImages).forEach(([fieldName, fileList]) => {
                 if (fileList && fileList.length > 0) {
-                    // ✅ IMPORTANTE: Usar el nombre del campo exacto que espera Multer
-                    cloudinaryFormData.append(fieldName, fileList[0])
-                    console.log(`📁 Agregando ${fieldName}:`, fileList[0].name)
+                    if (fieldName === 'fotosExtra') {
+                        // ✅ FOTOS EXTRAS: Enviar todos los archivos
+                        fileList.forEach(file => {
+                            cloudinaryFormData.append(fieldName, file)
+                        })
+                        filesAdded.push(`${fieldName}: ${fileList.length} archivos`)
+                    } else {
+                        // ✅ FOTOS PRINCIPALES: Solo el primer archivo
+                        cloudinaryFormData.append(fieldName, fileList[0])
+                        filesAdded.push(`${fieldName}: ${fileList[0].name}`)
+                    }
                 }
             })
             
-            console.log('✅ FormData creado con archivos preparados')
+            console.log('✅ FormData creado:', filesAdded.join(', '))
             
-            // ✅ DEBUG: LOGGING COMPLETO DEL FORMDATA
-            console.log('🔍 DEBUG: Contenido completo del FormData:')
-            for (let [key, value] of cloudinaryFormData.entries()) {
-                if (value instanceof File) {
-                    console.log(`📁 ${key}:`, {
-                        name: value.name,
-                        size: value.size,
-                        type: value.type,
-                        lastModified: value.lastModified
-                    })
-                } else {
-                    console.log(`📝 ${key}:`, value)
+            // ✅ DEBUG: Solo en desarrollo
+            if (process.env.NODE_ENV === 'development') {
+                console.log('🔍 DEBUG: FormData completo:')
+                for (let [key, value] of cloudinaryFormData.entries()) {
+                    if (value instanceof File) {
+                        console.log(`📁 ${key}: ${value.name} (${(value.size / 1024).toFixed(1)}KB)`)
+                    } else {
+                        console.log(`📝 ${key}: ${value}`)
+                    }
                 }
             }
             
             // ✅ OBTENER TOKEN DE AUTORIZACIÓN PRIMERO
             const token = getAuthToken()
-            console.log('🔍 Buscando token para autorización...')
-            console.log('🔍 Clave de búsqueda:', AUTH_CONFIG.storage.tokenKey)
-            console.log('🔍 Token encontrado:', token ? `✅ Sí (${token.substring(0, 20)}...)` : '❌ No')
+            console.log('🔐 Token:', token ? `✅ Válido (${token.substring(0, 20)}...)` : '❌ No encontrado')
             
             if (!token) {
                 console.error('❌ NO SE ENCONTRÓ TOKEN - Verificando localStorage:')
@@ -111,18 +120,8 @@ export const useCarMutation = () => {
                 throw new Error('❌ No se encontró token de autorización')
             }
             
-            // ✅ DEBUG: VERIFICAR HEADERS (DESPUÉS de obtener el token)
-            console.log('🔍 DEBUG: Headers que se enviarán:')
-            console.log('Content-Type:', 'multipart/form-data')
-            console.log('Authorization:', `Bearer ${token.substring(0, 20)}...`)
-            
-            // ✅ LOGGING ANTES DEL ENVÍO
-            console.log('🌐 Enviando a:', 'http://localhost:3001/photos/create')
-            console.log('🔐 Token válido encontrado:', `✅ Sí (${token.substring(0, 20)}...)`)
-            console.log('📤 Headers:', {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${token.substring(0, 20)}...`
-            })
+            // ✅ ENVÍO AL BACKEND
+            console.log('🌐 Enviando a: http://localhost:3001/photos/create')
             
             const response = await axios.post('http://localhost:3001/photos/create', cloudinaryFormData, {
                 headers: {

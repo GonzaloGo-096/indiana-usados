@@ -34,23 +34,14 @@ class VehiclesApiService {
      * @returns {Promise<Object>} - Respuesta con datos y metadatos
      */
     async getVehiclesMain({ limit = 6, cursor = null } = {}) {
-        console.log('🚀 DEBUG: getVehiclesMain ejecutándose', { limit, cursor })
-        
-        console.log('🔗 DEBUG: Llamando al BACKEND REAL')
-        console.log('🌐 DEBUG: URL completa:', `${axiosInstance.defaults.baseURL}/photos/getallphotos`)
-        console.log('📡 DEBUG: Parámetros enviados:', { limit, cursor })
+        // ✅ DEBUG TEMPORALMENTE DESACTIVADO PARA INVESTIGAR BUCLE INFINITO
         
         try {
             const response = await axiosInstance.get('/photos/getallphotos', {
                 params: { limit, ...(cursor && { cursor }) }
             })
             
-            console.log('✅ DEBUG: Respuesta del backend recibida:', {
-                status: response.status,
-                statusText: response.statusText,
-                data: response.data,
-                headers: response.headers
-            })
+            // ✅ DEBUG TEMPORALMENTE DESACTIVADO PARA INVESTIGAR BUCLE INFINITO
             
             return response.data
             

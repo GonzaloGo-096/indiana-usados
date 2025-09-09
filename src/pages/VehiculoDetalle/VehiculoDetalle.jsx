@@ -46,18 +46,7 @@ const VehiculoDetalle = () => {
     // ✅ PRIORIZAR DATOS DEL CACHE
     const auto = vehicleDataFromCache || autoFromAPI
     
-    // ✅ DEBUG: Confirmar fuente de datos
-    console.log('🔍 VEHICULO DETALLE DEBUG:', {
-        id,
-        tieneDatosCache: Boolean(vehicleDataFromCache),
-        tieneDatosAPI: Boolean(autoFromAPI),
-        fuenteFinal: vehicleDataFromCache ? 'CACHE (navigate)' : 'API (backend)',
-        datosCache: vehicleDataFromCache ? {
-            marca: vehicleDataFromCache.marca,
-            modelo: vehicleDataFromCache.modelo,
-            precio: vehicleDataFromCache.precio
-        } : null
-    })
+    // ✅ DEBUG TEMPORALMENTE DESACTIVADO PARA INVESTIGAR BUCLE INFINITO
 
     // Función para volver preservando scroll
     const handleBack = () => {

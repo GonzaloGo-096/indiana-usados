@@ -7,13 +7,26 @@
 
 import { useReducer, useCallback, useMemo } from 'react'
 
-// ✅ CAMPOS DE IMAGEN EXACTOS DEL BACKEND
-export const IMAGE_FIELDS = [
+// ✅ NUEVOS CAMPOS DE IMAGEN (estructura del backend actualizada)
+export const IMAGE_FIELDS = {
+    principales: ['fotoPrincipal', 'fotoHover'],
+    extras: ['fotoExtra1', 'fotoExtra2', 'fotoExtra3', 'fotoExtra4', 'fotoExtra5', 'fotoExtra6', 'fotoExtra7', 'fotoExtra8']
+}
+
+// ✅ COMPATIBILIDAD: Campos antiguos (para transición)
+export const OLD_IMAGE_FIELDS = [
     'fotoFrontal',
     'fotoTrasera', 
     'fotoLateralIzquierda',
     'fotoLateralDerecha',
     'fotoInterior'
+]
+
+// ✅ TODOS LOS CAMPOS (para compatibilidad)
+export const ALL_IMAGE_FIELDS = [
+    ...IMAGE_FIELDS.principales,
+    ...IMAGE_FIELDS.extras,
+    ...OLD_IMAGE_FIELDS
 ]
 
 // ✅ ACCIONES DEL REDUCER DE IMÁGENES
@@ -35,7 +48,7 @@ const createEmptyImageState = () => ({
 // ✅ ESTADO INICIAL PARA TODAS LAS IMÁGENES
 const createInitialImageState = () => {
     const state = {}
-    IMAGE_FIELDS.forEach(key => {
+    ALL_IMAGE_FIELDS.forEach(key => {
         state[key] = createEmptyImageState()
     })
     return state
@@ -50,7 +63,7 @@ const imageReducer = (state, action) => {
         case IMAGE_ACTIONS.INIT_EDIT:
             const { urls = {} } = action.payload
             const editState = {}
-            IMAGE_FIELDS.forEach(key => {
+            ALL_IMAGE_FIELDS.forEach(key => {
                 editState[key] = {
                     existingUrl: urls[key] || '',
                     file: null,
@@ -130,38 +143,53 @@ export const useImageReducer = (mode, initialData = {}) => {
     const validateImages = useCallback((mode) => {
         const errors = {}
         
-        IMAGE_FIELDS.forEach(field => {
-            const { file, existingUrl, remove } = imageState[field] || {}
-            
-            if (mode === 'create') {
-                // CREATE: Cada slot debe tener archivo
+        if (mode === 'create') {
+            // CREATE: 2 principales + mínimo 5 extras = 7 fotos total
+            IMAGE_FIELDS.principales.forEach(field => {
+                const { file } = imageState[field] || {}
                 if (!file) {
                     errors[field] = `La ${field} es requerida`
                 }
-            } else {
-                // EDIT: Cada slot debe tener (file || existingUrl) || remove
-                if (!(file || existingUrl || remove)) {
-                    errors[field] = `La ${field} debe tener una imagen existente, una nueva, o marcar quitar`
-                }
+            })
+            
+            const extrasCount = IMAGE_FIELDS.extras.filter(field => 
+                imageState[field]?.file
+            ).length
+            
+            if (extrasCount < 5) {
+                errors.fotosExtra = 'Se requieren mínimo 5 fotos extras (total mínimo: 7 fotos)'
             }
-        })
+        } else {
+            // EDIT: Todo opcional - no validaciones obligatorias
+            // Solo validar formato si se suben archivos
+            ALL_IMAGE_FIELDS.forEach(field => {
+                const { file } = imageState[field] || {}
+                if (file && !file.type.startsWith('image/')) {
+                    errors[field] = `El archivo debe ser una imagen`
+                }
+            })
+        }
         
         return errors
     }, [imageState])
 
-    // ✅ CONSTRUIR FORMDATA PARA IMÁGENES
+    // ✅ CONSTRUIR FORMDATA PARA IMÁGENES (nueva estructura)
     const buildImageFormData = useCallback((formData) => {
-        IMAGE_FIELDS.forEach(key => {
-            const { file, existingUrl, remove } = imageState[key] || {}
-            
-            if (remove) {
-                formData.append(`${key}Remove`, '1')
-            } else if (file) {
+        // Principales
+        IMAGE_FIELDS.principales.forEach(key => {
+            const { file } = imageState[key] || {}
+            if (file) {
                 formData.append(key, file)
-            } else if (existingUrl) {
-                // ✅ USAR NOMBRE DE CAMPO ORIGINAL (sin sufijo)
-                formData.append(key, existingUrl)
             }
+        })
+        
+        // Extras - enviar como array de archivos
+        const extraFiles = IMAGE_FIELDS.extras
+            .map(key => imageState[key]?.file)
+            .filter(Boolean)
+        
+        extraFiles.forEach(file => {
+            formData.append('fotosExtra', file)
         })
         
         return formData
@@ -186,7 +214,7 @@ export const useImageReducer = (mode, initialData = {}) => {
 
     // ✅ LIMPIAR OBJETOS URL CREADOS
     const cleanupObjectUrls = useCallback(() => {
-        IMAGE_FIELDS.forEach(key => {
+        ALL_IMAGE_FIELDS.forEach(key => {
             const { file } = imageState[key] || {}
             if (file) {
                 try {

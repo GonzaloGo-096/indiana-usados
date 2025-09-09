@@ -114,13 +114,7 @@ export const mapApiVehicleToModel = (apiVehicle) => {
  */
 export const mapListResponse = (apiResponse, currentCursor = null) => {
   try {
-    console.log('🔍 MAPPER DEBUG - Respuesta recibida:', {
-              hasData: Boolean(apiResponse?.data),
-        hasAllPhotos: Boolean(apiResponse?.allPhotos),
-        dataType: Array.isArray(apiResponse?.data) ? 'array' : typeof apiResponse?.data,
-        allPhotosType: typeof apiResponse?.allPhotos,
-        currentCursor
-    })
+    // ✅ DEBUG: Solo para vehículos sin imagen
 
     let vehicles = []
     let total = 0
@@ -136,12 +130,7 @@ export const mapListResponse = (apiResponse, currentCursor = null) => {
       hasNextPage = Boolean(backendData.hasNextPage)
       nextPage = backendData.nextPage || null
       
-      console.log('🔍 MAPPER DEBUG - Respuesta del backend detectada:', {
-        totalVehicles: vehicles.length,
-        totalDocs: backendData.totalDocs,
-        hasNextPage: backendData.hasNextPage,
-        nextPage: backendData.nextPage
-      })
+      // ✅ DEBUG: Solo para vehículos sin imagen
     } else if (apiResponse?.data && Array.isArray(apiResponse.data)) {
       // Respuesta mock (mantener compatibilidad)
       vehicles = apiResponse.data
@@ -149,11 +138,7 @@ export const mapListResponse = (apiResponse, currentCursor = null) => {
       hasNextPage = Boolean(apiResponse.hasNextPage)
       nextPage = apiResponse.nextPage || null
       
-      console.log('🔍 MAPPER DEBUG - Respuesta mock detectada:', {
-        totalVehicles: vehicles.length,
-        total: apiResponse.total,
-        hasNextPage: apiResponse.hasNextPage
-      })
+      // ✅ DEBUG: Solo para vehículos sin imagen
     } else if (Array.isArray(apiResponse)) {
       // Array directo
       vehicles = apiResponse
@@ -167,21 +152,14 @@ export const mapListResponse = (apiResponse, currentCursor = null) => {
       .map(vehicle => {
         // Si es respuesta del backend, usar mapeo específico
         if (apiResponse?.allPhotos?.docs) {
-          return mapBackendVehicleToFrontend(vehicle)
+          return mapListVehicleToFrontend(vehicle) // ✅ NUEVO: Usar mapper optimizado para listado
         }
         // Si es mock, usar mapeo existente
         return mapApiVehicleToModel(vehicle)
       })
       .filter(vehicle => vehicle !== null)
 
-    console.log('🔍 MAPPER DEBUG - Resultado final:', {
-      totalVehicles: vehicles.length,
-      normalizedCount: normalizedVehicles.length,
-      currentCursor,
-      hasNextPage,
-      nextPage,
-      source: apiResponse?.allPhotos?.docs ? 'backend' : 'mock'
-    })
+    // ✅ DEBUG: Solo para vehículos sin imagen
 
     return {
       vehicles: normalizedVehicles,
@@ -218,6 +196,57 @@ export const mapDetailResponse = (apiResponse) => {
     return null
   } catch (error) {
     console.error('❌ Vehicle mapper: error procesando detalle:', error, apiResponse)
+    return null
+  }
+}
+
+/**
+ * Mapea un vehículo del backend para listado optimizado (solo datos necesarios)
+ * @param {Object} backendVehicle - Vehículo tal como viene del backend
+ * @returns {Object} - Vehículo normalizado para listado
+ */
+export const mapListVehicleToFrontend = (backendVehicle) => {
+  if (!backendVehicle || typeof backendVehicle !== 'object') {
+    console.warn('⚠️ List mapper: datos inválidos recibidos:', backendVehicle)
+    return null
+  }
+
+  try {
+    const result = {
+      // Identificación
+      id: backendVehicle._id || backendVehicle.id || 0,
+      
+      // Información básica (solo campos necesarios para CardAuto)
+      marca: String(backendVehicle.marca || '').trim(),
+      modelo: String(backendVehicle.modelo || '').trim(),
+      precio: Number(backendVehicle.precio || 0),
+      año: Number(backendVehicle.anio || 0),
+      kilometraje: Number(backendVehicle.kilometraje || 0),
+      
+      // ✅ IMÁGENES: Nueva estructura (objetos con .url)
+      imágenes: [
+        backendVehicle.fotoPrincipal?.url,
+        backendVehicle.fotoHover?.url,
+        ...(backendVehicle.fotosExtra?.map(img => img.url) || [])
+      ].filter(Boolean),
+      
+      // ✅ CAMPOS INDIVIDUALES: Nueva estructura
+      fotoPrincipal: backendVehicle.fotoPrincipal?.url || '',
+      fotoHover: backendVehicle.fotoHover?.url || '',
+      imagen: backendVehicle.fotoPrincipal?.url || '',
+      
+      
+      // Campos derivados
+      title: `${backendVehicle.marca} ${backendVehicle.modelo}`.trim(),
+      
+      // Datos originales para debugging
+      raw: backendVehicle
+    }
+    
+    
+    return result
+  } catch (error) {
+    console.error('❌ List mapper: error procesando vehículo:', error, backendVehicle)
     return null
   }
 }
@@ -267,16 +296,35 @@ export const mapBackendVehicleToFrontend = (backendVehicle) => {
       HP: String(backendVehicle.HP || '').trim(),
       detalle: String(backendVehicle.detalle || '').trim(),
       
-      // Imágenes (estructura del backend)
+      // ✅ NUEVAS IMÁGENES (estructura del backend actualizada) CON FALLBACKS
+      fotoPrincipal: backendVehicle.fotoPrincipal?.url || 
+                    backendVehicle.fotoFrontal?.url || 
+                    backendVehicle.imagen || 
+                    '',
+      fotoHover: backendVehicle.fotoHover?.url || 
+                 backendVehicle.fotoTrasera?.url || 
+                 backendVehicle.fotoLateralDerecha?.url || 
+                 backendVehicle.fotoLateralIzquierda?.url || 
+                 '',
+      fotosExtra: backendVehicle.fotosExtra?.map(img => img.url) || [],
+      
+      // ✅ COMPATIBILIDAD: Imágenes individuales (estructura antigua)
       fotoFrontal: backendVehicle.fotoFrontal || null,
       fotoTrasera: backendVehicle.fotoTrasera || null,
       fotoLateralIzquierda: backendVehicle.fotoLateralIzquierda || null,
       fotoLateralDerecha: backendVehicle.fotoLateralDerecha || null,
       fotoInterior: backendVehicle.fotoInterior || null,
       
-      // Imágenes para compatibilidad con frontend actual
-      imagen: backendVehicle.fotoFrontal?.url || '',
+      // ✅ COMPATIBILIDAD: Imágenes para frontend actual CON FALLBACKS MEJORADOS
+      imagen: backendVehicle.fotoPrincipal?.url || 
+              backendVehicle.fotoFrontal?.url || 
+              backendVehicle.imagen || 
+              '',
       gallery: [
+        backendVehicle.fotoPrincipal?.url,
+        backendVehicle.fotoHover?.url,
+        ...(backendVehicle.fotosExtra?.map(img => img.url) || []),
+        // Fallbacks para estructura antigua
         backendVehicle.fotoFrontal?.url,
         backendVehicle.fotoTrasera?.url,
         backendVehicle.fotoLateralIzquierda?.url,
@@ -322,6 +370,7 @@ export const validateVehicle = (vehicle) => {
          vehicle.id && 
          vehicle.brand && 
          vehicle.model && 
+         
          vehicle.price > 0
 }
 

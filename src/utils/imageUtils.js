@@ -59,11 +59,10 @@ export const getCarouselImages = (auto) => {
     }
     
     try {
-        console.log('🔍 getCarouselImages: auto.imágenes', auto.imágenes)
+        
         // ✅ ARREGLADO: Manejar tanto objetos como arrays de URLs
         if (auto.imágenes && Array.isArray(auto.imágenes)) {
             // Si hay array de imágenes, usarlo
-            console.log('✅ getCarouselImages: Usando array de imágenes', auto.imágenes)
             return auto.imágenes.length > 0 ? auto.imágenes : [defaultCarImage]
         }
         
@@ -227,40 +226,29 @@ export const prepareMultipleFilesForCloudinary = (imageFiles) => {
  * @param {Object} imageFiles - Objeto con FileList por campo
  * @returns {Object} Objeto con errores de validación
  */
+// ✅ CONSTANTES DE VALIDACIÓN
+const REQUIRED_IMAGE_FIELDS = ['fotoPrincipal', 'fotoHover']
+const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+const MIN_EXTRA_PHOTOS = 5
+
 export const validateImageFields = (imageFiles) => {
   const errors = {}
-  const requiredFields = [
-    'fotoFrontal',
-    'fotoTrasera', 
-    'fotoLateralIzquierda',
-    'fotoLateralDerecha',
-    'fotoInterior'
-  ]
 
-  // ✅ FORMATOS DE IMAGEN SOPORTADOS (EXACTAMENTE COMO EL BACKEND)
-  const supportedTypes = [
-    'image/jpeg',
-    'image/jpg', 
-    'image/png'
-    // ❌ REMOVIDO: 'image/webp', 'image/gif' - NO SOPORTADOS POR EL BACKEND
-  ]
-  
-  // ✅ TAMAÑO MÁXIMO (10MB)
-  const maxSize = 10 * 1024 * 1024
-
-  requiredFields.forEach(field => {
+  // ✅ VALIDAR CAMPOS PRINCIPALES OBLIGATORIOS
+  REQUIRED_IMAGE_FIELDS.forEach(field => {
     if (!imageFiles[field] || imageFiles[field].length === 0) {
       errors[field] = `Campo ${field} es requerido`
     } else {
       const file = imageFiles[field][0]
       
-      // ✅ VALIDAR TIPO MIME (EXACTAMENTE COMO EL BACKEND)
-      if (!supportedTypes.includes(file.type)) {
-        errors[field] = `Formato no soportado: ${file.type}. Solo se permiten: ${supportedTypes.join(', ')}`
+      // ✅ VALIDAR TIPO MIME
+      if (!SUPPORTED_IMAGE_TYPES.includes(file.type)) {
+        errors[field] = `Formato no soportado: ${file.type}. Solo se permiten: ${SUPPORTED_IMAGE_TYPES.join(', ')}`
       }
       
       // ✅ VALIDAR TAMAÑO
-      if (file.size > maxSize) {
+      if (file.size > MAX_FILE_SIZE) {
         errors[field] = `Archivo muy grande: ${(file.size / 1024 / 1024).toFixed(2)}MB. Máximo: 10MB`
       }
       
@@ -269,14 +257,20 @@ export const validateImageFields = (imageFiles) => {
         errors[field] = `Nombre de archivo inválido`
       }
       
-      // ✅ VALIDAR EXTENSIÓN (EXACTAMENTE COMO EL BACKEND)
+      // ✅ VALIDAR EXTENSIÓN
       const extension = file.name.split('.').pop()?.toLowerCase()
-      const supportedExtensions = ['jpg', 'jpeg', 'png'] // ❌ REMOVIDO: 'webp', 'gif'
+      const supportedExtensions = ['jpg', 'jpeg', 'png']
       if (!supportedExtensions.includes(extension)) {
         errors[field] = `Extensión no soportada: .${extension}. Solo se permiten: ${supportedExtensions.join(', ')}`
       }
     }
   })
+
+  // ✅ VALIDAR FOTOS EXTRAS (mínimo 5)
+  const fotosExtraCount = imageFiles.fotosExtra ? imageFiles.fotosExtra.length : 0
+  if (fotosExtraCount < MIN_EXTRA_PHOTOS) {
+    errors.fotosExtra = `Se requieren mínimo ${MIN_EXTRA_PHOTOS} fotos extras (total mínimo: ${MIN_EXTRA_PHOTOS + 2} fotos)`
+  }
 
   return errors
 }
@@ -354,8 +348,15 @@ export const prepareMultipleImagesForUpload = (imageFiles) => {
   Object.entries(imageFiles).forEach(([fieldName, fileList]) => {
     if (fileList && fileList.length > 0) {
       try {
-        const preparedFile = prepareImageForUpload(fileList[0], fieldName)
-        preparedFiles[fieldName] = [preparedFile]
+        if (fieldName === 'fotosExtra') {
+          // ✅ FOTOS EXTRAS: Procesar todos los archivos
+          const preparedExtraFiles = fileList.map(file => prepareImageForUpload(file, fieldName))
+          preparedFiles[fieldName] = preparedExtraFiles
+        } else {
+          // ✅ FOTOS PRINCIPALES: Solo el primer archivo
+          const preparedFile = prepareImageForUpload(fileList[0], fieldName)
+          preparedFiles[fieldName] = [preparedFile]
+        }
       } catch (error) {
         console.error(`❌ Error preparando ${fieldName}:`, error.message)
         throw error

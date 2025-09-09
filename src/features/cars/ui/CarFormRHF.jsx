@@ -8,13 +8,31 @@
 import React, { useEffect, useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useCarMutation } from '@hooks'
-import { useImageReducer } from './useImageReducer'
+import { useImageReducer, IMAGE_FIELDS } from './useImageReducer'
 import styles from './CarFormRHF.module.css'
 
 // ✅ CONSTANTES
 const MODE = {
     CREATE: 'create',
     EDIT: 'edit'
+}
+
+// ✅ CAMPOS NUMÉRICOS (para coerción automática)
+const NUMERIC_FIELDS = ['precio', 'cilindrada', 'anio', 'kilometraje']
+
+// ✅ ENDPOINTS
+const ENDPOINTS = {
+    CREATE: 'http://localhost:3001/photos/create',
+    UPDATE: 'http://localhost:3001/photos/updatephoto',
+    DELETE: 'http://localhost:3001/photos/deletephoto'
+}
+
+// ✅ VALIDACIONES
+const VALIDATION_RULES = {
+    MIN_EXTRA_PHOTOS: 5,
+    TOTAL_MIN_PHOTOS: 7,
+    MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
+    SUPPORTED_TYPES: ['image/jpeg', 'image/jpg', 'image/png']
 }
 
 // ✅ PROPS DEL COMPONENTE
@@ -49,6 +67,7 @@ const CarFormRHF = ({
         watch
     } = useForm({
         defaultValues: {
+            // ✅ DATOS BÁSICOS (exactamente como espera el backend)
             marca: '',
             modelo: '',
             version: '',
@@ -57,6 +76,7 @@ const CarFormRHF = ({
             segmento: '',
             cilindrada: '',
             color: '',
+            // ✅ DATOS TÉCNICOS (exactamente como espera el backend)
             anio: '',
             combustible: '',
             transmision: '',
@@ -163,16 +183,16 @@ const CarFormRHF = ({
         
         // ✅ AGREGAR CAMPOS DE DATOS PRIMITIVOS
         Object.entries(data).forEach(([key, value]) => {
-            if (key === 'precio' || key === 'cilindrada' || key === 'anio' || key === 'kilometraje') {
+            if (NUMERIC_FIELDS.includes(key)) {
                 // ✅ COERCIÓN NUMÉRICA
                 const numValue = Number(value).toString()
                 formData.append(key, numValue)
-                console.log(`📊 ${key}: ${value} → ${numValue}`)
             } else {
                 formData.append(key, value)
-                console.log(`📝 ${key}: ${value}`)
             }
         })
+        
+        console.log('📝 Campos agregados:', Object.keys(data).length, 'campos')
         
         // ✅ AGREGAR IMÁGENES SEGÚN ESTADO
         buildImageFormData(formData)
@@ -260,24 +280,24 @@ const CarFormRHF = ({
                 )}
             </div>
 
-            {/* ✅ SECCIÓN DE IMÁGENES */}
+            {/* ✅ SECCIÓN DE IMÁGENES PRINCIPALES */}
             <div className={styles.imageSection}>
-                <h3>Imágenes del Vehículo</h3>
+                <h3>Imágenes Principales</h3>
                 
                 {/* ✅ INFORMACIÓN SOBRE FORMATOS ACEPTADOS */}
                 <div className={styles.formatInfo}>
                     <p><strong>Formatos aceptados:</strong> Solo archivos .jpg, .jpeg y .png</p>
                     <p><strong>Tamaño máximo:</strong> 10MB por imagen</p>
-                    <p><strong>Todas las imágenes son obligatorias</strong></p>
+                    <p><strong>Las 2 imágenes principales son obligatorias</strong></p>
+                    <p><strong>Total mínimo requerido:</strong> 7 fotos (2 principales + 5 extras)</p>
                 </div>
                 
                 <div className={styles.imageGrid}>
                     {useMemo(() => {
-                        const fields = Object.keys(imageState)
-                        return fields.map(field => (
+                        return IMAGE_FIELDS.principales.map(field => (
                             <div key={field} className={styles.imageField}>
                                 <label className={styles.imageLabel}>
-                                    {field.replace(/([A-Z])/g, ' $1').trim()}
+                                    {field === 'fotoPrincipal' ? 'Foto Principal' : 'Foto Hover'}
                                     {errors[field] && <span className={styles.error}>*</span>}
                                 </label>
                                 
@@ -348,6 +368,103 @@ const CarFormRHF = ({
                         ))
                     }, [imageState, errors, mode, getPreviewFor, handleFileChange, handleRemoveImage])}
                 </div>
+            </div>
+
+            {/* ✅ SECCIÓN DE FOTOS EXTRAS */}
+            <div className={styles.imageSection}>
+                <h3>Fotos Extras</h3>
+                
+                {/* ✅ INFORMACIÓN SOBRE FOTOS EXTRAS */}
+                <div className={styles.formatInfo}>
+                    <p><strong>Mínimo requerido:</strong> 5 fotos extras</p>
+                    <p><strong>Máximo:</strong> 8 fotos extras</p>
+                    <p><strong>Opcional:</strong> Las fotos marcadas con (opcional) no son obligatorias</p>
+                </div>
+                
+                <div className={styles.imageGrid}>
+                    {useMemo(() => {
+                        return IMAGE_FIELDS.extras.map((field, index) => (
+                            <div key={field} className={styles.imageField}>
+                                <label className={styles.imageLabel}>
+                                    Foto Extra {index + 1}
+                                    {index >= 5 && <span className={styles.optional}>(opcional)</span>}
+                                    {errors[field] && <span className={styles.error}>*</span>}
+                                </label>
+                                
+                                {/* ✅ PREVIEW DE IMAGEN */}
+                                {(() => {
+                                    const preview = getPreviewFor(field)
+                                    if (!preview) return null
+                                    
+                                    return (
+                                        <div className={styles.imagePreview}>
+                                            <img 
+                                                src={preview} 
+                                                alt={`${field} preview`}
+                                                className={styles.previewImage}
+                                            />
+                                            <div className={styles.previewInfo}>
+                                                {imageState[field]?.file ? (
+                                                    <small>Nueva imagen seleccionada</small>
+                                                ) : (
+                                                    <small>Imagen existente</small>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                })()}
+                                
+                                {/* ✅ INPUT DE ARCHIVO */}
+                                <input
+                                    type="file"
+                                    accept=".jpg,.jpeg,.png"
+                                    onChange={handleFileChange(field)}
+                                    className={styles.fileInput}
+                                />
+                                
+                                {/* ✅ BOTONES DE ACCIÓN PARA EDIT */}
+                                {mode === MODE.EDIT && (
+                                    <div className={styles.imageActions}>
+                                        {imageState[field]?.file && (
+                                            <button
+                                                type="button"
+                                                onClick={handleRemoveImage(field)}
+                                                className={styles.removeButton}
+                                            >
+                                                Quitar nueva imagen
+                                            </button>
+                                        )}
+                                        {imageState[field]?.existingUrl && !imageState[field]?.remove && (
+                                            <button
+                                                type="button"
+                                                onClick={handleRemoveImage(field)}
+                                                className={styles.removeButton}
+                                            >
+                                                Quitar imagen existente
+                                            </button>
+                                        )}
+                                        {imageState[field]?.remove && (
+                                            <span className={styles.removedLabel}>
+                                                Imagen marcada para quitar
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
+                                
+                                {errors[field] && (
+                                    <span className={styles.error}>{errors[field].message}</span>
+                                )}
+                            </div>
+                        ))
+                    }, [imageState, errors, mode, getPreviewFor, handleFileChange, handleRemoveImage])}
+                </div>
+                
+                {/* ✅ ERROR GENERAL DE FOTOS EXTRAS */}
+                {errors.fotosExtra && (
+                    <div className={styles.errorMessage}>
+                        ❌ {errors.fotosExtra}
+                    </div>
+                )}
             </div>
 
             {/* ✅ SECCIÓN DE DATOS BÁSICOS */}

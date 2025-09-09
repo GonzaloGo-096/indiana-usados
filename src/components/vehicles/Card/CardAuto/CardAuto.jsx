@@ -11,7 +11,7 @@
  * @version 5.1.0 - Performance optimizada
  */
 
-import React, { memo, useMemo, useCallback } from 'react'
+import React, { memo, useMemo, useCallback, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
     formatPrice, 
@@ -32,12 +32,53 @@ import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
 export const CardAuto = memo(({ auto }) => {
     const navigate = useNavigate()
     
-    // ✅ DEBUG: Verificar que el componente se renderiza
-    console.log('🎬 CardAuto: Componente renderizado con auto:', {
+    // ✅ EFECTO HOVER DEFINITIVO: Dos imágenes con fade
+    const [isHovering, setIsHovering] = useState(false)
+    
+    // ✅ URLs de imágenes optimizadas con useMemo
+    const images = useMemo(() => ({
+        primary: auto.fotoPrincipal || 
+                auto.imagen || 
+                auto.fotoFrontal?.url || 
+                '/src/assets/auto1.jpg',
+        hover: auto.fotoHover || 
+               auto.fotoTrasera?.url || 
+               auto.fotoLateralDerecha?.url || 
+               auto.fotoLateralIzquierda?.url
+    }), [auto.fotoPrincipal, auto.imagen, auto.fotoFrontal?.url, auto.fotoHover, auto.fotoTrasera?.url, auto.fotoLateralDerecha?.url, auto.fotoLateralIzquierda?.url])
+    
+    const { primary: primaryImage, hover: hoverImage } = images
+    
+    // ✅ HANDLERS OPTIMIZADOS
+    const handleMouseEnter = useCallback(() => setIsHovering(true), [])
+    const handleMouseLeave = useCallback(() => setIsHovering(false), [])
+    
+    // ✅ DEBUG ESPECÍFICO: Solo para ver qué datos recibe CardAuto (limitado a 3 logs)
+    if (!window._cardAutoDebugCount) {
+      window._cardAutoDebugCount = 0
+    }
+    
+    if (window._cardAutoDebugCount < 3) {
+      window._cardAutoDebugCount++
+      console.log('🔍 CardAuto: Datos recibidos:', {
         id: auto?.id || auto?._id,
         marca: auto?.marca,
-        modelo: auto?.modelo
-    })
+        modelo: auto?.modelo,
+        // Campos de imagen que recibe
+        fotoPrincipal: auto?.fotoPrincipal,
+        fotoHover: auto?.fotoHover,
+        imagen: auto?.imagen,
+        fotoFrontal: auto?.fotoFrontal,
+        fotoTrasera: auto?.fotoTrasera,
+        fotoLateralIzquierda: auto?.fotoLateralIzquierda,
+        fotoLateralDerecha: auto?.fotoLateralDerecha,
+        fotoInterior: auto?.fotoInterior,
+        // Debug images
+        debugImages: auto?._debugImages,
+        // Todos los campos disponibles
+        allFields: Object.keys(auto || {})
+      })
+    }
     
 
 
@@ -55,14 +96,12 @@ export const CardAuto = memo(({ auto }) => {
                 return
             }
             
-            console.log('🔍 CardAuto: Obteniendo detalles del vehículo:', vehicleId)
-            console.log('🌐 CardAuto: Endpoint:', `/photos/getonephoto/${vehicleId}`)
+            // ✅ DEBUG: Solo para vehículos sin imagen
             
             // ✅ HACER GET AL ENDPOINT
             const response = await axiosInstance.get(`/photos/getonephoto/${vehicleId}`)
             
-            console.log('✅ CardAuto: Respuesta completa:', response)
-            console.log('📊 CardAuto: Datos recibidos:', response.data)
+            // ✅ DEBUG: Solo para vehículos sin imagen
             
             // ✅ EXTRAER DATOS DE LA ESTRUCTURA CORRECTA
             let vehicleData = response.data
@@ -70,38 +109,7 @@ export const CardAuto = memo(({ auto }) => {
                          // ✅ SI LA RESPUESTA TIENE ESTRUCTURA {error: null, getOnePhoto: {...}}
              if (response.data && response.data.getOnePhoto) {
                  vehicleData = response.data.getOnePhoto
-                 console.log('✅ CardAuto: Datos extraídos de getOnePhoto:', vehicleData)
-                 
-                 // ✅ DEBUG DETALLADO: Ver todos los campos disponibles
-                 console.log('🔍 CardAuto: Campos disponibles en vehicleData:', {
-                     id: vehicleData._id || vehicleData.id,
-                     marca: vehicleData.marca,
-                     modelo: vehicleData.modelo,
-                     version: vehicleData.version,
-                     precio: vehicleData.precio,
-                     anio: vehicleData.anio,
-                     kilometraje: vehicleData.kilometraje,
-                     caja: vehicleData.caja,
-                     combustible: vehicleData.combustible,
-                     transmision: vehicleData.transmision,
-                     traccion: vehicleData.traccion,
-                     cilindrada: vehicleData.cilindrada,
-                     color: vehicleData.color,
-                     segmento: vehicleData.segmento,
-                     categoriaVehiculo: vehicleData.categoriaVehiculo,
-                     frenos: vehicleData.frenos,
-                     turbo: vehicleData.turbo,
-                     llantas: vehicleData.llantas,
-                     HP: vehicleData.HP,
-                     detalle: vehicleData.detalle,
-                     highlighted: vehicleData.highlighted,
-                     // Imágenes
-                     fotoFrontal: vehicleData.fotoFrontal,
-                     fotoTrasera: vehicleData.fotoTrasera,
-                     fotoLateralIzquierda: vehicleData.fotoLateralIzquierda,
-                     fotoLateralDerecha: vehicleData.fotoLateralDerecha,
-                     fotoInterior: vehicleData.fotoInterior
-                 })
+                 // ✅ DEBUG: Solo para vehículos sin imagen
              }
             
             // ✅ NAVEGAR CON LOS DATOS COMPLETOS
@@ -151,16 +159,33 @@ export const CardAuto = memo(({ auto }) => {
     const vehicleUrl = useMemo(() => `/vehiculo/${vehicleId}`, [vehicleId])
 
     return (
-        <div className={styles.card} data-testid="vehicle-card">
-            {/* ===== IMAGEN ===== */}
+        <div 
+            className={styles.card} 
+            data-testid="vehicle-card"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            {/* ===== IMAGEN CON FADE DEFINITIVO ===== */}
             <div className={styles['card__image-container']}>
+                {/* Imagen principal - siempre visible */}
                 <img 
-                    src={auto.imagen || auto.fotoFrontal?.url || '/src/assets/auto1.jpg'} 
+                    src={primaryImage} 
                     alt={altText}
-                    className={styles['card__image']}
+                    className={`${styles['card__image']} ${styles['card__image_primary']}`}
                     loading="lazy"
                     decoding="async"
                 />
+                
+                {/* Imagen hover - solo si existe y es diferente */}
+                {hoverImage && hoverImage !== primaryImage && (
+                    <img 
+                        src={hoverImage} 
+                        alt={altText}
+                        className={`${styles['card__image']} ${styles['card__image_hover']} ${isHovering ? styles['card__image_hover_active'] : ''}`}
+                        loading="lazy"
+                        decoding="async"
+                    />
+                )}
             </div>
 
             {/* ===== CONTENIDO ===== */}

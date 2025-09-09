@@ -61,6 +61,7 @@ export const useAutoDetail = (id, options = {}) => {
         networkMode: 'online'
     });
 
+
     // Formatear datos para compatibilidad
     const formattedData = vehicle ? {
         contactInfo: {

@@ -32,23 +32,59 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* ===== CONTENEDOR DE IMAGEN ===== */
+/* ===== CONTENEDOR DE IMAGEN CON FADE DEFINITIVO ===== */
 .card__image-container {
     position: relative;
     overflow: hidden;
     background: #f9fafb;
+    height: 220px;
+    contain: layout style paint;
+    isolation: isolate;
 }
 
 .card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 220px;
+    height: 100%;
     object-fit: cover;
     border-radius: 12px 12px 0 0;
-    transition: transform 0.2s ease;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                filter 0.3s ease-out;
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
 }
 
-.card:hover .card__image {
+/* Imagen principal - siempre visible */
+.card__image_primary {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Imagen hover - oculta por defecto */
+.card__image_hover {
+    opacity: 0;
+    z-index: 2;
+}
+
+/* Imagen hover activa - fade in */
+.card__image_hover_active {
+    opacity: 1;
+}
+
+/* Efecto de escala en hover */
+.card:hover .card__image_primary {
     transform: scale(1.05);
+}
+
+.card:hover .card__image_hover_active {
+    transform: scale(1.08);
+    filter: brightness(1.05) contrast(1.02);
 }
 
 /* ===== CUERPO DE LA TARJETA ===== */
