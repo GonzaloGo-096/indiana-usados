@@ -18,7 +18,7 @@ const FALLBACK_IMAGE = '/src/assets/auto1.jpg'
 // ✅ CAMPOS DE IMAGEN SOPORTADOS (orden de prioridad)
 const IMAGE_FIELDS = [
     'imagen',
-    'fotoFrontal.url',
+    'fotoPrincipal.url',
     'image',
     'foto',
     'photo'
@@ -36,7 +36,7 @@ export const useVehicleImage = (vehicle) => {
         // ✅ BUSCAR EN CAMPOS SOPORTADOS
         for (const field of IMAGE_FIELDS) {
             if (field.includes('.')) {
-                // ✅ CAMPO ANIDADO (ej: fotoFrontal.url)
+                // ✅ CAMPO ANIDADO (ej: fotoPrincipal.url)
                 const [parent, child] = field.split('.')
                 if (vehicle[parent]?.[child]) {
                     return vehicle[parent][child]

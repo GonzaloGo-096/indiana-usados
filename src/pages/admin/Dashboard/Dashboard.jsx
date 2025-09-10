@@ -77,41 +77,31 @@ const extractImageUrls = (vehicle) => {
         // Imágenes principales (nueva estructura)
         fotoPrincipal: withBaseUrl(pickFirst(
             v.fotoPrincipal?.url, v.fotoPrincipal,
-            v.fotoFrontal?.url, v.fotoFrontal, v.imagen, v.image, v.foto, v.photo,
-            v.fotos?.fotoFrontal, v.photos?.frontal,
+            v.imagen, v.image, v.foto, v.photo,
+            v.fotos?.fotoPrincipal, v.photos?.principal,
             o.fotoPrincipal?.url, o.fotoPrincipal,
-            o.fotoFrontal, o.imagen, o.image, o.foto, o.photo,
-            o.fotos?.fotoFrontal, o.photos?.frontal
+            o.imagen, o.image, o.foto, o.photo,
+            o.fotos?.fotoPrincipal, o.photos?.principal
         )),
         fotoHover: withBaseUrl(pickFirst(
             v.fotoHover?.url, v.fotoHover,
-            v.fotoTrasera?.url, v.fotoTrasera,
-            v.fotos?.fotoTrasera, v.photos?.trasera,
+            v.fotos?.fotoHover, v.photos?.hover,
             o.fotoHover?.url, o.fotoHover,
-            o.fotoTrasera, o.fotos?.fotoTrasera, o.photos?.trasera
+            o.fotos?.fotoHover, o.photos?.hover
         )),
         
         // Fotos extras (nueva estructura)
         fotoExtra1: withBaseUrl(pickFirst(
             v.fotosExtra?.[0]?.url, v.fotosExtra?.[0],
-            v.fotoLateralIzquierda?.url, v.fotoLateralIzquierda,
-            v.fotos?.fotoLateralIzquierda, v.photos?.lateralIzquierda,
-            o.fotosExtra?.[0]?.url, o.fotosExtra?.[0],
-            o.fotoLateralIzquierda, o.fotos?.fotoLateralIzquierda, o.photos?.lateralIzquierda
+            o.fotosExtra?.[0]?.url, o.fotosExtra?.[0]
         )),
         fotoExtra2: withBaseUrl(pickFirst(
             v.fotosExtra?.[1]?.url, v.fotosExtra?.[1],
-            v.fotoLateralDerecha?.url, v.fotoLateralDerecha,
-            v.fotos?.fotoLateralDerecha, v.photos?.lateralDerecha,
-            o.fotosExtra?.[1]?.url, o.fotosExtra?.[1],
-            o.fotoLateralDerecha, o.fotos?.fotoLateralDerecha, o.photos?.lateralDerecha
+            o.fotosExtra?.[1]?.url, o.fotosExtra?.[1]
         )),
         fotoExtra3: withBaseUrl(pickFirst(
             v.fotosExtra?.[2]?.url, v.fotosExtra?.[2],
-            v.fotoInterior?.url, v.fotoInterior,
-            v.fotos?.fotoInterior, v.photos?.interior,
-            o.fotosExtra?.[2]?.url, o.fotosExtra?.[2],
-            o.fotoInterior, o.fotos?.fotoInterior, o.photos?.interior
+            o.fotosExtra?.[2]?.url, o.fotosExtra?.[2]
         )),
         fotoExtra4: withBaseUrl(pickFirst(
             v.fotosExtra?.[3]?.url, v.fotosExtra?.[3],

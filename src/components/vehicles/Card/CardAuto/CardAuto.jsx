@@ -23,6 +23,9 @@ import {
 import axiosInstance from '@api/axiosInstance'
 import styles from './CardAuto.module.css'
 import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
+import ResponsiveImage from '@/components/ui/ResponsiveImage/ResponsiveImage'
+import { IMAGE_SIZES, IMAGE_WIDTHS } from '@/constants/imageSizes'
+import { usePreloadImages } from '@hooks/usePreloadImages'
 
 /**
  * Componente CardAuto optimizado
@@ -35,23 +38,34 @@ export const CardAuto = memo(({ auto }) => {
     // ✅ EFECTO HOVER DEFINITIVO: Dos imágenes con fade
     const [isHovering, setIsHovering] = useState(false)
     
+    // ✅ PRELOAD DE IMÁGENES CRÍTICAS
+    const { preloadVehicle, getStats } = usePreloadImages([auto], {
+        preloadDistance: 300,
+        maxPreload: 2,
+        enablePreload: true
+    })
+    
     // ✅ URLs de imágenes optimizadas con useMemo
     const images = useMemo(() => ({
         primary: auto.fotoPrincipal || 
                 auto.imagen || 
-                auto.fotoFrontal?.url || 
                 '/src/assets/auto1.jpg',
-        hover: auto.fotoHover || 
-               auto.fotoTrasera?.url || 
-               auto.fotoLateralDerecha?.url || 
-               auto.fotoLateralIzquierda?.url
-    }), [auto.fotoPrincipal, auto.imagen, auto.fotoFrontal?.url, auto.fotoHover, auto.fotoTrasera?.url, auto.fotoLateralDerecha?.url, auto.fotoLateralIzquierda?.url])
+        hover: auto.fotoHover
+    }), [auto.fotoPrincipal, auto.imagen, auto.fotoHover])
     
     const { primary: primaryImage, hover: hoverImage } = images
     
     // ✅ HANDLERS OPTIMIZADOS
     const handleMouseEnter = useCallback(() => setIsHovering(true), [])
     const handleMouseLeave = useCallback(() => setIsHovering(false), [])
+    
+    // ✅ PRELOAD AUTOMÁTICO AL MONTAR - ELIMINADO
+    // El preload ahora se maneja por el IntersectionObserver en usePreloadImages
+    // useEffect(() => {
+    //     if (auto) {
+    //         preloadVehicle(auto)
+    //     }
+    // }, [auto, preloadVehicle])
     
     // ✅ DEBUG ESPECÍFICO: Solo para ver qué datos recibe CardAuto (limitado a 3 logs)
     if (!window._cardAutoDebugCount) {
@@ -68,11 +82,7 @@ export const CardAuto = memo(({ auto }) => {
         fotoPrincipal: auto?.fotoPrincipal,
         fotoHover: auto?.fotoHover,
         imagen: auto?.imagen,
-        fotoFrontal: auto?.fotoFrontal,
-        fotoTrasera: auto?.fotoTrasera,
-        fotoLateralIzquierda: auto?.fotoLateralIzquierda,
-        fotoLateralDerecha: auto?.fotoLateralDerecha,
-        fotoInterior: auto?.fotoInterior,
+        fotosExtras: auto?.fotosExtras,
         // Debug images
         debugImages: auto?._debugImages,
         // Todos los campos disponibles
@@ -162,28 +172,37 @@ export const CardAuto = memo(({ auto }) => {
         <div 
             className={styles.card} 
             data-testid="vehicle-card"
+            data-vehicle-id={auto?.id || auto?._id}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
             {/* ===== IMAGEN CON FADE DEFINITIVO ===== */}
             <div className={styles['card__image-container']}>
                 {/* Imagen principal - siempre visible */}
-                <img 
-                    src={primaryImage} 
+                <ResponsiveImage
+                    publicId={typeof auto?.fotoPrincipal === 'object' ? auto?.fotoPrincipal?.public_id : null}
+                    fallbackUrl={typeof auto?.fotoPrincipal === 'object' ? auto?.fotoPrincipal?.url : auto?.fotoPrincipal || primaryImage}
                     alt={altText}
-                    className={`${styles['card__image']} ${styles['card__image_primary']}`}
+                    variant="fluid"
+                    widths={IMAGE_WIDTHS.card}
+                    sizes={IMAGE_SIZES.card}
                     loading="lazy"
-                    decoding="async"
+                    isCritical={true}
+                    className={`${styles['card__image']} ${styles['card__image_primary']}`}
                 />
                 
                 {/* Imagen hover - solo si existe y es diferente */}
                 {hoverImage && hoverImage !== primaryImage && (
-                    <img 
-                        src={hoverImage} 
+                    <ResponsiveImage
+                        publicId={typeof auto?.fotoHover === 'object' ? auto?.fotoHover?.public_id : null}
+                        fallbackUrl={typeof auto?.fotoHover === 'object' ? auto?.fotoHover?.url : auto?.fotoHover || hoverImage}
                         alt={altText}
-                        className={`${styles['card__image']} ${styles['card__image_hover']} ${isHovering ? styles['card__image_hover_active'] : ''}`}
+                        variant="fluid"
+                        widths={IMAGE_WIDTHS.card}
+                        sizes={IMAGE_SIZES.card}
                         loading="lazy"
-                        decoding="async"
+                        isCritical={true}
+                        className={`${styles['card__image']} ${styles['card__image_hover']} ${isHovering ? styles['card__image_hover_active'] : ''}`}
                     />
                 )}
             </div>

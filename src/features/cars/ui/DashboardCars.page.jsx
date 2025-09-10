@@ -54,11 +54,9 @@ const DashboardCars = () => {
             HP: '169',
             detalle: 'Vehículo en excelente estado',
             urls: {
-                fotoFrontal: '/src/assets/auto1.jpg',
-                fotoTrasera: '/src/assets/auto1.jpg',
-                fotoLateralIzquierda: '/src/assets/auto1.jpg',
-                fotoLateralDerecha: '/src/assets/auto1.jpg',
-                fotoInterior: '/src/assets/auto1.jpg'
+                fotoPrincipal: '/src/assets/auto1.jpg',
+                fotoHover: '/src/assets/auto1.jpg',
+                fotosExtras: ['/src/assets/auto1.jpg', '/src/assets/auto1.jpg', '/src/assets/auto1.jpg'],
             }
         },
         {
@@ -84,11 +82,9 @@ const DashboardCars = () => {
             HP: '158',
             detalle: 'Civic deportivo con turbo',
             urls: {
-                fotoFrontal: '/src/assets/auto1.jpg',
-                fotoTrasera: '/src/assets/auto1.jpg',
-                fotoLateralIzquierda: '/src/assets/auto1.jpg',
-                fotoLateralDerecha: '/src/assets/auto1.jpg',
-                fotoInterior: '/src/assets/auto1.jpg'
+                fotoPrincipal: '/src/assets/auto1.jpg',
+                fotoHover: '/src/assets/auto1.jpg',
+                fotosExtras: ['/src/assets/auto1.jpg', '/src/assets/auto1.jpg', '/src/assets/auto1.jpg'],
             }
         }
     ]
@@ -200,7 +196,7 @@ const DashboardCars = () => {
                                             <td>
                                                 <div className={styles.carImage}>
                                                     <img 
-                                                        src={car.urls?.fotoFrontal || '/src/assets/auto1.jpg'}
+                                                        src={car.urls?.fotoPrincipal || '/src/assets/auto1.jpg'}
                                                         alt={`${car.marca} ${car.modelo}`}
                                                         className={styles.carThumbnail}
                                                     />

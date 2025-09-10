@@ -42,11 +42,9 @@ export type Vehicle = {
   detalle?: string;
   
   // Imágenes (URLs normalizadas en APIs de lectura)
-  fotoFrontal?: string;
-  fotoTrasera?: string;
-  fotoLateralIzquierda?: string;
-  fotoLateralDerecha?: string;
-  fotoInterior?: string;
+  fotoPrincipal?: string;
+  fotoHover?: string;
+  fotosExtras?: string[];
   
   // Metadatos
   createdAt?: string;
@@ -70,11 +68,9 @@ export type VehicleListResponse = {
 // ✅ TIPO PARA CREAR VEHÍCULO
 export type CreateVehicleRequest = Omit<Vehicle, 'id' | '_id' | 'createdAt' | 'updatedAt'> & {
   // Campos de imagen para creación
-  fotoFrontal: ImageField;
-  fotoTrasera: ImageField;
-  fotoLateralIzquierda: ImageField;
-  fotoLateralDerecha: ImageField;
-  fotoInterior: ImageField;
+  fotoPrincipal: ImageField;
+  fotoHover: ImageField;
+  fotosExtras: ImageField[];
 };
 
 // ✅ TIPO PARA ACTUALIZAR VEHÍCULO

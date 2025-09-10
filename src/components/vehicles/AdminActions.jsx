@@ -140,14 +140,14 @@ export const AdminActions = ({ vehicleId, vehicleData, onSuccess, onError }) => 
 
                             {/* ✅ CAMPOS DE ARCHIVO - AJUSTADOS A TU ESTRUCTURA REAL */}
                             <div className="form-group">
-                                <label htmlFor="fotoFrontal">Foto Frontal:</label>
+                                <label htmlFor="fotoPrincipal">Foto Principal:</label>
                                 
                                 {/* ✅ MOSTRAR FOTO ACTUAL */}
-                                {vehicleData?.fotoFrontal && (
+                                {vehicleData?.fotoPrincipal && (
                                     <div className="current-image">
                                         <img 
-                                            src={vehicleData.fotoFrontal} 
-                                            alt="Foto frontal actual"
+                                            src={vehicleData.fotoPrincipal} 
+                                            alt="Foto principal actual"
                                             style={{ 
                                                 width: '100px', 
                                                 height: '60px', 
@@ -157,29 +157,29 @@ export const AdminActions = ({ vehicleId, vehicleData, onSuccess, onError }) => 
                                             }}
                                         />
                                         <p style={{ fontSize: '12px', color: '#666', margin: '0' }}>
-                                            Foto frontal actual
+                                            Foto principal actual
                                         </p>
                                     </div>
                                 )}
                                 
                                 <input
                                     type="file"
-                                    id="fotoFrontal"
-                                    name="fotoFrontal"
+                                    id="fotoPrincipal"
+                                    name="fotoPrincipal"
                                     accept="image/*"
                                     onChange={handleFormChange}
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="fotoTrasera">Foto Trasera:</label>
+                                <label htmlFor="fotoHover">Foto Hover:</label>
                                 
                                 {/* ✅ MOSTRAR FOTO ACTUAL */}
-                                {vehicleData?.fotoTrasera && (
+                                {vehicleData?.fotoHover && (
                                     <div className="current-image">
                                         <img 
-                                            src={vehicleData.fotoTrasera} 
-                                            alt="Foto trasera actual"
+                                            src={vehicleData.fotoHover} 
+                                            alt="Foto hover actual"
                                             style={{ 
                                                 width: '100px', 
                                                 height: '60px', 
@@ -189,114 +189,58 @@ export const AdminActions = ({ vehicleId, vehicleData, onSuccess, onError }) => 
                                             }}
                                         />
                                         <p style={{ fontSize: '12px', color: '#666', margin: '0' }}>
-                                            Foto trasera actual
+                                            Foto hover actual
                                         </p>
                                     </div>
                                 )}
                                 
                                 <input
                                     type="file"
-                                    id="fotoTrasera"
-                                    name="fotoTrasera"
+                                    id="fotoHover"
+                                    name="fotoHover"
                                     accept="image/*"
                                     onChange={handleFormChange}
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="fotoLateralIzquierda">Foto Lateral Izquierda:</label>
+                                <label htmlFor="fotosExtras">Fotos Extras (mínimo 5):</label>
                                 
-                                {/* ✅ MOSTRAR FOTO ACTUAL */}
-                                {vehicleData?.fotoLateralIzquierda && (
-                                    <div className="current-image">
-                                        <img 
-                                            src={vehicleData.fotoLateralIzquierda} 
-                                            alt="Foto lateral izquierda actual"
-                                            style={{ 
-                                                width: '100px', 
-                                                height: '60px', 
-                                                objectFit: 'cover',
-                                                borderRadius: '4px',
-                                                marginBottom: '10px'
-                                            }}
-                                        />
-                                        <p style={{ fontSize: '12px', color: '#666', margin: '0' }}>
-                                            Foto lateral izquierda actual
+                                {/* ✅ MOSTRAR FOTOS EXTRAS ACTUALES */}
+                                {vehicleData?.fotosExtras && vehicleData.fotosExtras.length > 0 && (
+                                    <div className="current-images">
+                                        <p style={{ fontSize: '12px', color: '#666', margin: '0 0 10px 0' }}>
+                                            Fotos extras actuales ({vehicleData.fotosExtras.length}):
                                         </p>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                                            {vehicleData.fotosExtras.map((foto, index) => (
+                                                <img 
+                                                    key={index}
+                                                    src={foto} 
+                                                    alt={`Foto extra ${index + 1}`}
+                                                    style={{ 
+                                                        width: '60px', 
+                                                        height: '40px', 
+                                                        objectFit: 'cover',
+                                                        borderRadius: '4px'
+                                                    }}
+                                                />
+                                            ))}
+                                        </div>
                                     </div>
                                 )}
                                 
                                 <input
                                     type="file"
-                                    id="fotoLateralIzquierda"
-                                    name="fotoLateralIzquierda"
+                                    id="fotosExtras"
+                                    name="fotosExtras"
                                     accept="image/*"
+                                    multiple
                                     onChange={handleFormChange}
                                 />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="fotoLateralDerecha">Foto Lateral Derecha:</label>
-                                
-                                {/* ✅ MOSTRAR FOTO ACTUAL */}
-                                {vehicleData?.fotoLateralDerecha && (
-                                    <div className="current-image">
-                                        <img 
-                                            src={vehicleData.fotoLateralDerecha} 
-                                            alt="Foto lateral derecha actual"
-                                            style={{ 
-                                                width: '100px', 
-                                                height: '60px', 
-                                                objectFit: 'cover',
-                                                borderRadius: '4px',
-                                                marginBottom: '10px'
-                                            }}
-                                        />
-                                        <p style={{ fontSize: '12px', color: '#666', margin: '0' }}>
-                                            Foto lateral derecha actual
-                                        </p>
-                                    </div>
-                                )}
-                                
-                                <input
-                                    type="file"
-                                    id="fotoLateralDerecha"
-                                    name="fotoLateralDerecha"
-                                    accept="image/*"
-                                    onChange={handleFormChange}
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="fotoInterior">Foto Interior:</label>
-                                
-                                {/* ✅ MOSTRAR FOTO ACTUAL */}
-                                {vehicleData?.fotoInterior && (
-                                    <div className="current-image">
-                                        <img 
-                                            src={vehicleData.fotoInterior} 
-                                            alt="Foto interior actual"
-                                            style={{ 
-                                                width: '100px', 
-                                                height: '60px', 
-                                                objectFit: 'cover',
-                                                borderRadius: '4px',
-                                                marginBottom: '10px'
-                                            }}
-                                        />
-                                        <p style={{ fontSize: '12px', color: '#666', margin: '0' }}>
-                                            Foto interior actual
-                                        </p>
-                                    </div>
-                                )}
-                                
-                                <input
-                                    type="file"
-                                    id="fotoInterior"
-                                    name="fotoInterior"
-                                    accept="image/*"
-                                    onChange={handleFormChange}
-                                />
+                                <p style={{ fontSize: '11px', color: '#888', margin: '5px 0 0 0' }}>
+                                    Selecciona múltiples archivos (mínimo 5 fotos extras)
+                                </p>
                             </div>
 
                             {/* ✅ BOTONES DEL FORMULARIO */}

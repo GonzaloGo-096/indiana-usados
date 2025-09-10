@@ -26,7 +26,7 @@ const VEHICLE_FIELDS = {
 // ✅ CAMPOS DE IMAGEN QUE DEBEN PRESERVARSE
 const IMAGE_FIELDS = [
     'imagen',
-    'fotoFrontal',
+    'fotoPrincipal',
     'image',
     'foto',
     'photo',
@@ -104,7 +104,7 @@ export const useVehicleData = ({ limit = 50, enabled = true } = {}) => {
                     id: normalizedVehicles[0].id,
                     marca: normalizedVehicles[0].marca,
                     imagen: normalizedVehicles[0].imagen,
-                    fotoFrontal: normalizedVehicles[0].fotoFrontal,
+                    fotoPrincipal: normalizedVehicles[0].fotoPrincipal,
                     _original: normalizedVehicles[0]._original
                 })
             }

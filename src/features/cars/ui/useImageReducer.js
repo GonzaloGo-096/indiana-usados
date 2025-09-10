@@ -15,11 +15,8 @@ export const IMAGE_FIELDS = {
 
 // ✅ COMPATIBILIDAD: Campos antiguos (para transición)
 export const OLD_IMAGE_FIELDS = [
-    'fotoFrontal',
-    'fotoTrasera', 
-    'fotoLateralIzquierda',
-    'fotoLateralDerecha',
-    'fotoInterior'
+    'fotoPrincipal',
+    'fotoHover',
 ]
 
 // ✅ TODOS LOS CAMPOS (para compatibilidad)

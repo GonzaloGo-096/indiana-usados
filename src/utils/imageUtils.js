@@ -63,17 +63,7 @@ export const getCarouselImages = (auto) => {
         const imageProperties = [
             'fotoPrincipal',
             'fotoHover', 
-            'fotoFrontal',
-            'fotoTrasera',
-            'fotoLateralDerecha',
-            'fotoLateralIzquierda',
-            'fotoInterior',
             'imagen',
-            'foto1',
-            'foto2',
-            'foto3',
-            'foto4',
-            'foto5',
             'fotosExtras', // ✅ NUEVO: Array de fotos extras
             'fotosExtra',  // ✅ NUEVO: Variación singular
             'gallery',     // ✅ NUEVO: Galería de imágenes
@@ -229,7 +219,7 @@ export const getAllValidImages = (auto) => {
 /**
  * Convierte un File del navegador al formato que espera Cloudinary
  * @param {File} file - Archivo del navegador
- * @param {string} fieldName - Nombre del campo (ej: 'fotoFrontal')
+ * @param {string} fieldName - Nombre del campo (ej: 'fotoPrincipal')
  * @returns {Object} Objeto compatible con Cloudinary
  */
 export const prepareFileForCloudinary = (file, fieldName) => {

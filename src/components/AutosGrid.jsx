@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CardAuto } from './vehicles/Card/CardAuto';
+import PreloadMetrics from './ui/PreloadMetrics/PreloadMetrics';
+import PreloadDebugger from './ui/PreloadDebugger/PreloadDebugger';
+import { usePreloadImages } from '@hooks/usePreloadImages';
 
 export default function AutosGrid({
   vehicles,
@@ -13,6 +16,17 @@ export default function AutosGrid({
 }) {
   // ✅ Estado local para error de "cargar más"
   const [loadMoreError, setLoadMoreError] = React.useState(null);
+  
+  // ✅ Estado para mostrar métricas
+  const [showMetrics, setShowMetrics] = useState(false);
+  const [showDebugger, setShowDebugger] = useState(false);
+  
+  // ✅ Hook de preload para métricas globales
+  const { getStats } = usePreloadImages(vehicles || [], {
+    preloadDistance: 300,
+    maxPreload: 12,
+    enablePreload: true
+  });
 
   // ✅ Interceptar onLoadMore para capturar errores
   const handleLoadMore = async () => {
@@ -42,6 +56,38 @@ export default function AutosGrid({
 
   return (
     <div>
+      {/* Botones de debug */}
+      <div style={{ marginBottom: '20px', textAlign: 'center', display: 'flex', gap: '8px', justifyContent: 'center' }}>
+        <button 
+          onClick={() => setShowMetrics(!showMetrics)}
+          style={{
+            background: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            padding: '8px 16px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '12px'
+          }}
+        >
+          {showMetrics ? 'Ocultar' : 'Mostrar'} Métricas
+        </button>
+        <button 
+          onClick={() => setShowDebugger(!showDebugger)}
+          style={{
+            background: '#2196F3',
+            color: 'white',
+            border: 'none',
+            padding: '8px 16px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '12px'
+          }}
+        >
+          {showDebugger ? 'Ocultar' : 'Mostrar'} Debugger
+        </button>
+      </div>
+      
       {/* Información de resultados */}
       <div style={{ marginBottom: '20px', textAlign: 'center' }}>
         <p>Mostrando {vehicles.length} de {total} vehículos</p>
@@ -88,6 +134,18 @@ export default function AutosGrid({
           )}
         </div>
       )}
+      
+      {/* Componente de métricas */}
+      <PreloadMetrics 
+        show={showMetrics} 
+        getStats={getStats}
+      />
+      
+      {/* Componente de debugger */}
+      <PreloadDebugger 
+        show={showDebugger} 
+        getStats={getStats}
+      />
     </div>
   );
 }

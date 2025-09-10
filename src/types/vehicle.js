@@ -37,11 +37,9 @@
  * @property {string} [llantas] - Tipo de llantas
  * @property {string} [HP] - Caballos de fuerza
  * @property {string} [detalle] - Detalles adicionales
- * @property {string} [fotoFrontal] - URL de imagen frontal
- * @property {string} [fotoTrasera] - URL de imagen trasera
- * @property {string} [fotoLateralIzquierda] - URL de imagen lateral izquierda
- * @property {string} [fotoLateralDerecha] - URL de imagen lateral derecha
- * @property {string} [fotoInterior] - URL de imagen interior
+ * @property {string} [fotoPrincipal] - URL de imagen principal
+ * @property {string} [fotoHover] - URL de imagen hover
+ * @property {string[]} [fotosExtras] - Array de URLs de imágenes extras
  * @property {string} [createdAt] - Fecha de creación
  * @property {string} [updatedAt] - Fecha de última actualización
  * @property {boolean} [isActive] - Si está activo
@@ -83,11 +81,9 @@
  * @property {string} [llantas] - Tipo de llantas
  * @property {string} [HP] - Caballos de fuerza
  * @property {string} [detalle] - Detalles adicionales
- * @property {ImageField} fotoFrontal - Campo de imagen frontal
- * @property {ImageField} fotoTrasera - Campo de imagen trasera
- * @property {ImageField} fotoLateralIzquierda - Campo de imagen lateral izquierda
- * @property {ImageField} fotoLateralDerecha - Campo de imagen lateral derecha
- * @property {ImageField} fotoInterior - Campo de imagen interior
+ * @property {ImageField} fotoPrincipal - Campo de imagen principal
+ * @property {ImageField} fotoHover - Campo de imagen hover
+ * @property {ImageField[]} fotosExtras - Array de campos de imágenes extras
  */
 
 /**
@@ -114,11 +110,9 @@
  * @property {string} [llantas] - Tipo de llantas
  * @property {string} [HP] - Caballos de fuerza
  * @property {string} [detalle] - Detalles adicionales
- * @property {ImageField} [fotoFrontal] - Campo de imagen frontal
- * @property {ImageField} [fotoTrasera] - Campo de imagen trasera
- * @property {ImageField} [fotoLateralIzquierda] - Campo de imagen lateral izquierda
- * @property {ImageField} [fotoLateralDerecha] - Campo de imagen lateral derecha
- * @property {ImageField} [fotoInterior] - Campo de imagen interior
+ * @property {ImageField} [fotoPrincipal] - Campo de imagen principal
+ * @property {ImageField} [fotoHover] - Campo de imagen hover
+ * @property {ImageField[]} [fotosExtras] - Array de campos de imágenes extras
  */
 
 /**
@@ -188,7 +182,7 @@
 
 // ✅ EXPORTAR TIPOS PARA USO EN OTROS ARCHIVOS
 export const VEHICLE_TYPES = {
-  IMAGE_FIELDS: ['fotoFrontal', 'fotoTrasera', 'fotoLateralIzquierda', 'fotoLateralDerecha', 'fotoInterior'],
+  IMAGE_FIELDS: ['fotoPrincipal', 'fotoHover', 'fotosExtras'],
   REQUIRED_FIELDS: ['marca', 'modelo', 'anio', 'precio'],
   NUMERIC_FIELDS: ['anio', 'precio', 'cilindrada', 'kilometraje'],
   TEXT_FIELDS: ['marca', 'modelo', 'version', 'caja', 'segmento', 'color', 'combustible', 'transmision', 'traccion', 'tapizado', 'categoriaVehiculo', 'frenos', 'turbo', 'llantas', 'HP', 'detalle']

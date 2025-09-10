@@ -17,7 +17,8 @@ import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx'
 import { processImages } from '@utils/imageUtils'
 import defaultCarImage from '@assets/auto1.jpg'
-
+import ResponsiveImage from '@/components/ui/ResponsiveImage/ResponsiveImage'
+import { IMAGE_SIZES, IMAGE_WIDTHS } from '@/constants/imageSizes'
 
 import styles from './ImageCarousel.module.css'
 
@@ -172,13 +173,23 @@ export const ImageCarousel = ({
         <div className={styles.carouselContainer}>
             {/* Imagen principal */}
             <div className={styles.mainImageContainer}>
-                <img 
-                    src={allImages[currentIndex]} 
-                    alt={`${altText} ${currentIndex + 1} de ${allImages.length}`}
-                    className={styles.mainImage}
-                    loading="lazy"
-                    decoding="async"
-                />
+                {(() => {
+                    const item = allImages[currentIndex];
+                    const publicId   = typeof item === 'string' ? undefined : item?.public_id;
+                    const fallbackUrl= typeof item === 'string' ? item      : item?.url;
+                    return (
+                        <ResponsiveImage
+                            publicId={publicId}
+                            fallbackUrl={fallbackUrl}
+                            alt={`${altText} ${currentIndex + 1} de ${allImages.length}`}
+                            variant="fluid"
+                            widths={IMAGE_WIDTHS.carousel}
+                            sizes={IMAGE_SIZES.carousel}
+                            loading="lazy"
+                            className={styles.mainImage}
+                        />
+                    );
+                })()}
                 
                 {/* Flechas de navegación */}
                 {showArrows && allImages.length > 1 && (
@@ -249,13 +260,23 @@ export const ImageCarousel = ({
                                 aria-label={`Ver imagen ${index + 1}`}
                                 type="button"
                             >
-                                <img 
-                                    src={image} 
-                                    alt={`Miniatura ${index + 1}`}
-                                    className={styles.thumbnailImage}
-                                    loading="lazy"
-                                    decoding="async"
-                                />
+                                {(() => {
+                                    const item = image;
+                                    const publicId   = typeof item === 'string' ? undefined : item?.public_id;
+                                    const fallbackUrl= typeof item === 'string' ? item      : item?.url;
+                                    return (
+                                        <ResponsiveImage
+                                            publicId={publicId}
+                                            fallbackUrl={fallbackUrl}
+                                            alt={`Miniatura ${index + 1}`}
+                                            variant="fluid"
+                                            widths={IMAGE_WIDTHS.thumbnail}
+                                            sizes={IMAGE_SIZES.thumbnail}
+                                            loading="lazy"
+                                            className={styles.thumbnailImage}
+                                        />
+                                    );
+                                })()}
                             </button>
                         ))}
                     </div>
