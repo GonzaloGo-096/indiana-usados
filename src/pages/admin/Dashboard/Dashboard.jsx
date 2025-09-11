@@ -140,7 +140,7 @@ const Dashboard = () => {
     })
     
     // ✅ HOOK PARA MUTACIONES DE AUTOS
-    const { deleteCar } = useCarMutation()
+    const { createCar, updateCar, deleteCar } = useCarMutation()
 
     // ✅ ESTADO DEL MODAL CON REDUCER SIMPLIFICADO
     const [modalState, dispatch] = useReducer(carModalReducer, initialCarModalState)
@@ -201,7 +201,6 @@ const Dashboard = () => {
             console.log('🚀 CREANDO VEHÍCULO:', { formData })
             
             // ✅ USAR LA FUNCIÓN REAL createCar
-            const { createCar } = await import('@hooks/useCarMutation')
             const result = await createCar(formData)
             
             if (result.success) {
@@ -227,7 +226,6 @@ const Dashboard = () => {
             console.log('🚀 ACTUALIZANDO VEHÍCULO:', { vehicleId, formData })
             
             // ✅ USAR LA FUNCIÓN REAL updateCar
-            const { updateCar } = await import('@hooks/useCarMutation')
             const result = await updateCar(vehicleId, formData)
             
             if (result.success) {

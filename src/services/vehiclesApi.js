@@ -10,8 +10,10 @@ export const getMainVehicles = async ({ filters = {}, limit = 12, cursor = null,
   if (!cursor) cursor = 1;
   urlParams.set('cursor', String(cursor));
   
-  // 🔍 LOG CRÍTICO: Ver URL final
-  console.log('🔍 URL FINAL:', `/photos/getallphotos?${urlParams.toString()}`);
+  // 🔍 LOG CRÍTICO: Ver URL final (solo en desarrollo)
+  if (import.meta.env.DEV) {
+    console.log('🔍 URL FINAL:', `/photos/getallphotos?${urlParams.toString()}`);
+  }
   
   const { data } = await axiosInstance.get(`/photos/getallphotos?${urlParams.toString()}`, { signal });
   return data;

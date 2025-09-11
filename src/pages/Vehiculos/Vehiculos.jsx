@@ -9,7 +9,8 @@ import React, { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { parseFilters, serializeFilters, hasAnyFilter } from '@utils'
 import { useVehiclesList } from '@hooks'
-import { FilterFormSimplified, AutosGrid } from '@vehicles'
+import { AutosGrid } from '@vehicles'
+import LazyFilterForm from '@vehicles/Filters/LazyFilterForm'
 import { useScrollPosition } from '@hooks/useScrollPosition'
 import styles from './Vehiculos.module.css'
 
@@ -79,8 +80,8 @@ const Vehiculos = () => {
                 </div>
             )}
 
-            {/* ✅ NUEVO: Formulario de filtros simplificado */}
-            <FilterFormSimplified 
+            {/* ✅ NUEVO: Formulario de filtros con lazy loading */}
+            <LazyFilterForm 
                 onApplyFilters={onApply}
                 isLoading={isLoading}
             />

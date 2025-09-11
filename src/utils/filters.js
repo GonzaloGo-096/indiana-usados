@@ -2,23 +2,31 @@
 export const buildFiltersForBackend = (filters = {}) => {
   const params = new URLSearchParams();
   
-  // 🔍 LOG CRÍTICO: Ver qué filtros llegan
-  console.log('🔍 buildFiltersForBackend RECIBE:', filters);
+  // 🔍 LOG CRÍTICO: Ver qué filtros llegan (solo en desarrollo)
+  if (import.meta.env.DEV) {
+    console.log('🔍 buildFiltersForBackend RECIBE:', filters);
+  }
   
   // 1. FILTROS SIMPLES (arrays → strings)
   if (filters.marca && filters.marca.length > 0) {
     params.set('marca', filters.marca.join(','));
-    console.log('🔍 MARCA ENVIADA:', filters.marca.join(','));
+    if (import.meta.env.DEV) {
+      console.log('🔍 MARCA ENVIADA:', filters.marca.join(','));
+    }
   }
   
   if (filters.caja && filters.caja.length > 0) {
     params.set('caja', filters.caja.join(','));
-    console.log('🔍 CAJA ENVIADA:', filters.caja.join(','));
+    if (import.meta.env.DEV) {
+      console.log('🔍 CAJA ENVIADA:', filters.caja.join(','));
+    }
   }
   
   if (filters.combustible && filters.combustible.length > 0) {
     params.set('combustible', filters.combustible.join(','));
-    console.log('🔍 COMBUSTIBLE ENVIADO:', filters.combustible.join(','));
+    if (import.meta.env.DEV) {
+      console.log('🔍 COMBUSTIBLE ENVIADO:', filters.combustible.join(','));
+    }
   }
   
   // 2. RANGOS (arrays → "min,max") - SOLO SI NO SON VALORES POR DEFECTO
@@ -40,7 +48,9 @@ export const buildFiltersForBackend = (filters = {}) => {
     console.log('🔍 KM ENVIADO:', `${filters.kilometraje[0]},${filters.kilometraje[1]}`);
   }
   
-  console.log('🔍 PARÁMETROS FINALES:', params.toString());
+  if (import.meta.env.DEV) {
+    console.log('🔍 PARÁMETROS FINALES:', params.toString());
+  }
   return params;
 };
 

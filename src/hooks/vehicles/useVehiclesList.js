@@ -51,6 +51,7 @@ export const useVehiclesList = (filters = {}) => {
     retry: 2
   });
 
+
   // ✅ RETORNAR DATOS MAPEADOS
   return {
     vehicles: query.data?.vehicles ?? [],

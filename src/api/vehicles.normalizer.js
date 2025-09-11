@@ -27,10 +27,13 @@ export function normalizeVehiclesPage(raw) {
   }
   
   // Mapear datos según la estructura del backend
-  return {
+  const result = {
     items: allPhotos.docs ?? [],
     total: allPhotos.totalDocs ?? 0,
     hasNextPage: Boolean(allPhotos.hasNextPage),
     next: allPhotos.nextPage ?? undefined
   };
+  
+  
+  return result;
 }
