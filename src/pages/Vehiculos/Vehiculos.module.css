@@ -18,6 +18,73 @@
   gap: var(--spacing-xl);
 }
 
+/* ✅ NUEVO: Sección del título con botones */
+.titleSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0; /* ✅ ELIMINADO: Sin margin-bottom para pegar formulario */
+  padding: 20px 0 0 0; /* ✅ ELIMINADO: Sin padding-bottom para pegar formulario */
+}
+
+.mainTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 12px; /* ✅ REDUCIDO: Gap más pequeño */
+  align-items: center;
+  position: relative; /* ✅ AGREGADO: Para posicionar el divisor */
+}
+
+/* ✅ NUEVO: Línea divisora entre botones */
+.actionButtons::after {
+  content: '';
+  width: 1px;
+  height: 16px;
+  background: rgba(51, 51, 51, 0.3);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.actionButton {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem; /* ✅ REDUCIDO: Más pequeño */
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  padding: 6px 10px;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px; /* ✅ AGREGADO: Espacio para icono */
+}
+
+.actionButton:hover {
+  opacity: 0.7;
+}
+
+.actionButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ✅ NUEVO: Grid de vehículos con margin-top */
+.vehiclesGrid {
+  margin-top: 30px; /* ✅ AGREGADO: Espacio entre formulario y lista de autos */
+}
+
+/* Título legacy (mantener por compatibilidad) */
 .title {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
@@ -27,11 +94,27 @@
 }
 
 /* Responsive */
-@media (max-width: var(--breakpoint-md)) {
+@media (max-width: 768px) {
   .container {
     padding: var(--spacing-lg) var(--spacing-1);
   }
   
+  .titleSection {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .mainTitle {
+    font-size: 2rem;
+  }
+  
+  /* ✅ OCULTAR: Botones del título en mobile */
+  .actionButtons {
+    display: none;
+  }
+  
+  /* Título legacy */
   .title {
     font-size: var(--font-size-3xl);
   }

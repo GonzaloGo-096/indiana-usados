@@ -51,6 +51,7 @@ const Nav = () => {
     preloadRoute('/', () => import('../../../../pages/Home'))
   }
 
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
@@ -107,6 +108,15 @@ const Nav = () => {
               Contacto
             </Link>
             <div className={styles.divider}></div>
+            <a 
+              className={styles.indianaButton} 
+              href="https://peugeotindiana.com.ar/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={closeMenu}
+            >
+              Indiana 0 kilómetros
+            </a>
           </div>
         </div>
       </div>

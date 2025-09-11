@@ -166,20 +166,80 @@
     border-radius: 6px;
     border: 1px solid #dee2e6;
     margin-bottom: 10px;
+    /* ✅ TAMAÑO FIJO PARA EL CONTENEDOR */
+    width: 100%;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .previewImage {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
+    max-width: 100%;
+    max-height: 120px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
     border-radius: 4px;
     margin-bottom: 8px;
+    flex-shrink: 0;
+}
+
+/* ✅ PLACEHOLDERS PARA FOTOS EXTRAS */
+.emptyPlaceholder, .removedPlaceholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    background: transparent;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+}
+
+.removedPlaceholder {
+    border-color: #ff6b6b;
+    background: #ffe0e0;
+    color: #d63031;
+}
+
+/* ✅ HINT PARA MODO CREATE */
+.createHint {
+    color: #6c757d;
+    font-size: 12px;
+    font-style: italic;
+    text-align: center;
+    display: block;
+    margin-top: 5px;
 }
 
 .previewInfo small {
     color: #6c757d;
     font-size: 12px;
     font-weight: 500;
+}
+
+/* ✅ BADGE PARA PUBLIC_ID */
+.publicIdBadge {
+    background: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+    color: #495057;
+    margin-top: 4px;
+    display: inline-block;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .imageActions {

@@ -13,17 +13,11 @@ export const IMAGE_FIELDS = {
     extras: ['fotoExtra1', 'fotoExtra2', 'fotoExtra3', 'fotoExtra4', 'fotoExtra5', 'fotoExtra6', 'fotoExtra7', 'fotoExtra8']
 }
 
-// ✅ COMPATIBILIDAD: Campos antiguos (para transición)
-export const OLD_IMAGE_FIELDS = [
-    'fotoPrincipal',
-    'fotoHover',
-]
 
-// ✅ TODOS LOS CAMPOS (para compatibilidad)
+// ✅ TODOS LOS CAMPOS (estructura limpia)
 export const ALL_IMAGE_FIELDS = [
     ...IMAGE_FIELDS.principales,
-    ...IMAGE_FIELDS.extras,
-    ...OLD_IMAGE_FIELDS
+    ...IMAGE_FIELDS.extras
 ]
 
 // ✅ ACCIONES DEL REDUCER DE IMÁGENES
@@ -38,6 +32,8 @@ export const IMAGE_ACTIONS = {
 // ✅ ESTADO INICIAL PARA UNA IMAGEN
 const createEmptyImageState = () => ({
     existingUrl: '',
+    publicId: '',        // ✅ NUEVO: public_id de Cloudinary
+    originalName: '',    // ✅ NUEVO: nombre original del archivo
     file: null,
     remove: false
 })
@@ -61,12 +57,37 @@ const imageReducer = (state, action) => {
             const { urls = {} } = action.payload
             const editState = {}
             ALL_IMAGE_FIELDS.forEach(key => {
+                const imageData = urls[key]
+                let url = ''
+                let publicId = ''
+                let originalName = ''
+                
+                // ✅ NUEVA LÓGICA: Manejar objetos {url, public_id, original_name}
+                if (imageData) {
+                    if (typeof imageData === 'string') {
+                        // Compatibilidad hacia atrás - URL como string
+                        url = imageData
+                    } else if (typeof imageData === 'object') {
+                        // ✅ NUEVO: Objeto completo del backend
+                        url = imageData.url || ''
+                        publicId = imageData.public_id || ''
+                        originalName = imageData.original_name || ''
+                    }
+                }
+                
                 editState[key] = {
-                    existingUrl: urls[key] || '',
+                    existingUrl: url,
+                    publicId: publicId,          // ✅ NUEVO: Guardar public_id
+                    originalName: originalName,  // ✅ NUEVO: Guardar nombre original
                     file: null,
                     remove: false
                 }
             })
+            // ✅ DEBUG: Solo mostrar resumen
+            const imageCount = Object.values(editState).filter(state => state.existingUrl).length
+            if (imageCount > 0) {
+                console.log('🔍 INIT_EDIT:', { imageCount, hasExtras: Object.keys(urls).some(k => k.startsWith('fotoExtra') && urls[k]) })
+            }
             return editState
             
         case IMAGE_ACTIONS.SET_FILE:

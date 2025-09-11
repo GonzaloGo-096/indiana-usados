@@ -51,8 +51,8 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 36px; /* ✅ REDUCIDO: De 44px a 36px */
-    height: 36px; /* ✅ REDUCIDO: De 44px a 36px */
+    width: 24px; /* ✅ REDUCIDO BASTANTE: De 36px a 24px */
+    height: 24px; /* ✅ REDUCIDO BASTANTE: De 36px a 24px */
     background: rgba(0, 0, 0, 0.8);
     border: none;
     border-radius: 50%;
@@ -66,15 +66,15 @@
     opacity: 1; /* ✅ CAMBIADO: Siempre visible */
     visibility: visible; /* ✅ CAMBIADO: Siempre visible */
     backdrop-filter: blur(8px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* ✅ REDUCIDO: Sombra más pequeña */
 }
 
 /* ✅ REMOVIDO: Las flechas ahora son siempre visibles */
 
 .arrow:hover {
     background: rgba(0, 0, 0, 0.95);
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-50%) scale(1.15); /* ✅ AJUSTADO: Más scale para compensar tamaño pequeño */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* ✅ REDUCIDO: Sombra proporcional */
 }
 
 .arrowLeft {
@@ -101,15 +101,15 @@
 .positionCounter {
     background: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 8px 16px; /* ✅ AUMENTADO: Más padding como Netflix */
-    border-radius: 24px; /* ✅ MÁS REDONDEADO: Estilo Netflix */
-    font-size: 0.875rem;
+    padding: 4px 8px; /* ✅ REDUCIDO BASTANTE: Padding más pequeño */
+    border-radius: 12px; /* ✅ REDUCIDO: Menos redondeado */
+    font-size: 0.7rem; /* ✅ REDUCIDO: Fuente más pequeña */
     font-weight: 600;
     font-family: 'Barlow', sans-serif;
     letter-spacing: 0.5px;
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* ✅ REDUCIDO: Sombra más pequeña */
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -176,8 +176,8 @@
     color: #1a1a1a;
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    width: 32px; /* ✅ REDUCIDO: De 40px a 32px */
-    height: 32px; /* ✅ REDUCIDO: De 40px a 32px */
+    width: 22px; /* ✅ REDUCIDO BASTANTE: De 32px a 22px */
+    height: 22px; /* ✅ REDUCIDO BASTANTE: De 32px a 22px */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -186,9 +186,9 @@
     z-index: 10;
     opacity: 0.9;
     backdrop-filter: blur(12px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* ✅ REDUCIDO: Sombra más pequeña */
     will-change: transform; /* ✅ OPTIMIZACIÓN: GPU acceleration */
-    font-size: 0.9rem; /* ✅ REDUCIDO: Tamaño de icono más pequeño */
+    font-size: 0.7rem; /* ✅ REDUCIDO BASTANTE: Icono más pequeño */
 }
 
 .thumbnailControls:hover {

@@ -11,7 +11,7 @@
  * @version 4.2.0 - Mobile optimized
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useImperativeHandle } from 'react'
 import { useForm } from 'react-hook-form'
 import { useFilterReducer } from '@hooks'
 import { RangeSlider } from '@ui'
@@ -197,6 +197,13 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   const handleCajaChange = (values) => {
     setValue('caja', values)
   }
+
+  // ✅ NUEVO: Exponer toggleDrawer para uso externo
+  useImperativeHandle(ref, () => ({
+    toggleDrawer,
+    closeDrawer,
+    isDrawerOpen
+  }), [toggleDrawer, closeDrawer, isDrawerOpen])
 
   return (
     <div className={`${styles.filterContainer} ${isDrawerOpen ? styles.open : ''}`}>

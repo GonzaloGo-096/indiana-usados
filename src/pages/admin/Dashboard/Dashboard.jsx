@@ -72,60 +72,50 @@ const extractImageUrls = (vehicle) => {
     const v = vehicle || {}
     const o = v._original || {}
     
-    // ✅ NUEVA ESTRUCTURA: Mapear a los nombres que espera el formulario
-    const urls = {
-        // Imágenes principales (nueva estructura)
-        fotoPrincipal: withBaseUrl(pickFirst(
-            v.fotoPrincipal?.url, v.fotoPrincipal,
-            v.imagen, v.image, v.foto, v.photo,
-            v.fotos?.fotoPrincipal, v.photos?.principal,
-            o.fotoPrincipal?.url, o.fotoPrincipal,
-            o.imagen, o.image, o.foto, o.photo,
-            o.fotos?.fotoPrincipal, o.photos?.principal
-        )),
-        fotoHover: withBaseUrl(pickFirst(
-            v.fotoHover?.url, v.fotoHover,
-            v.fotos?.fotoHover, v.photos?.hover,
-            o.fotoHover?.url, o.fotoHover,
-            o.fotos?.fotoHover, o.photos?.hover
-        )),
-        
-        // Fotos extras (nueva estructura)
-        fotoExtra1: withBaseUrl(pickFirst(
-            v.fotosExtra?.[0]?.url, v.fotosExtra?.[0],
-            o.fotosExtra?.[0]?.url, o.fotosExtra?.[0]
-        )),
-        fotoExtra2: withBaseUrl(pickFirst(
-            v.fotosExtra?.[1]?.url, v.fotosExtra?.[1],
-            o.fotosExtra?.[1]?.url, o.fotosExtra?.[1]
-        )),
-        fotoExtra3: withBaseUrl(pickFirst(
-            v.fotosExtra?.[2]?.url, v.fotosExtra?.[2],
-            o.fotosExtra?.[2]?.url, o.fotosExtra?.[2]
-        )),
-        fotoExtra4: withBaseUrl(pickFirst(
-            v.fotosExtra?.[3]?.url, v.fotosExtra?.[3],
-            o.fotosExtra?.[3]?.url, o.fotosExtra?.[3]
-        )),
-        fotoExtra5: withBaseUrl(pickFirst(
-            v.fotosExtra?.[4]?.url, v.fotosExtra?.[4],
-            o.fotosExtra?.[4]?.url, o.fotosExtra?.[4]
-        )),
-        fotoExtra6: withBaseUrl(pickFirst(
-            v.fotosExtra?.[5]?.url, v.fotosExtra?.[5],
-            o.fotosExtra?.[5]?.url, o.fotosExtra?.[5]
-        )),
-        fotoExtra7: withBaseUrl(pickFirst(
-            v.fotosExtra?.[6]?.url, v.fotosExtra?.[6],
-            o.fotosExtra?.[6]?.url, o.fotosExtra?.[6]
-        )),
-        fotoExtra8: withBaseUrl(pickFirst(
-            v.fotosExtra?.[7]?.url, v.fotosExtra?.[7],
-            o.fotosExtra?.[7]?.url, o.fotosExtra?.[7]
-        ))
+    // ✅ DEBUG: Mostrar estructura de fotos extras
+    if (v.id || v._id) {
+        console.log('🔍 extractImageUrls:', { 
+            id: v.id || v._id, 
+            fotosExtraArray: v.fotosExtra ? `array de ${v.fotosExtra.length} elementos` : 'no encontrado',
+            estructura: 'array fotosExtra[]'
+        })
     }
     
-    console.log('🖼️ extractImageUrls ->', { vehicleId: v.id || v._id, urls, v, o })
+    // ✅ NUEVA ESTRUCTURA: Pasar objetos completos con {url, public_id, original_name}
+    const urls = {
+        // Imágenes principales - pasar objeto completo del backend
+        fotoPrincipal: v.fotoPrincipal || o.fotoPrincipal || null,
+        fotoHover: v.fotoHover || o.fotoHover || null
+    }
+    
+    // ✅ FOTOS EXTRAS - Mapear objetos completos desde array
+    // El backend envía fotosExtra[] como array de objetos con {url, public_id, original_name}
+    const fotosExtraArray = v.fotosExtra || o.fotosExtra || []
+    console.log('🔍 DEBUG fotosExtraArray:', fotosExtraArray)
+    
+    // Mapear hasta 8 fotos extras desde el array - pasar objetos completos
+    for (let i = 0; i < 8; i++) {
+        const fieldName = `fotoExtra${i + 1}`
+        const extraItem = fotosExtraArray[i]
+        
+        // Pasar el objeto completo (no solo la URL)
+        urls[fieldName] = extraItem || null
+        
+        if (extraItem) {
+            console.log(`✅ ${fieldName}:`, { 
+                url: extraItem.url || extraItem, 
+                public_id: extraItem.public_id,
+                original_name: extraItem.original_name 
+            })
+        }
+    }
+    
+    // ✅ DEBUG: Solo mostrar resumen final
+    const hasImages = Object.values(urls).some(item => item && (typeof item === 'string' ? item.length > 0 : item.url))
+    if (hasImages) {
+        const imageCount = Object.values(urls).filter(item => item && (typeof item === 'string' ? item.length > 0 : item.url)).length
+        console.log('🖼️ extractImageUrls:', { id: v.id || v._id, imageCount })
+    }
     return urls
 }
 
@@ -160,6 +150,57 @@ const Dashboard = () => {
     }, [])
 
     const handleOpenEditForm = useCallback((vehicle) => {
+        // ✅ DEBUG TEMPORAL: Ver qué datos llegan exactamente
+        console.log('🔍 VEHICLE DATA COMPLETO:', vehicle)
+        console.log('🔍 FOTOS EN VEHICLE:', {
+            fotoPrincipal: vehicle.fotoPrincipal,
+            fotoHover: vehicle.fotoHover,
+            fotoExtra1: vehicle.fotoExtra1,
+            fotoExtra2: vehicle.fotoExtra2,
+            fotoExtra3: vehicle.fotoExtra3,
+            fotoExtra4: vehicle.fotoExtra4,
+            fotoExtra5: vehicle.fotoExtra5,
+            fotoExtra6: vehicle.fotoExtra6,
+            fotoExtra7: vehicle.fotoExtra7,
+            fotoExtra8: vehicle.fotoExtra8,
+            allKeys: Object.keys(vehicle).filter(key => key.includes('foto'))
+        })
+        
+        // ✅ DEBUG ESPECÍFICO: Verificar estructura de public_id
+        console.log('🔍 ESTRUCTURA DE IMÁGENES CON PUBLIC_ID:')
+        if (vehicle.fotoPrincipal) {
+            console.log('fotoPrincipal:', {
+                tipo: typeof vehicle.fotoPrincipal,
+                estructura: vehicle.fotoPrincipal,
+                hasUrl: !!vehicle.fotoPrincipal?.url,
+                hasPublicId: !!vehicle.fotoPrincipal?.public_id,
+                publicId: vehicle.fotoPrincipal?.public_id
+            })
+        }
+        if (vehicle.fotoHover) {
+            console.log('fotoHover:', {
+                tipo: typeof vehicle.fotoHover,
+                estructura: vehicle.fotoHover,
+                hasUrl: !!vehicle.fotoHover?.url,
+                hasPublicId: !!vehicle.fotoHover?.public_id,
+                publicId: vehicle.fotoHover?.public_id
+            })
+        }
+        
+        // Verificar fotos extras
+        for (let i = 1; i <= 8; i++) {
+            const fotoKey = `fotoExtra${i}`
+            if (vehicle[fotoKey]) {
+                console.log(`${fotoKey}:`, {
+                    tipo: typeof vehicle[fotoKey],
+                    estructura: vehicle[fotoKey],
+                    hasUrl: !!vehicle[fotoKey]?.url,
+                    hasPublicId: !!vehicle[fotoKey]?.public_id,
+                    publicId: vehicle[fotoKey]?.public_id
+                })
+            }
+        }
+        
         const urls = extractImageUrls(vehicle)
         const carData = {
             _id: vehicle.id,

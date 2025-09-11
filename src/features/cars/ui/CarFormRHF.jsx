@@ -101,6 +101,14 @@ const CarFormRHF = ({
             console.log('🔍 DEBUG - initialData.urls:', initialData.urls)
             console.log('🔍 DEBUG - initialData completo:', initialData)
             
+            // ✅ DEBUG ESPECÍFICO: Ver fotos extras
+            if (initialData.urls) {
+                const extrasUrls = Object.entries(initialData.urls)
+                    .filter(([key]) => key.startsWith('fotoExtra'))
+                    .map(([key, url]) => ({ key, url, hasUrl: !!url }))
+                console.log('🔍 DEBUG - Fotos extras encontradas:', extrasUrls)
+            }
+            
             // ✅ CARGAR DATOS BÁSICOS
             const basicFields = [
                 'marca', 'modelo', 'version', 'precio', 'caja', 'segmento',
@@ -301,24 +309,54 @@ const CarFormRHF = ({
                                     {errors[field] && <span className={styles.error}>*</span>}
                                 </label>
                                 
-                                {/* ✅ PREVIEW DE IMAGEN: file → URL.createObjectURL, si no existingUrl, oculto si remove */}
+                                {/* ✅ PREVIEW DE IMAGEN - SIEMPRE MOSTRAR CONTENEDOR */}
                                 {(() => {
                                     const preview = getPreviewFor(field)
-                                    if (!preview) return null
+                                    const isRemoved = imageState[field]?.remove
                                     
+                                    if (isRemoved) {
+                                        // Estado "eliminado" - mostrar placeholder
+                                        return (
+                                            <div className={styles.imagePreview}>
+                                                <div className={styles.removedPlaceholder}>
+                                                    <span>Foto eliminada</span>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                    
+                                    if (preview) {
+                                        // Mostrar imagen (existente o nueva)
+                                        return (
+                                            <div className={styles.imagePreview}>
+                                                <img 
+                                                    src={preview} 
+                                                    alt={`${field} preview`}
+                                                    className={styles.previewImage}
+                                                />
+                                                <div className={styles.previewInfo}>
+                                                    {imageState[field]?.file ? (
+                                                        <small>Nueva imagen seleccionada</small>
+                                                    ) : (
+                                                        <div>
+                                                            <small>Imagen existente</small>
+                                                            {imageState[field]?.publicId && (
+                                                                <div className={styles.publicIdBadge}>
+                                                                    📷 {imageState[field].publicId}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                    
+                                    // Sin imagen - mostrar placeholder vacío
                                     return (
                                         <div className={styles.imagePreview}>
-                                            <img 
-                                                src={preview} 
-                                                alt={`${field} preview`}
-                                                className={styles.previewImage}
-                                            />
-                                            <div className={styles.previewInfo}>
-                                                {imageState[field]?.file ? (
-                                                    <small>Nueva imagen seleccionada</small>
-                                                ) : (
-                                                    <small>Imagen existente</small>
-                                                )}
+                                            <div className={styles.emptyPlaceholder}>
+                                                <span>Sin imagen</span>
                                             </div>
                                         </div>
                                     )
@@ -332,34 +370,40 @@ const CarFormRHF = ({
                                     className={styles.fileInput}
                                 />
                                 
-                                {/* ✅ BOTONES DE ACCIÓN PARA EDIT */}
-                                {mode === MODE.EDIT && (
-                                    <div className={styles.imageActions}>
-                                        {imageState[field]?.file && (
-                                            <button
-                                                type="button"
-                                                onClick={handleRemoveImage(field)}
-                                                className={styles.removeButton}
-                                            >
-                                                Quitar nueva imagen
-                                            </button>
-                                        )}
-                                        {imageState[field]?.existingUrl && !imageState[field]?.remove && (
-                                            <button
-                                                type="button"
-                                                onClick={handleRemoveImage(field)}
-                                                className={styles.removeButton}
-                                            >
-                                                Quitar imagen existente
-                                            </button>
-                                        )}
-                                        {imageState[field]?.remove && (
-                                            <span className={styles.removedLabel}>
-                                                Imagen marcada para quitar
-                                            </span>
-                                        )}
-                                    </div>
-                                )}
+                                {/* ✅ BOTONES DE ACCIÓN - SIEMPRE MOSTRAR */}
+                                <div className={styles.imageActions}>
+                                    {mode === MODE.EDIT && imageState[field]?.file && (
+                                        <button
+                                            type="button"
+                                            onClick={handleRemoveImage(field)}
+                                            className={styles.removeButton}
+                                        >
+                                            🗑️ Quitar nueva imagen
+                                        </button>
+                                    )}
+                                    
+                                    {mode === MODE.EDIT && imageState[field]?.existingUrl && !imageState[field]?.remove && (
+                                        <button
+                                            type="button"
+                                            onClick={handleRemoveImage(field)}
+                                            className={styles.removeButton}
+                                        >
+                                            🗑️ Eliminar imagen
+                                        </button>
+                                    )}
+                                    
+                                    {mode === MODE.EDIT && imageState[field]?.remove && (
+                                        <span className={styles.removedLabel}>
+                                            ❌ Imagen marcada para eliminar
+                                        </span>
+                                    )}
+                                    
+                                    {mode === MODE.CREATE && (
+                                        <small className={styles.createHint}>
+                                            Selecciona una imagen para subir
+                                        </small>
+                                    )}
+                                </div>
                                 
                                 {errors[field] && (
                                     <span className={styles.error}>{errors[field].message}</span>
@@ -391,24 +435,55 @@ const CarFormRHF = ({
                                     {errors[field] && <span className={styles.error}>*</span>}
                                 </label>
                                 
-                                {/* ✅ PREVIEW DE IMAGEN */}
+                                {/* ✅ PREVIEW DE IMAGEN - SIEMPRE MOSTRAR CONTENEDOR */}
                                 {(() => {
                                     const preview = getPreviewFor(field)
-                                    if (!preview) return null
+                                    const isRemoved = imageState[field]?.remove
+                                    console.log(`🔍 Preview para ${field}:`, { preview, imageState: imageState[field] })
                                     
+                                    if (isRemoved) {
+                                        // Estado "eliminado" - mostrar placeholder
+                                        return (
+                                            <div className={styles.imagePreview}>
+                                                <div className={styles.removedPlaceholder}>
+                                                    <span>Foto eliminada</span>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                    
+                                    if (preview) {
+                                        // Mostrar imagen (existente o nueva)
+                                        return (
+                                            <div className={styles.imagePreview}>
+                                                <img 
+                                                    src={preview} 
+                                                    alt={`${field} preview`}
+                                                    className={styles.previewImage}
+                                                />
+                                                <div className={styles.previewInfo}>
+                                                    {imageState[field]?.file ? (
+                                                        <small>Nueva imagen seleccionada</small>
+                                                    ) : (
+                                                        <div>
+                                                            <small>Imagen existente</small>
+                                                            {imageState[field]?.publicId && (
+                                                                <div className={styles.publicIdBadge}>
+                                                                    📷 {imageState[field].publicId}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                    
+                                    // Sin imagen - mostrar placeholder vacío
                                     return (
                                         <div className={styles.imagePreview}>
-                                            <img 
-                                                src={preview} 
-                                                alt={`${field} preview`}
-                                                className={styles.previewImage}
-                                            />
-                                            <div className={styles.previewInfo}>
-                                                {imageState[field]?.file ? (
-                                                    <small>Nueva imagen seleccionada</small>
-                                                ) : (
-                                                    <small>Imagen existente</small>
-                                                )}
+                                            <div className={styles.emptyPlaceholder}>
+                                                <span>Sin imagen</span>
                                             </div>
                                         </div>
                                     )
@@ -687,6 +762,27 @@ const CarFormRHF = ({
                     </div>
                 </div>
             </div>
+
+            {/* ✅ DEBUG TEMPORAL - MOSTRAR ESTADO DE IMÁGENES */}
+            {mode === MODE.EDIT && (
+                <div style={{padding: '20px', background: '#f0f0f0', margin: '20px 0', borderRadius: '8px'}}>
+                    <h4>🔍 DEBUG - Estado de Imágenes</h4>
+                    <pre style={{fontSize: '12px', overflow: 'auto', maxHeight: '200px'}}>
+                        {JSON.stringify(imageState, null, 2)}
+                    </pre>
+                    <button 
+                        type="button" 
+                        onClick={() => {
+                            console.log('🔍 DEBUG MANUAL - imageState:', imageState)
+                            console.log('🔍 DEBUG MANUAL - initialData:', initialData)
+                        }}
+                        style={{padding: '5px 10px', margin: '10px 0'}}
+                    >
+                        Log Estado en Consola
+                    </button>
+                </div>
+            )}
+
 
             {/* ✅ BOTONES DE ACCIÓN */}
             <div className={styles.formActions}>

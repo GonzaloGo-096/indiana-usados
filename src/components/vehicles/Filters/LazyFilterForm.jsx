@@ -32,7 +32,8 @@ const FilterFormSkeleton = () => (
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '15px'
+    gap: '15px',
+    animation: 'fadeIn 0.2s ease-in'
   }}>
     <div style={{
       width: '100%',
@@ -67,12 +68,16 @@ const FilterFormSkeleton = () => (
         0%, 100% { opacity: 1; }
         50% { opacity: 0.5; }
       }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
     `}</style>
   </div>
 )
 
 // ✅ COMPONENTE PRINCIPAL
-const LazyFilterForm = ({ onApplyFilters, isLoading }) => {
+const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading }, ref) => {
   const [showFilters, setShowFilters] = useState(false)
   const [isPreloading, setIsPreloading] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -102,61 +107,102 @@ const LazyFilterForm = ({ onApplyFilters, isLoading }) => {
     setShowFilters(true)
   }
 
-  // ✅ Si ya se mostró una vez, siempre mostrar
+  // ✅ NUEVO: Función para cerrar filtros
+  const handleHideFilters = () => {
+    setShowFilters(false)
+  }
+
+  // ✅ NUEVO: Toggle de filtros
+  const handleToggleFilters = () => {
+    console.log('Toggle filtros - Estado actual:', showFilters, '-> Nuevo estado:', !showFilters)
+    setShowFilters(!showFilters)
+  }
+
+  // ✅ NUEVO: Exponer funciones para uso externo
+  React.useImperativeHandle(ref, () => ({
+    showFilters: handleShowFilters,
+    hideFilters: handleHideFilters,
+    toggleFilters: handleToggleFilters,
+    isFiltersVisible: showFilters
+  }), [showFilters])
+
+  // ✅ Si ya se mostró una vez, siempre mostrar con animación
   if (showFilters) {
     return (
-      <Suspense fallback={<FilterFormSkeleton />}>
-        <FilterFormSimplified 
-          onApplyFilters={onApplyFilters}
-          isLoading={isLoading}
+      <div 
+        style={{
+          animation: 'slideDown 0.3s ease-out',
+          marginTop: '0',
+          marginBottom: '20px',
+          overflow: 'visible',
+          position: 'relative'
+        }}
+      >
+        {/* Overlay invisible para detectar clicks fuera */}
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 5,
+            background: 'transparent'
+          }}
+          onClick={() => {
+            console.log('Click fuera detectado')
+            handleHideFilters()
+          }}
         />
-      </Suspense>
+        
+        <div style={{ position: 'relative', zIndex: 10 }}>
+          <style>{`
+            @keyframes slideDown {
+              from {
+                opacity: 0;
+                transform: translateY(-20px);
+                max-height: 0;
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+                max-height: 1000px;
+              }
+            }
+          `}</style>
+          <Suspense fallback={<FilterFormSkeleton />}>
+            <FilterFormSimplified 
+              ref={ref}
+              onApplyFilters={onApplyFilters}
+              isLoading={isLoading}
+            />
+          </Suspense>
+        </div>
+      </div>
     )
   }
 
   // ✅ EN MOBILE: Cargar directamente el FilterFormSimplified (que tiene su propio botón móvil)
   if (isMobile) {
     return (
-      <Suspense fallback={<FilterFormSkeleton />}>
-        <FilterFormSimplified 
-          onApplyFilters={onApplyFilters}
-          isLoading={isLoading}
-        />
-      </Suspense>
+      <div style={{
+        marginBottom: '20px'
+      }}>
+        <Suspense fallback={<FilterFormSkeleton />}>
+          <FilterFormSimplified 
+            ref={ref}
+            onApplyFilters={onApplyFilters}
+            isLoading={isLoading}
+          />
+        </Suspense>
+      </div>
     )
   }
 
-  // ✅ EN DESKTOP: Mostrar botón para lazy loading
-  return (
-    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-      <button
-        onClick={handleShowFilters}
-        onMouseEnter={handleMouseEnter}
-        style={{
-          padding: '12px 24px',
-          fontSize: '16px',
-          fontWeight: '500',
-          color: '#fff',
-          background: '#007bff',
-          border: 'none',
-          borderRadius: '6px',
-          cursor: 'pointer',
-          transition: 'background-color 0.2s ease'
-        }}
-        onMouseOver={(e) => e.target.style.background = '#0056b3'}
-        onMouseOut={(e) => e.target.style.background = '#007bff'}
-      >
-        Mostrar Filtros
-      </button>
-      <p style={{ 
-        marginTop: '8px', 
-        fontSize: '14px', 
-        color: '#6c757d' 
-      }}>
-        Haz clic para ver las opciones de filtrado avanzado
-      </p>
-    </div>
-  )
-}
+  // ✅ EN DESKTOP: No mostrar nada hasta que se active desde el botón del título
+  return null
+})
+
+LazyFilterForm.displayName = 'LazyFilterForm'
 
 export default LazyFilterForm

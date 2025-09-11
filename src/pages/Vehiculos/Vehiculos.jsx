@@ -5,7 +5,7 @@
  * @version 3.2.0 - Título "Nuestros Usados" restaurado
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { parseFilters, serializeFilters, hasAnyFilter } from '@utils'
 import { useVehiclesList } from '@hooks'
@@ -18,12 +18,14 @@ const Vehiculos = () => {
     const [sp, setSp] = useSearchParams()
     const navigate = useNavigate()
     const [isUsingMockData, setIsUsingMockData] = useState(false)
+    const filterFormRef = useRef(null)
 
     // ✅ NUEVO: Hook para restaurar scroll
     const { restoreScrollPosition } = useScrollPosition({
         key: 'vehicles-list',
         enabled: true
     })
+
 
     // ✅ NUEVO: Restaurar scroll cuando el componente se monte
     useEffect(() => {
@@ -61,6 +63,13 @@ const Vehiculos = () => {
         setSp(new URLSearchParams(), { replace: false })
     }
 
+    // ✅ NUEVO: Handler para el botón Filtrar del título (toggle)
+    const handleFilterClick = () => {
+        if (filterFormRef.current) {
+            filterFormRef.current.toggleFilters()
+        }
+    }
+
     return (
         <div className={styles.container}>
             {/* ✅ NUEVO: Indicador de datos mock */}
@@ -80,50 +89,57 @@ const Vehiculos = () => {
                 </div>
             )}
 
-            {/* ✅ NUEVO: Formulario de filtros con lazy loading */}
+            {/* ✅ MODIFICADO: Título con botones en la misma línea */}
+            <div className={styles.titleSection}>
+                <h1 className={styles.mainTitle}>
+                    Nuestros Usados
+                </h1>
+                
+                <div className={styles.actionButtons}>
+                    <button 
+                        className={styles.actionButton}
+                        onClick={handleFilterClick}
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"></polygon>
+                        </svg>
+                        Filtrar
+                    </button>
+                    
+                    <button 
+                        className={styles.actionButton}
+                        onClick={() => console.log('Ordenar clicked')}
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M3 6h18"></path>
+                            <path d="M6 12h12"></path>
+                            <path d="M9 18h6"></path>
+                        </svg>
+                        Ordenar
+                    </button>
+                </div>
+            </div>
+
+            {/* ✅ NUEVO: Formulario de filtros debajo del título */}
             <LazyFilterForm 
+                ref={filterFormRef}
                 onApplyFilters={onApply}
                 isLoading={isLoading}
             />
 
-            {/* ✅ RESTAURADO: Título "Nuestros Usados" */}
-            <div style={{
-                textAlign: 'center',
-                marginBottom: '30px',
-                padding: '20px 0'
-                /* ✅ ELIMINADO: borderBottom para quitar la línea */
-            }}>
-                <h1 style={{
-                    fontSize: '2.5rem',
-                    fontWeight: '700',
-                    color: '#333',
-                    margin: '0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px'
-                }}>
-                    Nuestros Usados
-                </h1>
-                <p style={{
-                    fontSize: '1.1rem',
-                    color: '#666',
-                    margin: '10px 0 0 0',
-                    fontStyle: 'italic'
-                }}>
-                    Encuentra el vehículo perfecto para ti
-                </p>
-            </div>
-
             {/* ✅ NUEVO: Grid de vehículos unificado */}
-            <AutosGrid
-                vehicles={vehicles}
-                isLoading={isLoading}
-                hasNextPage={hasNextPage}
-                isLoadingMore={isLoadingMore}
-                onLoadMore={loadMore}
-                total={total}
-                isError={isError}
-                error={error}
-            />
+            <div className={styles.vehiclesGrid}>
+                <AutosGrid
+                    vehicles={vehicles}
+                    isLoading={isLoading}
+                    hasNextPage={hasNextPage}
+                    isLoadingMore={isLoadingMore}
+                    onLoadMore={loadMore}
+                    total={total}
+                    isError={isError}
+                    error={error}
+                />
+            </div>
 
             {/* ✅ NUEVO: Botón para volver a lista principal */}
             {isFiltered && (

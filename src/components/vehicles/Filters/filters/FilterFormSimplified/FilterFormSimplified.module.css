@@ -14,14 +14,14 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 2rem;
+  margin-top: 0; /* ✅ PEGADO: Sin margin-top para estar muy cerca del título */
   display: flex;
   justify-content: center;
 }
 
 /* ===== FILTER BUTTON MOBILE ===== */
 .filterButtonMobile {
-  display: none;
+  display: none; /* Oculto por defecto en desktop */
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
@@ -196,6 +196,8 @@
 
 .rangesSection {
   margin-bottom: 0.0625rem;
+  z-index: 20; /* ✅ AGREGADO: Z-index alto para que los sliders se vean */
+  position: relative;
 }
 
 .rangesSection .formGroup {
@@ -227,6 +229,9 @@
   margin-bottom: 0.03125rem;
   max-width: none;
   padding: 0 0.25rem;
+  overflow: visible; /* ✅ AGREGADO: Para que los sliders se vean */
+  z-index: 15; /* ✅ AGREGADO: Z-index para stacking */
+  position: relative;
 }
 
 .formGroup > div {
