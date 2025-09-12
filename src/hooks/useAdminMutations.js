@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { vehiclesApi } from '@api'
 import { AUTH_CONFIG } from '@config/auth'
 import { validateImageFields, prepareMultipleImagesForUpload } from '@utils/imageUtils'
-import { logger, measurePerformance } from '@utils'
+import { logger } from '@utils'
 
 // ✅ FUNCIÓN SIMPLE PARA OBTENER TOKEN
 const getAuthToken = () => {
@@ -28,7 +28,7 @@ export const useAdminMutations = () => {
     const [success, setSuccess] = useState(false)
 
     // ✅ FUNCIÓN PARA ACTUALIZAR FOTO (desde modal con formulario)
-    const updatePhoto = measurePerformance(async (id, formData) => {
+    const updatePhoto = async (id, formData) => {
         setIsLoading(true)
         setError(null)
         setSuccess(false)
@@ -126,10 +126,10 @@ export const useAdminMutations = () => {
         } finally {
             setIsLoading(false)
         }
-    }, 'updatePhoto')
+    }
 
     // ✅ FUNCIÓN PARA ELIMINAR FOTO (desde botón en card)
-    const deletePhoto = measurePerformance(async (id) => {
+    const deletePhoto = async (id) => {
         setIsLoading(true)
         setError(null)
         setSuccess(false)
@@ -176,7 +176,7 @@ export const useAdminMutations = () => {
         } finally {
             setIsLoading(false)
         }
-    }, 'deletePhoto')
+    }
 
     const resetState = () => {
         setError(null)

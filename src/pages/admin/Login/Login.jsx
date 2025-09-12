@@ -5,7 +5,6 @@
  * @version 1.0.0
  */
 
-import React from 'react'
 import { LoginForm } from '@components/auth/LoginForm'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@hooks/useAuth'
@@ -52,7 +51,6 @@ const Login = () => {
             
             if (result.success) {
                 // Login exitoso
-                console.log('✅ LOGIN EXITOSO - Redirigiendo al dashboard')
                 navigate('/admin')
             } else {
                 // Error en login

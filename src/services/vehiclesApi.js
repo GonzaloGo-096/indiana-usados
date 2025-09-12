@@ -1,26 +1,83 @@
-import axiosInstance from '@api/axiosInstance';
-import { buildFiltersForBackend } from '@utils/filters';
+/**
+ * vehiclesApi.js - Servicio unificado de vehículos
+ * 
+ * Maneja TODAS las operaciones de vehículos (públicas y admin)
+ * Usa las instancias de axios existentes optimizadas
+ * 
+ * @author Indiana Usados
+ * @version 2.1.0 - Simplificado y optimizado
+ */
 
-// ✅ FUNCIÓN SIMPLE para obtener vehículos
-export const getMainVehicles = async ({ filters = {}, limit = 12, cursor = null, signal } = {}) => {
-  const urlParams = buildFiltersForBackend(filters);
-  urlParams.set('limit', String(limit));
+import axiosInstance, { authAxiosInstance } from '@api/axiosInstance'
+import { buildFiltersForBackend } from '@utils/filters'
+import { logger } from '@utils/logger'
+
+/**
+ * Servicio de vehículos unificado
+ */
+export const vehiclesService = {
+  /**
+   * Obtener lista de vehículos (público)
+   */
+  async getVehicles({ filters = {}, limit = 12, cursor = null, signal } = {}) {
+    const urlParams = buildFiltersForBackend(filters)
+    urlParams.set('limit', String(limit))
+    
+    if (!cursor) cursor = 1
+    urlParams.set('cursor', String(cursor))
+    
+    const endpoint = `/photos/getallphotos?${urlParams.toString()}`
+    logger.log('Fetching vehicles:', endpoint)
+    
+    const response = await axiosInstance.get(endpoint, { signal })
+    return response.data
+  },
   
-  // 🔍 AGREGAR CURSOR=1 SIEMPRE AL PRINCIPIO
-  if (!cursor) cursor = 1;
-  urlParams.set('cursor', String(cursor));
+  /**
+   * Obtener vehículo por ID (público)
+   */
+  async getVehicleById(id) {
+    const response = await axiosInstance.get(`/photos/getonephoto/${id}`)
+    return response.data
+  },
   
-  // 🔍 LOG CRÍTICO: Ver URL final (solo en desarrollo)
-  if (import.meta.env.DEV) {
-    console.log('🔍 URL FINAL:', `/photos/getallphotos?${urlParams.toString()}`);
+  /**
+   * Crear vehículo (admin)
+   */
+  async createVehicle(formData) {
+    const response = await authAxiosInstance.post('/photos/create', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    return response.data
+  },
+  
+  /**
+   * Actualizar vehículo (admin)
+   */
+  async updateVehicle(id, formData) {
+    const response = await authAxiosInstance.post(`/photos/updatephoto/${id}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    return response.data
+  },
+  
+  /**
+   * Eliminar vehículo (admin)
+   */
+  async deleteVehicle(id) {
+    const response = await authAxiosInstance.delete(`/photos/deletephoto/${id}`)
+    return response.data
   }
-  
-  const { data } = await axiosInstance.get(`/photos/getallphotos?${urlParams.toString()}`, { signal });
-  return data;
-};
+}
 
-// ✅ EXPORTAR OBJETO para compatibilidad
+// ✅ MANTENER COMPATIBILIDAD
+export const getMainVehicles = vehiclesService.getVehicles
+export const getVehicleById = vehiclesService.getVehicleById
 export const vehiclesApi = {
   getMainVehicles,
-  getVehicles: getMainVehicles // Alias para compatibilidad
-};
+  getVehicles: getMainVehicles,
+  getVehicleById,
+  ...vehiclesService
+}
+
+export default vehiclesService

@@ -7,6 +7,4 @@
  * @version 2.0.0
  */
 
-export { useFilterReducer } from './useFilterReducer'
-export { useFilterState } from './useFilterState'
-export { useFilterURLSync } from './useFilterURLSync' 
+export { useFilterReducer } from './useFilterReducer' 

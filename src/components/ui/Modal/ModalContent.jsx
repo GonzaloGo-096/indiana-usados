@@ -10,7 +10,6 @@
  * @version 1.0.0
  */
 
-import React from 'react'
 
 const ModalContent = ({ children }) => {
     return (

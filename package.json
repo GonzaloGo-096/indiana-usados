@@ -8,9 +8,6 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview --port 4173",
-
-
-
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -31,6 +28,7 @@
     "rc-slider": "^11.1.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^6.0.0",
     "react-hook-form": "^7.59.0",
     "react-hot-toast": "^2.6.0",
     "react-router-dom": "^6.21.3",

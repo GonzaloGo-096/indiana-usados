@@ -5,7 +5,6 @@
  * @version 1.0.0
  */
 
-import React from 'react'
 
 export const CalendarIcon = ({ className = '', size = 20, color = 'currentColor' }) => {
   return (

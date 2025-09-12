@@ -39,7 +39,7 @@
     position: relative;
     overflow: hidden;
     background: #f9fafb;
-    height: 220px;
+    height: 260px; /* ✅ AUMENTADO: De 220px a 260px */
     contain: layout style paint;
     isolation: isolate;
 }
@@ -87,6 +87,29 @@
 .card:hover .card__image_hover_active {
     transform: scale(1.08);
     filter: brightness(1.05) contrast(1.02);
+}
+
+/* ===== INDICADORES SUTILES ===== */
+.card__indicators {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 5;
+}
+
+.card__indicator {
+    width: 20px;
+    height: 2px;
+    background: rgba(200, 200, 200, 0.4);
+    border-radius: 1px;
+    transition: background 0.2s ease;
+}
+
+.card__indicator_active {
+    background: rgba(255, 255, 255, 0.8);
 }
 
 /* ===== CUERPO DE LA TARJETA ===== */
@@ -288,6 +311,10 @@
         background: #fafafa; /* ✅ MANTENER: Background sutil */
     }
     
+    .card__image-container {
+        height: 240px; /* ✅ AJUSTADO: Proporcionalmente menor en tablet */
+    }
+    
     .card__body {
         padding: 16px;
     }
@@ -330,6 +357,10 @@
     .card {
         border-radius: 8px;
         background: #fafafa; /* ✅ MANTENER: Background sutil */
+    }
+    
+    .card__image-container {
+        height: 200px; /* ✅ AJUSTADO: Más pequeño en móvil */
     }
     
     .card__body {

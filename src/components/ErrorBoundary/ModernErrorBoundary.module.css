@@ -1,0 +1,188 @@
+/**
+ * ModernErrorBoundary.module.css - Estilos consolidados para Error Boundaries modernos
+ * 
+ * @author Indiana Usados
+ * @version 2.0.0 - Consolidado y optimizado
+ */
+
+/* Contenedor principal */
+.errorBoundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  margin: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.errorContainer {
+  max-width: 500px;
+  text-align: center;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Icono de error */
+.errorIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+/* Título */
+.errorTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.75rem;
+  font-family: 'Barlow', sans-serif;
+}
+
+/* Descripción */
+.errorDescription {
+  font-size: 1rem;
+  color: #4a5568;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* Botones de acción */
+.errorActions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.errorActions button {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.retryButton {
+  background: #0055A4;
+  color: white;
+}
+
+.retryButton:hover {
+  background: #003d7a;
+  transform: translateY(-1px);
+}
+
+.reloadButton {
+  background: #e2e8f0;
+  color: #2d3748;
+}
+
+.reloadButton:hover {
+  background: #cbd5e0;
+  transform: translateY(-1px);
+}
+
+.backButton {
+  background: #f7fafc;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
+}
+
+.backButton:hover {
+  background: #edf2f7;
+  transform: translateY(-1px);
+}
+
+/* Detalles de error (desarrollo) */
+.errorDetails {
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.errorDetails summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+}
+
+.errorStack {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 1rem;
+  font-size: 0.8rem;
+  color: #2d3748;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Información de contacto */
+.errorContact {
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.contactLink {
+  color: #0055A4;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contactLink:hover {
+  text-decoration: underline;
+}
+
+/* Variantes específicas */
+.vehicles {
+  background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+}
+
+.vehicles .errorContainer {
+  border-left: 4px solid #e53e3e;
+}
+
+.global {
+  background: linear-gradient(135deg, #fffaf0 0%, #fbd38d 100%);
+  min-height: 100vh;
+  margin: 0;
+  border-radius: 0;
+}
+
+.global .errorContainer {
+  border-left: 4px solid #d69e2e;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .errorBoundary {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .errorContainer {
+    padding: 1.5rem;
+  }
+  
+  .errorActions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .errorActions button {
+    width: 100%;
+    max-width: 200px;
+  }
+}

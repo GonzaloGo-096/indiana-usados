@@ -5,8 +5,13 @@
  * @version 1.0.0
  */
 
-export { default as ErrorBoundary } from './ErrorBoundary'
-export { default as VehiclesErrorBoundary } from './VehiclesErrorBoundary'
+// ✅ NUEVOS: Componentes modernos consolidados
+export { 
+  ModernErrorBoundary as ErrorBoundary,
+  GlobalErrorBoundary,
+  VehiclesErrorBoundary,
+  default as ModernErrorBoundary 
+} from './ModernErrorBoundary'
 
-// Exportación por defecto
-export { default } from './ErrorBoundary' 
+// ✅ Export por defecto
+export { default } from './ModernErrorBoundary' 

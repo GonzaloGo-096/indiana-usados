@@ -11,7 +11,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react'
-import { vehiclesApi } from '@api'
+import { vehiclesApi } from '@services/vehiclesApi'
 
 // ✅ CAMPOS SOPORTADOS PARA NORMALIZACIÓN
 const VEHICLE_FIELDS = {
@@ -98,16 +98,6 @@ export const useVehicleData = ({ limit = 50, enabled = true } = {}) => {
             // ✅ NORMALIZAR DATOS
             const normalizedVehicles = vehiclesData.map(normalizeVehicle)
             
-            // ✅ DEBUG TEMPORAL: Verificar campos de imagen
-            if (normalizedVehicles.length > 0) {
-                console.log('🔍 useVehicleData: Primer vehículo normalizado:', {
-                    id: normalizedVehicles[0].id,
-                    marca: normalizedVehicles[0].marca,
-                    imagen: normalizedVehicles[0].imagen,
-                    fotoPrincipal: normalizedVehicles[0].fotoPrincipal,
-                    _original: normalizedVehicles[0]._original
-                })
-            }
             
             setVehicles(normalizedVehicles)
 

@@ -67,24 +67,11 @@ export const CardAuto = memo(({ auto }) => {
     //     }
     // }, [auto, preloadVehicle])
     
-    // ✅ DEBUG ESPECÍFICO: Solo para ver qué datos recibe CardAuto (limitado a 3 logs)
+    // ✅ DEBUG LIMPIO: Verificar que el campo caja llegue correctamente
     if (!window._cardAutoDebugCount) {
       window._cardAutoDebugCount = 0
     }
     
-    if (window._cardAutoDebugCount < 3) {
-      window._cardAutoDebugCount++
-      console.log('🚨 CardAuto: CAJA RAW:', auto?.caja)
-      console.log('🚨 CardAuto: CAJA TYPE:', typeof auto?.caja)
-      console.log('🚨 CardAuto: CAJA FORMATTED:', formatCaja(auto?.caja))
-      console.log('🔍 CardAuto: TODOS LOS CAMPOS:', Object.keys(auto || {}))
-      console.log('🔍 CardAuto: CAMPOS POSIBLES CAJA:', Object.keys(auto || {}).filter(key => 
-        key.toLowerCase().includes('caja') || 
-        key.toLowerCase().includes('transmision') ||
-        key.toLowerCase().includes('transmission') ||
-        key.toLowerCase().includes('gear')
-      ))
-    }
     
 
 
@@ -200,6 +187,14 @@ export const CardAuto = memo(({ auto }) => {
                         isCritical={true}
                         className={`${styles['card__image']} ${styles['card__image_hover']} ${isHovering ? styles['card__image_hover_active'] : ''}`}
                     />
+                )}
+                
+                {/* ✅ INDICADORES SUTILES - Solo si hay 2 imágenes */}
+                {hoverImage && hoverImage !== primaryImage && (
+                    <div className={styles['card__indicators']}>
+                        <div className={`${styles['card__indicator']} ${!isHovering ? styles['card__indicator_active'] : ''}`}></div>
+                        <div className={`${styles['card__indicator']} ${isHovering ? styles['card__indicator_active'] : ''}`}></div>
+                    </div>
                 )}
             </div>
 

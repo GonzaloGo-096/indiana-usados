@@ -1,46 +1,31 @@
 /**
- * Hooks - Exportaciones centralizadas
+ * Hooks - Exportaciones centralizadas LIMPIAS
  * 
- * Agrupa todos los hooks personalizados
- * para facilitar las importaciones
+ * Solo hooks que realmente existen y se usan
  * 
  * @author Indiana Usados
- * @version 3.4.0 - Hook unificado de vehículos agregado
+ * @version 4.0.0 - Limpiado y consolidado
  */
 
 // ✅ HOOKS DE VEHÍCULOS
 export { useVehiclesList } from './vehicles/useVehiclesList'
 export { useVehicleDetail } from './vehicles/useVehicleDetail'
 
-// ✅ HOOKS DE MUTACIONES
-export { useCarMutation } from './useCarMutation'
-
-// ✅ HOOKS DE ERROR HANDLING
-export { useErrorBase } from './useErrorBase'
-export { 
-    useErrorHandler, 
-    useApiErrorHandler, 
-    useValidationErrorHandler 
-} from './useErrorHandler'
-
 // ✅ HOOKS DE FILTROS
 export { useFilterReducer } from './filters/useFilterReducer'
 
+// ✅ HOOKS DE MUTACIONES
+export { useCarMutation } from './useCarMutation'
+
+// ✅ HOOKS DE PRELOADING
+export { usePreloadRoute } from './usePreloadRoute'
+export { usePreloadImages } from './usePreloadImages'
+
 // ✅ HOOKS DE CONFIGURACIÓN
-// export { useConfig } from './useConfig' // ❌ ELIMINADO
-
-// ✅ HOOKS DE SCROLL
-export { useScrollPosition } from './useScrollPosition'
-
-// ✅ HOOKS DE IMÁGENES
 export { useImageOptimization } from './useImageOptimization'
-export { useCarouselImages } from './useImageOptimization'
-
-// ✅ HOOKS DE UI
-export { useAuth } from './useAuth'
+export { useScrollPosition } from './useScrollPosition'
 export { useAutoLogout } from './useAutoLogout'
-export { useVehicleImage, getVehicleImageUrl } from './useVehicleImage'
 export { useVehicleData } from './useVehicleData'
-
-// ✅ HOOKS DE LAZY LOADING
-export { usePreloadRoute } from './usePreloadRoute' 
+export { useAdminMutations } from './useAdminMutations'
+export { useAuth } from './useAuth'
+export { useVehicleImage } from './useVehicleImage'

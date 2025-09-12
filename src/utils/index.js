@@ -8,3 +8,4 @@
 export * from './formatters'
 export * from './imageUtils'
 export * from './filters'
+export * from './logger'

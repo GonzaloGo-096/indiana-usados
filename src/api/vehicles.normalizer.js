@@ -14,26 +14,29 @@
  * @returns {Object} Página de vehículos normalizada
  */
 export function normalizeVehiclesPage(raw) {
-  // Verificar si existe la estructura esperada del backend
+  // ✅ OPTIMIZADO: Verificación más eficiente
   const allPhotos = raw?.allPhotos;
   
-  if (!allPhotos || !Array.isArray(allPhotos.docs)) {
-    // Si no hay allPhotos o docs, devolver valores por defecto
-    return {
-      items: [],
-      total: 0,
-      hasNextPage: false
-    };
+  if (!allPhotos?.docs?.length) {
+    // ✅ OPTIMIZADO: Objeto inmutable para reutilizar
+    return EMPTY_PAGE_RESULT;
   }
   
-  // Mapear datos según la estructura del backend
-  const result = {
-    items: allPhotos.docs ?? [],
-    total: allPhotos.totalDocs ?? 0,
-    hasNextPage: Boolean(allPhotos.hasNextPage),
-    next: allPhotos.nextPage ?? undefined
+  // ✅ OPTIMIZADO: Destructuring directo
+  const { docs, totalDocs, hasNextPage, nextPage } = allPhotos;
+  
+  return {
+    items: docs,
+    total: totalDocs || 0,
+    hasNextPage: Boolean(hasNextPage),
+    next: nextPage || undefined
   };
-  
-  
-  return result;
 }
+
+// ✅ OPTIMIZADO: Resultado vacío reutilizable
+const EMPTY_PAGE_RESULT = Object.freeze({
+  items: [],
+  total: 0,
+  hasNextPage: false,
+  next: undefined
+});

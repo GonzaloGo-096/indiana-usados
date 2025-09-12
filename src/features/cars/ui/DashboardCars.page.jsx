@@ -127,7 +127,6 @@ const DashboardCars = () => {
             }
             
             // ✅ SIMULAR ÉXITO
-            console.log('✅ Formulario enviado exitosamente')
             
             // ✅ CERRAR MODAL
             handleCloseModal()

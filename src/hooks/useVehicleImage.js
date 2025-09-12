@@ -18,6 +18,7 @@ const FALLBACK_IMAGE = '/src/assets/auto1.jpg'
 // ✅ CAMPOS DE IMAGEN SOPORTADOS (orden de prioridad)
 const IMAGE_FIELDS = [
     'imagen',
+
     'fotoPrincipal.url',
     'image',
     'foto',

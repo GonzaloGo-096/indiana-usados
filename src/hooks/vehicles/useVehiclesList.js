@@ -11,7 +11,6 @@
  * @version 2.0.0 - Migrado a useInfiniteQuery
  */
 
-import React from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { getMainVehicles } from '@services/vehiclesApi'
 import { normalizeVehiclesPage } from '@api/vehicles.normalizer'
@@ -25,10 +24,10 @@ export const useVehiclesList = (filters = {}) => {
   const query = useInfiniteQuery({
     queryKey: ['vehicles', JSON.stringify({ filters, limit: PAGE_SIZE })],
     queryFn: async ({ pageParam, signal }) => {
-      const result = await getMainVehicles({ 
+      const result = await getMainVehicles({
         filters, 
         limit: PAGE_SIZE,
-        cursor: pageParam, 
+        cursor: pageParam,
         signal 
       });
       return result;
@@ -51,7 +50,6 @@ export const useVehiclesList = (filters = {}) => {
     retry: 2
   });
 
-
   // ✅ RETORNAR DATOS MAPEADOS
   return {
     vehicles: query.data?.vehicles ?? [],
@@ -64,4 +62,4 @@ export const useVehiclesList = (filters = {}) => {
     error: query.error,
     refetch: query.refetch
   };
-}; 
+};

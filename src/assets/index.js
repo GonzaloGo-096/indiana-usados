@@ -19,9 +19,7 @@ export { default as autoPrueba3 } from './fotos/auto-prueba-3.webp'
 // Logo
 export { default as indianaNavLogo } from './indiana-nav-logo.png'
 
-// Iconos
-export { default as emailIconPNG } from './icons/email-icon.png'
-export { default as emailIconSVG } from './icons/email-icon.svg'
+// Iconos - LIMPIADOS (iconos movidos a componentes optimizados)
 // WhatsApp icons - Comentados hasta que se agreguen los archivos
 // export { default as whatsapp32 } from './whatsapp-32.svg'
 // export { default as whatsapp64 } from './whatsapp-64.svg'

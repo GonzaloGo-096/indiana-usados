@@ -10,8 +10,7 @@
  */
 
 // ===== ERROR BOUNDARY =====
-export { default as GlobalErrorBoundary } from '../ErrorBoundary/GlobalErrorBoundary'
-export { default as VehiclesErrorBoundary } from '../ErrorBoundary/VehiclesErrorBoundary'
+export { GlobalErrorBoundary, VehiclesErrorBoundary } from '../ErrorBoundary/ModernErrorBoundary'
 
 // ===== SKELETONS =====
 export { ListAutosSkeleton } from '../skeletons/ListAutosSkeleton/ListAutosSkeleton'

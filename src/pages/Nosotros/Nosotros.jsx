@@ -5,7 +5,6 @@
  * @version 1.0.0
  */
 
-import React from 'react'
 import styles from './Nosotros.module.css'
 
 const Nosotros = () => {

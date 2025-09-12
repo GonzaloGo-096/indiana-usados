@@ -1,4 +1,3 @@
-import React from 'react'
 
 const WhatsAppIconOptimized = ({ className = '', size = 20 }) => {
   return (

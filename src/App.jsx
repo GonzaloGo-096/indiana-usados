@@ -10,18 +10,14 @@
  * @version 2.0.0
  */
 
-import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Navigate } from 'react-router-dom'
 import './App.module.css'
-import './styles/test.css' // ✅ ARCHIVO DE PRUEBA
 
 // Routes
 import PublicRoutes from './routes/PublicRoutes'
 import AdminRoutes from './routes/AdminRoutes'
 
-// Componentes de autenticación
-import { RequireAuth } from './components/auth/RequireAuth'
 
 function App() {
     return (

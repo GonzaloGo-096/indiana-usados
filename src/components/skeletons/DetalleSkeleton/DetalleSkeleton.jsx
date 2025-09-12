@@ -5,7 +5,6 @@
  * @version 2.1.0 - Performance optimizada
  */
 
-import React from 'react'
 import { Skeleton } from '@shared'
 import styles from './DetalleSkeleton.module.css'
 

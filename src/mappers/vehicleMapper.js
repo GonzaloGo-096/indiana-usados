@@ -7,6 +7,7 @@
  */
 
 import { normalizeVehiclesPage } from '@api/vehicles.normalizer'
+import { logger } from '@utils/logger'
 
 /**
  * Mapea un vehículo individual del backend al modelo interno
@@ -19,8 +20,8 @@ export const mapApiVehicleToModel = (apiVehicle) => {
     return null
   }
 
-  // ✅ DEBUG: Log del vehículo que se está procesando
-  console.log('🔍 MAPPER DEBUG - Procesando vehículo:', {
+  // ✅ DEBUG: Solo en desarrollo
+  logger.log('MAPPER - Procesando vehículo:', {
     id: apiVehicle.id,
     brand: apiVehicle.brand,
     model: apiVehicle.model,
@@ -91,8 +92,8 @@ export const mapApiVehicleToModel = (apiVehicle) => {
     // Formatear año
     normalized.yearFormatted = String(normalized.year)
 
-    // ✅ DEBUG: Log del resultado del mapeo
-    console.log('🔍 MAPPER DEBUG - Vehículo normalizado:', {
+    // ✅ DEBUG: Solo en desarrollo
+    logger.log('MAPPER - Vehículo normalizado:', {
       id: normalized.id,
       brand: normalized.brand,
       model: normalized.model,
@@ -103,7 +104,7 @@ export const mapApiVehicleToModel = (apiVehicle) => {
 
     return normalized
   } catch (error) {
-    console.error('❌ Vehicle mapper: error procesando vehículo:', error, apiVehicle)
+    logger.error('Vehicle mapper: error procesando vehículo:', error, apiVehicle)
     return null
   }
 }
@@ -119,25 +120,32 @@ export const mapListResponse = (apiResponse, currentCursor = null) => {
     // Usar el normalizador para procesar la respuesta
     const page = normalizeVehiclesPage(apiResponse)
     
-    // Determinar el mapper de ítem que YA usa el listado hoy
-    const mapItem =
-      typeof mapListVehicleToFrontend === 'function' ? mapListVehicleToFrontend
-      : typeof mapApiVehicleToModel === 'function' ? mapApiVehicleToModel
-      : (x) => x
+    // ✅ OPTIMIZADO: Mapear una sola vez y reutilizar
+    const mappedVehicles = (page.items || []).map(mapListVehicleToFrontend).filter(Boolean)
 
     return {
-      vehicles: (page.items || []).map(mapItem),
+      vehicles: mappedVehicles,
       total: page.total || 0,
       hasNextPage: !!page.hasNextPage,
       nextPage: typeof page.next === 'number' ? page.next : null,
-      data: (page.items || []).map(mapItem), // Mantener compatibilidad
+      // ✅ OPTIMIZADO: Reutilizar array mapeado
+      data: mappedVehicles, // Mantener compatibilidad
       totalItems: page.total || 0, // Mantener compatibilidad
       currentCursor: currentCursor || undefined,
       totalPages: Math.ceil((page.total || 0) / 12)
     }
   } catch (error) {
-    console.error('❌ Vehicle mapper: error procesando respuesta:', error, apiResponse)
-    return { data: [], total: 0, currentCursor: currentCursor || undefined, hasNextPage: false, nextPage: null, totalPages: 0 }
+    logger.error('Vehicle mapper: error procesando respuesta:', error, apiResponse)
+    return { 
+      vehicles: [], 
+      data: [], 
+      total: 0, 
+      totalItems: 0,
+      currentCursor: currentCursor || undefined, 
+      hasNextPage: false, 
+      nextPage: null, 
+      totalPages: 0 
+    }
   }
 }
 
@@ -159,7 +167,7 @@ export const mapDetailResponse = (apiResponse) => {
     }
     return null
   } catch (error) {
-    console.error('❌ Vehicle mapper: error procesando detalle:', error, apiResponse)
+    logger.error('Vehicle mapper: error procesando detalle:', error, apiResponse)
     return null
   }
 }
@@ -171,46 +179,53 @@ export const mapDetailResponse = (apiResponse) => {
  */
 export const mapListVehicleToFrontend = (backendVehicle) => {
   if (!backendVehicle || typeof backendVehicle !== 'object') {
-    console.warn('⚠️ List mapper: datos inválidos recibidos:', backendVehicle)
+    logger.warn('List mapper: datos inválidos recibidos:', backendVehicle)
     return null
   }
 
   try {
+    // ✅ OPTIMIZADO: Extraer valores una sola vez
+    const marca = String(backendVehicle.marca || '').trim()
+    const modelo = String(backendVehicle.modelo || '').trim()
+    
     const result = {
       // Identificación
       id: backendVehicle._id || backendVehicle.id || 0,
       
       // Información básica (solo campos necesarios para CardAuto)
-      marca: String(backendVehicle.marca || '').trim(),
-      modelo: String(backendVehicle.modelo || '').trim(),
+      marca,
+      modelo,
       precio: Number(backendVehicle.precio || 0),
       año: Number(backendVehicle.anio || 0),
       kilometraje: Number(backendVehicle.kilometraje || 0),
+      caja: String(backendVehicle.caja || '').trim(),
       
-      // ✅ IMÁGENES: Nueva estructura (objetos con .url)
-      imágenes: [
-        backendVehicle.fotoPrincipal?.url,
-        backendVehicle.fotoHover?.url,
-        ...(backendVehicle.fotosExtra?.map(img => img.url) || [])
-      ].filter(Boolean),
+      // ✅ OPTIMIZADO: Imágenes con fallback más eficiente
+      fotoPrincipal: backendVehicle.fotoPrincipal?.url || backendVehicle.fotoPrincipal || '',
+      fotoHover: backendVehicle.fotoHover?.url || backendVehicle.fotoHover || '',
+      imagen: backendVehicle.fotoPrincipal?.url || backendVehicle.fotoPrincipal || '',
       
-      // ✅ CAMPOS INDIVIDUALES: Nueva estructura
-      fotoPrincipal: backendVehicle.fotoPrincipal?.url || '',
-      fotoHover: backendVehicle.fotoHover?.url || '',
-      imagen: backendVehicle.fotoPrincipal?.url || '',
+      // ✅ OPTIMIZADO: Solo crear array si es necesario
+      imágenes: (() => {
+        const images = []
+        if (backendVehicle.fotoPrincipal?.url) images.push(backendVehicle.fotoPrincipal.url)
+        if (backendVehicle.fotoHover?.url) images.push(backendVehicle.fotoHover.url)
+        if (backendVehicle.fotosExtra?.length) {
+          images.push(...backendVehicle.fotosExtra.map(img => img.url).filter(Boolean))
+        }
+        return images
+      })(),
       
+      // ✅ OPTIMIZADO: Reutilizar variables
+      title: marca && modelo ? `${marca} ${modelo}` : marca || modelo || '',
       
-      // Campos derivados
-      title: `${backendVehicle.marca} ${backendVehicle.modelo}`.trim(),
-      
-      // Datos originales para debugging
-      raw: backendVehicle
+      // ✅ OPTIMIZADO: Solo incluir raw en desarrollo
+      ...(process.env.NODE_ENV === 'development' && { raw: backendVehicle })
     }
-    
     
     return result
   } catch (error) {
-    console.error('❌ List mapper: error procesando vehículo:', error, backendVehicle)
+    logger.error('List mapper: error procesando vehículo:', error, backendVehicle)
     return null
   }
 }
@@ -224,8 +239,7 @@ export const mapListVehicleToFrontend = (backendVehicle) => {
 export const validateVehicle = (vehicle) => {
   return vehicle && 
          vehicle.id && 
-         vehicle.brand && 
-         vehicle.model && 
-         
-         vehicle.price > 0
+         vehicle.marca && 
+         vehicle.modelo && 
+         vehicle.precio > 0
 }

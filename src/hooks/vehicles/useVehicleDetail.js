@@ -13,7 +13,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { vehiclesApi } from '@api'
+import { vehiclesApi } from '@services/vehiclesApi'
 
 /**
  * Hook para obtener detalle de un vehículo

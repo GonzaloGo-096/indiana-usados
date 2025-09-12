@@ -1,0 +1,154 @@
+/**
+ * FooterModules.module.css - Estilos para módulos informativos
+ * 
+ * Grid 3→1 responsive usando design tokens existentes
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ✅ GRID PRINCIPAL - 3 columnas → 1 columna */
+.modulesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-8);
+  margin-bottom: var(--spacing-8);
+  padding-top: 100px; /* Más espacio para separación cómoda de Card 1 */
+}
+
+/* ✅ MÓDULO INDIVIDUAL */
+.module {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+/* ✅ TÍTULO DE MÓDULO - Jerarquía semántica */
+.moduleTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  margin: 0;
+  position: relative;
+}
+
+/* ✅ Línea decorativa bajo el título */
+.moduleTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 32px;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 1px;
+}
+
+/* ✅ LISTA DE ÍTEMS */
+.moduleList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+/* ✅ ÍTEM INDIVIDUAL */
+.moduleItem {
+  margin: 0;
+}
+
+/* ✅ CONTENIDO DE ÍTEM (común para link y texto) */
+.itemContent,
+.itemLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  color: var(--color-neutral-200);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  padding: var(--spacing-1) 0;
+  border-radius: var(--border-radius-sm);
+}
+
+/* ✅ ENLACES - Estados interactivos */
+.itemLink {
+  cursor: pointer;
+  min-height: 44px; /* Tamaño mínimo táctil */
+  padding: var(--spacing-2) var(--spacing-1);
+  margin: calc(-1 * var(--spacing-1)) 0;
+}
+
+.itemLink:hover,
+.itemLink:focus {
+  color: var(--color-white);
+  background-color: rgba(255, 255, 255, 0.05);
+  transform: translateX(4px);
+}
+
+.itemLink:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* ✅ ÍCONOS - Tamaño consistente */
+.itemIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+/* ✅ TEXTO DE ÍTEM */
+.itemText {
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+/* ✅ RESPONSIVE - Tablet (2 columnas) */
+@media (max-width: 992px) {
+  .modulesGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-6);
+  }
+  
+  /* Módulo de redes sociales ocupa las 2 columnas */
+  .module:last-child {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+}
+
+/* ✅ RESPONSIVE - Mobile (1 columna) */
+@media (max-width: 768px) {
+  .modulesGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-6);
+    text-align: center;
+    padding-top: 80px; /* Más espacio también en mobile */
+  }
+  
+  .module:last-child {
+    grid-column: 1;
+  }
+  
+  /* Centrar títulos en mobile */
+  .moduleTitle::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  /* Centrar ítems en mobile */
+  .itemContent,
+  .itemLink {
+    justify-content: center;
+  }
+  
+  .moduleList {
+    align-items: center;
+  }
+}

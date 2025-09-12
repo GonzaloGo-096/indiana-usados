@@ -13,7 +13,7 @@
 
 import React, { memo, useMemo, useCallback } from 'react'
 import { formatValue } from '@utils/imageUtils'
-import { formatCaja } from '@utils/formatters'
+import { formatCaja, formatPrice, formatKilometraje } from '@utils/formatters'
 import { useCarouselImages } from '@hooks/useImageOptimization'
 import { ImageCarousel } from '@ui/ImageCarousel'
 import ContactoDirecto from '../ContactoDirecto'
@@ -23,13 +23,6 @@ import styles from './CardDetalle.module.css'
  * Componente CardDetalle basado en CardAuto
  */
 export const CardDetalle = memo(({ auto, contactInfo }) => {
-    // ✅ DEBUG: Ver qué datos llegan al componente
-    console.log('🔍 CardDetalle: Datos recibidos en auto:', auto)
-    console.log('🔍 CardDetalle: Campo caja específico:', {
-        cajaRaw: auto?.caja,
-        cajaFormatted: formatCaja(auto?.caja),
-        cajaType: typeof auto?.caja
-    })
     console.log('🔍 CardDetalle: Propiedades de imagen encontradas:', {
         fotoPrincipal: auto?.fotoPrincipal,
         fotoHover: auto?.fotoHover,
@@ -91,27 +84,14 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
     // Validación
     if (!vehicleData) return null
 
-    // Funciones de formateo optimizadas con useCallback
-    const formatPrice = useCallback((price) => {
-        if (!price) return '-'
-        const numericPrice = parseFloat(price.toString().replace(/[^\d]/g, ''))
-        if (isNaN(numericPrice)) return price
-        return `$${numericPrice.toLocaleString('es-AR')}`
-    }, [])
-    
-    const formatKilometraje = useCallback((kms) => {
-        if (!kms) return '-'
-        const numericKms = parseInt(kms)
-        if (isNaN(numericKms)) return kms
-        return numericKms.toLocaleString('es-AR')
-    }, [])
+    // ✅ USAR FORMATTERS CENTRALIZADOS (eliminadas funciones duplicadas)
 
     // Datos principales memoizados
     const mainData = useMemo(() => [
         { label: 'Año', value: vehicleData.año },
         { label: 'Km', value: formatKilometraje(vehicleData.kms) },
         { label: 'Caja', value: vehicleData.caja }
-    ], [vehicleData.año, vehicleData.kms, vehicleData.caja, formatKilometraje])
+    ], [vehicleData.año, vehicleData.kms, vehicleData.caja])
 
     // Información adicional memoizada
     const additionalInfo = useMemo(() => [

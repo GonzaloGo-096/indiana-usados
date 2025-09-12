@@ -5,7 +5,6 @@
  * @version 1.0.0
  */
 
-import React from 'react'
 
 export const GearboxIcon = ({ className = '', size = 20, color = 'currentColor' }) => {
   return (

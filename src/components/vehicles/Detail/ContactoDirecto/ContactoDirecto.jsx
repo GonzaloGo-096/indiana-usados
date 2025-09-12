@@ -8,7 +8,6 @@
  * @version 2.0.0 - Refactorización completa
  */
 
-import React from 'react'
 import { WhatsAppIconOptimized } from '@ui/icons'
 import styles from './ContactoDirecto.module.css'
 

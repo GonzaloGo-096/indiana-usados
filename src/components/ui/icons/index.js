@@ -1,20 +1,14 @@
 /**
- * Iconos de la aplicación
+ * Iconos de la aplicación - CONSOLIDADOS
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Solo iconos activos y optimizados
  */
 
-export { GmailIcon } from './GmailIcon'
-export { WhatsAppIcon } from './WhatsAppIcon'
-export { EmailIconPNG } from './EmailIconPNG'
-export { WhatsAppIconPNG } from './WhatsAppIconPNG'
-export { EmailIconSVG } from './EmailIconSVG'
-export { WhatsAppIconSVG } from './WhatsAppIconSVG'
-export { default as GmailIconOptimized } from './GmailIconOptimized'
+// ✅ ICONOS ACTIVOS - Solo los que se usan en la aplicación
 export { default as WhatsAppIconOptimized } from './WhatsAppIconOptimized'
 
-// 🎨 NUEVOS: Iconos para vehículos
+// 🚗 ICONOS PARA VEHÍCULOS
 export { CalendarIcon } from './CalendarIcon'
 export { RouteIcon } from './RouteIcon'
 export { GearboxIcon } from './GearboxIcon' 

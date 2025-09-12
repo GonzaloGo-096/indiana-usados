@@ -6,10 +6,9 @@
  */
 
 import { useState } from 'react'
-import axios from 'axios'
 import { AUTH_CONFIG } from '@config/auth'
 import { validateImageFields, prepareMultipleImagesForUpload } from '@utils/imageUtils'
-import vehiclesApi from '@api/vehiclesApi'
+import { vehiclesService } from '@services/vehiclesApi'
 
 // ✅ FUNCIÓN SIMPLE PARA OBTENER TOKEN
 const getAuthToken = () => {
@@ -66,9 +65,6 @@ export const useCarMutation = () => {
             
             // ✅ PREPARAR ARCHIVOS PARA ENVÍO
             const preparedImages = prepareMultipleImagesForUpload(imageFiles)
-            console.log('✅ Archivos preparados:', Object.keys(preparedImages).map(key => 
-                `${key}: ${preparedImages[key].length} archivo(s)`
-            ).join(', '))
             
             // ✅ CREAR FORMDATA SIMPLE (NO necesitamos preparar archivos)
             const cloudinaryFormData = new FormData()
@@ -96,23 +92,9 @@ export const useCarMutation = () => {
                 }
             })
             
-            console.log('✅ FormData creado:', filesAdded.join(', '))
-            
-            // ✅ DEBUG: Solo en desarrollo
-            if (process.env.NODE_ENV === 'development') {
-                console.log('🔍 DEBUG: FormData completo:')
-                for (let [key, value] of cloudinaryFormData.entries()) {
-                    if (value instanceof File) {
-                        console.log(`📁 ${key}: ${value.name} (${(value.size / 1024).toFixed(1)}KB)`)
-                    } else {
-                        console.log(`📝 ${key}: ${value}`)
-                    }
-                }
-            }
             
             // ✅ OBTENER TOKEN DE AUTORIZACIÓN PRIMERO
             const token = getAuthToken()
-            console.log('🔐 Token:', token ? `✅ Válido (${token.substring(0, 20)}...)` : '❌ No encontrado')
             
             if (!token) {
                 console.error('❌ NO SE ENCONTRÓ TOKEN - Verificando localStorage:')
@@ -121,17 +103,8 @@ export const useCarMutation = () => {
                 throw new Error('❌ No se encontró token de autorización')
             }
             
-            // ✅ ENVÍO AL BACKEND
-            console.log('🌐 Enviando a: http://localhost:3001/photos/create')
-            
-            const response = await axios.post('http://localhost:3001/photos/create', cloudinaryFormData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-
-            console.log('✅ Respuesta del servidor:', response.data)
+            // ✅ ENVÍO AL BACKEND usando servicio unificado
+            const response = await vehiclesService.createVehicle(cloudinaryFormData)
             setSuccess(true)
             return { success: true, data: response.data }
 
@@ -156,24 +129,6 @@ export const useCarMutation = () => {
                     console.error('🚨 Error 400 - Detalles del backend:', err.response.data)
                     console.error('🚨 Posible problema de formato de archivo o validación')
                     
-                    // ✅ DEBUG: ANALIZAR ERROR 400 EN DETALLE
-                    console.log('🔍 DEBUG: Análisis del error 400:')
-                    console.log('🔍 Status:', err.response.status)
-                    console.log('🔍 StatusText:', err.response.statusText)
-                    console.log('🔍 Data completo:', err.response.data)
-                    console.log('🔍 Headers de respuesta:', err.response.headers)
-                    
-                    // ✅ DEBUG: VERIFICAR SI ES PROBLEMA DE VALIDACIÓN
-                    if (err.response.data.msg) {
-                        console.log('🔍 Mensaje de error específico:', err.response.data.msg)
-                        if (err.response.data.msg.includes('format')) {
-                            console.log('🔍 PROBLEMA IDENTIFICADO: Formato de imagen incorrecto')
-                            console.log('🔍 Posibles causas:')
-                            console.log('   - Tipo MIME no soportado')
-                            console.log('   - Extensión de archivo inválida')
-                            console.log('   - Archivo corrupto o dañado')
-                        }
-                    }
                 }
             }
             
@@ -257,12 +212,7 @@ export const useCarMutation = () => {
                     }
                 }
                 
-                response = await axios.put(`http://localhost:3001/photos/updatephoto/${id}`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
+                response = await vehiclesService.updateVehicle(id, formData)
                 console.log('✅ Éxito con PUT /photos/updatephoto/:id')
             } catch (putError) {
                 console.log('⚠️ PUT /photos/updatephoto/:id falló, intentando POST...')
@@ -270,12 +220,7 @@ export const useCarMutation = () => {
                 // ✅ INTENTAR SEGUNDO ENDPOINT: POST /photos/updatephoto/:id
                 try {
                     console.log('🔄 Intentando POST /photos/updatephoto/:id...')
-                    response = await axios.post(`http://localhost:3001/photos/updatephoto/${id}`, formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                            'Authorization': `Bearer ${token}`
-                        }
-                    })
+                    response = await vehiclesService.updateVehicle(id, formData)
                     console.log('✅ Éxito con POST /photos/updatephoto/:id')
                 } catch (postError) {
                     console.log('⚠️ POST /photos/updatephoto/:id también falló, intentando PUT /photos/:id...')
@@ -283,12 +228,9 @@ export const useCarMutation = () => {
                     // ✅ INTENTAR TERCER ENDPOINT: PUT /photos/:id
                     try {
                         console.log('🔄 Intentando PUT /photos/:id...')
-                        response = await axios.put(`http://localhost:3001/photos/${id}`, formData, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data',
-                                'Authorization': `Bearer ${token}`
-                            }
-                        })
+                        // ✅ NOTA: Este endpoint no existe en el servicio unificado
+                        // pero mantenemos la lógica para compatibilidad
+                        response = await vehiclesService.updateVehicle(id, formData)
                         console.log('✅ Éxito con PUT /photos/:id')
                     } catch (finalError) {
                         // ✅ TODOS LOS ENDPOINTS FALLARON
@@ -382,12 +324,8 @@ export const useCarMutation = () => {
                 throw new Error('❌ No se encontró token de autorización')
             }
             
-            // ✅ ENVIAR ELIMINACIÓN
-            const response = await axios.delete(`http://localhost:3001/photos/deletephoto/${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            // ✅ ENVIAR ELIMINACIÓN usando servicio unificado
+            const response = await vehiclesService.deleteVehicle(id)
 
             console.log('✅ Respuesta de eliminación:', response.data)
             setSuccess(true)

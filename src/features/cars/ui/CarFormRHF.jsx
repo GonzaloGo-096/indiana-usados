@@ -97,16 +97,12 @@ const CarFormRHF = ({
         console.log('🔄 CarFormRHF useEffect:', { mode, initialData: !!initialData })
         
         if (mode === MODE.EDIT && initialData) {
-            // ✅ DEBUG: Ver qué URLs se están pasando
-            console.log('🔍 DEBUG - initialData.urls:', initialData.urls)
-            console.log('🔍 DEBUG - initialData completo:', initialData)
             
             // ✅ DEBUG ESPECÍFICO: Ver fotos extras
             if (initialData.urls) {
                 const extrasUrls = Object.entries(initialData.urls)
                     .filter(([key]) => key.startsWith('fotoExtra'))
                     .map(([key, url]) => ({ key, url, hasUrl: !!url }))
-                console.log('🔍 DEBUG - Fotos extras encontradas:', extrasUrls)
             }
             
             // ✅ CARGAR DATOS BÁSICOS
@@ -122,14 +118,12 @@ const CarFormRHF = ({
                     setValue(field, initialData[field])
                 }
             })
-            console.log('✅ Datos cargados para edición')
             
             // ✅ Sincronizar estado de imágenes desde initialData
             initImageState(mode, initialData)
         } else if (mode === MODE.CREATE) {
             // ✅ RESETEAR FORMULARIO EN MODO CREATE
             reset()
-            console.log('✅ Formulario reseteado para crear')
             initImageState(mode, {})
         }
     }, [mode, initialData, setValue, reset, initImageState])
@@ -205,7 +199,6 @@ const CarFormRHF = ({
         // ✅ AGREGAR IMÁGENES SEGÚN ESTADO
         buildImageFormData(formData)
         
-        console.log('✅ FormData construido exitosamente')
         return formData
     }, [mode, buildImageFormData])
 
@@ -439,7 +432,6 @@ const CarFormRHF = ({
                                 {(() => {
                                     const preview = getPreviewFor(field)
                                     const isRemoved = imageState[field]?.remove
-                                    console.log(`🔍 Preview para ${field}:`, { preview, imageState: imageState[field] })
                                     
                                     if (isRemoved) {
                                         // Estado "eliminado" - mostrar placeholder
@@ -773,8 +765,6 @@ const CarFormRHF = ({
                     <button 
                         type="button" 
                         onClick={() => {
-                            console.log('🔍 DEBUG MANUAL - imageState:', imageState)
-                            console.log('🔍 DEBUG MANUAL - initialData:', initialData)
                         }}
                         style={{padding: '5px 10px', margin: '10px 0'}}
                     >
