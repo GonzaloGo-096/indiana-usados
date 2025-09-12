@@ -74,20 +74,16 @@ export const CardAuto = memo(({ auto }) => {
     
     if (window._cardAutoDebugCount < 3) {
       window._cardAutoDebugCount++
-      console.log('🔍 CardAuto: Datos recibidos:', {
-        id: auto?.id || auto?._id,
-        marca: auto?.marca,
-        modelo: auto?.modelo,
-        // Campos de imagen que recibe
-        fotoPrincipal: auto?.fotoPrincipal,
-        fotoHover: auto?.fotoHover,
-        imagen: auto?.imagen,
-        fotosExtras: auto?.fotosExtras,
-        // Debug images
-        debugImages: auto?._debugImages,
-        // Todos los campos disponibles
-        allFields: Object.keys(auto || {})
-      })
+      console.log('🚨 CardAuto: CAJA RAW:', auto?.caja)
+      console.log('🚨 CardAuto: CAJA TYPE:', typeof auto?.caja)
+      console.log('🚨 CardAuto: CAJA FORMATTED:', formatCaja(auto?.caja))
+      console.log('🔍 CardAuto: TODOS LOS CAMPOS:', Object.keys(auto || {}))
+      console.log('🔍 CardAuto: CAMPOS POSIBLES CAJA:', Object.keys(auto || {}).filter(key => 
+        key.toLowerCase().includes('caja') || 
+        key.toLowerCase().includes('transmision') ||
+        key.toLowerCase().includes('transmission') ||
+        key.toLowerCase().includes('gear')
+      ))
     }
     
 

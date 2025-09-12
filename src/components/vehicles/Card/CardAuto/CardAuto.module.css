@@ -258,9 +258,9 @@
 
 .card__button {
     width: 100%;
-    background: #e5e7eb;
+    background: #0055A4;
     border: none;
-    color: #374151;
+    color: white;
     font-size: 14px;
     font-weight: 600;
     padding: 6px 16px;
@@ -276,8 +276,8 @@
 }
 
 .card__button:hover {
-    background: #d1d5db;
-    color: #111827;
+    background: #003d7a;
+    color: white;
     transform: translateY(-1px);
 }
 

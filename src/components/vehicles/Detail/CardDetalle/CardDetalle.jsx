@@ -12,10 +12,11 @@
  */
 
 import React, { memo, useMemo, useCallback } from 'react'
-import { GmailIconOptimized, WhatsAppIconOptimized } from '@ui/icons'
 import { formatValue } from '@utils/imageUtils'
+import { formatCaja } from '@utils/formatters'
 import { useCarouselImages } from '@hooks/useImageOptimization'
 import { ImageCarousel } from '@ui/ImageCarousel'
+import ContactoDirecto from '../ContactoDirecto'
 import styles from './CardDetalle.module.css'
 
 /**
@@ -24,6 +25,11 @@ import styles from './CardDetalle.module.css'
 export const CardDetalle = memo(({ auto, contactInfo }) => {
     // ✅ DEBUG: Ver qué datos llegan al componente
     console.log('🔍 CardDetalle: Datos recibidos en auto:', auto)
+    console.log('🔍 CardDetalle: Campo caja específico:', {
+        cajaRaw: auto?.caja,
+        cajaFormatted: formatCaja(auto?.caja),
+        cajaType: typeof auto?.caja
+    })
     console.log('🔍 CardDetalle: Propiedades de imagen encontradas:', {
         fotoPrincipal: auto?.fotoPrincipal,
         fotoHover: auto?.fotoHover,
@@ -51,7 +57,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
             precio: auto.precio || '',
             año: auto.anio || auto.año || '', // ✅ CORREGIDO: anio es el campo del backend
             kms: auto.kilometraje || auto.kms || '', // ✅ CORREGIDO: kilometraje es el campo del backend
-            caja: auto.caja || '',
+            caja: formatCaja(auto.caja),
             color: auto.color || '',
             categoria: auto.segmento || auto.categoria || '', // ✅ CORREGIDO: segmento es el campo del backend
             combustible: auto.combustible || '',
@@ -195,30 +201,12 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                         ))}
                     </div>
                     
-                    {/* Sección de contacto */}
-                    <div className={styles.contactSection}>
-                        <h4 className={styles.contactTitle}>Contacto Directo</h4>
-                        <div className={styles.contactButtons}>
-                            <a 
-                                href={`mailto:${finalContactInfo.email}`}
-                                className={styles.contactButton}
-                                title="Enviar email"
-                            >
-                                <GmailIconOptimized className={styles.buttonIcon} size={20} />
-                                <span className={styles.buttonText}>Email</span>
-                            </a>
-                            <a 
-                                href={`https://wa.me/${finalContactInfo.whatsapp}?text=${encodeURIComponent(finalContactInfo.whatsappMessage)}`}
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className={styles.contactButton}
-                                title="Contactar por WhatsApp"
-                            >
-                                <WhatsAppIconOptimized className={styles.buttonIcon} size={20} />
-                                <span className={styles.buttonText}>WhatsApp</span>
-                            </a>
-                        </div>
-                    </div>
+                    {/* Sección de contacto refactorizada */}
+                    <ContactoDirecto 
+                        whatsNumber={finalContactInfo.whatsapp}
+                        message={finalContactInfo.whatsappMessage}
+                        className={styles.contactSection}
+                    />
                 </div>
             </div>
         </div>

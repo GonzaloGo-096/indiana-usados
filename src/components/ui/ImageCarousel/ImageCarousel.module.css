@@ -122,11 +122,11 @@
 /* ===== VISOR FIJO NETFLIX/SPOTIFY ===== */
 .thumbnailsContainer {
     width: 100%;
-    height: 120px; /* ✅ AUMENTADO: Más alto como Netflix */
+    height: 100px; /* ✅ REDUCIDO SUTILMENTE: De 120px a 100px */
     overflow: visible; /* ✅ CORREGIDO: Visible para que no corte el hover */
     display: flex;
     justify-content: center;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); /* ✅ NUEVO: Fondo oscuro como Netflix */
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* ✅ NUEVO: Mismo fondo que la página */
     border-radius: 12px;
     padding: 0; /* ✅ REMOVIDO: Sin padding para que no corte el hover */
     margin-top: 30px; /* ✅ NUEVO: Separación de la imagen principal */
@@ -134,8 +134,8 @@
     visibility: visible;
     z-index: 5;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     contain: layout style paint; /* ✅ OPTIMIZACIÓN: Contención */
 }
 
@@ -193,11 +193,11 @@
 
 .thumbnailControls:hover {
     opacity: 1;
-    background: rgba(255, 255, 255, 1);
+    background: #0055A4;
+    color: white;
     transform: translateY(-50%) scale(1.1); /* ✅ SIMPLIFICADO: Menos escala */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    border-color: #ffffff; /* ✅ CORREGIDO: Color blanco */
-    color: #1a1a1a; /* ✅ CORREGIDO: Texto oscuro */
+    box-shadow: 0 6px 20px rgba(0, 85, 164, 0.4);
+    border-color: #0055A4; /* ✅ NUEVO: Azul Francia */
 }
 
 .thumbnailControlsLeft {
@@ -243,16 +243,16 @@
 }
 
 .thumbnail:hover {
-    border-color: #ffffff; /* ✅ CORREGIDO: Borde blanco */
+    border-color: #0055A4; /* ✅ NUEVO: Borde azul Francia */
     transform: scale(1.05) translateY(-2px); /* ✅ SIMPLIFICADO: Menos escala y movimiento */
-    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2); /* ✅ CORREGIDO: Sombra blanca sutil */
+    box-shadow: 0 8px 24px rgba(0, 85, 164, 0.3); /* ✅ NUEVO: Sombra azul Francia */
     z-index: 10; /* ✅ NUEVO: Z-index alto para hover */
 }
 
 .thumbnail.active {
     transform: scale(1.08) translateY(-3px); /* ✅ SIMPLIFICADO: Menos escala */
-    border-color: #ffffff; /* ✅ CORREGIDO: Borde blanco */
-    box-shadow: 0 12px 32px rgba(255, 255, 255, 0.3); /* ✅ CORREGIDO: Sombra blanca */
+    border-color: #0055A4; /* ✅ NUEVO: Borde azul Francia */
+    box-shadow: 0 12px 32px rgba(0, 85, 164, 0.4); /* ✅ NUEVO: Sombra azul Francia */
     position: relative;
     z-index: 5; /* ✅ NUEVO: Z-index medio para activa */
 }
@@ -293,7 +293,7 @@
 /* ===== RESPONSIVE DESIGN NETFLIX ===== */
 @media (max-width: 1024px) {
     .thumbnailsContainer {
-        height: 100px;
+        height: 85px; /* ✅ REDUCIDO SUTILMENTE: De 100px a 85px */
         margin-top: 25px; /* ✅ AJUSTADO: Menos separación en tablet */
     }
     
@@ -319,7 +319,7 @@
 
 @media (max-width: 768px) {
     .thumbnailsContainer {
-        height: 90px;
+        height: 75px; /* ✅ REDUCIDO SUTILMENTE: De 90px a 75px */
         margin-top: 20px; /* ✅ AJUSTADO: Menos separación en mobile */
     }
     
@@ -355,7 +355,7 @@
     }
     
     .thumbnailsContainer {
-        height: 80px;
+        height: 70px; /* ✅ REDUCIDO SUTILMENTE: De 80px a 70px */
         margin-top: 15px; /* ✅ AJUSTADO: Menos separación en mobile pequeño */
     }
     

@@ -220,55 +220,11 @@
 .contactSection {
   padding-top: 1rem;
   border-top: 1px solid #e5e7eb;
-}
-
-.contactTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 0.75rem 0;
-  text-align: center;
-}
-
-.contactButtons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.contactButton {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  background: #f3f4f6;
-  color: #111827;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.8rem;
-  transition: all 0.2s ease;
-  border: none;
-  cursor: pointer;
-  min-width: 100px;
-  justify-content: center;
-}
-
-.contactButton:hover {
-  background: #e5e7eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.buttonIcon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
-.buttonText {
-  font-weight: 600;
-  color: #111827;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100%;
+  /* El resto de estilos ahora están en ContactoDirecto.module.css */
 }
 
 /* ===== RESPONSIVE DESIGN ===== */

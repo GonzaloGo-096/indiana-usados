@@ -1,0 +1,176 @@
+/**
+ * ContactoDirecto.module.css - Estilos locales minimalistas
+ * 
+ * Layout 70/30 con flex, responsive stack vertical en mobile
+ * Usa variables CSS locales para fácil customización
+ * 
+ * @author Indiana Usados
+ * @version 2.0.0
+ */
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== CONTENIDO 70% ===== */
+.content {
+  flex: 0.7;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.whatsappButton {
+  align-self: center;
+  padding: 0.4rem 0.8rem;
+  background: #0055A4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.25rem;
+}
+
+.whatsappButton:hover {
+  background: #003d7a;
+  transform: translateY(-1px);
+}
+
+.whatsappButton:focus {
+  outline: 2px solid #0055A4;
+  outline-offset: 2px;
+}
+
+/* ===== ICONO 30% ===== */
+.iconContainer {
+  flex: 0.3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #25D366;
+}
+
+.iconButton:hover {
+  background: #333333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+
+.iconButton:focus {
+  outline: 2px solid #25D366;
+  outline-offset: 2px;
+}
+
+.whatsappIcon {
+  width: 40px;
+  height: 40px;
+  color: inherit;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+/* Desktop: mantener 70/30 */
+@media (min-width: 768px) {
+  .container {
+    /* Ya está configurado arriba */
+  }
+}
+
+/* Mobile: stack vertical */
+@media (max-width: 767px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    max-width: 300px;
+  }
+  
+  .content {
+    flex: none;
+    width: 100%;
+  }
+  
+  .iconContainer {
+    flex: none;
+    order: -1; /* Icono arriba en mobile para mejor jerarquía visual */
+  }
+  
+  .whatsappButton {
+    align-self: center;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.7rem;
+  }
+  
+  .iconButton {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .whatsappIcon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* ===== NOTAS DE IMPLEMENTACIÓN ===== */
+/*
+  CAMBIAR COLOR DEL ICONO:
+  - Modificar color: #25D366 en .iconButton (línea 96)
+  - Modificar background del botón: #0055A4 (azul Francia) en .whatsappButton (línea 56)
+  
+  AJUSTAR COMPACIDAD:
+  - max-width: 400px desktop, 300px mobile para controlar ancho
+  - gap: 0.75rem para espaciado compacto
+  - padding reducido para menos espacio interno
+  
+  VARIAR STACK EN MOBILE:
+  - Quitar order: -1 para poner icono abajo
+  - Cambiar flex-direction: column-reverse para invertir orden
+*/

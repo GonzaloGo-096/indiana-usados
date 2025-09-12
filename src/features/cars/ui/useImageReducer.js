@@ -14,7 +14,7 @@ export const IMAGE_FIELDS = {
 }
 
 
-// ✅ TODOS LOS CAMPOS (estructura limpia)
+// ✅ TODOS LOS CAMPOS (estructura limpia)volver c
 export const ALL_IMAGE_FIELDS = [
     ...IMAGE_FIELDS.principales,
     ...IMAGE_FIELDS.extras
