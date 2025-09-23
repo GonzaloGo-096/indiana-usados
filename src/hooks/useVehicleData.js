@@ -85,7 +85,7 @@ export const useVehicleData = ({ limit = 50, enabled = true } = {}) => {
             setIsLoading(true)
             setError(null)
 
-            const response = await vehiclesApi.getVehiclesMain({ limit })
+            const response = await vehiclesApi.getVehicles({ limit })
             
             // ✅ EXTRAER DATOS DEL BACKEND
             let vehiclesData = []

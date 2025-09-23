@@ -55,10 +55,43 @@ export const vehiclesService = {
    * Actualizar vehículo (admin)
    */
   async updateVehicle(id, formData) {
-    const response = await authAxiosInstance.post(`/photos/updatephoto/${id}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
-    return response.data
+    // ✅ Probar variaciones de endpoint y método (algunos backends usan POST para actualizar)
+    const endpointsToTry = [
+      `/photos/updatephoto/${id}`,  // más probable
+      `/photos/update/${id}`,
+      `/photos/${id}`,
+      `/photos/edit/${id}`,
+      `/updatephoto/${id}`
+    ]
+
+    const methodsToTry = ['post', 'put'] // probar POST primero
+
+    for (let e = 0; e < endpointsToTry.length; e++) {
+      const endpoint = endpointsToTry[e]
+
+      for (let m = 0; m < methodsToTry.length; m++) {
+        const method = methodsToTry[m]
+        try {
+          console.log(`🔄 Probando: ${method.toUpperCase()} ${endpoint}`)
+          const response = await authAxiosInstance[method](endpoint, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          })
+          if (response.status >= 200 && response.status < 300) {
+            console.log(`✅ ÉXITO con: ${method.toUpperCase()} ${endpoint} - Status: ${response.status}`)
+            return response.data
+          }
+          throw new Error(`Status no exitoso: ${response.status}`)
+        } catch (error) {
+          const status = error.response?.status || 'Sin respuesta'
+          console.log(`❌ Falló: ${method.toUpperCase()} ${endpoint} - Status: ${status}`)
+          // Continuar con siguiente método o endpoint
+          if (e === endpointsToTry.length - 1 && m === methodsToTry.length - 1) {
+            console.error('❌ TODOS LOS ENDPOINTS/MÉTODOS FALLARON. Último error:', error.message)
+            throw error
+          }
+        }
+      }
+    }
   },
   
   /**

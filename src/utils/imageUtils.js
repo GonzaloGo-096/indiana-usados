@@ -245,8 +245,9 @@ export const prepareFileForCloudinary = (file, fieldName) => {
     originalname: file.name,
     mimetype: file.type,
     size: file.size,
-    // ✅ SIMULAR file.path PARA CLOUDINARY
-    path: `temp/${fieldName}_${Date.now()}_${file.name}`,
+    // ✅ SIMULAR file.path PARA CLOUDINARY (determinístico)
+    // El public_id lo define backend; este path temporal NO debe afectar el ID final en Cloudinary
+    path: `temp/${fieldName}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`,
     // ✅ AGREGAR BUFFER PARA PROCESAMIENTO
     buffer: null, // Se llenará después
     // ✅ MÉTODOS COMPATIBLES
@@ -255,7 +256,7 @@ export const prepareFileForCloudinary = (file, fieldName) => {
       originalname: file.name,
       mimetype: file.type,
       size: file.size,
-      path: `temp/${fieldName}_${Date.now()}_${file.name}`
+      path: `temp/${fieldName}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
     })
   }
 }
@@ -296,44 +297,52 @@ const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 const MIN_EXTRA_PHOTOS = 5
 
-export const validateImageFields = (imageFiles) => {
+export const validateImageFields = (imageFiles, mode = 'create') => {
   const errors = {}
 
-  // ✅ VALIDAR CAMPOS PRINCIPALES OBLIGATORIOS
-  REQUIRED_IMAGE_FIELDS.forEach(field => {
-    if (!imageFiles[field] || imageFiles[field].length === 0) {
-      errors[field] = `Campo ${field} es requerido`
-    } else {
-      const file = imageFiles[field][0]
-      
-      // ✅ VALIDAR TIPO MIME
-      if (!SUPPORTED_IMAGE_TYPES.includes(file.type)) {
-        errors[field] = `Formato no soportado: ${file.type}. Solo se permiten: ${SUPPORTED_IMAGE_TYPES.join(', ')}`
+  // ✅ VALIDAR CAMPOS PRINCIPALES OBLIGATORIOS (solo en modo CREATE)
+  if (mode === 'create') {
+    REQUIRED_IMAGE_FIELDS.forEach(field => {
+      if (!imageFiles[field] || imageFiles[field].length === 0) {
+        errors[field] = `Campo ${field} es requerido`
+      } else {
+        const file = imageFiles[field][0]
+        
+        // ✅ VALIDAR TIPO MIME
+        if (!SUPPORTED_IMAGE_TYPES.includes(file.type)) {
+          errors[field] = `Formato no soportado: ${file.type}. Solo se permiten: ${SUPPORTED_IMAGE_TYPES.join(', ')}`
+        }
+        
+        // ✅ VALIDAR TAMAÑO
+        if (file.size > MAX_FILE_SIZE) {
+          errors[field] = `Archivo muy grande: ${(file.size / 1024 / 1024).toFixed(2)}MB. Máximo: 10MB`
+        }
+        
+        // ✅ VALIDAR NOMBRE DE ARCHIVO
+        if (!file.name || file.name.trim() === '') {
+          errors[field] = `Nombre de archivo inválido`
+        }
+        
+        // ✅ VALIDAR EXTENSIÓN
+        const extension = file.name.split('.').pop()?.toLowerCase()
+        const supportedExtensions = ['jpg', 'jpeg', 'png']
+        if (!supportedExtensions.includes(extension)) {
+          errors[field] = `Extensión no soportada: .${extension}. Solo se permiten: ${supportedExtensions.join(', ')}`
+        }
       }
-      
-      // ✅ VALIDAR TAMAÑO
-      if (file.size > MAX_FILE_SIZE) {
-        errors[field] = `Archivo muy grande: ${(file.size / 1024 / 1024).toFixed(2)}MB. Máximo: 10MB`
-      }
-      
-      // ✅ VALIDAR NOMBRE DE ARCHIVO
-      if (!file.name || file.name.trim() === '') {
-        errors[field] = `Nombre de archivo inválido`
-      }
-      
-      // ✅ VALIDAR EXTENSIÓN
-      const extension = file.name.split('.').pop()?.toLowerCase()
-      const supportedExtensions = ['jpg', 'jpeg', 'png']
-      if (!supportedExtensions.includes(extension)) {
-        errors[field] = `Extensión no soportada: .${extension}. Solo se permiten: ${supportedExtensions.join(', ')}`
+    })
+
+    // ✅ VALIDAR FOTOS EXTRAS (mínimo 5) - SOLO EN MODO CREATE
+    if (mode === 'create') {
+      const fotosExtraCount = imageFiles.fotosExtra ? imageFiles.fotosExtra.length : 0
+      if (fotosExtraCount < MIN_EXTRA_PHOTOS) {
+        errors.fotosExtra = `Se requieren mínimo ${MIN_EXTRA_PHOTOS} fotos extras (total mínimo: ${MIN_EXTRA_PHOTOS + 2} fotos)`
       }
     }
-  })
-
-  // ✅ VALIDAR FOTOS EXTRAS (mínimo 5)
-  const fotosExtraCount = imageFiles.fotosExtra ? imageFiles.fotosExtra.length : 0
-  if (fotosExtraCount < MIN_EXTRA_PHOTOS) {
-    errors.fotosExtra = `Se requieren mínimo ${MIN_EXTRA_PHOTOS} fotos extras (total mínimo: ${MIN_EXTRA_PHOTOS + 2} fotos)`
+  } else {
+    // ✅ MODO EDIT: NO VALIDAR NADA - TODO OPCIONAL
+    // El usuario puede editar solo texto sin tocar imágenes
+    console.log('✅ MODO EDIT: Sin validaciones de imágenes - todo opcional')
   }
 
   return errors

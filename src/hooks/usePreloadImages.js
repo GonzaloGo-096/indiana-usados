@@ -4,14 +4,16 @@
  * Funcionalidades:
  * - Detecta vehículos en viewport
  * - Preload fotoPrincipal y fotoHover
- * - Evita preload innecesario
+ * - Detección de puntero fino (mouse/trackpad)
+ * - Cancelación de requests con AbortController
+ * - Evita preload innecesario en conexiones lentas
  * - Medible y efectivo
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 
 /**
  * Hook para preload de imágenes críticas
@@ -25,6 +27,9 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
     maxPreload = 6, // máximo de imágenes a preload
     enablePreload = true
   } = options
+
+  // Estado para detección de puntero fino
+  const [hasFinePointer, setHasFinePointer] = useState(false)
 
   // Detectar velocidad de conexión
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
@@ -40,6 +45,26 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
 
   const preloadedImages = useRef(new Set())
   const observerRef = useRef(null)
+  const abortControllers = useRef(new Map()) // Para cancelar requests en curso
+
+  // Detectar puntero fino (mouse/trackpad) vs touch
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(pointer: fine)')
+    
+    const handlePointerChange = (e) => {
+      setHasFinePointer(e.matches)
+    }
+    
+    // Verificar estado inicial
+    setHasFinePointer(mediaQuery.matches)
+    
+    // Escuchar cambios
+    mediaQuery.addEventListener('change', handlePointerChange)
+    
+    return () => {
+      mediaQuery.removeEventListener('change', handlePointerChange)
+    }
+  }, [])
 
   // Función para generar URL de preload
   const generatePreloadUrl = useCallback((vehicle) => {
@@ -68,15 +93,31 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
     return { principalUrl, hoverUrl }
   }, [])
 
-  // Función para preload de imagen
+  // Función para preload de imagen con AbortController
   const preloadImage = useCallback((url) => {
     if (!url || preloadedImages.current.has(url)) return
 
+    // Crear AbortController para esta imagen
+    const abortController = new AbortController()
+    abortControllers.current.set(url, abortController)
+
     const img = new Image()
-    img.src = url
-    preloadedImages.current.add(url)
     
-    console.log('🚀 Preload:', url)
+    // Configurar event listeners
+    const handleLoad = () => {
+      preloadedImages.current.add(url)
+      abortControllers.current.delete(url)
+    }
+    
+    const handleError = () => {
+      abortControllers.current.delete(url)
+    }
+
+    img.addEventListener('load', handleLoad, { once: true })
+    img.addEventListener('error', handleError, { once: true })
+    
+    // Iniciar carga
+    img.src = url
   }, [])
 
   // Función para preload de vehículo
@@ -85,23 +126,37 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
 
     const { principalUrl, hoverUrl } = generatePreloadUrl(vehicle)
     
+    // Siempre preload imagen principal
     if (principalUrl) preloadImage(principalUrl)
-    if (hoverUrl && hoverUrl !== principalUrl) preloadImage(hoverUrl)
-  }, [generatePreloadUrl, preloadImage, enablePreload])
+    
+    // Solo preload hover en dispositivos con puntero fino
+    if (hasFinePointer && hoverUrl && hoverUrl !== principalUrl) {
+      preloadImage(hoverUrl)
+    }
+  }, [generatePreloadUrl, preloadImage, enablePreload, hasFinePointer])
 
-  // Función para limpiar preloads
+  // Función para limpiar preloads y cancelar requests en curso
   const clearPreloads = useCallback(() => {
+    // Cancelar todos los requests en curso
+    abortControllers.current.forEach((controller) => {
+      controller.abort()
+    })
+    abortControllers.current.clear()
+    
+    // Limpiar lista de preloads
     preloadedImages.current.clear()
-    console.log('🧹 Preloads limpiados')
   }, [])
 
   // Función para obtener estadísticas
   const getStats = useCallback(() => {
     return {
       preloadedCount: preloadedImages.current.size,
-      preloadedUrls: Array.from(preloadedImages.current)
+      preloadedUrls: Array.from(preloadedImages.current),
+      pendingRequests: abortControllers.current.size,
+      hasFinePointer,
+      isSlowConnection
     }
-  }, [])
+  }, [hasFinePointer, isSlowConnection])
 
   // Effect para setup del observer
   useEffect(() => {
@@ -133,8 +188,10 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
       if (observerRef.current) {
         observerRef.current.disconnect()
       }
+      // Cancelar todos los requests pendientes al desmontar
+      clearPreloads()
     }
-  }, [vehicles, preloadDistance, maxPreload, preloadVehicle, enablePreload])
+  }, [vehicles, preloadDistance, maxPreload, preloadVehicle, enablePreload, clearPreloads])
 
   return {
     preloadVehicle,

@@ -7,7 +7,6 @@
 
 import React, { useEffect, useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-import { useCarMutation } from '@hooks'
 import { useImageReducer, IMAGE_FIELDS } from './useImageReducer'
 import styles from './CarFormRHF.module.css'
 
@@ -20,12 +19,7 @@ const MODE = {
 // ✅ CAMPOS NUMÉRICOS (para coerción automática)
 const NUMERIC_FIELDS = ['precio', 'cilindrada', 'anio', 'kilometraje']
 
-// ✅ ENDPOINTS
-const ENDPOINTS = {
-    CREATE: 'http://localhost:3001/photos/create',
-    UPDATE: 'http://localhost:3001/photos/updatephoto',
-    DELETE: 'http://localhost:3001/photos/deletephoto'
-}
+// (endpoints removidos: las mutaciones ahora las gestiona el padre)
 
 // ✅ VALIDACIONES
 const VALIDATION_RULES = {
@@ -49,6 +43,7 @@ const CarFormRHF = ({
         initImageState,
         setFile,
         removeImage,
+        restoreImage, // ✅ NUEVA FUNCIÓN IMPORTADA
         resetImages,
         validateImages,
         buildImageFormData,
@@ -94,17 +89,9 @@ const CarFormRHF = ({
 
     // ✅ CARGAR DATOS INICIALES (campos básicos) y sincronizar imágenes
     useEffect(() => {
-        console.log('🔄 CarFormRHF useEffect:', { mode, initialData: !!initialData })
+        console.log('[Form] init', { mode, hasInitial: !!initialData, id: initialData?._id || initialData?.id })
         
         if (mode === MODE.EDIT && initialData) {
-            
-            // ✅ DEBUG ESPECÍFICO: Ver fotos extras
-            if (initialData.urls) {
-                const extrasUrls = Object.entries(initialData.urls)
-                    .filter(([key]) => key.startsWith('fotoExtra'))
-                    .map(([key, url]) => ({ key, url, hasUrl: !!url }))
-            }
-            
             // ✅ CARGAR DATOS BÁSICOS
             const basicFields = [
                 'marca', 'modelo', 'version', 'precio', 'caja', 'segmento',
@@ -128,13 +115,13 @@ const CarFormRHF = ({
         }
     }, [mode, initialData, setValue, reset, initImageState])
 
-    // ✅ HOOK DE MUTACIÓN
-    const { createCar, updateCar, deleteCar, isLoading: mutationLoading, error: mutationError, success, resetState } = useCarMutation()
-    
     // ✅ MANEJADORES DE IMAGENES
     const handleFileChange = useCallback((key) => (event) => {
         const file = event.target.files && event.target.files[0] ? event.target.files[0] : null
         setFile(key, file)
+        
+        // ✅ RESETEAR INPUT PARA PERMITIR SELECCIONAR EL MISMO ARCHIVO
+        event.target.value = ''
     }, [setFile])
 
     const handleRemoveImage = useCallback((key) => () => {
@@ -144,6 +131,9 @@ const CarFormRHF = ({
     // ✅ VALIDACIÓN CONDICIONAL POR MODO
     const validateForm = useCallback((data) => {
         const errors = {}
+        
+        console.log('🔍 validateForm - mode:', mode, 'type:', typeof mode)
+        console.log('🔍 validateForm - data keys:', Object.keys(data))
         
         // ✅ VALIDAR CAMPOS REQUERIDOS
         const requiredFields = [
@@ -171,9 +161,15 @@ const CarFormRHF = ({
         })
         
         // ✅ VALIDAR IMÁGENES SEGÚN MODO
+        console.log('🔍 Llamando validateImages con mode:', mode)
+        console.log('🔍 validateImages - antes de llamar')
         const imageErrors = validateImages(mode)
+        console.log('🔍 imageErrors recibidos:', imageErrors)
+        console.log('🔍 imageErrors keys:', Object.keys(imageErrors))
         Object.assign(errors, imageErrors)
         
+        console.log('🔍 Errores finales:', errors)
+        console.log('🔍 Errores finales keys:', Object.keys(errors))
         return errors
     }, [mode, validateImages])
 
@@ -204,53 +200,41 @@ const CarFormRHF = ({
 
     // ✅ MANEJAR SUBMIT
     const onSubmit = async (data) => {
-        console.log('🚀 CarFormRHF onSubmit:', { mode, data: Object.keys(data) })
+        console.log('[Form] submit', { mode })
         
         try {
             clearErrors()
-            resetState()
-            
+
             // ✅ VALIDAR FORMULARIO
             const validationErrors = validateForm(data)
-            
+
             if (Object.keys(validationErrors).length > 0) {
                 console.log('❌ Errores de validación:', validationErrors)
-                
+
                 // ✅ MOSTRAR ERRORES
                 Object.entries(validationErrors).forEach(([field, message]) => {
                     setError(field, { type: 'manual', message })
                 })
                 return
             }
-            
+
             // ✅ CONSTRUIR FORMDATA
             const formData = buildVehicleFormData(data)
-            
-            // ✅ ENVIAR FORMULARIO SEGÚN MODO
-            let result
-            
-            if (mode === MODE.CREATE) {
-                result = await createCar(formData)
-            } else if (mode === MODE.EDIT) {
-                // ✅ USAR updateCar CON EL ID DEL VEHÍCULO
+
+            // ✅ AÑADIR _id EN MODO EDIT (algunos backends lo esperan en body)
+            if (mode === MODE.EDIT) {
                 const vehicleId = initialData._id || initialData.id
-                result = await updateCar(vehicleId, formData)
-            }
-            
-            if (result && result.success) {
-                // ✅ ÉXITO: RESETEAR FORMULARIO Y CERRAR MODAL
-                reset()
-                resetImages()
-                if (onClose) {
-                    onClose()
+                if (vehicleId) {
+                    formData.append('_id', String(vehicleId))
                 }
-            } else {
-                // ✅ ERROR: Mostrar error del hook
-                console.error('❌ Error del hook:', result?.error)
             }
-            
+
+            // ✅ DELEGAR SUBMIT AL PADRE
+            await onSubmitFormData(formData)
+
+            // El padre maneja éxito/error, cierre de modal y refetch
         } catch (error) {
-            console.error('❌ Error en submit:', error)
+            console.error('[Form] submit error', error)
         }
     }
 
@@ -268,17 +252,7 @@ const CarFormRHF = ({
                 <p>Complete todos los campos requeridos</p>
                 
                 {/* ✅ MENSAJES DE ESTADO */}
-                {mutationError && (
-                    <div className={styles.errorMessage}>
-                        ❌ Error: {mutationError}
-                    </div>
-                )}
-                
-                {success && (
-                    <div className={styles.successMessage}>
-                        ✅ Auto {mode === MODE.CREATE ? 'creado' : 'actualizado'} exitosamente
-                    </div>
-                )}
+                {/* Los mensajes de error/éxito ahora los muestra el contenedor (Dashboard) */}
             </div>
 
             {/* ✅ SECCIÓN DE IMÁGENES PRINCIPALES */}
@@ -289,8 +263,17 @@ const CarFormRHF = ({
                 <div className={styles.formatInfo}>
                     <p><strong>Formatos aceptados:</strong> Solo archivos .jpg, .jpeg y .png</p>
                     <p><strong>Tamaño máximo:</strong> 10MB por imagen</p>
-                    <p><strong>Las 2 imágenes principales son obligatorias</strong></p>
-                    <p><strong>Total mínimo requerido:</strong> 7 fotos (2 principales + 5 extras)</p>
+                    {mode === MODE.CREATE ? (
+                        <>
+                            <p><strong>Las 2 imágenes principales son obligatorias</strong></p>
+                            <p><strong>Total mínimo requerido:</strong> 7 fotos (2 principales + 5 extras)</p>
+                        </>
+                    ) : (
+                        <>
+                            <p><strong>Modo edición:</strong> Las imágenes son opcionales</p>
+                            <p><strong>Puedes editar solo texto sin tocar las imágenes</strong></p>
+                        </>
+                    )}
                 </div>
                 
                 <div className={styles.imageGrid}>
@@ -312,7 +295,9 @@ const CarFormRHF = ({
                                         return (
                                             <div className={styles.imagePreview}>
                                                 <div className={styles.removedPlaceholder}>
-                                                    <span>Foto eliminada</span>
+                                                    <div className={styles.removedIcon}>🗑️</div>
+                                                    <span className={styles.removedText}>Foto eliminada</span>
+                                                    <small className={styles.removedSubtext}>Se eliminará al guardar</small>
                                                 </div>
                                             </div>
                                         )
@@ -413,9 +398,19 @@ const CarFormRHF = ({
                 
                 {/* ✅ INFORMACIÓN SOBRE FOTOS EXTRAS */}
                 <div className={styles.formatInfo}>
-                    <p><strong>Mínimo requerido:</strong> 5 fotos extras</p>
-                    <p><strong>Máximo:</strong> 8 fotos extras</p>
-                    <p><strong>Opcional:</strong> Las fotos marcadas con (opcional) no son obligatorias</p>
+                    {mode === MODE.CREATE ? (
+                        <>
+                            <p><strong>Mínimo requerido:</strong> 5 fotos extras</p>
+                            <p><strong>Máximo:</strong> 8 fotos extras</p>
+                            <p><strong>Opcional:</strong> Las fotos marcadas con (opcional) no son obligatorias</p>
+                        </>
+                    ) : (
+                        <>
+                            <p><strong>Modo edición:</strong> Las fotos extras son opcionales</p>
+                            <p><strong>Máximo:</strong> 8 fotos extras</p>
+                            <p><strong>Puedes mantener las existentes sin cambios</strong></p>
+                        </>
+                    )}
                 </div>
                 
                 <div className={styles.imageGrid}>
@@ -438,7 +433,9 @@ const CarFormRHF = ({
                                         return (
                                             <div className={styles.imagePreview}>
                                                 <div className={styles.removedPlaceholder}>
-                                                    <span>Foto eliminada</span>
+                                                    <div className={styles.removedIcon}>🗑️</div>
+                                                    <span className={styles.removedText}>Foto eliminada</span>
+                                                    <small className={styles.removedSubtext}>Se eliminará al guardar</small>
                                                 </div>
                                             </div>
                                         )
@@ -511,9 +508,18 @@ const CarFormRHF = ({
                                             </button>
                                         )}
                                         {imageState[field]?.remove && (
-                                            <span className={styles.removedLabel}>
-                                                Imagen marcada para quitar
-                                            </span>
+                                            <div className={styles.removedActions}>
+                                                <span className={styles.removedLabel}>
+                                                    ❌ Marcada para eliminar
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => restoreImage(field)}
+                                                    className={styles.restoreButton}
+                                                >
+                                                    ↺ Restaurar
+                                                </button>
+                                            </div>
                                         )}
                                     </div>
                                 )}
@@ -523,7 +529,7 @@ const CarFormRHF = ({
                                 )}
                             </div>
                         ))
-                    }, [imageState, errors, mode, getPreviewFor, handleFileChange, handleRemoveImage])}
+                    }, [imageState, errors, mode, getPreviewFor, handleFileChange, handleRemoveImage, restoreImage])}
                 </div>
                 
                 {/* ✅ ERROR GENERAL DE FOTOS EXTRAS */}
@@ -755,33 +761,14 @@ const CarFormRHF = ({
                 </div>
             </div>
 
-            {/* ✅ DEBUG TEMPORAL - MOSTRAR ESTADO DE IMÁGENES */}
-            {mode === MODE.EDIT && (
-                <div style={{padding: '20px', background: '#f0f0f0', margin: '20px 0', borderRadius: '8px'}}>
-                    <h4>🔍 DEBUG - Estado de Imágenes</h4>
-                    <pre style={{fontSize: '12px', overflow: 'auto', maxHeight: '200px'}}>
-                        {JSON.stringify(imageState, null, 2)}
-                    </pre>
-                    <button 
-                        type="button" 
-                        onClick={() => {
-                        }}
-                        style={{padding: '5px 10px', margin: '10px 0'}}
-                    >
-                        Log Estado en Consola
-                    </button>
-                </div>
-            )}
-
-
             {/* ✅ BOTONES DE ACCIÓN */}
             <div className={styles.formActions}>
                 <button 
                     type="submit" 
                     className={styles.submitButton}
-                    disabled={mutationLoading}
+                    disabled={isLoading}
                 >
-                    {mutationLoading ? (
+                    {isLoading ? (
                         'Procesando...'
                     ) : (
                         mode === MODE.CREATE ? 'Crear Auto' : 'Actualizar Auto'

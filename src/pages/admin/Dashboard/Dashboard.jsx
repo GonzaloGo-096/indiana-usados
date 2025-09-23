@@ -12,6 +12,8 @@ import { useVehicleData } from '@hooks/useVehicleData'
 import { getVehicleImageUrl } from '@hooks/useVehicleImage'
 import { useCarMutation } from '@hooks/useCarMutation'
 import axiosInstance from '@api/axiosInstance'
+import vehiclesService from '@services/vehiclesApi'
+import { normalizeDetailToFormInitialData, unwrapDetail } from '@/features/cars/mappers/normalizeForForm'
 
 import { useNavigate } from 'react-router-dom'
 import CarFormRHF from '../../../features/cars/ui/CarFormRHF'
@@ -72,49 +74,57 @@ const extractImageUrls = (vehicle) => {
     const v = vehicle || {}
     const o = v._original || {}
     
-    // ✅ DEBUG: Mostrar estructura de fotos extras
-    if (v.id || v._id) {
-        console.log('🔍 extractImageUrls:', { 
-            id: v.id || v._id, 
-            fotosExtraArray: v.fotosExtra ? `array de ${v.fotosExtra.length} elementos` : 'no encontrado',
-            estructura: 'array fotosExtra[]'
-        })
+    // Helper mínimo: obtener URL desde string u objeto { url }
+    const getUrlFromAny = (item) => {
+        if (!item) return ''
+        if (typeof item === 'string') return item
+        if (typeof item === 'object') return item.url || item.secure_url || ''
+        return ''
     }
-    
-    // ✅ NUEVA ESTRUCTURA: Pasar objetos completos con {url, public_id, original_name}
+
+    // Estructura limpia: pasar objetos con {url, public_id, original_name}
     const urls = {
         // Imágenes principales - pasar objeto completo del backend
         fotoPrincipal: v.fotoPrincipal || o.fotoPrincipal || null,
         fotoHover: v.fotoHover || o.fotoHover || null
     }
     
-    // ✅ FOTOS EXTRAS - Mapear objetos completos desde array
-    // El backend envía fotosExtra[] como array de objetos con {url, public_id, original_name}
-    const fotosExtraArray = v.fotosExtra || o.fotosExtra || []
-    console.log('🔍 DEBUG fotosExtraArray:', fotosExtraArray)
-    
-    // Mapear hasta 8 fotos extras desde el array - pasar objetos completos
+    // Fuente contractual: fotosExtra(s) del backend (array)
+    const fotosExtraArray = 
+        (Array.isArray(v.fotosExtra) && v.fotosExtra) ||
+        (Array.isArray(v.fotosExtras) && v.fotosExtras) ||
+        (Array.isArray(o.fotosExtra) && o.fotosExtra) ||
+        (Array.isArray(o.fotosExtras) && o.fotosExtras) ||
+        []
+
+    // Mapear hasta 8 fotos extras desde el array; fallback a legacy fotoExtraN si existe
     for (let i = 0; i < 8; i++) {
         const fieldName = `fotoExtra${i + 1}`
         const extraItem = fotosExtraArray[i]
-        
-        // Pasar el objeto completo (no solo la URL)
-        urls[fieldName] = extraItem || null
-        
+
         if (extraItem) {
-            console.log(`✅ ${fieldName}:`, { 
-                url: extraItem.url || extraItem, 
-                public_id: extraItem.public_id,
-                original_name: extraItem.original_name 
-            })
+            // ESTRUCTURA: string u objeto con {url}
+            const resolvedUrl = getUrlFromAny(extraItem)
+            urls[fieldName] = resolvedUrl
+                ? {
+                    url: resolvedUrl,
+                    public_id: extraItem.public_id || '',
+                    original_name: extraItem.original_name || ''
+                }
+                : null
+            continue
         }
-    }
-    
-    // ✅ DEBUG: Solo mostrar resumen final
-    const hasImages = Object.values(urls).some(item => item && (typeof item === 'string' ? item.length > 0 : item.url))
-    if (hasImages) {
-        const imageCount = Object.values(urls).filter(item => item && (typeof item === 'string' ? item.length > 0 : item.url)).length
-        console.log('🖼️ extractImageUrls:', { id: v.id || v._id, imageCount })
+
+        // FALLBACK LEGADO: usar v.fotoExtraN / o.fotoExtraN si existen
+        const legacy = v[fieldName] || o[fieldName] || null
+        if (legacy) {
+            const resolvedUrl = getUrlFromAny(legacy)
+            urls[fieldName] = resolvedUrl
+                ? { url: resolvedUrl, public_id: legacy.public_id || '', original_name: legacy.original_name || '' }
+                : null
+        } else {
+            urls[fieldName] = null
+        }
     }
     return urls
 }
@@ -149,86 +159,31 @@ const Dashboard = () => {
         dispatch(openCreateForm())
     }, [])
 
-    const handleOpenEditForm = useCallback((vehicle) => {
-        // ✅ DEBUG TEMPORAL: Ver qué datos llegan exactamente
-        console.log('🔍 VEHICLE DATA COMPLETO:', vehicle)
-        console.log('🔍 FOTOS EN VEHICLE:', {
-            fotoPrincipal: vehicle.fotoPrincipal,
-            fotoHover: vehicle.fotoHover,
-            fotoExtra1: vehicle.fotoExtra1,
-            fotoExtra2: vehicle.fotoExtra2,
-            fotoExtra3: vehicle.fotoExtra3,
-            fotoExtra4: vehicle.fotoExtra4,
-            fotoExtra5: vehicle.fotoExtra5,
-            fotoExtra6: vehicle.fotoExtra6,
-            fotoExtra7: vehicle.fotoExtra7,
-            fotoExtra8: vehicle.fotoExtra8,
-            allKeys: Object.keys(vehicle).filter(key => key.includes('foto'))
-        })
-        
-        // ✅ DEBUG ESPECÍFICO: Verificar estructura de public_id
-        console.log('🔍 ESTRUCTURA DE IMÁGENES CON PUBLIC_ID:')
-        if (vehicle.fotoPrincipal) {
-            console.log('fotoPrincipal:', {
-                tipo: typeof vehicle.fotoPrincipal,
-                estructura: vehicle.fotoPrincipal,
-                hasUrl: !!vehicle.fotoPrincipal?.url,
-                hasPublicId: !!vehicle.fotoPrincipal?.public_id,
-                publicId: vehicle.fotoPrincipal?.public_id
-            })
-        }
-        if (vehicle.fotoHover) {
-            console.log('fotoHover:', {
-                tipo: typeof vehicle.fotoHover,
-                estructura: vehicle.fotoHover,
-                hasUrl: !!vehicle.fotoHover?.url,
-                hasPublicId: !!vehicle.fotoHover?.public_id,
-                publicId: vehicle.fotoHover?.public_id
-            })
-        }
-        
-        // Verificar fotos extras
-        for (let i = 1; i <= 8; i++) {
-            const fotoKey = `fotoExtra${i}`
-            if (vehicle[fotoKey]) {
-                console.log(`${fotoKey}:`, {
-                    tipo: typeof vehicle[fotoKey],
-                    estructura: vehicle[fotoKey],
-                    hasUrl: !!vehicle[fotoKey]?.url,
-                    hasPublicId: !!vehicle[fotoKey]?.public_id,
-                    publicId: vehicle[fotoKey]?.public_id
-                })
+    const handleOpenEditForm = useCallback(async (vehicle) => {
+        try {
+            const id = vehicle._id || vehicle.id
+            console.debug('[EDIT] abrir', { id })
+            dispatch(setLoading())
+
+            console.debug('[EDIT] GET detalle', { id })
+            const detail = await vehiclesService.getVehicleById(id)
+
+            const unwrapped = unwrapDetail(detail)
+            const carData = normalizeDetailToFormInitialData(unwrapped)
+
+            if (!carData || typeof carData !== 'object') {
+                console.warn('[EDIT] detalle vacío o inválido')
+                dispatch(setError('Respuesta de detalle inválida'))
+                return
             }
+
+            console.debug('[EDIT] initialData listo', { id: carData?._id, anio: carData?.anio })
+            dispatch(openEditForm(carData))
+        } catch (err) {
+            console.error('❌ Error al cargar detalle para Edit:', err)
+            dispatch(setError('No se pudo cargar el detalle del vehículo'))
         }
-        
-        const urls = extractImageUrls(vehicle)
-        const carData = {
-            _id: vehicle.id,
-            marca: vehicle.marca,
-            modelo: vehicle.modelo,
-            version: vehicle.version || 'Standard',
-            precio: vehicle.precio,
-            caja: vehicle.caja || 'Automática',
-            segmento: vehicle.segmento || 'Sedán',
-            cilindrada: vehicle.cilindrada || 2000,
-            color: vehicle.color || 'Blanco',
-            anio: vehicle.anio || vehicle.año,
-            combustible: vehicle.combustible || 'Gasolina',
-            transmision: vehicle.transmision || 'CVT',
-            kilometraje: vehicle.kilometraje || vehicle.kms,
-            traccion: vehicle.traccion || 'Delantera',
-            tapizado: vehicle.tapizado || 'Tela',
-            categoriaVehiculo: vehicle.categoriaVehiculo || 'Particular',
-            frenos: vehicle.frenos || 'ABS',
-            turbo: vehicle.turbo || 'No',
-            llantas: vehicle.llantas || 'Aleación 16"',
-            HP: vehicle.HP || '150',
-            detalle: vehicle.detalle || 'Vehículo en buen estado',
-            urls
-        }
-        console.log('🔍 DEBUG Dashboard -> urls extraídas:', urls)
-        dispatch(openEditForm(carData))
-    }, [])
+    }, [dispatch])
 
     const handleCloseModal = useCallback(() => {
         dispatch(closeModal())

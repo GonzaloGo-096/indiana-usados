@@ -60,9 +60,9 @@ export const useAdminMutations = () => {
                 }
             }
             
-            // ✅ VALIDAR ARCHIVOS DE IMAGEN SI HAY ALGUNO
+            // ✅ VALIDAR ARCHIVOS DE IMAGEN SI HAY ALGUNO (modo edit)
             if (Object.keys(imageFiles).length > 0) {
-                const imageErrors = validateImageFields(imageFiles)
+                const imageErrors = validateImageFields(imageFiles, 'edit')
                 if (Object.keys(imageErrors).length > 0) {
                     throw new Error(`Errores de imagen: ${Object.values(imageErrors).join(', ')}`)
                 }
@@ -87,13 +87,13 @@ export const useAdminMutations = () => {
                 })
                 
                 // ✅ LLAMAR A LA API CON ARCHIVOS
-                const response = await vehiclesApi.updatePhoto(id, cloudinaryFormData)
+                const response = await vehiclesApi.updateVehicle(id, cloudinaryFormData)
                 logger.success('Foto actualizada con archivos:', response)
                 setSuccess(true)
                 return { success: true, data: response }
             } else {
                 // ✅ LLAMAR A LA API SIN ARCHIVOS (solo datos)
-                const response = await vehiclesApi.updatePhoto(id, formData)
+                const response = await vehiclesApi.updateVehicle(id, formData)
                 logger.success('Foto actualizada sin archivos:', response)
                 setSuccess(true)
                 return { success: true, data: response }
@@ -144,7 +144,7 @@ export const useAdminMutations = () => {
             }
 
             // ✅ LLAMAR A LA API PARA ELIMINAR
-            const response = await vehiclesApi.deletePhoto(id)
+            const response = await vehiclesApi.deleteVehicle(id)
             logger.success('Foto eliminada:', response)
             setSuccess(true)
             return { success: true, data: response }

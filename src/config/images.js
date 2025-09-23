@@ -48,10 +48,29 @@ export const IMAGES = {
     carouselImages: getCarouselImages()
 }
 
-// Función para obtener imagen aleatoria del carrusel
+// Función hash determinística (djb2) para selección estable
+function djb2(str) {
+    let h = 5381
+    for (let i = 0; i < str.length; i++) {
+        h = ((h << 5) + h) + str.charCodeAt(i)
+    }
+    return h >>> 0
+}
+
+// Función para seleccionar elemento de array de forma determinística
+export function pickStable(arr, seedStr) {
+    if (!arr?.length) return null
+    const idx = djb2(seedStr) % arr.length
+    return arr[idx]
+}
+
+// Función para obtener imagen del carrusel de forma determinística
+// Evita Math.random() para mantener caché efectivo y URLs consistentes
 export const getRandomCarouselImage = (options = {}) => {
     const images = getCarouselImages(options)
-    return images[Math.floor(Math.random() * images.length)]
+    // Usar seed determinístico para mantener consistencia entre recargas
+    const seed = options.seed || options.vehicleId || images[0]?.public_id || 'default'
+    return pickStable(images, String(seed))
 }
 
 // Función para obtener imagen por índice

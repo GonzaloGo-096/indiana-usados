@@ -57,8 +57,9 @@ export const useCarMutation = () => {
                 `${key}: ${imageFiles[key].length} archivo(s)`
             ).join(', '))
             
-            // ✅ VALIDAR ARCHIVOS DE IMAGEN
-            const imageErrors = validateImageFields(imageFiles)
+            // ✅ VALIDAR ARCHIVOS DE IMAGEN (solo formato, no cantidad en modo edit)
+            const imageErrors = validateImageFields(imageFiles, 'create')
+            
             if (Object.keys(imageErrors).length > 0) {
                 throw new Error(`Errores de imagen: ${Object.values(imageErrors).join(', ')}`)
             }
@@ -185,65 +186,59 @@ export const useCarMutation = () => {
                 }
             }
             
-            // ✅ INTENTAR PRIMER ENDPOINT: PUT /photos/updatephoto/:id
-            let response
-            try {
-                console.log('🔄 Intentando PUT /photos/updatephoto/:id...')
-                
-                // ✅ DEBUG EXTENDIDO: Logging completo del FormData antes del envío
-                console.log('🔍 DEBUG COMPLETO - FormData que se enviará:')
-                console.log('🔍 ID del vehículo:', id)
-                console.log('🔍 Headers:', {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token.substring(0, 20)}...`
-                })
-                
-                // ✅ LOGGING DETALLADO DE CADA CAMPO
-                for (let [key, value] of formData.entries()) {
-                    if (value instanceof File) {
-                        console.log(`📁 ${key}:`, {
-                            name: value.name,
-                            size: value.size,
-                            type: value.type,
-                            lastModified: value.lastModified
-                        })
+            // ✅ VALIDAR ARCHIVOS DE IMAGEN SI EXISTEN (modo edit - solo formato)
+            const imageFiles = {}
+            const dataFields = {}
+            
+            for (let [key, value] of formData.entries()) {
+                if (value instanceof File) {
+                    if (imageFiles[key]) {
+                        imageFiles[key].push(value)
                     } else {
-                        console.log(`📝 ${key}:`, value)
+                        imageFiles[key] = [value]
                     }
-                }
-                
-                response = await vehiclesService.updateVehicle(id, formData)
-                console.log('✅ Éxito con PUT /photos/updatephoto/:id')
-            } catch (putError) {
-                console.log('⚠️ PUT /photos/updatephoto/:id falló, intentando POST...')
-                
-                // ✅ INTENTAR SEGUNDO ENDPOINT: POST /photos/updatephoto/:id
-                try {
-                    console.log('🔄 Intentando POST /photos/updatephoto/:id...')
-                    response = await vehiclesService.updateVehicle(id, formData)
-                    console.log('✅ Éxito con POST /photos/updatephoto/:id')
-                } catch (postError) {
-                    console.log('⚠️ POST /photos/updatephoto/:id también falló, intentando PUT /photos/:id...')
-                    
-                    // ✅ INTENTAR TERCER ENDPOINT: PUT /photos/:id
-                    try {
-                        console.log('🔄 Intentando PUT /photos/:id...')
-                        // ✅ NOTA: Este endpoint no existe en el servicio unificado
-                        // pero mantenemos la lógica para compatibilidad
-                        response = await vehiclesService.updateVehicle(id, formData)
-                        console.log('✅ Éxito con PUT /photos/:id')
-                    } catch (finalError) {
-                        // ✅ TODOS LOS ENDPOINTS FALLARON
-                        console.error('❌ Todos los endpoints fallaron:')
-                        console.error('PUT /photos/updatephoto/:id:', putError.response?.status, putError.response?.statusText)
-                        console.error('POST /photos/updatephoto/:id:', postError.response?.status, postError.response?.statusText)
-                        console.error('PUT /photos/:id:', finalError.response?.status, finalError.response?.statusText)
-                        
-                        // ✅ LANZAR ERROR CON INFORMACIÓN DETALLADA
-                        throw new Error(`Todos los endpoints de actualización fallaron. Verificar configuración del backend. Último error: ${finalError.response?.status} ${finalError.response?.statusText}`)
-                    }
+                } else {
+                    dataFields[key] = value
                 }
             }
+            
+            // ✅ VALIDAR SOLO FORMATO DE ARCHIVOS (no cantidad en modo edit)
+            if (Object.keys(imageFiles).length > 0) {
+                const imageErrors = validateImageFields(imageFiles, 'edit')
+                if (Object.keys(imageErrors).length > 0) {
+                    throw new Error(`Errores de imagen: ${Object.values(imageErrors).join(', ')}`)
+                }
+            }
+            
+            // ✅ DEBUG: Logging del FormData antes del envío
+            console.log('🔍 DEBUG COMPLETO - FormData que se enviará:')
+            console.log('🔍 ID del vehículo:', id)
+            console.log('🔍 Headers:', {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token.substring(0, 20)}...`
+            })
+            
+            // ✅ DEBUG: Verificar si fotosExtra está presente
+            const hasFotosExtra = Array.from(formData.entries()).some(([key]) => key === 'fotosExtra')
+            console.log('🔍 ¿Incluye fotosExtra?', hasFotosExtra)
+            
+            // ✅ LOGGING DETALLADO DE CADA CAMPO
+            for (let [key, value] of formData.entries()) {
+                if (value instanceof File) {
+                    console.log(`📁 ${key}:`, {
+                        name: value.name,
+                        size: value.size,
+                        type: value.type,
+                        lastModified: value.lastModified
+                    })
+                } else {
+                    console.log(`📝 ${key}:`, value)
+                }
+            }
+            
+            // ✅ USAR ENDPOINT CORRECTO: PUT /photos/updatephoto/:id
+            console.log('🔄 Enviando actualización...')
+            const response = await vehiclesService.updateVehicle(id, formData)
 
             console.log('✅ Respuesta de actualización:', response.data)
             setSuccess(true)
@@ -252,13 +247,15 @@ export const useCarMutation = () => {
         } catch (err) {
             console.error('❌ Error al actualizar auto:', err)
             
-            // ✅ DEBUG EXTENDIDO: Logging detallado del error 400
-            if (err.response?.status === 400) {
-                console.error('🚨 ERROR 400 - Análisis detallado:')
+            // ✅ DEBUG EXTENDIDO: Logging detallado del error
+            if (err.response) {
+                console.error('🚨 ERROR DEL BACKEND - Análisis detallado:')
                 console.error('📡 Status:', err.response.status)
                 console.error('📡 StatusText:', err.response.statusText)
                 console.error('📡 Data completo:', err.response.data)
                 console.error('📡 Headers de respuesta:', err.response.headers)
+                console.error('📡 URL:', err.config?.url)
+                console.error('📡 Method:', err.config?.method)
                 
                 // ✅ INTENTAR EXTRAER MENSAJE DE ERROR ESPECÍFICO
                 if (err.response.data) {

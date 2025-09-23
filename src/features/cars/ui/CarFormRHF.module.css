@@ -207,6 +207,48 @@
     border-color: #ff6b6b;
     background: #ffe0e0;
     color: #d63031;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ✅ ELEMENTOS DEL PLACEHOLDER ELIMINADO */
+.removedIcon {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.removedText {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.removedSubtext {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+/* ✅ ACCIONES PARA IMÁGENES ELIMINADAS */
+.removedActions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.restoreButton {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.restoreButton:hover {
+    background: #218838;
 }
 
 /* ✅ HINT PARA MODO CREATE */

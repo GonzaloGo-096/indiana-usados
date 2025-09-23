@@ -18,11 +18,15 @@ import './styles/fonts.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { GlobalErrorBoundary } from '@shared'
 import { validateConfig } from './config'
+import { initImageMetrics } from './metrics/imageTiming'
 
 // Validar configuración al inicio
 if (!validateConfig()) {
   console.error('❌ Error en configuración de la aplicación')
 }
+
+// Inicializar métricas de imágenes
+initImageMetrics()
 
 // Crear una nueva instancia de QueryClient
 const queryClient = new QueryClient({

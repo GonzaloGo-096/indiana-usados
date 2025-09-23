@@ -13,8 +13,10 @@
  * @version 2.0.0
  */
 
-import React, { memo, useState, useEffect, useCallback } from 'react'
+import React, { memo, useState, useMemo } from 'react'
 import { getOptimizedImage, getResponsiveImage } from '@config/images'
+import { cldUrl, cldSrcset } from '@utils/cloudinaryUrl'
+import { extractPublicIdFromUrl, isCloudinaryUrl } from '@utils/extractPublicId'
 import styles from './OptimizedImage.module.css'
 
 /**
@@ -38,6 +40,8 @@ export const OptimizedImage = memo(({
     src,
     alt = '',
     fallback = null,
+    fallbackUrl = null,
+    publicId = null,
     lazy = true,
     sizes = {
         sm: '300px',
@@ -45,6 +49,8 @@ export const OptimizedImage = memo(({
         lg: '800px',
         xl: '1200px'
     },
+    widths = [],
+    variant = 'fluid',
     format = 'webp',
     className = '',
     style = {},
@@ -53,45 +59,65 @@ export const OptimizedImage = memo(({
     showSkeleton = true,
     optimizationOptions = {},
     useCdn = false,
+    isCritical = false,
+    fetchpriority,
     ...props
 }) => {
     const [state, setState] = useState({
         isLoading: true,
         isLoaded: false,
-        isError: false,
-        currentSrc: null
+        isError: false
     })
 
-    // Determinar si src es una clave de imagen o una URL
-    const isImageKey = !src?.startsWith('http') && !src?.startsWith('/') && !src?.startsWith('./')
+    // Determinar public_id efectivo
+    const effectivePublicId = publicId ?? (isCloudinaryUrl(fallbackUrl || src) ? extractPublicIdFromUrl(fallbackUrl || src) : null)
     
-    // Obtener URL optimizada
-    const getOptimizedSrc = useCallback(() => {
+    // Configuración base para Cloudinary
+    const base = { variant: variant || 'fluid' }
+    
+    // Memoizar opciones de optimización para estabilidad
+    const stableOpts = useMemo(() => optimizationOptions || {}, [optimizationOptions])
+
+    // Generar URL optimizada con useMemo (sin useEffect)
+    const optimizedSrc = useMemo(() => {
+        if (effectivePublicId) {
+            return cldUrl(effectivePublicId, { ...base, ...stableOpts })
+        }
+        
+        // Fallback: determinar si src es una clave de imagen o URL directa
+        const isImageKey = !src?.startsWith('http') && !src?.startsWith('/') && !src?.startsWith('./')
+        
         if (isImageKey) {
             // Es una clave de imagen, usar el sistema de configuración
             return getOptimizedImage(src, {
                 format,
-                ...optimizationOptions,
+                ...stableOpts,
                 forceCdn: useCdn
             })
         }
         
-        // Es una URL directa
-        return src
-    }, [isImageKey, src, format, optimizationOptions, useCdn])
+        // Es una URL directa o fallbackUrl
+        return fallbackUrl || src || ''
+    }, [effectivePublicId, base.variant, stableOpts, src, fallbackUrl, format, useCdn])
 
-    // Obtener srcset si es necesario
-    const getSrcSet = () => {
-        if (isImageKey) {
-            const responsive = getResponsiveImage(src, Object.values(sizes).map(s => parseInt(s)), {
-                format,
-                ...optimizationOptions,
-                forceCdn: useCdn
-            })
-            return responsive.srcSet
+    // Generar srcset si hay widths definidos
+    const optimizedSrcSet = useMemo(() => {
+        if (!effectivePublicId || !widths?.length) {
+            // Fallback al sistema anterior si no hay public_id
+            const isImageKey = !src?.startsWith('http') && !src?.startsWith('/') && !src?.startsWith('./')
+            if (isImageKey) {
+                const responsive = getResponsiveImage(src, Object.values(sizes).map(s => parseInt(s)), {
+                    format,
+                    ...stableOpts,
+                    forceCdn: useCdn
+                })
+                return responsive.srcSet
+            }
+            return ''
         }
-        return ''
-    }
+        
+        return cldSrcset(effectivePublicId, widths, { ...base, ...stableOpts })
+    }, [effectivePublicId, widths, base.variant, stableOpts, src, sizes, format, useCdn])
 
     // Manejar carga de imagen
     const handleLoad = () => {
@@ -106,13 +132,12 @@ export const OptimizedImage = memo(({
 
     // Manejar error de imagen
     const handleError = () => {
-        if (fallback && state.currentSrc !== fallback) {
+        if (fallback && optimizedSrc !== fallback) {
             setState(prev => ({
                 ...prev,
                 isLoading: true,
                 isLoaded: false,
-                isError: false,
-                currentSrc: fallback
+                isError: false
             }))
         } else {
             setState(prev => ({
@@ -124,18 +149,6 @@ export const OptimizedImage = memo(({
         }
         onError?.()
     }
-
-    // Actualizar src cuando cambie
-    useEffect(() => {
-        const optimizedSrc = getOptimizedSrc()
-        setState(prev => ({
-            ...prev,
-            isLoading: true,
-            isLoaded: false,
-            isError: false,
-            currentSrc: optimizedSrc
-        }))
-    }, [src, format, useCdn, optimizationOptions, getOptimizedSrc])
 
     // Renderizar skeleton de carga
     if (state.isLoading && showSkeleton) {
@@ -168,14 +181,19 @@ export const OptimizedImage = memo(({
         )
     }
 
+    // Determinar fetchpriority para imágenes críticas (paridad con ResponsiveImage)
+    const finalFetchpriority = isCritical ? 'high' : (fetchpriority || 'auto')
+
     return (
         <img
-            src={state.currentSrc}
+            src={optimizedSrc}
             alt={alt}
-            srcSet={getSrcSet()}
+            srcSet={optimizedSrcSet}
             className={`${styles.image} ${className} ${state.isLoaded ? styles.loaded : ''}`}
             style={style}
             loading={lazy ? 'lazy' : 'eager'}
+            decoding="async"
+            fetchpriority={finalFetchpriority}
             onLoad={handleLoad}
             onError={handleError}
             {...props}
