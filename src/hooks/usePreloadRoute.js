@@ -12,6 +12,7 @@
  */
 
 import { useCallback, useRef } from 'react'
+import { logger } from '@utils/logger'
 
 /**
  * Hook para preloading estratégico de rutas
@@ -45,9 +46,9 @@ export const usePreloadRoute = (options = {}) => {
             try {
                 importFn()
                 preloadedRoutes.current.add(routePath)
-                console.log(`🚀 Preloaded route: ${routePath}`)
+                logger.debug('hooks:preload', `Preloaded route: ${routePath}`)
             } catch (error) {
-                console.warn(`⚠️ Failed to preload route: ${routePath}`, error)
+                logger.warn('hooks:preload', `Failed to preload route: ${routePath}`, error)
             }
         }, delay)
 
@@ -63,9 +64,9 @@ export const usePreloadRoute = (options = {}) => {
         try {
             importFn()
             preloadedRoutes.current.add(routePath)
-            console.log(`⚡ Immediately preloaded route: ${routePath}`)
+            logger.debug('hooks:preload', `Immediately preloaded route: ${routePath}`)
         } catch (error) {
-            console.warn(`⚠️ Failed to preload route immediately: ${routePath}`, error)
+            logger.warn('hooks:preload', `Failed to preload route immediately: ${routePath}`, error)
         }
     }, [enabled])
 

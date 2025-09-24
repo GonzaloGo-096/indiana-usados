@@ -1,31 +1,33 @@
 // ✅ FUNCIÓN ÚNICA Y SIMPLE para convertir filtros del frontend al backend
+import { logger } from '@utils/logger'
+
 export const buildFiltersForBackend = (filters = {}) => {
   const params = new URLSearchParams();
   
   // 🔍 LOG CRÍTICO: Ver qué filtros llegan (solo en desarrollo)
   if (import.meta.env.DEV) {
-    console.log('🔍 buildFiltersForBackend RECIBE:', filters);
+    logger.debug('filters:build', 'RECIBE', filters);
   }
   
   // 1. FILTROS SIMPLES (arrays → strings)
   if (filters.marca && filters.marca.length > 0) {
     params.set('marca', filters.marca.join(','));
     if (import.meta.env.DEV) {
-      console.log('🔍 MARCA ENVIADA:', filters.marca.join(','));
+      logger.debug('filters:build', 'MARCA ENVIADA', filters.marca.join(','));
     }
   }
   
   if (filters.caja && filters.caja.length > 0) {
     params.set('caja', filters.caja.join(','));
     if (import.meta.env.DEV) {
-      console.log('🔍 CAJA ENVIADA:', filters.caja.join(','));
+      logger.debug('filters:build', 'CAJA ENVIADA', filters.caja.join(','));
     }
   }
   
   if (filters.combustible && filters.combustible.length > 0) {
     params.set('combustible', filters.combustible.join(','));
     if (import.meta.env.DEV) {
-      console.log('🔍 COMBUSTIBLE ENVIADO:', filters.combustible.join(','));
+      logger.debug('filters:build', 'COMBUSTIBLE ENVIADO', filters.combustible.join(','));
     }
   }
   
@@ -33,23 +35,23 @@ export const buildFiltersForBackend = (filters = {}) => {
   if (filters.año && filters.año.length === 2 && 
       !(filters.año[0] === 1990 && filters.año[1] === 2024)) {
     params.set('anio', `${filters.año[0]},${filters.año[1]}`);
-    console.log('🔍 AÑO ENVIADO:', `${filters.año[0]},${filters.año[1]}`);
+    logger.debug('filters:build', 'AÑO ENVIADO', `${filters.año[0]},${filters.año[1]}`);
   }
   
   if (filters.precio && filters.precio.length === 2 && 
       !(filters.precio[0] === 5000000 && filters.precio[1] === 100000000)) {
     params.set('precio', `${filters.precio[0]},${filters.precio[1]}`);
-    console.log('🔍 PRECIO ENVIADO:', `${filters.precio[0]},${filters.precio[1]}`);
+    logger.debug('filters:build', 'PRECIO ENVIADO', `${filters.precio[0]},${filters.precio[1]}`);
   }
   
   if (filters.kilometraje && filters.kilometraje.length === 2 && 
       !(filters.kilometraje[0] === 0 && filters.kilometraje[1] === 200000)) {
     params.set('km', `${filters.kilometraje[0]},${filters.kilometraje[1]}`);
-    console.log('🔍 KM ENVIADO:', `${filters.kilometraje[0]},${filters.kilometraje[1]}`);
+    logger.debug('filters:build', 'KM ENVIADO', `${filters.kilometraje[0]},${filters.kilometraje[1]}`);
   }
   
   if (import.meta.env.DEV) {
-    console.log('🔍 PARÁMETROS FINALES:', params.toString());
+    logger.debug('filters:build', 'PARÁMETROS FINALES', params.toString());
   }
   return params;
 };

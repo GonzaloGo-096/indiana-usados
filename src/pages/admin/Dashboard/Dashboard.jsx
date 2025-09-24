@@ -162,25 +162,25 @@ const Dashboard = () => {
     const handleOpenEditForm = useCallback(async (vehicle) => {
         try {
             const id = vehicle._id || vehicle.id
-            console.debug('[EDIT] abrir', { id })
+            // logger.debug('admin:dashboard', '[EDIT] abrir', { id })
             dispatch(setLoading())
 
-            console.debug('[EDIT] GET detalle', { id })
+            // logger.debug('admin:dashboard', '[EDIT] GET detalle', { id })
             const detail = await vehiclesService.getVehicleById(id)
 
             const unwrapped = unwrapDetail(detail)
             const carData = normalizeDetailToFormInitialData(unwrapped)
 
             if (!carData || typeof carData !== 'object') {
-                console.warn('[EDIT] detalle vacío o inválido')
+                // logger.warn('admin:dashboard', '[EDIT] detalle vacío o inválido')
                 dispatch(setError('Respuesta de detalle inválida'))
                 return
             }
 
-            console.debug('[EDIT] initialData listo', { id: carData?._id, anio: carData?.anio })
+            // logger.debug('admin:dashboard', '[EDIT] initialData listo', { id: carData?._id, anio: carData?.anio })
             dispatch(openEditForm(carData))
         } catch (err) {
-            console.error('❌ Error al cargar detalle para Edit:', err)
+            // logger.error('admin:dashboard', 'Error al cargar detalle para Edit', err)
             dispatch(setError('No se pudo cargar el detalle del vehículo'))
         }
     }, [dispatch])
@@ -194,23 +194,23 @@ const Dashboard = () => {
         try {
             dispatch(setLoading())
             
-            console.log('🚀 CREANDO VEHÍCULO:', { formData })
+            // logger.info('admin:dashboard', 'CREANDO VEHÍCULO', { formDataKeys: Object.keys(formData || {}) })
             
             // ✅ USAR LA FUNCIÓN REAL createCar
             const result = await createCar(formData)
             
             if (result.success) {
-                console.log('✅ Vehículo creado exitosamente')
+                // logger.info('admin:dashboard', 'Vehículo creado exitosamente')
                 // ✅ REFRESCAR LISTA Y CERRAR MODAL
                 refetch()
                 handleCloseModal()
             } else {
-                console.error('❌ Error al crear vehículo:', result.error)
+                // logger.error('admin:dashboard', 'Error al crear vehículo', result.error)
                 dispatch(setError(`No se pudo crear el vehículo: ${result.error}`))
             }
             
         } catch (error) {
-            console.error('❌ Error al crear vehículo:', error)
+            // logger.error('admin:dashboard', 'Error al crear vehículo', error)
             dispatch(setError('Error inesperado al crear el vehículo'))
         }
     }, [refetch, handleCloseModal, dispatch])
@@ -219,23 +219,23 @@ const Dashboard = () => {
         try {
             dispatch(setLoading())
             
-            console.log('🚀 ACTUALIZANDO VEHÍCULO:', { vehicleId, formData })
+            // logger.info('admin:dashboard', 'ACTUALIZANDO VEHÍCULO', { vehicleId, formDataKeys: Object.keys(formData || {}) })
             
             // ✅ USAR LA FUNCIÓN REAL updateCar
             const result = await updateCar(vehicleId, formData)
             
             if (result.success) {
-                console.log('✅ Vehículo actualizado exitosamente')
+                // logger.info('admin:dashboard', 'Vehículo actualizado exitosamente')
                 // ✅ REFRESCAR LISTA Y CERRAR MODAL
                 refetch()
                 handleCloseModal()
             } else {
-                console.error('❌ Error al actualizar vehículo:', result.error)
+                // logger.error('admin:dashboard', 'Error al actualizar vehículo', result.error)
                 dispatch(setError(`No se pudo actualizar el vehículo: ${result.error}`))
             }
             
         } catch (error) {
-            console.error('❌ Error al actualizar vehículo:', error)
+            // logger.error('admin:dashboard', 'Error al actualizar vehículo', error)
             dispatch(setError('Error inesperado al actualizar el vehículo'))
         }
     }, [refetch, handleCloseModal, dispatch])
@@ -244,17 +244,17 @@ const Dashboard = () => {
     const handlePauseVehicle = useCallback(async (vehicleId) => {
         try {
             // ✅ SIMULAR LLAMADA A API (REEMPLAZAR CON useMutation)
-            console.log('⏸️ PAUSAR VEHÍCULO:', vehicleId)
+            // logger.info('admin:dashboard', 'PAUSAR VEHÍCULO', { vehicleId })
             
             // ✅ SIMULAR ÉXITO
             await new Promise(resolve => setTimeout(resolve, 500))
-            console.log('✅ Vehículo pausado exitosamente')
+            // logger.info('admin:dashboard', 'Vehículo pausado exitosamente')
             
             // ✅ REFRESCAR LISTA
             refetch()
             
         } catch (error) {
-            console.error('❌ Error al pausar vehículo:', error)
+            // logger.error('admin:dashboard', 'Error al pausar vehículo', error)
         }
     }, [refetch])
 
@@ -266,22 +266,22 @@ const Dashboard = () => {
                 return
             }
             
-            console.log('🗑️ ELIMINANDO VEHÍCULO:', vehicleId)
+            // logger.info('admin:dashboard', 'ELIMINANDO VEHÍCULO', { vehicleId })
             
             // ✅ USAR LA FUNCIÓN deleteCar DEL HOOK
             const result = await deleteCar(vehicleId)
             
             if (result.success) {
-                console.log('✅ Vehículo eliminado exitosamente')
+                // logger.info('admin:dashboard', 'Vehículo eliminado exitosamente')
                 // ✅ REFRESCAR LISTA
                 refetch()
             } else {
-                console.error('❌ Error al eliminar vehículo:', result.error)
+                // logger.error('admin:dashboard', 'Error al eliminar vehículo', result.error)
                 alert(`Error al eliminar: ${result.error}`)
             }
             
         } catch (error) {
-            console.error('❌ Error al eliminar vehículo:', error)
+            // logger.error('admin:dashboard', 'Error al eliminar vehículo', error)
             alert('Error inesperado al eliminar el vehículo')
         }
     }, [refetch])

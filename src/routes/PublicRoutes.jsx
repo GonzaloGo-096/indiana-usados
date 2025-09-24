@@ -17,6 +17,7 @@ const Home = lazy(() => import('../pages/Home/Home'))
 const Vehiculos = lazy(() => import('../pages/Vehiculos'))
 const VehiculoDetalle = lazy(() => import('../pages/VehiculoDetalle'))
 const Nosotros = lazy(() => import('../pages/Nosotros'))
+const Postventa = lazy(() => import('../pages/Postventa'))
 
 // ✅ FALLBACK: Componente de carga para Suspense
 const PageLoading = () => (
@@ -37,6 +38,7 @@ const PublicRoutes = () => (
                     <Route path="/vehiculos" element={<Vehiculos />} />
                     <Route path="/vehiculo/:id" element={<VehiculoDetalle />} />
                     <Route path="/nosotros" element={<Nosotros />} />
+                    <Route path="/postventa" element={<Postventa />} />
                 </Routes>
             </Suspense>
         </main>

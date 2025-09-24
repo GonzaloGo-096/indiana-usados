@@ -1,240 +1,10 @@
 /**
- * Fonts.css - Carga de fuentes del manual de marca Indiana
- * 
- * @author Indiana Usados
- * @version 1.0.0
+ * Fonts.css - Solo Pressio (WOFF), 3 pesos: 400/600/700
  */
 
-/* ===== BARLOW CONDENSED ===== */
+/* ===== PRESSIO ===== */
 @font-face {
-  font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/BarlowCondensed-Thin.ttf') format('truetype');
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/BarlowCondensed-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/BarlowCondensed-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/BarlowCondensed-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/BarlowCondensed-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/BarlowCondensed-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/BarlowCondensed-ExtraBold.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/BarlowCondensed-Black.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* ===== BARLOW ===== */
-@font-face {
-  font-family: 'Barlow';
-  src: url('../assets/fuentes/Barlow-Thin.ttf') format('truetype');
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow';
-  src: url('../assets/fuentes/Barlow-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow';
-  src: url('../assets/fuentes/Barlow-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow';
-  src: url('../assets/fuentes/Barlow-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow';
-  src: url('../assets/fuentes/Barlow-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow';
-  src: url('../assets/fuentes/Barlow-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow';
-  src: url('../assets/fuentes/Barlow-ExtraBold.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow';
-  src: url('../assets/fuentes/Barlow-Black.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* ===== NEXT SPHERE ===== */
-@font-face {
-  font-family: 'Next Sphere';
-  src: url('../assets/fuentes/Next Sphere Thin.otf') format('opentype');
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Next Sphere';
-  src: url('../assets/fuentes/Next Sphere Extra Light.otf') format('opentype');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Next Sphere';
-  src: url('../assets/fuentes/Next Sphere Light.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Next Sphere';
-  src: url('../assets/fuentes/Next Sphere Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Next Sphere';
-  src: url('../assets/fuentes/Next Sphere Medium.otf') format('opentype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Next Sphere';
-  src: url('../assets/fuentes/Next Sphere Semi Bold.otf') format('opentype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Next Sphere';
-  src: url('../assets/fuentes/Next Sphere Bold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Next Sphere';
-  src: url('../assets/fuentes/Next Sphere Extra Bold.otf') format('opentype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Next Sphere';
-  src: url('../assets/fuentes/Next Sphere Black.otf') format('opentype');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* ===== PRESSIO TEST ===== */
-@font-face {
-  font-family: 'PressioTEST';
-  src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.21.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'PressioTEST';
-  src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.22.woff') format('woff');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'PressioTEST';
-  src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.23.woff') format('woff');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'PressioTEST';
+  font-family: 'Pressio';
   src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.24.woff') format('woff');
   font-weight: 400;
   font-style: normal;
@@ -242,15 +12,7 @@
 }
 
 @font-face {
-  font-family: 'PressioTEST';
-  src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.25.woff') format('woff');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'PressioTEST';
+  font-family: 'Pressio';
   src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.31.woff') format('woff');
   font-weight: 600;
   font-style: normal;
@@ -258,25 +20,9 @@
 }
 
 @font-face {
-  font-family: 'PressioTEST';
+  font-family: 'Pressio';
   src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.32.woff') format('woff');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
-
-@font-face {
-  font-family: 'PressioTEST';
-  src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.33.woff') format('woff');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'PressioTEST';
-  src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.34.woff') format('woff');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-} 

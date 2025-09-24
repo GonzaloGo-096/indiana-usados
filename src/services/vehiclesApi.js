@@ -27,7 +27,7 @@ export const vehiclesService = {
     urlParams.set('cursor', String(cursor))
     
     const endpoint = `/photos/getallphotos?${urlParams.toString()}`
-    logger.log('Fetching vehicles:', endpoint)
+    logger.debug('vehicles:list', 'Fetching vehicles', endpoint)
     
     const response = await axiosInstance.get(endpoint, { signal })
     return response.data
@@ -72,21 +72,21 @@ export const vehiclesService = {
       for (let m = 0; m < methodsToTry.length; m++) {
         const method = methodsToTry[m]
         try {
-          console.log(`🔄 Probando: ${method.toUpperCase()} ${endpoint}`)
+          logger.debug('vehicles:update', `Probando ${method.toUpperCase()} ${endpoint}`)
           const response = await authAxiosInstance[method](endpoint, formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
           })
           if (response.status >= 200 && response.status < 300) {
-            console.log(`✅ ÉXITO con: ${method.toUpperCase()} ${endpoint} - Status: ${response.status}`)
+            logger.info('vehicles:update', `ÉXITO ${method.toUpperCase()} ${endpoint}`, { status: response.status })
             return response.data
           }
           throw new Error(`Status no exitoso: ${response.status}`)
         } catch (error) {
           const status = error.response?.status || 'Sin respuesta'
-          console.log(`❌ Falló: ${method.toUpperCase()} ${endpoint} - Status: ${status}`)
+          logger.warn('vehicles:update', `Falló ${method.toUpperCase()} ${endpoint}`, { status })
           // Continuar con siguiente método o endpoint
           if (e === endpointsToTry.length - 1 && m === methodsToTry.length - 1) {
-            console.error('❌ TODOS LOS ENDPOINTS/MÉTODOS FALLARON. Último error:', error.message)
+            logger.error('vehicles:update', 'TODOS LOS ENDPOINTS/MÉTODOS FALLARON', { message: error.message })
             throw error
           }
         }

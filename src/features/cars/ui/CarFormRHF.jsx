@@ -6,6 +6,7 @@
  */
 
 import React, { useEffect, useCallback, useMemo } from 'react'
+import { logger } from '@utils/logger'
 import { useForm } from 'react-hook-form'
 import { useImageReducer, IMAGE_FIELDS } from './useImageReducer'
 import styles from './CarFormRHF.module.css'
@@ -89,8 +90,6 @@ const CarFormRHF = ({
 
     // ✅ CARGAR DATOS INICIALES (campos básicos) y sincronizar imágenes
     useEffect(() => {
-        console.log('[Form] init', { mode, hasInitial: !!initialData, id: initialData?._id || initialData?.id })
-        
         if (mode === MODE.EDIT && initialData) {
             // ✅ CARGAR DATOS BÁSICOS
             const basicFields = [
@@ -132,9 +131,6 @@ const CarFormRHF = ({
     const validateForm = useCallback((data) => {
         const errors = {}
         
-        console.log('🔍 validateForm - mode:', mode, 'type:', typeof mode)
-        console.log('🔍 validateForm - data keys:', Object.keys(data))
-        
         // ✅ VALIDAR CAMPOS REQUERIDOS
         const requiredFields = [
             'marca', 'modelo', 'version', 'precio', 'caja', 'segmento',
@@ -161,15 +157,8 @@ const CarFormRHF = ({
         })
         
         // ✅ VALIDAR IMÁGENES SEGÚN MODO
-        console.log('🔍 Llamando validateImages con mode:', mode)
-        console.log('🔍 validateImages - antes de llamar')
         const imageErrors = validateImages(mode)
-        console.log('🔍 imageErrors recibidos:', imageErrors)
-        console.log('🔍 imageErrors keys:', Object.keys(imageErrors))
         Object.assign(errors, imageErrors)
-        
-        console.log('🔍 Errores finales:', errors)
-        console.log('🔍 Errores finales keys:', Object.keys(errors))
         return errors
     }, [mode, validateImages])
 
@@ -177,7 +166,6 @@ const CarFormRHF = ({
     const buildVehicleFormData = useCallback((data) => {
         const formData = new FormData()
         
-        console.log('🏗️ Construyendo FormData para modo:', mode)
         
         // ✅ AGREGAR CAMPOS DE DATOS PRIMITIVOS
         Object.entries(data).forEach(([key, value]) => {
@@ -190,7 +178,6 @@ const CarFormRHF = ({
             }
         })
         
-        console.log('📝 Campos agregados:', Object.keys(data).length, 'campos')
         
         // ✅ AGREGAR IMÁGENES SEGÚN ESTADO
         buildImageFormData(formData)
@@ -200,7 +187,6 @@ const CarFormRHF = ({
 
     // ✅ MANEJAR SUBMIT
     const onSubmit = async (data) => {
-        console.log('[Form] submit', { mode })
         
         try {
             clearErrors()
@@ -209,7 +195,7 @@ const CarFormRHF = ({
             const validationErrors = validateForm(data)
 
             if (Object.keys(validationErrors).length > 0) {
-                console.log('❌ Errores de validación:', validationErrors)
+                logger.warn('form:car', 'Errores de validación', Object.keys(validationErrors))
 
                 // ✅ MOSTRAR ERRORES
                 Object.entries(validationErrors).forEach(([field, message]) => {
@@ -234,7 +220,7 @@ const CarFormRHF = ({
 
             // El padre maneja éxito/error, cierre de modal y refetch
         } catch (error) {
-            console.error('[Form] submit error', error)
+            logger.error('form:car', 'submit error', error)
         }
     }
 

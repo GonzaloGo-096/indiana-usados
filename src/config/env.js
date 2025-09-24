@@ -1,10 +1,11 @@
 /**
- * env.js - Configuración de variables de entorno para el navegador
+ * env.js - Configuración de variables de entorno (DEPRECATED)
  * 
- * Reemplaza process.env por import.meta.env para compatibilidad con Vite
+ * Nota: `src/config/index.js` es la fuente única de configuración.
+ * Este archivo se mantiene temporalmente por compatibilidad y será
+ * removido en una futura limpieza si no hay importaciones activas.
  * 
- * @author Indiana Usados
- * @version 1.0.0
+ * No agregar nuevas claves aquí.
  */
 
 // Variables de entorno disponibles en el navegador

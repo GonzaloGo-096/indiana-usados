@@ -70,6 +70,53 @@ src/
 - [Documentación Técnica](./docs/README.md)
 - [Sistema de Paginación](./docs/PAGINACION_VEHICULOS.md)
 
+### ⚙️ Variables de entorno (Vite)
+
+Definí estas variables en tus `.env.development` y `.env.production`.
+Solo se listan las claves usadas por el código actual.
+
+Core de la app:
+- `VITE_ENVIRONMENT`: development | staging | production
+- `VITE_API_URL`: base URL del backend (ej.: http://localhost:3001)
+- `VITE_API_TIMEOUT`: timeout en ms (ej.: 8000)
+- `VITE_DEBUG`: true|false (logs de depuración en desarrollo)
+- `VITE_ERROR_BOUNDARIES`: true|false
+- `VITE_LAZY_LOADING`: true|false
+- `VITE_IMAGE_OPTIMIZATION`: true|false
+- `VITE_AUTH_ENABLED`: true|false
+- `VITE_AUTH_STORAGE_KEY`: clave storage token (ej.: indiana_auth_token)
+- `VITE_USER_STORAGE_KEY`: clave storage usuario (ej.: indiana_user_data)
+- `VITE_CONTACT_EMAIL`: email público de contacto
+- `VITE_CONTACT_WHATSAPP`: número sin símbolos (ej.: 5491112345678)
+
+Imágenes/Cloudinary:
+- `VITE_CLOUDINARY_CLOUD_NAME`
+- `VITE_IMG_PROGRESSIVE_JPEG`: true|false
+- `VITE_IMG_PLACEHOLDER_BLUR`: true|false
+- `VITE_IMG_METRICS`: true|false (solo dev)
+
+Notas:
+- `src/config/index.js` es la fuente única de configuración. `src/config/env.js` está deprecado y se mantendrá solo por compatibilidad.
+- En producción, usá `VITE_DEBUG=false`.
+
+### 🧪 Uso del logger (dev/prod)
+
+API mínima:
+
+```js
+import { logger } from '@utils/logger'
+
+logger.debug('axios:config', { baseURL })
+logger.info('vehicles:load', 'Lista cargada')
+logger.warn('axios:error', 'HTTP error', { method: 'GET', url: '/api', status: 404, ms: 120 })
+logger.error('ui:error-boundary', 'Unhandled error', error)
+```
+
+Notas:
+- Dev muestra `debug/info/warn/error` con timestamp legible.
+- Prod muestra solo `warn/error` y aplica scrubber básico (sin PII).
+- `localStorage.debug = '1'` habilita `debug` temporalmente en prod.
+
 ## 🤝 Contribución
 
 1. Fork el proyecto

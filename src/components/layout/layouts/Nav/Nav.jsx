@@ -12,10 +12,11 @@
  * @version 1.1.0 - Preloading estratégico
  */
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { usePreloadRoute } from '@hooks/usePreloadRoute'
 import styles from './Nav.module.css'
+import { shouldPreloadOnIdle, requestIdle } from '@utils'
 import logo from '@assets/indiana-nav-logo.png'
 
 const Nav = () => {
@@ -38,6 +39,15 @@ const Nav = () => {
     setIsMenuOpen(false)
   }
 
+  const handleScrollToFooter = (event) => {
+    event.preventDefault()
+    const footerEl = document.getElementById('contacto')
+    if (footerEl) {
+      footerEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    closeMenu()
+  }
+
   // ✅ NUEVO: Funciones de preloading para rutas
   const handleVehiculosPreload = () => {
     preloadRoute('/vehiculos', () => import('../../../../pages/Vehiculos'))
@@ -50,6 +60,26 @@ const Nav = () => {
   const handleHomePreload = () => {
     preloadRoute('/', () => import('../../../../pages/Home'))
   }
+
+  const handlePostventaPreload = () => {
+    preloadRoute('/postventa', () => import('../../../../pages/Postventa'))
+  }
+
+  // ✅ PRELOAD ON IDLE: Solo en buenas redes y en rutas ligeras
+  useEffect(() => {
+    if (!shouldPreloadOnIdle()) return
+    // Evitar hacerlo en páginas pesadas; priorizamos home
+    const isLightRoute = location.pathname === '/'
+    if (!isLightRoute) return
+    const cancel = requestIdle(() => {
+      // Precargar módulos críticos probables
+      import('../../../../pages/Postventa')
+      import('../../../../pages/Vehiculos')
+    })
+    return () => {
+      if (typeof cancel === 'number') clearTimeout(cancel)
+    }
+  }, [location.pathname])
 
 
   return (
@@ -99,14 +129,21 @@ const Nav = () => {
               Autos usados
             </Link>
             <Link 
-              className={`${styles.navLink} ${isActive('/nosotros') ? styles.active : ''}`} 
-              to="/nosotros"
+              className={`${styles.navLink} ${isActive('/postventa') ? styles.active : ''}`} 
+              to="/postventa"
               onClick={closeMenu}
-              onMouseEnter={handleNosotrosPreload}
-              onMouseLeave={() => cancelPreload('/nosotros')}
+              onMouseEnter={handlePostventaPreload}
+              onMouseLeave={() => cancelPreload('/postventa')}
+            >
+              Postventa
+            </Link>
+            <a 
+              className={styles.navLink}
+              href="#contacto"
+              onClick={handleScrollToFooter}
             >
               Contacto
-            </Link>
+            </a>
             <div className={styles.divider}></div>
             <a 
               className={styles.indianaButton} 

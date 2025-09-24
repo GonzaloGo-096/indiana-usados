@@ -45,27 +45,11 @@ export const ImageCarousel = ({
     
     // Si no hay imágenes, usar imagen por defecto - MEMOIZADO
     const allImages = useMemo(() => {
-        console.log('🖼️ ImageCarousel: images recibidas', images)
-        console.log('🖼️ ImageCarousel: images.length', images?.length)
-        console.log('🖼️ ImageCarousel: Detalle de cada imagen:', images?.map((img, index) => ({
-            index,
-            img,
-            type: typeof img,
-            isObject: typeof img === 'object',
-            hasUrl: img?.url
-        })))
-        
         if (!images || images.length === 0) {
-            console.log('⚠️ ImageCarousel: No hay imágenes, usando default')
             return [defaultCarImage]
         }
-        
         // Procesar imágenes que pueden ser objetos o URLs
-        const processedImages = processImages(images);
-        console.log('🖼️ ImageCarousel: Imágenes procesadas', processedImages)
-        console.log('🖼️ ImageCarousel: Total de imágenes finales:', processedImages.length)
-        
-        return processedImages;
+        return processImages(images)
     }, [images])
 
     // Función para ir a la imagen anterior - MEMOIZADA

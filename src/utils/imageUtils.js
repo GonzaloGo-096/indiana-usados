@@ -9,6 +9,7 @@
  */
 
 import { defaultCarImage } from '@assets'
+import { logger } from '@utils/logger'
 
 /**
  * Función helper para mostrar "-" cuando el valor esté vacío
@@ -41,7 +42,7 @@ export const getMainImage = (auto) => {
         
         return visibleImages[0] || auto.imagen || defaultCarImage;
     } catch (error) {
-        console.warn('⚠️ Error al procesar imagen principal:', error)
+        logger.warn('images:utils', 'Error al procesar imagen principal', { message: error.message })
         return auto.imagen || defaultCarImage
     }
 }
@@ -54,7 +55,6 @@ export const getMainImage = (auto) => {
 export const getCarouselImages = (auto) => {
     // ✅ MEJORADO: Validación más robusta
     if (!auto || typeof auto !== 'object' || Array.isArray(auto)) {
-        console.log('⚠️ getCarouselImages: auto inválido', auto)
         return [defaultCarImage]
     }
     
@@ -123,17 +123,7 @@ export const getCarouselImages = (auto) => {
             url && typeof url === 'string' && url.trim() !== '' && url !== 'undefined'
         )
         
-        console.log('🖼️ getCarouselImages: Imágenes extraídas:', {
-            extracted: extractedImages.length,
-            structured: structuredImages.length,
-            unique: uniqueImages.length,
-            images: uniqueImages,
-            autoKeys: Object.keys(auto).filter(key => key.includes('foto') || key.includes('imagen') || key.includes('gallery') || key.includes('photos')),
-            fotosExtras: auto.fotosExtras,
-            fotosExtra: auto.fotosExtra,
-            gallery: auto.gallery,
-            imagenes: auto.imagenes
-        })
+        // Logs detallados removidos para mantener consola limpia
         
         // ✅ NUEVO: Si hay imágenes válidas, usarlas
         if (uniqueImages.length > 0) {
@@ -143,7 +133,7 @@ export const getCarouselImages = (auto) => {
         // ✅ ARREGLADO: Fallback a imagen principal
         return auto.imagen ? [auto.imagen] : [defaultCarImage]
     } catch (error) {
-        console.warn('⚠️ Error al procesar imágenes del carrusel:', error)
+        logger.warn('images:utils', 'Error al procesar imágenes del carrusel', { message: error.message })
         return auto.imagen ? [auto.imagen] : [defaultCarImage]
     }
 }
@@ -277,7 +267,7 @@ export const prepareMultipleFilesForCloudinary = (imageFiles) => {
         const preparedFile = prepareFileForCloudinary(file, fieldName)
         preparedFiles.push(preparedFile)
       } catch (error) {
-        console.error(`❌ Error preparando ${fieldName}:`, error.message)
+        logger.error('images:utils', `Error preparando ${fieldName}`, { message: error.message })
         throw error
       }
     }
@@ -431,7 +421,7 @@ export const prepareMultipleImagesForUpload = (imageFiles) => {
           preparedFiles[fieldName] = [preparedFile]
         }
       } catch (error) {
-        console.error(`❌ Error preparando ${fieldName}:`, error.message)
+        logger.error('images:utils', `Error preparando ${fieldName}`, { message: error.message })
         throw error
       }
     }

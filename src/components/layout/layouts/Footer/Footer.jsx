@@ -21,7 +21,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className={styles.footer}>
+    <footer className={styles.footer} id="contacto" tabIndex="-1">
       {/* ✅ CARD 1 - Texto 50/50 (primer hijo del footer) */}
       <ElevatedCard />
       

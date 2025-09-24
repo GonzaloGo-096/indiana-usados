@@ -21,6 +21,7 @@ import {
     formatBrandModel
 } from '@utils/formatters'
 import axiosInstance from '@api/axiosInstance'
+import { logger } from '@utils/logger'
 import styles from './CardAuto.module.css'
 import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
 import ResponsiveImage from '@/components/ui/ResponsiveImage/ResponsiveImage'
@@ -77,15 +78,11 @@ export const CardAuto = memo(({ auto }) => {
 
     // ✅ FUNCIÓN SIMPLE PARA "VER MÁS"
     const handleVerMas = useCallback(async () => {
-        console.log('🚀 CardAuto: handleVerMas ejecutándose')
-        console.log('📋 CardAuto: Datos del auto:', auto)
-        
         try {
             const vehicleId = auto.id || auto._id
-            console.log('🆔 CardAuto: ID del vehículo:', vehicleId)
             
             if (!vehicleId) {
-                console.error('❌ CardAuto: ID del vehículo no válido')
+                logger.error('ui:card-auto', 'ID del vehículo no válido')
                 return
             }
             
@@ -111,15 +108,10 @@ export const CardAuto = memo(({ auto }) => {
             })
             
         } catch (error) {
-            console.error('❌ CardAuto: Error completo:', error)
-            console.error('❌ CardAuto: Mensaje de error:', error.message)
-            
-            if (error.response) {
-                console.error('📡 CardAuto: Error del servidor:', error.response.data)
-            }
+            const vehicleId = auto.id || auto._id
+            logger.error('ui:card-auto', 'Error al obtener detalle de vehículo', { id: vehicleId, message: error.message })
             
             // ✅ FALLBACK: Navegar con datos básicos
-            const vehicleId = auto.id || auto._id
             navigate(`/vehiculo/${vehicleId}`, { 
                 state: { vehicleData: auto }
             })

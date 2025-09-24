@@ -13,6 +13,7 @@
 
 import { useEffect, useRef, useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { logger } from '@utils/logger'
 
 export const useScrollPosition = (options = {}) => {
     const {
@@ -60,17 +61,17 @@ export const useScrollPosition = (options = {}) => {
                     })
                 })
                 
-                console.log(`✅ Posición de scroll restaurada: ${scrollData.position}px`)
+                logger.debug('hooks:scroll', `Posición de scroll restaurada: ${scrollData.position}px`)
             }
         } catch (error) {
-            console.error('❌ Error al restaurar posición de scroll:', error)
+            logger.error('hooks:scroll', 'Error al restaurar posición de scroll', error)
         }
     }, [enabled, key, location.pathname])
 
     // ✅ FUNCIÓN: Limpiar posición guardada
     const clearScrollPosition = useCallback(() => {
         sessionStorage.removeItem(`scroll_${key}`)
-        console.log(`🗑️ Posición de scroll limpiada para: ${key}`)
+        logger.debug('hooks:scroll', `Posición de scroll limpiada para: ${key}`)
     }, [key])
 
     // ✅ FUNCIÓN: Navegar preservando scroll

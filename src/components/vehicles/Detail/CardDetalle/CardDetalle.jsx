@@ -23,17 +23,7 @@ import styles from './CardDetalle.module.css'
  * Componente CardDetalle basado en CardAuto
  */
 export const CardDetalle = memo(({ auto, contactInfo }) => {
-    console.log('🔍 CardDetalle: Propiedades de imagen encontradas:', {
-        fotoPrincipal: auto?.fotoPrincipal,
-        fotoHover: auto?.fotoHover,
-        fotosExtras: auto?.fotosExtras,
-        fotosExtra: auto?.fotosExtra,
-        gallery: auto?.gallery,
-        imagenes: auto?.imagenes,
-        allKeys: Object.keys(auto || {}).filter(key => 
-            key.includes('foto') || key.includes('imagen') || key.includes('gallery') || key.includes('photo')
-        )
-    })
+    // Logs de diagnóstico removidos para mantener consola limpia
     
     // Hooks
     const carouselImages = useCarouselImages(auto)

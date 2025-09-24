@@ -6,6 +6,7 @@
  */
 
 import React, { useReducer, useCallback, useMemo } from 'react'
+import { logger } from '@utils/logger'
 
 // ✅ NUEVOS CAMPOS DE IMAGEN (estructura del backend actualizada)
 export const IMAGE_FIELDS = {

@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { AUTH_CONFIG } from '@config/auth'
 import { validateImageFields, prepareMultipleImagesForUpload } from '@utils/imageUtils'
 import { vehiclesService } from '@services/vehiclesApi'
+import { logger } from '@utils/logger'
 
 // ✅ FUNCIÓN SIMPLE PARA OBTENER TOKEN
 const getAuthToken = () => {
@@ -17,7 +18,7 @@ const getAuthToken = () => {
         const token = localStorage.getItem(AUTH_CONFIG.storage.tokenKey)
         return token
     } catch (error) {
-        console.error('❌ Error al obtener token:', error)
+        logger.error('cars:mutation', 'Error al obtener token', error)
         return null
     }
 }
@@ -33,7 +34,7 @@ export const useCarMutation = () => {
         setSuccess(false)
 
         try {
-            console.log('🚀 Enviando formulario al endpoint...')
+            // Info mínima, sin dumps
             
             // ✅ EXTRAER ARCHIVOS DE IMAGEN DEL FORMDATA
             const imageFiles = {}
@@ -52,10 +53,11 @@ export const useCarMutation = () => {
                 }
             }
             
-            // ✅ LOG RESUMIDO DE ARCHIVOS
-            console.log('📁 Archivos extraídos:', Object.keys(imageFiles).map(key => 
-                `${key}: ${imageFiles[key].length} archivo(s)`
-            ).join(', '))
+            // ✅ LOG RESUMIDO (solo conteo) en debug
+            if (import.meta.env.DEV) {
+                const summary = Object.keys(imageFiles).map(key => `${key}:${imageFiles[key].length}`).join(', ')
+                logger.debug('cars:mutation', 'Archivos extraídos', summary)
+            }
             
             // ✅ VALIDAR ARCHIVOS DE IMAGEN (solo formato, no cantidad en modo edit)
             const imageErrors = validateImageFields(imageFiles, 'create')
@@ -98,9 +100,6 @@ export const useCarMutation = () => {
             const token = getAuthToken()
             
             if (!token) {
-                console.error('❌ NO SE ENCONTRÓ TOKEN - Verificando localStorage:')
-                console.error(`localStorage.${AUTH_CONFIG.storage.tokenKey}:`, localStorage.getItem(AUTH_CONFIG.storage.tokenKey))
-                console.error('localStorage disponible:', Object.keys(localStorage))
                 throw new Error('❌ No se encontró token de autorización')
             }
             
@@ -110,28 +109,10 @@ export const useCarMutation = () => {
             return { success: true, data: response.data }
 
         } catch (err) {
-            console.error('❌ Error al crear auto:', err)
+            logger.error('cars:mutation', 'Error al crear auto', { message: err.message, status: err.response?.status })
             
             // ✅ LOGGING DETALLADO DEL ERROR
-            if (err.response) {
-                console.error('📡 Respuesta del servidor:', {
-                    status: err.response.status,
-                    statusText: err.response.statusText,
-                    data: err.response.data,
-                    headers: err.response.headers
-                })
-                
-                // ✅ MANEJO ESPECÍFICO DE ERRORES DE AUTORIZACIÓN
-                if (err.response.status === 401) {
-                    console.error('🔐 Error de autorización - Token inválido o expirado')
-                } else if (err.response.status === 403) {
-                    console.error('🚫 Error de permisos - No tienes acceso a este recurso')
-                } else if (err.response.status === 400) {
-                    console.error('🚨 Error 400 - Detalles del backend:', err.response.data)
-                    console.error('🚨 Posible problema de formato de archivo o validación')
-                    
-                }
-            }
+            // No volcar data/headers completos en logs
             
             // ✅ MENSAJES DE ERROR ESPECÍFICOS
             let errorMessage = 'Error desconocido al crear el auto'
@@ -173,18 +154,7 @@ export const useCarMutation = () => {
             }
             
             // ✅ DEBUG: LOGGING DEL FORMDATA PARA EDIT
-            console.log('🔍 DEBUG: Contenido del FormData para actualización:')
-            for (let [key, value] of formData.entries()) {
-                if (value instanceof File) {
-                    console.log(`📁 ${key}:`, {
-                        name: value.name,
-                        size: value.size,
-                        type: value.type
-                    })
-                } else {
-                    console.log(`📝 ${key}:`, value)
-                }
-            }
+            // Evitar dumps de FormData en consola
             
             // ✅ VALIDAR ARCHIVOS DE IMAGEN SI EXISTEN (modo edit - solo formato)
             const imageFiles = {}
@@ -211,16 +181,11 @@ export const useCarMutation = () => {
             }
             
             // ✅ DEBUG: Logging del FormData antes del envío
-            console.log('🔍 DEBUG COMPLETO - FormData que se enviará:')
-            console.log('🔍 ID del vehículo:', id)
-            console.log('🔍 Headers:', {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${token.substring(0, 20)}...`
-            })
+            // Evitar dumps de headers/token
             
             // ✅ DEBUG: Verificar si fotosExtra está presente
             const hasFotosExtra = Array.from(formData.entries()).some(([key]) => key === 'fotosExtra')
-            console.log('🔍 ¿Incluye fotosExtra?', hasFotosExtra)
+            if (import.meta.env.DEV) logger.debug('cars:mutation', '¿Incluye fotosExtra?', hasFotosExtra)
             
             // ✅ LOGGING DETALLADO DE CADA CAMPO
             for (let [key, value] of formData.entries()) {
@@ -237,42 +202,17 @@ export const useCarMutation = () => {
             }
             
             // ✅ USAR ENDPOINT CORRECTO: PUT /photos/updatephoto/:id
-            console.log('🔄 Enviando actualización...')
             const response = await vehiclesService.updateVehicle(id, formData)
 
-            console.log('✅ Respuesta de actualización:', response.data)
+            if (import.meta.env.DEV) logger.debug('cars:mutation', 'Respuesta de actualización OK')
             setSuccess(true)
             return { success: true, data: response.data }
 
         } catch (err) {
-            console.error('❌ Error al actualizar auto:', err)
+            logger.error('cars:mutation', 'Error al actualizar auto', { message: err.message, status: err.response?.status })
             
             // ✅ DEBUG EXTENDIDO: Logging detallado del error
-            if (err.response) {
-                console.error('🚨 ERROR DEL BACKEND - Análisis detallado:')
-                console.error('📡 Status:', err.response.status)
-                console.error('📡 StatusText:', err.response.statusText)
-                console.error('📡 Data completo:', err.response.data)
-                console.error('📡 Headers de respuesta:', err.response.headers)
-                console.error('📡 URL:', err.config?.url)
-                console.error('📡 Method:', err.config?.method)
-                
-                // ✅ INTENTAR EXTRAER MENSAJE DE ERROR ESPECÍFICO
-                if (err.response.data) {
-                    if (err.response.data.message) {
-                        console.error('🔍 Mensaje de error:', err.response.data.message)
-                    }
-                    if (err.response.data.error) {
-                        console.error('🔍 Error específico:', err.response.data.error)
-                    }
-                    if (err.response.data.errors) {
-                        console.error('🔍 Errores de validación:', err.response.data.errors)
-                    }
-                    if (err.response.data.msg) {
-                        console.error('🔍 Mensaje del backend:', err.response.data.msg)
-                    }
-                }
-            }
+            // No volcar detalles completos del backend
             
             let errorMessage = 'Error desconocido al actualizar el auto'
             
@@ -313,7 +253,6 @@ export const useCarMutation = () => {
         setSuccess(false)
 
         try {
-            console.log('🗑️ Enviando eliminación al endpoint...', { id })
             
             // ✅ OBTENER TOKEN DE AUTORIZACIÓN
             const token = getAuthToken()
@@ -324,12 +263,12 @@ export const useCarMutation = () => {
             // ✅ ENVIAR ELIMINACIÓN usando servicio unificado
             const response = await vehiclesService.deleteVehicle(id)
 
-            console.log('✅ Respuesta de eliminación:', response.data)
+            if (import.meta.env.DEV) logger.debug('cars:mutation', 'Respuesta de eliminación OK')
             setSuccess(true)
             return { success: true, data: response.data }
 
         } catch (err) {
-            console.error('❌ Error al eliminar auto:', err)
+            logger.error('cars:mutation', 'Error al eliminar auto', { message: err.message, status: err.response?.status })
             
             let errorMessage = 'Error desconocido al eliminar el auto'
             

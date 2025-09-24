@@ -12,6 +12,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { vehiclesApi } from '@services/vehiclesApi'
+import { logger } from '@utils/logger'
 
 // ✅ CAMPOS SOPORTADOS PARA NORMALIZACIÓN
 const VEHICLE_FIELDS = {
@@ -102,7 +103,7 @@ export const useVehicleData = ({ limit = 50, enabled = true } = {}) => {
             setVehicles(normalizedVehicles)
 
         } catch (error) {
-            console.error('❌ Error cargando vehículos:', error)
+            logger.error('vehicles:list', 'Error cargando vehículos', error)
             setError('Error al cargar vehículos del servidor')
             setVehicles([])
         } finally {

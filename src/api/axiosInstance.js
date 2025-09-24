@@ -13,6 +13,7 @@
 
 import axios from 'axios'
 import { config } from '@config'
+import { logger } from '@utils/logger'
 
 // ✅ CONFIGURACIÓN SIMPLIFICADA USANDO CONFIG CENTRALIZADO
 const getBaseURL = () => {
@@ -83,7 +84,7 @@ authAxiosInstance.interceptors.response.use(
 
 // ✅ LOGGING DE CONFIGURACIÓN (solo en desarrollo)
 if (config.isDevelopment && config.features.debug) {
-    console.log('🔧 CONFIGURACIÓN AXIOS:', {
+    logger.debug('axios:config', {
         baseURL: getBaseURL(),
         timeout: getTimeout(),
         mock: config.api.mock,
@@ -91,9 +92,10 @@ if (config.isDevelopment && config.features.debug) {
     })
 }
 
-// Interceptor de request simplificado
+// Interceptor de request con timestamp para medir duración
 axiosInstance.interceptors.request.use(
     (config) => {
+        config.metadata = { start: performance.now() }
         return config
     },
     (error) => {
@@ -101,12 +103,46 @@ axiosInstance.interceptors.request.use(
     }
 )
 
-// Interceptor de response simplificado
+// Interceptor de response con logging de errores (nivel-aware)
 axiosInstance.interceptors.response.use(
     (response) => {
+        if (response?.config?.metadata?.start) {
+            response.config.metadata.durationMs = Math.round(performance.now() - response.config.metadata.start)
+        }
         return response
     },
     (error) => {
+        try {
+            const cfg = error.config || {}
+            const method = (cfg.method || 'GET').toUpperCase()
+            const path = cfg.url || ''
+            const base = cfg.baseURL || ''
+            const url = `${base}${path}` || 'unknown'
+            const status = error.response?.status
+            const durationMs = cfg.metadata?.start ? Math.round(performance.now() - cfg.metadata.start) : undefined
+            const tag = 'axios:error'
+
+            const payload = { method, url, status, ms: durationMs }
+
+            // Ignorar cancelaciones benignas
+            const code = error.code
+            const name = error.name
+            const isCanceled = code === 'ERR_CANCELED' || name === 'CanceledError'
+            if (isCanceled) {
+                logger.debug('axios:cancel', payload)
+                return Promise.reject(error)
+            }
+
+            if (status >= 500 || !status) {
+                logger.error(tag, 'HTTP failure', payload)
+            } else if (status >= 400) {
+                logger.warn(tag, 'HTTP error', payload)
+            } else {
+                logger.warn(tag, 'Network/Unknown error', payload)
+            }
+        } catch (_) {
+            // no-op, no romper en caso de fallo de logging
+        }
         return Promise.reject(error)
     }
 )

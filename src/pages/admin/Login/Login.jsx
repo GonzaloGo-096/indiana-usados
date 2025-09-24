@@ -6,6 +6,7 @@
  */
 
 import React from 'react'
+import { logger } from '@utils/logger'
 import { LoginForm } from '@components/auth/LoginForm'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@hooks/useAuth'
@@ -19,7 +20,7 @@ const Login = () => {
     const [isSubmitting, setIsSubmitting] = React.useState(false) // ✅ ESTADO SEPARADO PARA SUBMIT
     
     // ✅ DEBUG TEMPORAL: Ver estado del hook
-    console.log('🔍 LOGIN DEBUG:', {
+    logger.debug('auth:login', 'LOGIN DEBUG', {
         isAuthenticated,
         isLoading,
         error,
@@ -55,11 +56,11 @@ const Login = () => {
                 navigate('/admin')
             } else {
                 // Error en login
-                console.log('❌ LOGIN FALLIDO:', result.error)
+                logger.warn('auth:login', 'LOGIN FALLIDO', result.error)
                 setErrors({ general: result.error || 'Error al iniciar sesión' })
             }
         } catch (error) {
-            console.error('💥 ERROR:', error)
+            logger.error('auth:login', 'ERROR', error)
             setErrors({ general: 'Error al iniciar sesión' })
         } finally {
             setIsSubmitting(false)
