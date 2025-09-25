@@ -188,6 +188,7 @@ export const useCarMutation = () => {
             if (import.meta.env.DEV) logger.debug('cars:mutation', '¿Incluye fotosExtra?', hasFotosExtra)
             
             // ✅ LOGGING DETALLADO DE CADA CAMPO
+            console.log('🔍 ===== FORMDATA COMPLETO ENVIADO AL BACKEND =====')
             for (let [key, value] of formData.entries()) {
                 if (value instanceof File) {
                     console.log(`📁 ${key}:`, {
@@ -200,6 +201,7 @@ export const useCarMutation = () => {
                     console.log(`📝 ${key}:`, value)
                 }
             }
+            console.log('🔍 ===== FIN FORMDATA =====')
             
             // ✅ USAR ENDPOINT CORRECTO: PUT /photos/updatephoto/:id
             const response = await vehiclesService.updateVehicle(id, formData)

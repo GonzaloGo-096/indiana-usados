@@ -13,8 +13,8 @@ const normalizeImage = (entry) => {
         if (!url) return null
         return {
             url,
-            public_id: entry.public_id || entry.publicId || '',
-            original_name: entry.original_name || entry.originalName || entry.filename || ''
+            public_id: entry.public_id || '',
+            original_name: entry.original_name || entry.originalname || entry.originalName || entry.filename || ''
         }
     }
     return null

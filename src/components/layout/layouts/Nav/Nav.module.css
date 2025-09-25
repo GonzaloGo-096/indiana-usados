@@ -25,6 +25,7 @@
   color: white;
   font-weight: bold;
   font-size: 18px;
+  font-family: 'Barlow Condensed', sans-serif;
   z-index: 1001;
   padding-left: 0;
 }
@@ -98,6 +99,7 @@
   border-radius: 6px;
   font-weight: 500;
   font-size: 18px; /* ✅ AUMENTADO: De 16px a 18px para hacer más grandes */
+  font-family: 'Barlow Condensed', sans-serif;
   transition: background-color 0.2s, transform 0.2s;
   border: none;
   white-space: nowrap;

@@ -95,7 +95,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
 }
 
 .headerRight {
@@ -122,7 +122,7 @@
   font-weight: 800;
   color: #ffffff;
   margin: 0;
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   line-height: 1.2;
 }
 
@@ -132,7 +132,7 @@
   margin: 0;
   margin-top: 0;
   font-weight: 500;
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
 }
 
 /* ===== DATOS PRINCIPALES ===== */

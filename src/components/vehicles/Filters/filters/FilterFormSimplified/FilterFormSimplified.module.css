@@ -172,6 +172,7 @@
   color: #0a0d14;
   font-size: 1rem; /* ✅ AUMENTADO: De 0.875rem a 1rem */
   font-weight: 600;
+  font-family: 'Barlow Condensed', sans-serif;
   margin: 0;
 }
 
@@ -287,6 +288,7 @@
   text-align: center;
   font-weight: 600;
   font-size: 0.625rem;
+  font-family: 'Barlow Condensed', sans-serif;
   color: #0a0d14;
   margin-bottom: 0.25rem;
   text-transform: capitalize;

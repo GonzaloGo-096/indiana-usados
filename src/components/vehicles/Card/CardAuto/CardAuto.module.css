@@ -159,7 +159,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: 'Barlow', sans-serif;
+    font-family: 'Barlow Condensed', sans-serif;
 }
 
 .headerRight {
@@ -186,7 +186,7 @@
     font-weight: 800;
     color: #ffffff;
     margin: 0;
-    font-family: 'Barlow', sans-serif;
+    font-family: 'Barlow Condensed', sans-serif;
     line-height: 1.2;
 }
 
@@ -196,7 +196,7 @@
     margin: 0;
     margin-top: 2px; /* ✅ REDUCIDO: De 4px a 2px */
     font-weight: 500;
-    font-family: 'Barlow', sans-serif;
+    font-family: 'Barlow Condensed', sans-serif;
 }
 
 /* ===== DETALLES - SOLO 3 DATOS OPTIMIZADOS ===== */
@@ -251,7 +251,7 @@
     margin: 0;
     font-weight: 600;
     letter-spacing: 0.5px;
-    font-family: 'Barlow', sans-serif;
+    font-family: 'Barlow Condensed', sans-serif;
     vertical-align: middle;
     line-height: 1;
 }
@@ -261,7 +261,7 @@
     font-size: 18px;
     color: #374151;
     font-weight: 700;
-    font-family: 'Barlow', sans-serif;
+    font-family: 'Barlow Condensed', sans-serif;
     margin-top: 4px;
     line-height: 1.2;
 }
@@ -294,7 +294,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Barlow', sans-serif;
+    font-family: 'Barlow Condensed', sans-serif;
     margin: 0;
 }
 

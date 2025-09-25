@@ -27,7 +27,7 @@ export const vehiclesService = {
     urlParams.set('cursor', String(cursor))
     
     const endpoint = `/photos/getallphotos?${urlParams.toString()}`
-    logger.debug('vehicles:list', 'Fetching vehicles', endpoint)
+    logger.log('Fetching vehicles:', endpoint)
     
     const response = await axiosInstance.get(endpoint, { signal })
     return response.data
@@ -55,42 +55,17 @@ export const vehiclesService = {
    * Actualizar vehículo (admin)
    */
   async updateVehicle(id, formData) {
-    // ✅ Probar variaciones de endpoint y método (algunos backends usan POST para actualizar)
-    const endpointsToTry = [
-      `/photos/updatephoto/${id}`,  // más probable
-      `/photos/update/${id}`,
-      `/photos/${id}`,
-      `/photos/edit/${id}`,
-      `/updatephoto/${id}`
-    ]
-
-    const methodsToTry = ['post', 'put'] // probar POST primero
-
-    for (let e = 0; e < endpointsToTry.length; e++) {
-      const endpoint = endpointsToTry[e]
-
-      for (let m = 0; m < methodsToTry.length; m++) {
-        const method = methodsToTry[m]
-        try {
-          logger.debug('vehicles:update', `Probando ${method.toUpperCase()} ${endpoint}`)
-          const response = await authAxiosInstance[method](endpoint, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-          })
-          if (response.status >= 200 && response.status < 300) {
-            logger.info('vehicles:update', `ÉXITO ${method.toUpperCase()} ${endpoint}`, { status: response.status })
-            return response.data
-          }
-          throw new Error(`Status no exitoso: ${response.status}`)
-        } catch (error) {
-          const status = error.response?.status || 'Sin respuesta'
-          logger.warn('vehicles:update', `Falló ${method.toUpperCase()} ${endpoint}`, { status })
-          // Continuar con siguiente método o endpoint
-          if (e === endpointsToTry.length - 1 && m === methodsToTry.length - 1) {
-            logger.error('vehicles:update', 'TODOS LOS ENDPOINTS/MÉTODOS FALLARON', { message: error.message })
-            throw error
-          }
-        }
-      }
+    try {
+      console.log(`🔄 Actualizando vehículo ${id} con PUT /photos/updatephoto/${id}`)
+      const response = await authAxiosInstance.put(`/photos/updatephoto/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      console.log(`✅ Vehículo actualizado exitosamente - Status: ${response.status}`)
+      return response.data
+    } catch (error) {
+      const status = error.response?.status || 'Sin respuesta'
+      console.error(`❌ Error al actualizar vehículo - Status: ${status}`, error.message)
+      throw error
     }
   },
   

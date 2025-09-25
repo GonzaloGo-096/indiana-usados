@@ -105,7 +105,7 @@
     border-radius: 12px; /* ✅ REDUCIDO: Menos redondeado */
     font-size: 0.7rem; /* ✅ REDUCIDO: Fuente más pequeña */
     font-weight: 600;
-    font-family: 'Barlow', sans-serif;
+    font-family: 'Barlow Condensed', sans-serif;
     letter-spacing: 0.5px;
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);

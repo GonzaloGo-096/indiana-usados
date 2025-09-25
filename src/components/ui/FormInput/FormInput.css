@@ -21,7 +21,7 @@
     padding: var(--spacing-sm) var(--spacing-md);
     border: 2px solid #e9ecef;
     border-radius: var(--border-radius);
-    font-family: var(--font-family);
+    font-family: var(--font-family-primary);
     font-size: var(--font-size-base);
     transition: var(--transition-normal);
     background-color: white;

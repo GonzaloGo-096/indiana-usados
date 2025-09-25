@@ -1,5 +1,5 @@
 /**
- * Fonts.css - Solo Pressio (WOFF), 3 pesos: 400/600/700
+ * Fonts.css - Pressio (WOFF) y Barlow Condensed (WOFF2)
  */
 
 /* ===== PRESSIO ===== */
@@ -22,6 +22,39 @@
 @font-face {
   font-family: 'Pressio';
   src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.32.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ===== BARLOW CONDENSED ===== */
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('../assets/fuentes/fuentes indiana/barlowcondensed-extralight-webfont.woff2') format('woff2');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('../assets/fuentes/fuentes indiana/barlowcondensed-medium-webfont.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('../assets/fuentes/fuentes indiana/barlowcondensed-semibold-webfont.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('../assets/fuentes/fuentes indiana/barlowcondensed-bold-webfont.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

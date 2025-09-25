@@ -24,52 +24,8 @@ export { default as indianaNavLogo } from './indiana-nav-logo.png'
 // export { default as whatsapp32 } from './whatsapp-32.svg'
 // export { default as whatsapp64 } from './whatsapp-64.svg'
 
-// Fuentes (referencias para CSS)
+// Fuentes (referencias para CSS) - Solo Next Sphere (Barlow Condensed ahora está en CSS)
 export const FONTS = {
-  // Barlow Family
-  barlow: {
-    black: './fuentes/Barlow-Black.ttf',
-    blackItalic: './fuentes/Barlow-BlackItalic.ttf',
-    bold: './fuentes/Barlow-Bold.ttf',
-    boldItalic: './fuentes/Barlow-BoldItalic.ttf',
-    extraBold: './fuentes/Barlow-ExtraBold.ttf',
-    extraBoldItalic: './fuentes/Barlow-ExtraBoldItalic.ttf',
-    extraLight: './fuentes/Barlow-ExtraLight.ttf',
-    extraLightItalic: './fuentes/Barlow-ExtraLightItalic.ttf',
-    italic: './fuentes/Barlow-Italic.ttf',
-    light: './fuentes/Barlow-Light.ttf',
-    lightItalic: './fuentes/Barlow-LightItalic.ttf',
-    medium: './fuentes/Barlow-Medium.ttf',
-    mediumItalic: './fuentes/Barlow-MediumItalic.ttf',
-    regular: './fuentes/Barlow-Regular.ttf',
-    semiBold: './fuentes/Barlow-SemiBold.ttf',
-    semiBoldItalic: './fuentes/Barlow-SemiBoldItalic.ttf',
-    thin: './fuentes/Barlow-Thin.ttf',
-    thinItalic: './fuentes/Barlow-ThinItalic.ttf'
-  },
-  
-  // Barlow Condensed Family
-  barlowCondensed: {
-    black: './fuentes/BarlowCondensed-Black.ttf',
-    blackItalic: './fuentes/BarlowCondensed-BlackItalic.ttf',
-    bold: './fuentes/BarlowCondensed-Bold.ttf',
-    boldItalic: './fuentes/BarlowCondensed-BoldItalic.ttf',
-    extraBold: './fuentes/BarlowCondensed-ExtraBold.ttf',
-    extraBoldItalic: './fuentes/BarlowCondensed-ExtraBoldItalic.ttf',
-    extraLight: './fuentes/BarlowCondensed-ExtraLight.ttf',
-    extraLightItalic: './fuentes/BarlowCondensed-ExtraLightItalic.ttf',
-    italic: './fuentes/BarlowCondensed-Italic.ttf',
-    light: './fuentes/BarlowCondensed-Light.ttf',
-    lightItalic: './fuentes/BarlowCondensed-LightItalic.ttf',
-    medium: './fuentes/BarlowCondensed-Medium.ttf',
-    mediumItalic: './fuentes/BarlowCondensed-MediumItalic.ttf',
-    regular: './fuentes/BarlowCondensed-Regular.ttf',
-    semiBold: './fuentes/BarlowCondensed-SemiBold.ttf',
-    semiBoldItalic: './fuentes/BarlowCondensed-SemiBoldItalic.ttf',
-    thin: './fuentes/BarlowCondensed-Thin.ttf',
-    thinItalic: './fuentes/BarlowCondensed-ThinItalic.ttf'
-  },
-  
   // Next Sphere Family
   nextSphere: {
     black: './fuentes/Next Sphere Black.otf',

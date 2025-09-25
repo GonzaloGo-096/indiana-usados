@@ -51,6 +51,7 @@
   color: var(--color-neutral-400);
   margin: 0;
   font-size: var(--font-size-sm);
+  font-family: 'Barlow Condensed', sans-serif;
   opacity: 0.8;
 }
 
