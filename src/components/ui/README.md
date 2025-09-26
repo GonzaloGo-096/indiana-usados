@@ -24,10 +24,6 @@ Guía rápida para el uso y extensión de los componentes UI y variables de dise
 <Button size="large">Grande</Button>
 ```
 
-### FormInput
-```jsx
-<FormInput label="Email" name="email" type="email" required placeholder="tu@email.com" size="medium" />
-```
 
 ---
 

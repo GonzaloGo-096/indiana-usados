@@ -13,10 +13,10 @@ import { getVehicleImageUrl } from '@hooks/useVehicleImage'
 import { useCarMutation } from '@hooks/useCarMutation'
 import axiosInstance from '@api/axiosInstance'
 import vehiclesService from '@services/vehiclesApi'
-import { normalizeDetailToFormInitialData, unwrapDetail } from '@/features/cars/mappers/normalizeForForm'
+import { normalizeDetailToFormInitialData, unwrapDetail } from '@features/cars/mappers/normalizeForForm'
 
 import { useNavigate } from 'react-router-dom'
-import CarFormRHF from '../../../features/cars/ui/CarFormRHF'
+import CarFormRHF from '@features/cars/ui/CarFormRHF'
 import { 
     carModalReducer, 
     initialCarModalState, 
@@ -26,7 +26,7 @@ import {
     setLoading,
     setError,
     clearError
-} from '../../../features/cars/ui/useCarModal.reducer'
+} from '@features/cars/ui/useCarModal.reducer'
 import styles from './Dashboard.module.css'
 
 // Helper: obtener string URL desde distintos formatos

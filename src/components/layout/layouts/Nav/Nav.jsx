@@ -50,19 +50,19 @@ const Nav = () => {
 
   // ✅ NUEVO: Funciones de preloading para rutas
   const handleVehiculosPreload = () => {
-    preloadRoute('/vehiculos', () => import('../../../../pages/Vehiculos'))
+    preloadRoute('/vehiculos', () => import('@pages/Vehiculos'))
   }
 
   const handleNosotrosPreload = () => {
-    preloadRoute('/nosotros', () => import('../../../../pages/Nosotros'))
+    preloadRoute('/nosotros', () => import('@pages/Nosotros'))
   }
 
   const handleHomePreload = () => {
-    preloadRoute('/', () => import('../../../../pages/Home'))
+    preloadRoute('/', () => import('@pages/Home'))
   }
 
   const handlePostventaPreload = () => {
-    preloadRoute('/postventa', () => import('../../../../pages/Postventa'))
+    preloadRoute('/postventa', () => import('@pages/Postventa'))
   }
 
   // ✅ PRELOAD ON IDLE: Solo en buenas redes y en rutas ligeras
@@ -73,8 +73,8 @@ const Nav = () => {
     if (!isLightRoute) return
     const cancel = requestIdle(() => {
       // Precargar módulos críticos probables
-      import('../../../../pages/Postventa')
-      import('../../../../pages/Vehiculos')
+      import('@pages/Postventa')
+      import('@pages/Vehiculos')
     })
     return () => {
       if (typeof cancel === 'number') clearTimeout(cancel)

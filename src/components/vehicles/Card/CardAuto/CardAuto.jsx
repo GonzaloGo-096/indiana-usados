@@ -25,7 +25,7 @@ import { logger } from '@utils/logger'
 import styles from './CardAuto.module.css'
 import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
 import ResponsiveImage from '@/components/ui/ResponsiveImage/ResponsiveImage'
-import { IMAGE_SIZES, IMAGE_WIDTHS } from '@/constants/imageSizes'
+import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
 import { usePreloadImages } from '@hooks/usePreloadImages'
 
 /**

@@ -18,7 +18,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx'
 import { processImages } from '@utils/imageUtils'
 import defaultCarImage from '@assets/auto1.jpg'
 import ResponsiveImage from '@/components/ui/ResponsiveImage/ResponsiveImage'
-import { IMAGE_SIZES, IMAGE_WIDTHS } from '@/constants/imageSizes'
+import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
 
 import styles from './ImageCarousel.module.css'
 

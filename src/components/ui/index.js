@@ -8,7 +8,6 @@
  * @version 3.1.0 - LAZY LOADING INTELIGENTE
  */
 
-export { FormInput } from './FormInput'
 export { Button } from './Button'
 export { Modal } from './Modal'
 export { Alert } from './Alert'

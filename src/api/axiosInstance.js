@@ -31,12 +31,7 @@ const axiosInstance = axios.create({
     headers: config.api.headers
 })
 
-// Instancia separada para detalle de vehículos (misma configuración)
-const detailAxiosInstance = axios.create({
-    baseURL: getBaseURL(), // Usar misma URL para simplificar
-    timeout: getTimeout(),
-    headers: config.api.headers
-})
+// detailAxiosInstance eliminado (no usado)
 
 // ✅ NUEVA: Instancia específica para autenticación
 const authAxiosInstance = axios.create({
@@ -148,4 +143,4 @@ axiosInstance.interceptors.response.use(
 )
 
 export default axiosInstance
-export { detailAxiosInstance, authAxiosInstance } 
+export { authAxiosInstance } 

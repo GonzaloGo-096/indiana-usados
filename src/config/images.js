@@ -73,16 +73,7 @@ export const getRandomCarouselImage = (options = {}) => {
     return pickStable(images, String(seed))
 }
 
-// Función para obtener imagen por índice
-export const getCarouselImageByIndex = (index, options = {}) => {
-    const images = getCarouselImages(options)
-    return images[index % images.length]
-}
-
-// Función para obtener imagen con tamaño específico
-export const getImageWithSize = (imageKey, size, options = {}) => {
-    return getOptimizedImage(imageKey, { ...options, size })
-}
+// Funciones eliminadas: getCarouselImageByIndex, getImageWithSize (no usadas)
 
 // Función para obtener imagen responsive
 export const getResponsiveImage = (imageKey, breakpoints = [300, 600, 800, 1200], options = {}) => {

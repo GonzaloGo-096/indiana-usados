@@ -1,10 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { resolve } from 'path'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // ✅ BUNDLE ANALYZER - Solo en build de producción
+    visualizer({
+      filename: 'dist/stats.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+      template: 'treemap' // 'treemap' | 'sunburst' | 'network'
+    })
+  ],
   
   resolve: {
     alias: {
@@ -22,7 +33,14 @@ export default defineConfig({
       '@styles': resolve(__dirname, 'src/styles'),
       '@assets': resolve(__dirname, 'src/assets'),
       '@config': resolve(__dirname, 'src/config'),
-      '@test': resolve(__dirname, 'src/test')
+      '@test': resolve(__dirname, 'src/test'),
+      // ✅ NUEVOS ALIAS AGREGADOS
+      '@features': resolve(__dirname, 'src/features'),
+      '@pages': resolve(__dirname, 'src/pages'),
+      '@mappers': resolve(__dirname, 'src/mappers'),
+      '@routes': resolve(__dirname, 'src/routes'),
+      '@types': resolve(__dirname, 'src/types'),
+      '@metrics': resolve(__dirname, 'src/metrics')
     }
   },
   
@@ -33,11 +51,30 @@ export default defineConfig({
     sourcemap: false, // Solo en desarrollo
     chunkSizeWarningLimit: 1000,
     
-    // ✅ ELIMINAR CHUNKS MANUALES - Vite decide automáticamente
+    // ✅ OPTIMIZACIÓN DE IMÁGENES
     rollupOptions: {
       output: {
         // Vite maneja el code splitting automáticamente
-        manualChunks: undefined
+        manualChunks: undefined,
+        // ✅ ORGANIZACIÓN DE ASSETS POR TIPO
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.')
+          const ext = info[info.length - 1]
+          // Imágenes en carpeta separada
+          if (/\.(webp|avif|png|jpe?g|svg|gif)$/.test(assetInfo.name)) {
+            return `assets/images/[name]-[hash][extname]`
+          }
+          // Fuentes en carpeta separada
+          if (/\.(woff2?|eot|ttf|otf)$/.test(assetInfo.name)) {
+            return `assets/fonts/[name]-[hash][extname]`
+          }
+          // CSS en carpeta separada
+          if (/\.css$/.test(assetInfo.name)) {
+            return `assets/css/[name]-[hash][extname]`
+          }
+          // Otros assets
+          return `assets/[name]-[hash][extname]`
+        }
       }
     }
   },
@@ -113,7 +150,14 @@ export default defineConfig({
         '@shared': resolve(__dirname, 'src/components/shared'),
         '@layout': resolve(__dirname, 'src/components/layout'),
         '@constants': resolve(__dirname, 'src/constants'),
-        '@styles': resolve(__dirname, 'src/styles')
+        '@styles': resolve(__dirname, 'src/styles'),
+        // ✅ NUEVOS ALIAS AGREGADOS
+        '@features': resolve(__dirname, 'src/features'),
+        '@pages': resolve(__dirname, 'src/pages'),
+        '@mappers': resolve(__dirname, 'src/mappers'),
+        '@routes': resolve(__dirname, 'src/routes'),
+        '@types': resolve(__dirname, 'src/types'),
+        '@metrics': resolve(__dirname, 'src/metrics')
       }
     }
   }

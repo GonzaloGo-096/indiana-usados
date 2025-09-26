@@ -15,11 +15,10 @@
 export { CardAuto } from './Card/CardAuto/CardAuto'
 
 // ===== LIST COMPONENTS =====
-// export { default as VehiclesList } from './List/VehiclesList' // ❌ NO USADO: Solo en tests
 export { default as AutosGrid } from './List/ListAutos/AutosGrid'
 
 // ===== DETAIL COMPONENTS =====
 export { CardDetalle } from './Detail/CardDetalle/CardDetalle'
 
 // ===== FILTER COMPONENTS =====
-// export { default as FilterFormSimplified } from './Filters/filters/FilterFormSimplified' // ❌ REMOVIDO: Se importa dinámicamente en LazyFilterForm 
+// FilterFormSimplified se importa dinámicamente en LazyFilterForm 

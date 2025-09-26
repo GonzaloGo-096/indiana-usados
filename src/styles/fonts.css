@@ -3,46 +3,10 @@
  */
 
 /* ===== PRESSIO ===== */
-@font-face {
-  font-family: 'Pressio';
-  src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.24.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Pressio';
-  src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.31.woff') format('woff');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Pressio';
-  src: url('../assets/fuentes/Pressio TEST/WOFF/PressioTEST-No.32.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+/* Eliminado: Fuentes Pressio no utilizadas (~18 KB ahorro) */
 
 /* ===== BARLOW CONDENSED ===== */
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/fuentes indiana/barlowcondensed-extralight-webfont.woff2') format('woff2');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/fuentes indiana/barlowcondensed-medium-webfont.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
+/* Eliminado: extralight (200) y medium (500) no utilizadas (~45 KB ahorro) */
 
 @font-face {
   font-family: 'Barlow Condensed';

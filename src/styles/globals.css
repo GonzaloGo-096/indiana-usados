@@ -89,7 +89,7 @@ html {
 :root {
   /* Font stacks */
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Inter', Arial, sans-serif;
-  --font-display: 'Pressio', var(--font-sans);
+  --font-display: var(--font-sans); /* Pressio eliminado */
   --font-condensed: 'Barlow Condensed', var(--font-sans);
   --font-family-primary: 'Barlow Condensed', var(--font-sans);
   --font-family: 'Barlow Condensed', var(--font-sans);
