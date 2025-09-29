@@ -44,13 +44,27 @@ const CarFormRHF = ({
         initImageState,
         setFile,
         removeImage,
-        restoreImage, // ✅ NUEVA FUNCIÓN IMPORTADA
+        restoreImage,
         resetImages,
         validateImages,
         buildImageFormData,
         getPreviewFor,
-        cleanupObjectUrls
+        cleanupObjectUrls,
+        // ✅ NUEVAS FUNCIONES PARA FOTOS EXTRAS
+        setMultipleExtras,      // Para input múltiple
+        removeExistingExtra,    // Para eliminar foto existente
+        restoreExistingExtra    // Para restaurar foto existente
     } = useImageReducer(mode, initialData)
+
+    // ✅ DEBUG: Verificar estado inicial
+    console.log('🔍 CarFormRHF - Estado inicial del imageState:', {
+        mode,
+        hasFotosExtra: !!imageState.fotosExtra,
+        fotosExtraLength: imageState.fotosExtra?.length || 0,
+        hasExistingExtras: !!imageState.existingExtras,
+        existingExtrasLength: imageState.existingExtras?.length || 0,
+        allKeys: Object.keys(imageState)
+    })
 
     const {
         register,
@@ -126,6 +140,35 @@ const CarFormRHF = ({
     const handleRemoveImage = useCallback((key) => () => {
         removeImage(key)
     }, [removeImage])
+
+    // ✅ NUEVO: Manejador para input múltiple de fotos extras
+    const handleMultipleExtrasChange = useCallback((event) => {
+        const files = event.target.files
+        console.log('🔍 handleMultipleExtrasChange - Triggered:', {
+            filesLength: files?.length || 0,
+            files: files ? Array.from(files).map(f => ({ name: f.name, size: f.size })) : []
+        })
+        
+        if (files && files.length > 0) {
+            console.log(`📁 Llamando setMultipleExtras con ${files.length} archivos`)
+            setMultipleExtras(files)
+            console.log(`✅ setMultipleExtras llamado exitosamente`)
+        } else {
+            console.warn('⚠️ No se seleccionaron archivos o files es null')
+        }
+        
+        // Resetear input para permitir seleccionar los mismos archivos si es necesario
+        event.target.value = ''
+    }, [setMultipleExtras])
+
+    // ✅ NUEVOS: Manejadores para fotos existentes
+    const handleRemoveExistingExtra = useCallback((index) => () => {
+        removeExistingExtra(index)
+    }, [removeExistingExtra])
+
+    const handleRestoreExistingExtra = useCallback((index) => () => {
+        restoreExistingExtra(index)
+    }, [restoreExistingExtra])
 
     // ✅ VALIDACIÓN CONDICIONAL POR MODO
     const validateForm = useCallback((data) => {
@@ -241,7 +284,7 @@ const CarFormRHF = ({
                 {/* Los mensajes de error/éxito ahora los muestra el contenedor (Dashboard) */}
             </div>
 
-            {/* ✅ SECCIÓN DE IMÁGENES PRINCIPALES */}
+            {/* ✅ SECCIÓN DE IMÁGENES PRINCIPALES - ESTILO MODERNIZADO */}
             <div className={styles.imageSection}>
                 <h3>Imágenes Principales</h3>
                 
@@ -261,124 +304,114 @@ const CarFormRHF = ({
                         </>
                     )}
                 </div>
-                
-                <div className={styles.imageGrid}>
-                    {useMemo(() => {
-                        return IMAGE_FIELDS.principales.map(field => (
-                            <div key={field} className={styles.imageField}>
-                                <label className={styles.imageLabel}>
-                                    {field === 'fotoPrincipal' ? 'Foto Principal' : 'Foto Hover'}
-                                    {errors[field] && <span className={styles.error}>*</span>}
-                                </label>
-                                
-                                {/* ✅ PREVIEW DE IMAGEN - SIEMPRE MOSTRAR CONTENEDOR */}
-                                {(() => {
-                                    const preview = getPreviewFor(field)
-                                    const isRemoved = imageState[field]?.remove
-                                    
-                                    if (isRemoved) {
-                                        // Estado "eliminado" - mostrar placeholder
-                                        return (
-                                            <div className={styles.imagePreview}>
-                                                <div className={styles.removedPlaceholder}>
-                                                    <div className={styles.removedIcon}>🗑️</div>
-                                                    <span className={styles.removedText}>Foto eliminada</span>
-                                                    <small className={styles.removedSubtext}>Se eliminará al guardar</small>
-                                                </div>
-                                            </div>
-                                        )
-                                    }
-                                    
-                                    if (preview) {
-                                        // Mostrar imagen (existente o nueva)
-                                        return (
-                                            <div className={styles.imagePreview}>
-                                                <img 
-                                                    src={preview} 
-                                                    alt={`${field} preview`}
-                                                    className={styles.previewImage}
-                                                />
-                                                <div className={styles.previewInfo}>
-                                                    {imageState[field]?.file ? (
-                                                        <small>Nueva imagen seleccionada</small>
-                                                    ) : (
-                                                        <div>
-                                                            <small>Imagen existente</small>
-                                                            {imageState[field]?.publicId && (
-                                                                <div className={styles.publicIdBadge}>
-                                                                    📷 {imageState[field].publicId}
-                                                                </div>
-                                                            )}
-                                                        </div>
+
+                {/* ✅ GRID DE IMÁGENES PRINCIPALES CON ESTILO MODERNO */}
+                <div className={styles.principalPhotosGrid}>
+                    {IMAGE_FIELDS.principales.map((field, index) => {
+                        const preview = getPreviewFor(field)
+                        const isRemoved = imageState[field]?.remove
+                        const fieldTitle = field === 'fotoPrincipal' ? 'Foto Principal' : 'Foto Hover'
+                        
+                        return (
+                            <div key={field} className={styles.principalPhotoCard}>
+                                <div className={styles.principalPhotoHeader}>
+                                    <h5>{fieldTitle}</h5>
+                                    {errors[field] && <span className={styles.error}>* Requerida</span>}
+                                </div>
+
+                                {/* ✅ PREVIEW DE IMAGEN CON MISMO ESTILO QUE EXTRAS */}
+                                {isRemoved ? (
+                                    // Foto marcada para eliminar
+                                    <div className={styles.removedPhotoPlaceholder}>
+                                        <div className={styles.removedIcon}>🗑️</div>
+                                        <span className={styles.removedText}>Marcada para eliminar</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => restoreImage(field)}
+                                            className={styles.restoreButton}
+                                        >
+                                            ↺ Restaurar
+                                        </button>
+                                    </div>
+                                ) : preview ? (
+                                    // Foto normal (existente o nueva)
+                                    <>
+                                        <img 
+                                            src={preview} 
+                                            alt={`${fieldTitle}`}
+                                            className={styles.principalPhotoImg}
+                                        />
+                                        <div className={styles.principalPhotoInfo}>
+                                            {imageState[field]?.file ? (
+                                                <small>Nueva imagen seleccionada</small>
+                                            ) : (
+                                                <div>
+                                                    <small>Imagen existente</small>
+                                                    {imageState[field]?.publicId && (
+                                                        <small className={styles.publicIdInfo}>
+                                                            ID: {imageState[field].publicId.slice(-8)}
+                                                        </small>
                                                     )}
                                                 </div>
-                                            </div>
-                                        )
-                                    }
-                                    
-                                    // Sin imagen - mostrar placeholder vacío
-                                    return (
-                                        <div className={styles.imagePreview}>
-                                            <div className={styles.emptyPlaceholder}>
-                                                <span>Sin imagen</span>
-                                            </div>
+                                            )}
                                         </div>
-                                    )
-                                })()}
-                                
-                                {/* ✅ INPUT DE ARCHIVO */}
+                                    </>
+                                ) : (
+                                    // Sin imagen - placeholder
+                                    <div className={styles.emptyPhotoPlaceholder}>
+                                        <div className={styles.emptyIcon}>📷</div>
+                                        <span className={styles.emptyText}>Sin imagen</span>
+                                        <small className={styles.emptyHint}>
+                                            {mode === MODE.CREATE ? 'Requerida' : 'Opcional'}
+                                        </small>
+                                    </div>
+                                )}
+
+                                {/* ✅ INPUT DE ARCHIVO OCULTO */}
                                 <input
                                     type="file"
                                     accept=".jpg,.jpeg,.png"
                                     onChange={handleFileChange(field)}
-                                    className={styles.fileInput}
+                                    className={styles.hiddenFileInput}
+                                    id={`input-${field}`}
                                 />
-                                
-                                {/* ✅ BOTONES DE ACCIÓN - SIEMPRE MOSTRAR */}
-                                <div className={styles.imageActions}>
-                                    {mode === MODE.EDIT && imageState[field]?.file && (
+
+                                {/* ✅ BOTONES DE ACCIÓN CON MISMO ESTILO QUE EXTRAS */}
+                                <div className={styles.principalPhotoActions}>
+                                    {!isRemoved && (
+                                        <label
+                                            htmlFor={`input-${field}`}
+                                            className={styles.selectButton}
+                                        >
+                                            📁 {preview ? 'Cambiar foto' : 'Seleccionar foto'}
+                                        </label>
+                                    )}
+                                    
+                                    {mode === MODE.EDIT && preview && !isRemoved && (
                                         <button
                                             type="button"
                                             onClick={handleRemoveImage(field)}
                                             className={styles.removeButton}
+                                            title="Eliminar esta foto"
                                         >
-                                            🗑️ Quitar nueva imagen
+                                            🗑️ Eliminar
                                         </button>
-                                    )}
-                                    
-                                    {mode === MODE.EDIT && imageState[field]?.existingUrl && !imageState[field]?.remove && (
-                                        <button
-                                            type="button"
-                                            onClick={handleRemoveImage(field)}
-                                            className={styles.removeButton}
-                                        >
-                                            🗑️ Eliminar imagen
-                                        </button>
-                                    )}
-                                    
-                                    {mode === MODE.EDIT && imageState[field]?.remove && (
-                                        <span className={styles.removedLabel}>
-                                            ❌ Imagen marcada para eliminar
-                                        </span>
-                                    )}
-                                    
-                                    {mode === MODE.CREATE && (
-                                        <small className={styles.createHint}>
-                                            Selecciona una imagen para subir
-                                        </small>
                                     )}
                                 </div>
-                                
+
+                                {/* ✅ ERROR ESPECÍFICO DEL CAMPO */}
                                 {errors[field] && (
-                                    <span className={styles.error}>{errors[field].message}</span>
+                                    <div className={styles.fieldError}>
+                                        {errors[field].message}
+                                    </div>
                                 )}
                             </div>
-                        ))
-                    }, [imageState, errors, mode, getPreviewFor, handleFileChange, handleRemoveImage])}
+                        )
+                    })}
                 </div>
             </div>
 
-            {/* ✅ SECCIÓN DE FOTOS EXTRAS */}
+            {/* ✅ SECCIÓN DE FOTOS EXTRAS - NUEVA ESTRUCTURA */}
             <div className={styles.imageSection}>
                 <h3>Fotos Extras</h3>
                 
@@ -388,134 +421,120 @@ const CarFormRHF = ({
                         <>
                             <p><strong>Mínimo requerido:</strong> 5 fotos extras</p>
                             <p><strong>Máximo:</strong> 8 fotos extras</p>
-                            <p><strong>Opcional:</strong> Las fotos marcadas con (opcional) no son obligatorias</p>
+                            <p><strong>Input múltiple:</strong> Selecciona varios archivos de una vez</p>
                         </>
                     ) : (
                         <>
-                            <p><strong>Modo edición:</strong> Las fotos extras son opcionales</p>
-                            <p><strong>Máximo:</strong> 8 fotos extras</p>
-                            <p><strong>Puedes mantener las existentes sin cambios</strong></p>
+                            <p><strong>Fotos existentes:</strong> Puedes eliminar las que ya no necesites</p>
+                            <p><strong>Agregar nuevas:</strong> Usa el input múltiple para subir hasta 8 fotos nuevas</p>
+                            <p><strong>Opcional:</strong> Todos los cambios de fotos son opcionales</p>
                         </>
                     )}
                 </div>
                 
-                <div className={styles.imageGrid}>
-                    {useMemo(() => {
-                        return IMAGE_FIELDS.extras.map((field, index) => (
-                            <div key={field} className={styles.imageField}>
-                                <label className={styles.imageLabel}>
-                                    Foto Extra {index + 1}
-                                    {index >= 5 && <span className={styles.optional}>(opcional)</span>}
-                                    {errors[field] && <span className={styles.error}>*</span>}
-                                </label>
-                                
-                                {/* ✅ PREVIEW DE IMAGEN - SIEMPRE MOSTRAR CONTENEDOR */}
-                                {(() => {
-                                    const preview = getPreviewFor(field)
-                                    const isRemoved = imageState[field]?.remove
-                                    
-                                    if (isRemoved) {
-                                        // Estado "eliminado" - mostrar placeholder
-                                        return (
-                                            <div className={styles.imagePreview}>
-                                                <div className={styles.removedPlaceholder}>
+                {/* ✅ FOTOS EXISTENTES (Solo en modo EDIT) */}
+                {mode === MODE.EDIT && imageState.existingExtras && imageState.existingExtras.length > 0 && (
+                    <div className={styles.existingPhotosSection}>
+                        <h4>Fotos Existentes</h4>
+                        <div className={styles.existingPhotosGrid}>
+                            {imageState.existingExtras.map((photo, index) => (
+                                <div key={index} className={styles.existingPhotoCard}>
+                                    {photo.remove ? (
+                                        // Foto marcada para eliminar
+                                        <div className={styles.removedPhotoPlaceholder}>
                                                     <div className={styles.removedIcon}>🗑️</div>
-                                                    <span className={styles.removedText}>Foto eliminada</span>
-                                                    <small className={styles.removedSubtext}>Se eliminará al guardar</small>
-                                                </div>
-                                            </div>
-                                        )
-                                    }
-                                    
-                                    if (preview) {
-                                        // Mostrar imagen (existente o nueva)
-                                        return (
-                                            <div className={styles.imagePreview}>
-                                                <img 
-                                                    src={preview} 
-                                                    alt={`${field} preview`}
-                                                    className={styles.previewImage}
-                                                />
-                                                <div className={styles.previewInfo}>
-                                                    {imageState[field]?.file ? (
-                                                        <small>Nueva imagen seleccionada</small>
-                                                    ) : (
-                                                        <div>
-                                                            <small>Imagen existente</small>
-                                                            {imageState[field]?.publicId && (
-                                                                <div className={styles.publicIdBadge}>
-                                                                    📷 {imageState[field].publicId}
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        )
-                                    }
-                                    
-                                    // Sin imagen - mostrar placeholder vacío
-                                    return (
-                                        <div className={styles.imagePreview}>
-                                            <div className={styles.emptyPlaceholder}>
-                                                <span>Sin imagen</span>
-                                            </div>
+                                            <span className={styles.removedText}>Marcada para eliminar</span>
+                                            <button
+                                                type="button"
+                                                onClick={handleRestoreExistingExtra(index)}
+                                                className={styles.restoreButton}
+                                            >
+                                                ↺ Restaurar
+                                            </button>
                                         </div>
-                                    )
-                                })()}
-                                
-                                {/* ✅ INPUT DE ARCHIVO */}
-                                <input
-                                    type="file"
-                                    accept=".jpg,.jpeg,.png"
-                                    onChange={handleFileChange(field)}
-                                    className={styles.fileInput}
-                                />
-                                
-                                {/* ✅ BOTONES DE ACCIÓN PARA EDIT */}
-                                {mode === MODE.EDIT && (
-                                    <div className={styles.imageActions}>
-                                        {imageState[field]?.file && (
-                                            <button
-                                                type="button"
-                                                onClick={handleRemoveImage(field)}
-                                                className={styles.removeButton}
-                                            >
-                                                Quitar nueva imagen
-                                            </button>
-                                        )}
-                                        {imageState[field]?.existingUrl && !imageState[field]?.remove && (
-                                            <button
-                                                type="button"
-                                                onClick={handleRemoveImage(field)}
-                                                className={styles.removeButton}
-                                            >
-                                                Quitar imagen existente
-                                            </button>
-                                        )}
-                                        {imageState[field]?.remove && (
-                                            <div className={styles.removedActions}>
-                                                <span className={styles.removedLabel}>
-                                                    ❌ Marcada para eliminar
-                                                </span>
+                                    ) : (
+                                        // Foto normal
+                                        <>
+                                            <img 
+                                                src={photo.url} 
+                                                alt={`Foto existente ${index + 1}`}
+                                                className={styles.existingPhotoImg}
+                                            />
+                                            <div className={styles.existingPhotoActions}>
                                                 <button
                                                     type="button"
-                                                    onClick={() => restoreImage(field)}
-                                                    className={styles.restoreButton}
+                                                    onClick={handleRemoveExistingExtra(index)}
+                                                    className={styles.removeButton}
+                                                    title="Eliminar esta foto"
                                                 >
-                                                    ↺ Restaurar
+                                                    🗑️ Eliminar
                                                 </button>
+                                                {photo.publicId && (
+                                                    <small className={styles.publicIdInfo}>
+                                                        ID: {photo.publicId.slice(-8)}
+                                                    </small>
+                                                )}
                                             </div>
+                                        </>
                                         )}
+                                </div>
+                            ))}
+                        </div>
                                     </div>
                                 )}
                                 
-                                {errors[field] && (
-                                    <span className={styles.error}>{errors[field].message}</span>
-                                )}
+                {/* ✅ INPUT MÚLTIPLE PARA AGREGAR FOTOS */}
+                <div className={styles.multipleInputSection}>
+                    <h4>{mode === MODE.CREATE ? 'Seleccionar Fotos Extras' : 'Agregar Fotos Nuevas'}</h4>
+                    
+                    <div className={styles.multipleInputContainer}>
+                        <label className={styles.multipleInputLabel}>
+                            <input
+                                type="file"
+                                accept=".jpg,.jpeg,.png"
+                                multiple
+                                onChange={handleMultipleExtrasChange}
+                                className={styles.multipleFileInput}
+                            />
+                            <div className={styles.multipleInputUI}>
+                                <span className={styles.multipleInputIcon}>📁</span>
+                                <span className={styles.multipleInputText}>
+                                    {mode === MODE.CREATE 
+                                        ? 'Seleccionar 5-8 fotos extras'
+                                        : 'Seleccionar fotos para agregar'
+                                    }
+                                </span>
+                                <small className={styles.multipleInputHint}>
+                                    Puedes seleccionar varios archivos a la vez
+                                </small>
                             </div>
-                        ))
-                    }, [imageState, errors, mode, getPreviewFor, handleFileChange, handleRemoveImage, restoreImage])}
+                        </label>
+                    </div>
+
+                    {/* ✅ DEBUG: Logging del estado */}
+                    {console.log('🔍 CarFormRHF - imageState.fotosExtra:', imageState.fotosExtra)}
+                    
+                    {/* ✅ PREVIEW DE ARCHIVOS SELECCIONADOS */}
+                    {imageState.fotosExtra && imageState.fotosExtra.length > 0 && (
+                        <div className={styles.newPhotosPreview}>
+                            <h5>Fotos seleccionadas ({imageState.fotosExtra.length})</h5>
+                            <div className={styles.newPhotosGrid}>
+                                {imageState.fotosExtra.map((file, index) => (
+                                    <div key={index} className={styles.newPhotoCard}>
+                                        <img 
+                                            src={URL.createObjectURL(file)} 
+                                            alt={`Nueva foto ${index + 1}`}
+                                            className={styles.newPhotoImg}
+                                        />
+                                        <div className={styles.newPhotoInfo}>
+                                            <small>{file.name}</small>
+                                            <small>{(file.size / 1024 / 1024).toFixed(2)} MB</small>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
                 
                 {/* ✅ ERROR GENERAL DE FOTOS EXTRAS */}
@@ -755,11 +774,22 @@ const CarFormRHF = ({
                     disabled={isLoading}
                 >
                     {isLoading ? (
-                        'Procesando...'
+                        <span>
+                            <span className={styles.loadingSpinner}></span>
+                            {mode === MODE.CREATE ? 'Creando auto...' : 'Guardando cambios...'}
+                        </span>
                     ) : (
                         mode === MODE.CREATE ? 'Crear Auto' : 'Actualizar Auto'
                     )}
                 </button>
+                
+                {/* ✅ MENSAJE DE PROGRESO PARA OPERACIONES CON IMÁGENES */}
+                {isLoading && (
+                    <div className={styles.uploadProgress}>
+                        <p>⏳ Las imágenes pueden tardar un momento en subirse...</p>
+                        <small>Por favor no cierres esta ventana</small>
+                    </div>
+                )}
             </div>
         </form>
     )

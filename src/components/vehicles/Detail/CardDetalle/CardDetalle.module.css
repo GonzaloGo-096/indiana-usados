@@ -216,6 +216,22 @@
   line-height: 1.3;
 }
 
+/* ✅ NUEVO: Estilos específicos para el campo Detalle */
+.infoItemDetalle {
+  grid-column: 1 / -1; /* ✅ Ocupa todo el ancho del grid */
+  text-align: center; /* ✅ Centrar contenido */
+  margin-top: 0.5rem; /* ✅ Separación adicional */
+  padding: 0.8rem 1rem; /* ✅ Más padding para destacar */
+  background: #f8fafc; /* ✅ Fondo sutil */
+  border-radius: 8px; /* ✅ Bordes redondeados */
+}
+
+.infoValueDetalle {
+  text-align: center; /* ✅ Centrar texto */
+  font-style: italic; /* ✅ Estilo itálica para diferenciarlo */
+  color: #4b5563; /* ✅ Color más suave */
+}
+
 /* ===== SECCIÓN DE CONTACTO ===== */
 .contactSection {
   padding-top: 1rem;

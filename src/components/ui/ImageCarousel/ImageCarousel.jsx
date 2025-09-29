@@ -41,7 +41,6 @@ export const ImageCarousel = ({
     autoPlayInterval = 5000
 }) => {
     const [currentIndex, setCurrentIndex] = useState(0)
-    const thumbnailsRef = useRef(null) // ✅ NUEVO: Ref para el contenedor de miniaturas
     
     // Si no hay imágenes, usar imagen por defecto - MEMOIZADO
     const allImages = useMemo(() => {
@@ -71,52 +70,6 @@ export const ImageCarousel = ({
         setCurrentIndex(index)
     }, [])
 
-    // ✅ NUEVO: Estado para el offset del visor fijo
-    const [thumbnailOffset, setThumbnailOffset] = useState(0)
-    
-    // ✅ NUEVO: Funciones para el slider de miniaturas con visor fijo
-    const scrollThumbnailsLeft = useCallback(() => {
-        const thumbnailWidth = 90 + 16 // width + gap (Netflix style)
-        const visibleThumbnails = Math.floor(thumbnailsRef.current?.clientWidth / thumbnailWidth) || 3
-        const maxOffset = Math.max(0, allImages.length - visibleThumbnails)
-        
-        setThumbnailOffset(prev => Math.max(0, prev - visibleThumbnails))
-    }, [allImages.length])
-
-    const scrollThumbnailsRight = useCallback(() => {
-        const thumbnailWidth = 90 + 16 // width + gap (Netflix style)
-        const visibleThumbnails = Math.floor(thumbnailsRef.current?.clientWidth / thumbnailWidth) || 3
-        const maxOffset = Math.max(0, allImages.length - visibleThumbnails)
-        
-        setThumbnailOffset(prev => Math.min(maxOffset, prev + visibleThumbnails))
-    }, [allImages.length])
-
-    // ✅ NUEVO: Verificar si se puede hacer scroll con visor fijo
-    const [canScrollLeft, setCanScrollLeft] = useState(false)
-    const [canScrollRight, setCanScrollRight] = useState(false)
-
-    const checkScrollButtons = useCallback(() => {
-        const thumbnailWidth = 90 + 16 // width + gap (Netflix style)
-        const visibleThumbnails = Math.floor(thumbnailsRef.current?.clientWidth / thumbnailWidth) || 3
-        const maxOffset = Math.max(0, allImages.length - visibleThumbnails)
-        
-        setCanScrollLeft(thumbnailOffset > 0)
-        setCanScrollRight(thumbnailOffset < maxOffset)
-    }, [thumbnailOffset, allImages.length])
-
-    // ✅ NUEVO: Efecto para verificar scroll al cambiar offset
-    useEffect(() => {
-        checkScrollButtons()
-    }, [checkScrollButtons])
-
-    // ✅ NUEVO: Efecto para aplicar transform al visor fijo
-    useEffect(() => {
-        if (thumbnailsRef.current) {
-            const thumbnailWidth = 90 + 16 // width + gap (Netflix style)
-            const translateX = -thumbnailOffset * thumbnailWidth
-            thumbnailsRef.current.style.transform = `translateX(${translateX}px)`
-        }
-    }, [thumbnailOffset])
 
 
     // AutoPlay effect - OPTIMIZADO
@@ -212,30 +165,7 @@ export const ImageCarousel = ({
             {/* Miniaturas */}
             {allImages.length > 1 && (
                 <div className={styles.thumbnailsContainer}>
-                    {/* ✅ NUEVO: Controles del slider de miniaturas */}
-                    {canScrollLeft && (
-                        <button
-                            className={`${styles.thumbnailControls} ${styles.thumbnailControlsLeft}`}
-                            onClick={scrollThumbnailsLeft}
-                            aria-label="Scroll miniaturas izquierda"
-                            type="button"
-                        >
-                            <ChevronLeftIcon />
-                        </button>
-                    )}
-                    
-                    {canScrollRight && (
-                        <button
-                            className={`${styles.thumbnailControls} ${styles.thumbnailControlsRight}`}
-                            onClick={scrollThumbnailsRight}
-                            aria-label="Scroll miniaturas derecha"
-                            type="button"
-                        >
-                            <ChevronRightIcon />
-                        </button>
-                    )}
-
-                    <div className={styles.thumbnails} ref={thumbnailsRef} style={{ transform: `translateX(${-thumbnailOffset * (90 + 16)}px)` }}>
+                    <div className={styles.thumbnails}>
                         {allImages.map((image, index) => (
                             <button
                                 key={index}

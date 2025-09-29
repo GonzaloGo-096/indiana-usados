@@ -46,7 +46,8 @@ export const vehiclesService = {
    */
   async createVehicle(formData) {
     const response = await authAxiosInstance.post('/photos/create', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 30000 // ✅ 30 segundos para subir múltiples imágenes
     })
     return response.data
   },
@@ -57,14 +58,26 @@ export const vehiclesService = {
   async updateVehicle(id, formData) {
     try {
       console.log(`🔄 Actualizando vehículo ${id} con PUT /photos/updatephoto/${id}`)
+      
+      // ✅ LOGGING DETALLADO DEL FORMDATA
+      const fileCount = Array.from(formData.entries()).filter(([key, value]) => value instanceof File).length
+      console.log(`📁 FormData contiene ${fileCount} archivos`)
+      
       const response = await authAxiosInstance.put(`/photos/updatephoto/${id}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 60000 // ✅ 60 segundos para actualizar con múltiples imágenes
       })
       console.log(`✅ Vehículo actualizado exitosamente - Status: ${response.status}`)
       return response.data
     } catch (error) {
       const status = error.response?.status || 'Sin respuesta'
-      console.error(`❌ Error al actualizar vehículo - Status: ${status}`, error.message)
+      const isTimeout = error.code === 'ECONNABORTED' || error.message?.includes('timeout')
+      
+      console.error(`❌ Error al actualizar vehículo - Status: ${status}`, {
+        message: error.message,
+        isTimeout,
+        code: error.code
+      })
       throw error
     }
   },

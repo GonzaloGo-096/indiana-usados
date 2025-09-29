@@ -122,49 +122,33 @@
 /* ===== VISOR FIJO NETFLIX/SPOTIFY ===== */
 .thumbnailsContainer {
     width: 100%;
-    height: 100px; /* ✅ REDUCIDO SUTILMENTE: De 120px a 100px */
-    overflow: visible; /* ✅ CORREGIDO: Visible para que no corte el hover */
+    height: auto; /* ✅ CAMBIADO: Altura automática para 2 filas */
+    min-height: 140px; /* ✅ NUEVO: Altura mínima para 2 filas */
+    overflow: visible;
     display: flex;
     justify-content: center;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* ✅ NUEVO: Mismo fondo que la página */
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     border-radius: 12px;
-    padding: 0; /* ✅ REMOVIDO: Sin padding para que no corte el hover */
-    margin-top: 30px; /* ✅ NUEVO: Separación de la imagen principal */
+    padding: 0;
+    margin-top: 30px;
     opacity: 1;
     visibility: visible;
     z-index: 5;
     position: relative;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    contain: layout style paint; /* ✅ OPTIMIZACIÓN: Contención */
 }
 
 .thumbnails {
     display: flex;
-    gap: 16px; /* ✅ AUMENTADO: Más espacio como Netflix */
-    padding: 20px; /* ✅ AGREGADO: Padding interno para compensar */
-    justify-content: flex-start;
-    align-items: center; /* ✅ NUEVO: Centrar verticalmente la fila de miniaturas */
-    flex-wrap: nowrap;
-    height: 100%;
-    overflow: hidden; /* ✅ CORREGIDO: Hidden aquí para el scroll */
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ✅ OPTIMIZADO: Solo transform */
-    will-change: transform; /* ✅ OPTIMIZACIÓN: GPU acceleration */
-    /* ✅ NUEVO: Efecto de desvanecimiento más pronunciado */
-    mask-image: linear-gradient(
-        to right,
-        transparent 0px,
-        black 40px,
-        black calc(100% - 40px),
-        transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-        to right,
-        transparent 0px,
-        black 40px,
-        black calc(100% - 40px),
-        transparent 100%
-    );
+    gap: 8px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* ✅ CAMBIADO: Permitir múltiples filas */
+    height: auto; /* ✅ CAMBIADO: Altura automática para 2 filas */
+    overflow: visible;
+    max-width: 100%;
 }
 
 /* ===== CONTROLES NETFLIX/SPOTIFY ===== */
@@ -227,19 +211,18 @@
 /* ===== MINIATURAS NETFLIX/SPOTIFY ===== */
 .thumbnail {
     flex-shrink: 0;
-    width: 90px; /* ✅ REDUCIDO: Un poco más pequeñas */
-    height: 63px; /* ✅ REDUCIDO: Un poco más pequeñas */
-    border-radius: 8px; /* ✅ REDUCIDO: Menos redondeado como Netflix */
-    overflow: hidden; /* ✅ RESTAURADO: Hidden para contener la imagen */
+    width: 80px;
+    height: 56px;
+    border-radius: 6px;
+    overflow: hidden;
     border: 2px solid transparent;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    background: #1a1a1a; /* ✅ RESTAURADO: Fondo para crear márgenes uniformes */
+    background: transparent; /* ✅ REMOVIDO: Sin fondo negro */
     position: relative;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    will-change: transform; /* ✅ OPTIMIZACIÓN: GPU acceleration */
-    z-index: 1; /* ✅ NUEVO: Z-index para hover */
-    padding: 2px; /* ✅ NUEVO: Padding para crear márgenes uniformes */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    will-change: transform;
+    z-index: 1;
 }
 
 .thumbnail:hover {
@@ -273,12 +256,12 @@
 .thumbnailImage {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* ✅ CUBRE TODO: La imagen llena completamente el contenedor */
-    object-position: center; /* ✅ CENTRADO: Enfoca el centro de la imagen */
+    object-fit: cover;
+    object-position: center;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    border-radius: 6px; /* ✅ AJUSTADO: Bordes redondeados para el padding */
-    will-change: transform; /* ✅ OPTIMIZACIÓN: GPU acceleration */
-    display: block; /* ✅ AGREGADO: Para eliminar espacios en blanco */
+    border-radius: 4px; /* ✅ REDUCIDO: Bordes menos pronunciados */
+    will-change: transform;
+    display: block;
 }
 
 .thumbnail:hover .thumbnailImage {
@@ -293,17 +276,18 @@
 /* ===== RESPONSIVE DESIGN NETFLIX ===== */
 @media (max-width: 1024px) {
     .thumbnailsContainer {
-        height: 85px; /* ✅ REDUCIDO SUTILMENTE: De 100px a 85px */
-        margin-top: 25px; /* ✅ AJUSTADO: Menos separación en tablet */
+        height: auto; /* ✅ CAMBIADO: Altura automática para 2 filas */
+        min-height: 120px; /* ✅ NUEVO: Altura mínima ajustada para tablet */
+        margin-top: 25px;
     }
     
     .thumbnails {
-        gap: 14px;
+        gap: 6px; /* ✅ REDUCIDO: Menos espacio en tablet */
     }
     
     .thumbnail {
-        width: 80px;
-        height: 56px;
+        width: 70px; /* ✅ REDUCIDO: Más pequeñas en tablet */
+        height: 49px; /* ✅ REDUCIDO: Más pequeñas en tablet */
     }
     
     .thumbnailControls {

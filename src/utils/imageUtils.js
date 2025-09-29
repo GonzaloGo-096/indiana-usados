@@ -123,7 +123,14 @@ export const getCarouselImages = (auto) => {
             url && typeof url === 'string' && url.trim() !== '' && url !== 'undefined'
         )
         
-        // Logs detallados removidos para mantener consola limpia
+        // 🔍 DEBUG: Logging temporal para diagnosticar problema de miniaturas
+        console.log('🔍 getCarouselImages - Processing auto:', {
+            hasExtractedImages: extractedImages.length > 0,
+            extractedImages: extractedImages.slice(0, 3), // Solo primeras 3 para no saturar
+            hasStructuredImages: structuredImages.length > 0,
+            structuredImages: structuredImages.slice(0, 3),
+            uniqueImagesCount: uniqueImages.length
+        })
         
         // ✅ NUEVO: Si hay imágenes válidas, usarlas
         if (uniqueImages.length > 0) {

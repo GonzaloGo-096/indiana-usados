@@ -46,6 +46,7 @@ export const useCarouselImages = (auto) => {
         if (!auto || typeof auto !== 'object') {
             return getCarouselImages(null)
         }
+        
         return getCarouselImages(auto)
     }, [auto])
 }

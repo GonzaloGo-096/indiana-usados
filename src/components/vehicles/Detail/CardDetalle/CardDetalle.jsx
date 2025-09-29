@@ -164,9 +164,9 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                     {/* Información adicional */}
                     <div className={styles.infoContainer}>
                         {additionalInfo.map((item) => (
-                            <div key={item.label} className={styles.infoItem}>
+                            <div key={item.label} className={`${styles.infoItem} ${item.label === 'Detalle' ? styles.infoItemDetalle : ''}`}>
                                 <span className={styles.infoKey}>{item.label}</span>
-                                <span className={styles.infoValue}>{item.value}</span>
+                                <span className={`${styles.infoValue} ${item.label === 'Detalle' ? styles.infoValueDetalle : ''}`}>{item.value}</span>
                             </div>
                         ))}
                     </div>

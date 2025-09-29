@@ -30,7 +30,7 @@ const getApiConfig = () => {
   
   // Configuración base
   const baseConfig = {
-    timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 5000,
+    timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 15000, // ✅ 15 segundos por defecto
     retries: 2,
     headers: {
       'Content-Type': 'application/json',

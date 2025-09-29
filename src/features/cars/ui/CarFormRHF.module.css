@@ -516,3 +516,472 @@
         font-size: 20px;
     }
 }
+
+/* ✅ ESTILOS PARA IMÁGENES PRINCIPALES (MODERNIZADO) */
+
+/* Grid de fotos principales */
+.principalPhotosGrid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    justify-content: center; /* ✅ CENTRADO */
+}
+
+.principalPhotoCard {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+    width: 280px; /* ✅ ANCHO FIJO - no se estira */
+    flex-shrink: 0; /* ✅ No se comprime */
+}
+
+.principalPhotoCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-color: #007bff;
+}
+
+.principalPhotoHeader {
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.principalPhotoHeader h5 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.principalPhotoImg {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.principalPhotoInfo {
+    padding: 8px 12px;
+    background: #f8f9fa;
+    text-align: center;
+}
+
+.principalPhotoInfo small {
+    color: #6c757d;
+    font-size: 11px;
+}
+
+/* Placeholder para foto vacía */
+.emptyPhotoPlaceholder {
+    padding: 40px 20px;
+    text-align: center;
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    color: #6c757d;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.emptyIcon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    color: #adb5bd;
+}
+
+.emptyText {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.emptyHint {
+    font-size: 11px;
+    color: #adb5bd;
+}
+
+/* Acciones de foto principal */
+.principalPhotoActions {
+    padding: 12px;
+    background: white;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.selectButton {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.selectButton:hover {
+    background: #0056b3;
+}
+
+.hiddenFileInput {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+}
+
+/* Error específico del campo */
+.fieldError {
+    padding: 8px 12px;
+    background: #f8d7da;
+    color: #721c24;
+    font-size: 11px;
+    border-top: 1px solid #f5c6cb;
+}
+
+/* ✅ ESTILOS PARA FOTOS EXTRAS CON INPUT MÚLTIPLE */
+
+/* Sección de fotos existentes */
+.existingPhotosSection {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.existingPhotosSection h4 {
+    color: #495057;
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.existingPhotosGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.existingPhotoCard {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.existingPhotoCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.existingPhotoImg {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.existingPhotoActions {
+    padding: 8px;
+    text-align: center;
+}
+
+.existingPhotoActions .removeButton {
+    width: 100%;
+    padding: 4px 8px;
+    font-size: 12px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.existingPhotoActions .removeButton:hover {
+    background: #c82333;
+}
+
+.publicIdInfo {
+    display: block;
+    color: #6c757d;
+    font-size: 10px;
+    margin-top: 4px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/* Placeholder para foto marcada como eliminada */
+.removedPhotoPlaceholder {
+    padding: 15px 8px;
+    text-align: center;
+    background: #f8f9fa;
+    border: 2px dashed #dc3545;
+    color: #dc3545;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.removedIcon {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.removedText {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Sección de input múltiple */
+.multipleInputSection {
+    margin-bottom: 20px;
+}
+
+.multipleInputSection h4 {
+    color: #495057;
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.multipleInputContainer {
+    margin-bottom: 20px;
+}
+
+.multipleInputLabel {
+    display: block;
+    cursor: pointer;
+    position: relative;
+}
+
+.multipleFileInput {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+}
+
+.multipleInputUI {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 14px; /* ✅ Padding aún más reducido */
+    border: 2px dashed #007bff;
+    border-radius: 6px; /* ✅ Border radius más pequeño */
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    text-align: center;
+    max-width: 250px; /* ✅ Ancho máximo reducido */
+    margin: 0 auto; /* ✅ Centrado */
+}
+
+.multipleInputUI:hover {
+    border-color: #0056b3;
+    background: #e7f3ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
+
+.multipleInputIcon {
+    font-size: 18px; /* ✅ Ícono aún más pequeño */
+    margin-bottom: 6px;
+    color: #007bff;
+}
+
+.multipleInputText {
+    font-size: 12px; /* ✅ Texto aún más pequeño */
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 3px;
+    display: block;
+}
+
+.multipleInputHint {
+    font-size: 10px; /* ✅ Hint aún más pequeño */
+    color: #6c757d;
+}
+
+/* Preview de fotos nuevas */
+.newPhotosPreview {
+    padding: 20px;
+    background: #e7f3ff;
+    border-radius: 8px;
+    border: 1px solid #007bff;
+}
+
+.newPhotosPreview h5 {
+    color: #0056b3;
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.newPhotosGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.newPhotoCard {
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.newPhotoImg {
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.newPhotoInfo {
+    padding: 6px;
+    text-align: center;
+}
+
+.newPhotoInfo small {
+    display: block;
+    color: #6c757d;
+    font-size: 10px;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Botones mejorados */
+.restoreButton {
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.restoreButton:hover {
+    background: #218838;
+}
+
+/* Responsive para nueva estructura */
+@media (max-width: 768px) {
+    /* Responsive para fotos principales */
+    .principalPhotosGrid {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .principalPhotoCard {
+        width: 100%; /* ✅ En móvil sí ocupa todo el ancho */
+        max-width: 400px; /* ✅ Pero con un máximo */
+        align-self: center; /* ✅ Centrado */
+    }
+    
+    .principalPhotoImg {
+        height: 120px;
+    }
+    
+    .emptyPhotoPlaceholder {
+        padding: 30px 15px;
+        min-height: 120px;
+    }
+    
+    .emptyIcon {
+        font-size: 24px;
+    }
+    
+    /* Responsive para fotos extras */
+    .existingPhotosGrid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+    }
+    
+    .newPhotosGrid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+    }
+    
+    .multipleInputUI {
+        padding: 10px 12px; /* ✅ Padding súper compacto en móvil */
+        max-width: 100%; /* ✅ Puede usar todo el ancho en móvil */
+    }
+    
+    .multipleInputText {
+        font-size: 11px; /* ✅ Texto súper pequeño en móvil */
+    }
+    
+    .multipleInputIcon {
+        font-size: 16px; /* ✅ Ícono súper pequeño en móvil */
+    }
+    
+    .existingPhotosSection,
+    .newPhotosPreview {
+        padding: 15px;
+    }
+}
+
+/* ✅ ESTILOS PARA CARGA Y PROGRESO */
+
+/* Spinner de carga */
+.loadingSpinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mensaje de progreso */
+.uploadProgress {
+    margin-top: 15px;
+    padding: 12px 16px;
+    background: #e7f3ff;
+    border: 1px solid #007bff;
+    border-radius: 6px;
+    text-align: center;
+    color: #0056b3;
+}
+
+.uploadProgress p {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.uploadProgress small {
+    color: #6c757d;
+    font-size: 11px;
+}
