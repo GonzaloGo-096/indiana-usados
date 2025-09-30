@@ -8,12 +8,19 @@
  */
 
 // ✅ CONFIGURACIÓN DE MÓDULOS INFORMATIVOS (Cards 2-4)
-// Mismos 4 ítems para las tres cards, solo cambian los títulos
+// Orden: WhatsApp → Instagram → Teléfono → Ubicación
 const commonItems = [
   {
-    icon: 'location',
-    text: 'Av. Principal 1234, Ciudad',
-    href: 'https://maps.google.com/maps?q=Av.+Principal+1234,+Ciudad',
+    icon: 'whatsapp',
+    text: 'WhatsApp',
+    href: 'https://wa.me/541112345678',
+    type: 'link',
+    external: true
+  },
+  {
+    icon: 'instagram',
+    text: '@indianausados',
+    href: 'https://instagram.com/indianausados',
     type: 'link',
     external: true
   },
@@ -24,16 +31,9 @@ const commonItems = [
     type: 'link'
   },
   {
-    icon: 'instagram',
-    text: '@indianausados',
-    href: 'https://instagram.com/indianausados',
-    type: 'link',
-    external: true
-  },
-  {
-    icon: 'whatsapp',
-    text: 'WhatsApp',
-    href: 'https://wa.me/541112345678',
+    icon: 'location',
+    text: 'Av. Principal 1234, Ciudad',
+    href: 'https://maps.google.com/maps?q=Av.+Principal+1234,+Ciudad',
     type: 'link',
     external: true
   }

@@ -143,17 +143,10 @@ const Vehiculos = () => {
 
             {/* ✅ NUEVO: Botón para volver a lista principal */}
             {isFiltered && (
-                <div style={{ marginTop: 16, textAlign: 'center' }}>
+                <div className={styles.backButtonContainer}>
                     <button 
                         onClick={() => navigate('/vehiculos')}
-                        style={{
-                            padding: '10px 20px',
-                            backgroundColor: '#6c757d',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
-                        }}
+                        className={styles.backButton}
                     >
                         Volver a lista principal
                     </button>

@@ -22,6 +22,7 @@ const URL_CACHE_MAX = 300
  * Genera URL de Cloudinary con transformaciones
  * @param {string} publicId - Public ID de la imagen
  * @param {Object} options - Opciones de transformación
+ * @param {string} options.qualityMode - Modo de calidad: 'auto' (máxima) o 'eco' (80%)
  * @returns {string} - URL completa de Cloudinary
  */
 export function cldUrl(publicId, options = {}) {
@@ -34,6 +35,7 @@ export function cldUrl(publicId, options = {}) {
     gravity,
     aspectRatio,
     variant = 'fluid',
+    qualityMode = 'auto',
     effects = []
   } = options
   
@@ -58,8 +60,17 @@ export function cldUrl(publicId, options = {}) {
     })
   }
   
-  // Siempre agregar f_auto,q_auto,dpr_auto al final
-  transformations.push('f_auto', 'q_auto', 'dpr_auto')
+  // Siempre agregar f_auto y dpr_auto
+  transformations.push('f_auto')
+  
+  // Agregar calidad según qualityMode
+  if (qualityMode === 'eco') {
+    transformations.push('q_80')  // 80% calidad - ahorro de ancho de banda
+  } else {
+    transformations.push('q_auto')  // Calidad automática óptima
+  }
+  
+  transformations.push('dpr_auto')
   
   // Agregar Progressive JPEG si está habilitado
   if (PROGRESSIVE_JPEG_ENABLED) {
@@ -77,8 +88,9 @@ export function cldUrl(publicId, options = {}) {
   // Limpiar public_id (remover / inicial si existe)
   const cleanPublicId = publicId.startsWith('/') ? publicId.slice(1) : publicId
   
-  // Agregar extensión .jpg por defecto si no tiene extensión
-  const finalPublicId = cleanPublicId.includes('.') ? cleanPublicId : `${cleanPublicId}.jpg`
+  // ✅ NO agregar extensión - dejar que f_auto maneje el formato (WebP/AVIF)
+  // Si el public_id ya tiene extensión, respetarla; si no, Cloudinary decidirá
+  const finalPublicId = cleanPublicId
   
   // Generar URL final
   const url = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${transformString}/${finalPublicId}`
@@ -132,7 +144,9 @@ export function cldPlaceholderUrl(publicId, options = {}) {
   
   // Limpiar public_id
   const cleanPublicId = publicId.startsWith('/') ? publicId.slice(1) : publicId
-  const finalPublicId = cleanPublicId.includes('.') ? cleanPublicId : `${cleanPublicId}.jpg`
+  
+  // ✅ NO agregar extensión - dejar que f_auto maneje el formato (WebP/AVIF)
+  const finalPublicId = cleanPublicId
   
   return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${transformString}/${finalPublicId}`
 }

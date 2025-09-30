@@ -13,7 +13,7 @@ export { Modal } from './Modal'
 export { Alert } from './Alert'
 export { ErrorState } from './ErrorState'
 export { ImageCarousel } from './ImageCarousel'
-export { OptimizedImage } from './OptimizedImage' 
+export { CloudinaryImage } from './CloudinaryImage'
 export { default as RangeSlider } from './RangeSlider/RangeSlider' 
 export { default as MultiSelect } from './MultiSelect/MultiSelect'
 

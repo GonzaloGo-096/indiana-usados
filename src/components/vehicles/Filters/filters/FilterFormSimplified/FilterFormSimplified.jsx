@@ -268,27 +268,22 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
         />
       )}
       <div className={styles.formWrapper}>
-        {/* Header mobile */}
-        <div className={styles.formHeaderMobile}>
-          <h2>Filtrar Vehículos</h2>
-          <button 
-            type="button"
-            onClick={closeDrawer} 
-            className={styles.closeButton}
-            aria-label="Cerrar formulario"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form} data-testid="filters-form">
-          {/* Título del formulario */}
+          {/* Título del formulario con botón cerrar */}
           <div className={styles.formTitle}>
             <h3>Filtros de Búsqueda</h3>
             <div className={styles.titleActions}>
+              <button 
+                type="button"
+                onClick={closeDrawer} 
+                className={styles.closeButtonMobile}
+                aria-label="Cerrar formulario"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
               <button 
                 type="submit" 
                 className={styles.applyButton}
@@ -296,16 +291,6 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 data-testid="apply-filters"
               >
                 {isSubmitting ? 'Aplicando...' : 'Aplicar'}
-              </button>
-              
-              <button 
-                type="button" 
-                onClick={handleClear}
-                className={styles.clearButton}
-                disabled={isLoading || isSubmitting}
-                data-testid="clear-filters"
-              >
-                Limpiar
               </button>
             </div>
           </div>

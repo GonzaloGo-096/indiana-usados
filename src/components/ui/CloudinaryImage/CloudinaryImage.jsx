@@ -1,24 +1,25 @@
 /**
- * ResponsiveImage - Componente para imágenes responsive con Cloudinary
+ * CloudinaryImage - Componente para imágenes optimizadas con Cloudinary
  * 
  * Genera srcset automáticamente usando public_id de Cloudinary
- * con fallback a URL tradicional para registros viejos
+ * con auto-detección de tipo de imagen y fallback inteligente
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Auto-detección y API simplificada
  */
 
 import React, { memo, useState } from 'react'
 import { cldUrl, cldSrcset, cldPlaceholderUrl } from '@utils/cloudinaryUrl'
 import { IMAGE_WIDTHS } from '@constants/imageSizes'
 import { extractPublicIdFromUrl, isCloudinaryUrl } from '@utils/extractPublicId'
-import styles from './ResponsiveImage.module.css'
+import styles from './CloudinaryImage.module.css'
 
 /**
- * Componente ResponsiveImage
+ * Componente CloudinaryImage
  * @param {Object} props - Propiedades del componente
- * @param {string} props.publicId - Public ID de Cloudinary (preferido)
- * @param {string} props.fallbackUrl - URL de fallback para registros viejos
+ * @param {*} props.image - Imagen (objeto con public_id, URL, o public_id string) [NUEVO - Recomendado]
+ * @param {string} props.publicId - Public ID de Cloudinary [LEGACY - Mantener compatibilidad]
+ * @param {string} props.fallbackUrl - URL de fallback [LEGACY - Mantener compatibilidad]
  * @param {string} props.alt - Texto alternativo
  * @param {'fluid'|'cover-16-9'} props.variant - Variante de transformación
  * @param {Array} props.widths - Anchos para srcset
@@ -26,10 +27,12 @@ import styles from './ResponsiveImage.module.css'
  * @param {'lazy'|'eager'} props.loading - Estrategia de carga
  * @param {'high'|'low'|'auto'} props.fetchpriority - Prioridad de carga
  * @param {boolean} props.isCritical - Si es imagen crítica (preload)
+ * @param {'auto'|'eco'} props.qualityMode - Modo de calidad (auto=máxima, eco=80%)
  * @param {string} props.className - Clases CSS
  * @param {Object} props.style - Estilos inline
  */
-export const ResponsiveImage = memo(({
+export const CloudinaryImage = memo(({
+  image,
   publicId,
   fallbackUrl,
   alt,
@@ -39,6 +42,7 @@ export const ResponsiveImage = memo(({
   loading = 'lazy',
   fetchpriority,
   isCritical = false,
+  qualityMode = 'auto',
   className,
   style,
   showPlaceholder = true,
@@ -46,21 +50,68 @@ export const ResponsiveImage = memo(({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false)
   
-  // Determinar el public_id a usar
-  let finalPublicId = publicId
-  
-  // Si no hay publicId pero hay fallbackUrl de Cloudinary, extraer public_id
-  if (!finalPublicId && fallbackUrl && isCloudinaryUrl(fallbackUrl)) {
-    finalPublicId = extractPublicIdFromUrl(fallbackUrl)
-  }
+  // ✅ AUTO-DETECCIÓN: Determinar public_id y fallbackUrl desde prop 'image'
+  const { finalPublicId, finalFallbackUrl } = React.useMemo(() => {
+    // Prioridad 1: Si viene image prop (nuevo API)
+    if (image !== undefined && image !== null) {
+      
+      // Caso A: Objeto con public_id (estructura backend)
+      if (typeof image === 'object' && image?.public_id) {
+        return {
+          finalPublicId: image.public_id,
+          finalFallbackUrl: image.url || null
+        }
+      }
+      
+      // Caso B: String URL de Cloudinary
+      if (typeof image === 'string' && isCloudinaryUrl(image)) {
+        return {
+          finalPublicId: extractPublicIdFromUrl(image),
+          finalFallbackUrl: image
+        }
+      }
+      
+      // Caso C: String public_id directo
+      if (typeof image === 'string') {
+        return {
+          finalPublicId: image,
+          finalFallbackUrl: null
+        }
+      }
+      
+      // Caso D: Objeto solo con url (sin public_id)
+      if (typeof image === 'object' && image?.url) {
+        const url = image.url
+        return {
+          finalPublicId: isCloudinaryUrl(url) 
+            ? extractPublicIdFromUrl(url) 
+            : null,
+          finalFallbackUrl: url
+        }
+      }
+    }
+    
+    // Prioridad 2: Props legacy (compatibilidad hacia atrás)
+    let legacyPublicId = publicId
+    
+    // Si no hay publicId pero hay fallbackUrl de Cloudinary, extraer public_id
+    if (!legacyPublicId && fallbackUrl && isCloudinaryUrl(fallbackUrl)) {
+      legacyPublicId = extractPublicIdFromUrl(fallbackUrl)
+    }
+    
+    return {
+      finalPublicId: legacyPublicId,
+      finalFallbackUrl: fallbackUrl
+    }
+  }, [image, publicId, fallbackUrl])
 
-  // Si aún no hay publicId, usar fallbackUrl directamente
+  // Si aún no hay publicId, usar finalFallbackUrl directamente
   if (!finalPublicId) {
-    if (!fallbackUrl) return null
+    if (!finalFallbackUrl) return null
     
     return (
       <img
-        src={fallbackUrl}
+        src={finalFallbackUrl}
         alt={alt}
         className={className}
         style={style}
@@ -81,6 +132,7 @@ export const ResponsiveImage = memo(({
   // Configurar opciones según variant
   const baseOptions = {
     variant,
+    qualityMode,  // Propagar qualityMode a cldUrl
     ...(variant === 'cover-16-9' && {
       aspectRatio: '16:9',
       crop: 'fill',
@@ -106,6 +158,18 @@ export const ResponsiveImage = memo(({
   // Generar placeholder borroso si está habilitado
   const placeholderSrc = showPlaceholder ? cldPlaceholderUrl(finalPublicId) : null
 
+  // Calcular dimensiones intrínsecas para aspect-ratio (evita CLS)
+  const intrinsicWidth = defaultWidths[defaultWidths.length - 1]  // Usar el ancho más grande
+  const intrinsicHeight = variant === 'cover-16-9' 
+    ? Math.round(intrinsicWidth * 9 / 16)  // 16:9 aspect ratio
+    : undefined  // Dejar que la imagen mantenga su aspect ratio natural
+  
+  // Style object con aspect-ratio
+  const imageStyle = {
+    aspectRatio: variant === 'cover-16-9' ? '16/9' : undefined,
+    ...style
+  }
+
   // Manejar carga de imagen
   const handleLoad = () => {
     // Delay más largo para asegurar solapamiento completo
@@ -118,7 +182,7 @@ export const ResponsiveImage = memo(({
   if (!finalPublicId) {
     return (
       <img
-        src={fallbackUrl}
+        src={finalFallbackUrl}
         alt={alt}
         className={className}
         style={style}
@@ -132,7 +196,7 @@ export const ResponsiveImage = memo(({
   // Renderizar con placeholder borroso si está disponible
   if (placeholderSrc && showPlaceholder) {
     return (
-      <div className={`${styles.imageContainer} ${className}`} style={style}>
+      <div className={`${styles.imageContainer} ${className}`} style={imageStyle}>
         {/* Placeholder borroso */}
         <img
           src={placeholderSrc}
@@ -146,6 +210,8 @@ export const ResponsiveImage = memo(({
           srcSet={srcSet}
           sizes={sizes}
           alt={alt}
+          width={intrinsicWidth}
+          height={intrinsicHeight}
           className={`${styles.image} ${isLoaded ? styles.imageLoaded : ''}`}
           loading={loading}
           decoding="async"
@@ -164,8 +230,10 @@ export const ResponsiveImage = memo(({
       srcSet={srcSet}
       sizes={sizes}
       alt={alt}
+      width={intrinsicWidth}
+      height={intrinsicHeight}
       className={className}
-      style={style}
+      style={imageStyle}
       loading={loading}
       decoding="async"
       fetchpriority={finalFetchpriority}
@@ -175,6 +243,6 @@ export const ResponsiveImage = memo(({
   )
 })
 
-ResponsiveImage.displayName = 'ResponsiveImage'
+CloudinaryImage.displayName = 'CloudinaryImage'
 
-export default ResponsiveImage
+export default CloudinaryImage

@@ -15,9 +15,8 @@
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx'
-import { processImages } from '@utils/imageUtils'
 import defaultCarImage from '@assets/auto1.jpg'
-import ResponsiveImage from '@/components/ui/ResponsiveImage/ResponsiveImage'
+import CloudinaryImage from '@/components/ui/CloudinaryImage/CloudinaryImage'
 import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
 
 import styles from './ImageCarousel.module.css'
@@ -47,8 +46,8 @@ export const ImageCarousel = ({
         if (!images || images.length === 0) {
             return [defaultCarImage]
         }
-        // Procesar imágenes que pueden ser objetos o URLs
-        return processImages(images)
+        // ✅ Usar imágenes directamente (sin processImages)
+        return images
     }, [images])
 
     // Función para ir a la imagen anterior - MEMOIZADA
@@ -96,37 +95,21 @@ export const ImageCarousel = ({
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [goToPrevious, goToNext])
 
-    // Preload de imágenes para mejor rendimiento
-    useEffect(() => {
-        allImages.forEach((imageSrc) => {
-            if (imageSrc && imageSrc !== defaultCarImage) {
-                const img = new Image()
-                img.src = imageSrc
-            }
-        })
-    }, [allImages])
-
     return (
         <div className={styles.carouselContainer}>
             {/* Imagen principal */}
             <div className={styles.mainImageContainer}>
-                {(() => {
-                    const item = allImages[currentIndex];
-                    const publicId   = typeof item === 'string' ? undefined : item?.public_id;
-                    const fallbackUrl= typeof item === 'string' ? item      : item?.url;
-                    return (
-                        <ResponsiveImage
-                            publicId={publicId}
-                            fallbackUrl={fallbackUrl}
-                            alt={`${altText} ${currentIndex + 1} de ${allImages.length}`}
-                            variant="fluid"
-                            widths={IMAGE_WIDTHS.carousel}
-                            sizes={IMAGE_SIZES.carousel}
-                            loading="lazy"
-                            className={styles.mainImage}
-                        />
-                    );
-                })()}
+                <CloudinaryImage
+                    image={allImages[currentIndex]}
+                    alt={`${altText} ${currentIndex + 1} de ${allImages.length}`}
+                    variant="fluid"
+                    widths={IMAGE_WIDTHS.carousel}
+                    sizes={IMAGE_SIZES.carousel}
+                    loading={currentIndex === 0 ? 'eager' : 'lazy'}
+                    fetchpriority={currentIndex === 0 ? 'high' : 'auto'}
+                    qualityMode="auto"
+                    className={styles.mainImage}
+                />
                 
                 {/* Flechas de navegación */}
                 {showArrows && allImages.length > 1 && (
@@ -174,23 +157,15 @@ export const ImageCarousel = ({
                                 aria-label={`Ver imagen ${index + 1}`}
                                 type="button"
                             >
-                                {(() => {
-                                    const item = image;
-                                    const publicId   = typeof item === 'string' ? undefined : item?.public_id;
-                                    const fallbackUrl= typeof item === 'string' ? item      : item?.url;
-                                    return (
-                                        <ResponsiveImage
-                                            publicId={publicId}
-                                            fallbackUrl={fallbackUrl}
-                                            alt={`Miniatura ${index + 1}`}
-                                            variant="fluid"
-                                            widths={IMAGE_WIDTHS.thumbnail}
-                                            sizes={IMAGE_SIZES.thumbnail}
-                                            loading="lazy"
-                                            className={styles.thumbnailImage}
-                                        />
-                                    );
-                                })()}
+                                <CloudinaryImage
+                                    image={image}
+                                    alt={`Miniatura ${index + 1}`}
+                                    variant="fluid"
+                                    widths={IMAGE_WIDTHS.thumbnail}
+                                    sizes={IMAGE_SIZES.thumbnail}
+                                    loading="lazy"
+                                    className={styles.thumbnailImage}
+                                />
                             </button>
                         ))}
                     </div>

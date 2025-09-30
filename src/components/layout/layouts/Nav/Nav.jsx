@@ -21,6 +21,7 @@ import logo from '@assets/indiana-nav-logo.png'
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isAutosDropdownOpen, setIsAutosDropdownOpen] = useState(false)
   const location = useLocation()
 
   // ✅ NUEVO: Hook de preloading estratégico
@@ -119,15 +120,48 @@ const Nav = () => {
             >
               Inicio
             </Link>
-            <Link 
-              className={`${styles.navLink} ${isActive('/vehiculos') ? styles.active : ''}`} 
-              to="/vehiculos"
-              onClick={closeMenu}
-              onMouseEnter={handleVehiculosPreload}
-              onMouseLeave={() => cancelPreload('/vehiculos')}
+            
+            {/* ✅ NUEVO: Dropdown de Autos */}
+            <div 
+              className={styles.dropdown}
+              onMouseEnter={() => setIsAutosDropdownOpen(true)}
+              onMouseLeave={() => setIsAutosDropdownOpen(false)}
             >
-              Autos usados
-            </Link>
+              <button 
+                className={`${styles.dropdownToggle} ${isActive('/vehiculos') ? styles.active : ''}`}
+                onClick={() => setIsAutosDropdownOpen(!isAutosDropdownOpen)}
+              >
+                Autos
+                <span className={`${styles.dropdownArrow} ${isAutosDropdownOpen ? styles.dropdownArrowOpen : ''}`}>▼</span>
+              </button>
+              
+              <div className={`${styles.dropdownMenu} ${isAutosDropdownOpen ? styles.dropdownMenuOpen : ''}`}>
+                <Link 
+                  className={styles.dropdownItem}
+                  to="/vehiculos"
+                  onClick={() => {
+                    closeMenu()
+                    setIsAutosDropdownOpen(false)
+                  }}
+                  onMouseEnter={handleVehiculosPreload}
+                  onMouseLeave={() => cancelPreload('/vehiculos')}
+                >
+                  Usados
+                </Link>
+                <a 
+                  className={styles.dropdownItem}
+                  href="https://peugeotindiana.com.ar/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    closeMenu()
+                    setIsAutosDropdownOpen(false)
+                  }}
+                >
+                  Peugeot / 0 KM
+                </a>
+              </div>
+            </div>
             <Link 
               className={`${styles.navLink} ${isActive('/postventa') ? styles.active : ''}`} 
               to="/postventa"
@@ -143,16 +177,6 @@ const Nav = () => {
               onClick={handleScrollToFooter}
             >
               Contacto
-            </a>
-            <div className={styles.divider}></div>
-            <a 
-              className={styles.indianaButton} 
-              href="https://peugeotindiana.com.ar/"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={closeMenu}
-            >
-              Indiana 0 kilómetros
             </a>
           </div>
         </div>

@@ -24,7 +24,7 @@ import axiosInstance from '@api/axiosInstance'
 import { logger } from '@utils/logger'
 import styles from './CardAuto.module.css'
 import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
-import ResponsiveImage from '@/components/ui/ResponsiveImage/ResponsiveImage'
+import CloudinaryImage from '@/components/ui/CloudinaryImage/CloudinaryImage'
 import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
 import { usePreloadImages } from '@hooks/usePreloadImages'
 
@@ -154,29 +154,29 @@ export const CardAuto = memo(({ auto }) => {
             {/* ===== IMAGEN CON FADE DEFINITIVO ===== */}
             <div className={styles['card__image-container']}>
                 {/* Imagen principal - siempre visible */}
-                <ResponsiveImage
-                    publicId={typeof auto?.fotoPrincipal === 'object' ? auto?.fotoPrincipal?.public_id : null}
-                    fallbackUrl={typeof auto?.fotoPrincipal === 'object' ? auto?.fotoPrincipal?.url : auto?.fotoPrincipal || primaryImage}
+                <CloudinaryImage
+                    image={auto?.fotoPrincipal || primaryImage}
                     alt={altText}
                     variant="fluid"
                     widths={IMAGE_WIDTHS.card}
                     sizes={IMAGE_SIZES.card}
-                    loading="lazy"
-                    isCritical={true}
+                    loading="eager"
+                    fetchpriority="high"
+                    qualityMode="eco"
                     className={`${styles['card__image']} ${styles['card__image_primary']}`}
                 />
                 
                 {/* Imagen hover - solo si existe y es diferente */}
                 {hoverImage && hoverImage !== primaryImage && (
-                    <ResponsiveImage
-                        publicId={typeof auto?.fotoHover === 'object' ? auto?.fotoHover?.public_id : null}
-                        fallbackUrl={typeof auto?.fotoHover === 'object' ? auto?.fotoHover?.url : auto?.fotoHover || hoverImage}
+                    <CloudinaryImage
+                        image={auto?.fotoHover || hoverImage}
                         alt={altText}
                         variant="fluid"
                         widths={IMAGE_WIDTHS.card}
                         sizes={IMAGE_SIZES.card}
                         loading="lazy"
-                        isCritical={true}
+                        fetchpriority="low"
+                        qualityMode="eco"
                         className={`${styles['card__image']} ${styles['card__image_hover']} ${isHovering ? styles['card__image_hover_active'] : ''}`}
                     />
                 )}

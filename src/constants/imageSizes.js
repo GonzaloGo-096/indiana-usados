@@ -8,31 +8,35 @@
  */
 
 // Tamaños responsive para diferentes contextos
+// OPTIMIZADO: Valores basados en mediciones reales de grids típicos
+// Cards: 360px (mobile), 350px (tablet), 300px (desktop-s), 330px (desktop-l)
 export const IMAGE_SIZES = {
-  // Cards de vehículos
-  card: '(max-width: 576px) 100vw, (max-width: 768px) 50vw, (max-width: 992px) 33vw, 25vw',
+  // Cards de vehículos (tamaños exactos basados en grid real)
+  // Mobile: 400px, Tablet: 400px, Desktop: 350px
+  card: '(max-width: 576px) 400px, (max-width: 768px) 400px, (max-width: 992px) 350px, 350px',
   
-  // Carrusel principal
-  carousel: '(max-width: 576px) 100vw, (max-width: 768px) 100vw, (max-width: 992px) 100vw, 100vw',
+  // Carrusel principal (siempre full width)
+  carousel: '100vw',
   
-  // Miniaturas del carrusel
-  thumbnail: '(max-width: 576px) 20vw, (max-width: 768px) 15vw, (max-width: 992px) 12vw, 10vw',
+  // Miniaturas del carrusel (tamaño fijo pequeño)
+  thumbnail: '100px',
   
-  // Hero/banner principal
-  hero: '(max-width: 576px) 100vw, (max-width: 768px) 100vw, (max-width: 992px) 100vw, 100vw'
+  // Hero/banner principal (siempre full width)
+  hero: '100vw'
 }
 
 // Anchos para generar srcset
+// OPTIMIZADO: Solo los tamaños necesarios para reducir ancho de banda
 export const IMAGE_WIDTHS = {
-  // Cards: optimizado para grids responsivos
-  card: [320, 640, 800],
+  // Cards: 2 tamaños (base + retina 2x) - suficiente para todos los casos
+  card: [400, 800],
   
-  // Carrusel: más anchos para mejor calidad
-  carousel: [320, 640, 1280],
+  // Carrusel: 4 tamaños para cubrir mobile, tablet, desktop y retina
+  carousel: [400, 800, 1280, 1920],
   
-  // Miniaturas: tamaños pequeños
-  thumbnail: [90, 180],
+  // Miniaturas: 2 tamaños (base + retina 2x)
+  thumbnail: [100, 200],
   
-  // Hero: tamaños grandes para impacto visual
-  hero: [640, 1280, 1920]
+  // Hero: 3 tamaños grandes para impacto visual
+  hero: [800, 1280, 1920]
 }

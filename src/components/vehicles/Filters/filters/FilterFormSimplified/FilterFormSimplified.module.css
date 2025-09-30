@@ -182,6 +182,11 @@
   align-items: center;
 }
 
+/* Botón cerrar solo visible en mobile */
+.closeButtonMobile {
+  display: none;
+}
+
 /* ===== SECCIONES ===== */
 .rangesSection,
 .selectsSection {
@@ -432,41 +437,17 @@
     transform: translateX(0);
   }
   
-  /* ===== HEADER MOBILE ===== */
+  /* ===== HEADER MOBILE (OCULTO) ===== */
   .formHeaderMobile {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    background: #0a0d14;
-    color: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    flex-shrink: 0;
-    min-height: 4rem;
-    width: 100%;
+    display: none; /* ✅ OCULTO: Ya no se usa */
   }
 
   .formHeaderMobile h2 {
-    font-size: 1.125rem;
-    font-weight: 700;
-    margin: 0;
-    color: #ffffff;
+    display: none;
   }
 
   .formHeaderMobile .closeButton {
-    background: none;
-    border: none;
-    color: #ffffff;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    transition: background-color 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
     min-width: 2.5rem;
     min-height: 2.5rem;
     z-index: 11;
@@ -526,6 +507,38 @@
   }
 
   .titleActions {
+    display: flex; /* ✅ CAMBIADO: Mostrar en mobile */
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  /* ✅ NUEVO: Botón cerrar en mobile */
+  .closeButtonMobile {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+    display: flex !important; /* ✅ Forzar display en mobile */
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+  }
+  
+  .closeButtonMobile:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #374151;
+  }
+  
+  .closeButtonMobile:active {
+    transform: scale(0.95);
+  }
+  
+  /* ✅ Ocultar botón "Aplicar" desktop en mobile */
+  .titleActions .applyButton {
     display: none;
   }
 

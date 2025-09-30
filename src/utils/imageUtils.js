@@ -83,14 +83,24 @@ export const getCarouselImages = (auto) => {
                     value.forEach(img => {
                         if (typeof img === 'string' && img.trim() !== '') {
                             extractedImages.push(img.trim())
+                        } else if (typeof img === 'object' && img.public_id) {
+                            // ✅ Si tiene public_id, mantenerlo como objeto
+                            extractedImages.push(img)
                         } else if (typeof img === 'object' && img.url) {
-                            extractedImages.push(img.url)
+                            // ✅ Mantener objeto completo (puede tener public_id extraíble de URL)
+                            extractedImages.push(img)
                         }
                     })
                 }
-                // Si es un objeto con URL
-                else if (typeof value === 'object' && value.url) {
-                    extractedImages.push(value.url)
+                // Si es un objeto con URL o public_id
+                else if (typeof value === 'object') {
+                    if (value.public_id) {
+                        // ✅ Mantener objeto completo si tiene public_id
+                        extractedImages.push(value)
+                    } else if (value.url) {
+                        // ✅ Mantener objeto completo (puede tener public_id extraíble de URL)
+                        extractedImages.push(value)
+                    }
                 }
                 // Si es una URL directa
                 else if (typeof value === 'string' && value.trim() !== '') {
@@ -104,8 +114,11 @@ export const getCarouselImages = (auto) => {
             auto.imágenes.forEach(img => {
                 if (typeof img === 'string' && img.trim() !== '') {
                     extractedImages.push(img.trim())
+                } else if (typeof img === 'object' && img.public_id) {
+                    extractedImages.push(img)
                 } else if (typeof img === 'object' && img.url) {
-                    extractedImages.push(img.url)
+                    // ✅ Mantener objeto completo
+                    extractedImages.push(img)
                 }
             })
         }
@@ -113,28 +126,45 @@ export const getCarouselImages = (auto) => {
         // ✅ NUEVO: Buscar imágenes estructuradas (formato anterior)
         const structuredImages = Object.values(auto)
             .filter(img => isValidImage(img))
-            .map(img => img.url);
+            .map(img => {
+                // ✅ Siempre retornar objeto completo (puede tener public_id o url)
+                return img
+            });
         
         // ✅ NUEVO: Combinar todas las fuentes de imágenes
         const allImages = [...extractedImages, ...structuredImages]
         
-        // ✅ NUEVO: Eliminar duplicados y filtrar URLs válidas
-        const uniqueImages = [...new Set(allImages)].filter(url => 
-            url && typeof url === 'string' && url.trim() !== '' && url !== 'undefined'
-        )
+        // ✅ NUEVO: Eliminar duplicados (comparar por URL o public_id)
+        const uniqueImages = []
+        const seenIds = new Set()
         
-        // 🔍 DEBUG: Logging temporal para diagnosticar problema de miniaturas
-        console.log('🔍 getCarouselImages - Processing auto:', {
-            hasExtractedImages: extractedImages.length > 0,
-            extractedImages: extractedImages.slice(0, 3), // Solo primeras 3 para no saturar
-            hasStructuredImages: structuredImages.length > 0,
-            structuredImages: structuredImages.slice(0, 3),
-            uniqueImagesCount: uniqueImages.length
+        allImages.forEach(img => {
+            if (!img) return
+            
+            const identifier = typeof img === 'string' 
+                ? img 
+                : (img.public_id || img.url)
+            
+            if (identifier && !seenIds.has(identifier)) {
+                seenIds.add(identifier)
+                uniqueImages.push(img)
+            }
+        })
+        
+        // ✅ Filtrar valores inválidos
+        const validImages = uniqueImages.filter(img => {
+            if (typeof img === 'string') {
+                return img.trim() !== '' && img !== 'undefined'
+            }
+            if (typeof img === 'object') {
+                return (img.public_id || img.url) && img.url !== 'undefined'
+            }
+            return false
         })
         
         // ✅ NUEVO: Si hay imágenes válidas, usarlas
-        if (uniqueImages.length > 0) {
-            return uniqueImages
+        if (validImages.length > 0) {
+            return validImages
         }
         
         // ✅ ARREGLADO: Fallback a imagen principal
@@ -145,26 +175,10 @@ export const getCarouselImages = (auto) => {
     }
 }
 
-/**
- * Procesar imágenes que pueden ser objetos o URLs
- * @param {Array} images - Array de imágenes (objetos o URLs)
- * @returns {Array} - Array de URLs procesadas
- */
-export const processImages = (images = []) => {
-    if (!images || images.length === 0) {
-        return [defaultCarImage]
-    }
-    
-    // Procesar imágenes que pueden ser objetos o URLs
-    const processedImages = images.map(img => {
-        if (typeof img === 'object' && img?.url) {
-            return img.url;
-        }
-        return img;
-    });
-    
-    return processedImages;
-}
+// ⚠️ ELIMINADO: processImages() 
+// Razón: Destruía public_id, causando que el carrusel no optimizara imágenes
+// Fecha: 2024
+// Las imágenes ahora se pasan directamente a los componentes
 
 /**
  * Validar estructura de imagen
