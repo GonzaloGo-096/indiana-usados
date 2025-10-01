@@ -166,7 +166,7 @@ export const CloudinaryImage = memo(({
   
   // Style object con aspect-ratio
   const imageStyle = {
-    aspectRatio: variant === 'cover-16-9' ? '16/9' : undefined,
+    aspectRatio: variant === 'cover-16-9' ? '16 / 9' : undefined,
     ...style
   }
 

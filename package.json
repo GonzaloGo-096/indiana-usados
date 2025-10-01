@@ -20,22 +20,18 @@
     "e2e:smoke:ui": "playwright test -c playwright.smoke.config.ts --ui"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.8",
     "@tanstack/react-query": "^5.79.0",
-    "@tanstack/react-query-devtools": "^5.79.0",
     "axios": "^1.6.7",
-    "bootstrap": "^5.3.2",
     "rc-slider": "^11.1.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^6.0.0",
     "react-hook-form": "^7.59.0",
-    "react-hot-toast": "^2.6.0",
-    "react-router-dom": "^6.21.3",
-    "react-select": "^5.10.2"
+    "react-router-dom": "^6.21.3"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.2",
+    "@tanstack/react-query-devtools": "^5.79.0",
     "@testing-library/jest-dom": "^6.7.0",
     "@testing-library/react": "^16.3.0",
     "@types/react": "^18.2.48",

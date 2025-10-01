@@ -55,9 +55,10 @@ const Vehiculos = () => {
         }
     }, [vehicles])
 
-    // ✅ NUEVO: Handlers para filtros
+    // ✅ Handlers para filtros
     const onApply = (newFilters) => {
-            setSp(serializeFilters(newFilters), { replace: false })
+        // Aplicar filtros de forma declarativa
+        setSp(serializeFilters(newFilters), { replace: false })
     }
     const onClear = () => {
         setSp(new URLSearchParams(), { replace: false })

@@ -321,16 +321,11 @@ export const useImageReducer = (mode, initialData = {}) => {
             
             if (fotosExtraCount > 8) {
                 errors.fotosExtra = 'Máximo 8 fotos extras permitidas'
-                console.log('❌ MODO CREATE - Error: Máximo 8 fotos extras')
             }
         } else {
-            console.log('🔍 MODO EDIT - SIN VALIDACIONES DE IMÁGENES')
             // ✅ EDIT: NO VALIDAR NADA - TODO OPCIONAL
-            console.log('✅ Modo EDIT: Sin validaciones de imágenes - todo opcional')
         }
 
-        console.log('🔍 validateImages - errors finales:', errors)
-        console.log('🔍 ===== VALIDATE IMAGES END =====')
         return errors
     }, [imageState])
 
@@ -338,7 +333,7 @@ export const useImageReducer = (mode, initialData = {}) => {
     const buildImageFormData = useCallback((formData) => {
         console.log('🔧 buildImageFormData - Construyendo FormData...')
         
-        // ✅ PRINCIPALES - Mantener lógica existente
+        // ✅ PRINCIPALES - Overwrite automático por backend
         IMAGE_FIELDS.principales.forEach(key => {
             const { file, remove, publicId, existingUrl } = imageState[key] || {}
             if (file) {
@@ -348,10 +343,8 @@ export const useImageReducer = (mode, initialData = {}) => {
                 console.log(`📷 ${key} - mantener imagen existente (no enviar archivo)`)
             }
             
-            // TODO: En el futuro implementar eliminadas para principales también
-            if (remove && publicId && existingUrl) {
-                console.log(`🗑️ ${key} marcada para eliminar (pendiente implementar):`, { publicId })
-            }
+            // Nota: Backend hace overwrite con mismo public_id, no genera zombies
+            // Ver docs/MEJORAS_FUTURAS.md - Sección "Eliminación de Imágenes"
         })
         
         // ✅ FOTOS EXTRAS - Nueva lógica pero mismo output

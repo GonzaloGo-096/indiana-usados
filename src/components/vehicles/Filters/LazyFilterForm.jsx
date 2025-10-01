@@ -81,6 +81,7 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading }, ref) => 
   const [showFilters, setShowFilters] = useState(false)
   const [isPreloading, setIsPreloading] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  // Simplificado: sin estado isApplying
 
   // ✅ DETECTAR SI ES MOBILE
   useEffect(() => {
@@ -110,11 +111,20 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading }, ref) => 
   // ✅ NUEVO: Función para cerrar filtros
   const handleHideFilters = () => {
     setShowFilters(false)
+    setIsApplying(false)  // Reset applying state
+  }
+  
+  // Handler para aplicar desde el formulario y cerrar
+  const handleApplyAndClose = async (filters) => {
+    try {
+      await onApplyFilters(filters)
+    } finally {
+      handleHideFilters()
+    }
   }
 
   // ✅ NUEVO: Toggle de filtros
   const handleToggleFilters = () => {
-    console.log('Toggle filtros - Estado actual:', showFilters, '-> Nuevo estado:', !showFilters)
     setShowFilters(!showFilters)
   }
 
@@ -149,10 +159,8 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading }, ref) => 
             zIndex: 5,
             background: 'transparent'
           }}
-          onClick={() => {
-            console.log('Click fuera detectado')
-            handleHideFilters()
-          }}
+          role="presentation"
+          onClick={handleHideFilters}
         />
         
         <div style={{ position: 'relative', zIndex: 10 }}>
@@ -172,8 +180,7 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading }, ref) => 
           `}</style>
           <Suspense fallback={<FilterFormSkeleton />}>
             <FilterFormSimplified 
-              ref={ref}
-              onApplyFilters={onApplyFilters}
+              onApplyFilters={handleApplyAndClose}
               isLoading={isLoading}
             />
           </Suspense>
@@ -190,7 +197,6 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading }, ref) => 
       }}>
         <Suspense fallback={<FilterFormSkeleton />}>
           <FilterFormSimplified 
-            ref={ref}
             onApplyFilters={onApplyFilters}
             isLoading={isLoading}
           />

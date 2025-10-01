@@ -10,106 +10,6 @@ import { normalizeVehiclesPage } from '@api/vehicles.normalizer'
 import { logger } from '@utils/logger'
 
 /**
- * Mapea un vehículo individual del backend al modelo interno
- * @param {Object} apiVehicle - Vehículo tal como viene del backend
- * @returns {Object} - Vehículo normalizado
- */
-export const mapApiVehicleToModel = (apiVehicle) => {
-  if (!apiVehicle || typeof apiVehicle !== 'object') {
-    console.warn('⚠️ Vehicle mapper: datos inválidos recibidos:', apiVehicle)
-    return null
-  }
-
-  // ✅ DEBUG: Solo en desarrollo
-  logger.log('MAPPER - Procesando vehículo:', {
-    id: apiVehicle.id,
-    brand: apiVehicle.brand,
-    model: apiVehicle.model,
-    year: apiVehicle.year,
-    price: apiVehicle.price
-  })
-
-  try {
-    // Normalizar campos básicos
-    const normalized = {
-      // Identificación
-      id: Number(apiVehicle.id) || 0,
-      
-      // Información básica
-      brand: String(apiVehicle.brand || '').trim(),
-      model: String(apiVehicle.model || '').trim(),
-      year: Number(apiVehicle.year || 0),
-      
-      // Características técnicas
-      kilometers: Number(apiVehicle.kilometers || 0),
-              caja: String(apiVehicle.caja || '').trim(),
-      fuel: String(apiVehicle.fuel || '').trim(),
-      
-      // Precio y estado
-      price: Number(apiVehicle.price || 0),
-      condition: String(apiVehicle.condition || 'usado').trim(),
-      
-      // Imágenes
-      imageUrl: String(apiVehicle.image || '').trim(),
-      gallery: Array.isArray(apiVehicle.gallery) 
-        ? apiVehicle.gallery.filter(Boolean)
-        : [],
-      
-      // Información adicional
-      description: String(apiVehicle.description || '').trim(),
-      features: Array.isArray(apiVehicle.features)
-        ? apiVehicle.features.filter(Boolean)
-        : [],
-      
-      // Metadatos
-      createdAt: apiVehicle.createdAt || new Date().toISOString(),
-      updatedAt: apiVehicle.updatedAt || new Date().toISOString(),
-      
-      // Datos originales para debugging
-      raw: apiVehicle
-    }
-
-    // Validar campos requeridos
-    if (!normalized.brand || !normalized.model) {
-      console.warn('⚠️ Vehicle mapper: campos requeridos faltantes:', { brand: normalized.brand, model: normalized.model })
-      return null
-    }
-
-    // Generar campos derivados
-    normalized.title = `${normalized.brand} ${normalized.model}`.trim()
-    normalized.slug = `${normalized.brand}-${normalized.model}-${normalized.year}`.toLowerCase().replace(/\s+/g, '-')
-    
-    // Formatear precio
-    normalized.priceFormatted = new Intl.NumberFormat('es-AR', {
-      style: 'currency',
-      currency: 'ARS',
-      minimumFractionDigits: 0
-    }).format(normalized.price)
-    
-    // Formatear kilómetros
-    normalized.kilometersFormatted = new Intl.NumberFormat('es-AR').format(normalized.kilometers)
-    
-    // Formatear año
-    normalized.yearFormatted = String(normalized.year)
-
-    // ✅ DEBUG: Solo en desarrollo
-    logger.log('MAPPER - Vehículo normalizado:', {
-      id: normalized.id,
-      brand: normalized.brand,
-      model: normalized.model,
-      year: normalized.year,
-      price: normalized.price,
-      title: normalized.title
-    })
-
-    return normalized
-  } catch (error) {
-    logger.error('Vehicle mapper: error procesando vehículo:', error, apiVehicle)
-    return null
-  }
-}
-
-/**
  * Mapea una respuesta de lista del backend al modelo interno
  * @param {Object} apiResponse - Respuesta del backend
  * @param {number} currentPage - Página actual
@@ -128,9 +28,6 @@ export const mapListResponse = (apiResponse, currentCursor = null) => {
       total: page.total || 0,
       hasNextPage: !!page.hasNextPage,
       nextPage: typeof page.next === 'number' ? page.next : null,
-      // ✅ OPTIMIZADO: Reutilizar array mapeado
-      data: mappedVehicles, // Mantener compatibilidad
-      totalItems: page.total || 0, // Mantener compatibilidad
       currentCursor: currentCursor || undefined,
       totalPages: Math.ceil((page.total || 0) / 12)
     }
@@ -138,9 +35,7 @@ export const mapListResponse = (apiResponse, currentCursor = null) => {
     logger.error('Vehicle mapper: error procesando respuesta:', error, apiResponse)
     return { 
       vehicles: [], 
-      data: [], 
       total: 0, 
-      totalItems: 0,
       currentCursor: currentCursor || undefined, 
       hasNextPage: false, 
       nextPage: null, 
@@ -158,11 +53,11 @@ export const mapDetailResponse = (apiResponse) => {
   try {
     if (apiResponse && typeof apiResponse === 'object') {
       if (Array.isArray(apiResponse) && apiResponse.length > 0) {
-        return mapApiVehicleToModel(apiResponse[0])
+        return mapListVehicleToFrontend(apiResponse[0])
       } else if (apiResponse.data && Array.isArray(apiResponse.data) && apiResponse.data.length > 0) {
-        return mapApiVehicleToModel(apiResponse.data[0])
-      } else if (apiResponse.id) {
-        return mapApiVehicleToModel(apiResponse)
+        return mapListVehicleToFrontend(apiResponse.data[0])
+      } else if (apiResponse.id || apiResponse._id) {
+        return mapListVehicleToFrontend(apiResponse)
       }
     }
     return null
@@ -231,15 +126,3 @@ export const mapListVehicleToFrontend = (backendVehicle) => {
 }
 
 
-/**
- * Valida que un vehículo tenga los campos requeridos
- * @param {Object} vehicle - Vehículo a validar
- * @returns {boolean} - True si es válido
- */
-export const validateVehicle = (vehicle) => {
-  return vehicle && 
-         vehicle.id && 
-         vehicle.marca && 
-         vehicle.modelo && 
-         vehicle.precio > 0
-}

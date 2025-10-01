@@ -130,10 +130,9 @@ function useErrorLogger(variant = 'default') {
       logger.warn('No se pudo guardar error localmente:', e)
     }
 
-    // TODO: Integrar con servicio de monitoreo (Sentry, LogRocket, etc.)
-    if (process.env.NODE_ENV === 'production') {
-      // window.Sentry?.captureException(error, { extra: errorReport })
-    }
+    // Error monitoring en producción - Ver docs/MEJORAS_FUTURAS.md
+    // Sistema actual: Solo localStorage (suficiente para desarrollo)
+    // Futuro: Integrar Sentry cuando haya tráfico real de usuarios
   }
 }
 

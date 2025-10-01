@@ -45,6 +45,7 @@ export const useVehiclesList = (filters = {}) => {
       };
     },
     placeholderData: (prev) => prev,
+    refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000, // 5 minutos
     gcTime: 30 * 60 * 1000, // 30 minutos
     retry: 2

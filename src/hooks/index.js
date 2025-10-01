@@ -11,9 +11,6 @@
 export { useVehiclesList } from './vehicles/useVehiclesList'
 export { useVehicleDetail } from './vehicles/useVehicleDetail'
 
-// ✅ HOOKS DE FILTROS
-export { useFilterReducer } from './filters/useFilterReducer'
-
 // ✅ HOOKS DE MUTACIONES
 export { useCarMutation } from './useCarMutation'
 

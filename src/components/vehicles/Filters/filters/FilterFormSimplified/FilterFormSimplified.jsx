@@ -11,27 +11,32 @@
  * @version 4.2.0 - Mobile optimized
  */
 
-import React, { useEffect, useState, useImperativeHandle } from 'react'
+import React, { useEffect, useState, useImperativeHandle, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-import { useFilterReducer } from '@hooks'
+import { useSearchParams } from 'react-router-dom'
 import { RangeSlider } from '@ui'
 import { MultiSelect } from '@ui'
-import { marcas, combustibles, cajas } from '@constants'
+import { marcas, combustibles, cajas, FILTER_DEFAULTS } from '@constants'
+import { parseFilters } from '@utils'
 import styles from './FilterFormSimplified.module.css'
 
 const FilterFormSimplified = React.memo(React.forwardRef(({ 
   onApplyFilters,
   isLoading = false 
 }, ref) => {
-  const {
-    isSubmitting,
-    isDrawerOpen,
-    isError,
-    error,
-    setSubmitting,
-    toggleDrawer,
-    closeDrawer
-  } = useFilterReducer()
+  // ✅ SIMPLIFICADO: useState en lugar de useFilterReducer
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isError, setIsError] = useState(false)
+  const [error, setError] = useState(null)
+  
+  // ✅ NUEVO: Obtener filtros actuales de la URL
+  const [searchParams] = useSearchParams()
+  const currentFilters = parseFilters(searchParams)
+  
+  // Funciones simples para drawer
+  const toggleDrawer = () => setIsDrawerOpen(prev => !prev)
+  const closeDrawer = () => setIsDrawerOpen(false)
 
   // Estados para contenedor fijo mobile
   const [isVisible, setIsVisible] = useState(false)
@@ -89,6 +94,19 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     }
   }, [])
 
+  // ✅ NUEVO: Función para validar rangos (min siempre <= max)
+  const validateRange = ([min, max]) => [Math.min(min, max), Math.max(min, max)]
+
+  // ✅ NUEVO: Valores por defecto que se sincronizan con la URL
+  const getDefaultValues = () => ({
+    marca: currentFilters.marca || [],
+    caja: currentFilters.caja || [],
+    combustible: currentFilters.combustible || [],
+    año: currentFilters.año || [FILTER_DEFAULTS.AÑO.min, FILTER_DEFAULTS.AÑO.max],
+    precio: currentFilters.precio || [FILTER_DEFAULTS.PRECIO.min, FILTER_DEFAULTS.PRECIO.max],
+    kilometraje: currentFilters.kilometraje || [FILTER_DEFAULTS.KILOMETRAJE.min, FILTER_DEFAULTS.KILOMETRAJE.max]
+  })
+
   // Configurar React Hook Form
   const {
     register,
@@ -98,57 +116,59 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     watch,
     formState: { errors }
   } = useForm({
-    defaultValues: {
-      marca: [],
-      caja: [],
-      combustible: [],
-      año: [1990, 2024],           // ✅ RANGO ÚNICO
-      precio: [5000000, 100000000], // ✅ RANGO ÚNICO
-      kilometraje: [0, 200000]      // ✅ RANGO ÚNICO
-    }
+    defaultValues: getDefaultValues()
   })
+
+  // ✅ NUEVO: Sincronizar formulario con cambios en la URL
+  useEffect(() => {
+    const newValues = getDefaultValues()
+    reset(newValues)
+  }, [searchParams, reset])
 
   // Watch específico por campo
   const marca = watch('marca')
   const combustible = watch('combustible')
   const caja = watch('caja')
-  const año = watch('año') || [1990, 2024]
-  const precio = watch('precio') || [5000000, 100000000]
-  const kilometraje = watch('kilometraje') || [0, 200000]
+  const año = watch('año') || [FILTER_DEFAULTS.AÑO.min, FILTER_DEFAULTS.AÑO.max]
+  const precio = watch('precio') || [FILTER_DEFAULTS.PRECIO.min, FILTER_DEFAULTS.PRECIO.max]
+  const kilometraje = watch('kilometraje') || [FILTER_DEFAULTS.KILOMETRAJE.min, FILTER_DEFAULTS.KILOMETRAJE.max]
   
   // Cálculo de filtros activos
   const activeFiltersCount = (() => {
     const hasMarca = marca?.length > 0
     const hasCombustible = combustible?.length > 0
     const hasCaja = caja?.length > 0
-    const hasRanges = año[0] !== 1990 || año[1] !== 2024 || 
-                     precio[0] !== 5000000 || precio[1] !== 100000000 || 
-                     kilometraje[0] !== 0 || kilometraje[1] !== 200000
+    const hasRanges = año[0] !== FILTER_DEFAULTS.AÑO.min || año[1] !== FILTER_DEFAULTS.AÑO.max || 
+                     precio[0] !== FILTER_DEFAULTS.PRECIO.min || precio[1] !== FILTER_DEFAULTS.PRECIO.max || 
+                     kilometraje[0] !== FILTER_DEFAULTS.KILOMETRAJE.min || kilometraje[1] !== FILTER_DEFAULTS.KILOMETRAJE.max
     
     return [hasMarca, hasCombustible, hasCaja, hasRanges].filter(Boolean).length
   })()
 
   // Handlers optimizados
   const onSubmit = async (data) => {
-    setSubmitting(true)
+    setIsSubmitting(true)
     try {
-      // ✅ RESTRUCTURADO: Ranges como arrays únicos
+      // ✅ RESTRUCTURADO: Ranges como arrays únicos con validación
       const validData = {
         marca: data.marca || [],
         caja: data.caja || [],
         combustible: data.combustible || [],
-        año: data.año || [1990, 2024],
-        precio: data.precio || [5000000, 100000000],
-        kilometraje: data.kilometraje || [0, 200000]
+        año: validateRange(data.año || [FILTER_DEFAULTS.AÑO.min, FILTER_DEFAULTS.AÑO.max]),
+        precio: validateRange(data.precio || [FILTER_DEFAULTS.PRECIO.min, FILTER_DEFAULTS.PRECIO.max]),
+        kilometraje: validateRange(data.kilometraje || [FILTER_DEFAULTS.KILOMETRAJE.min, FILTER_DEFAULTS.KILOMETRAJE.max])
       }
 
-      console.log('🔍 FilterFormSimplified - Datos transformados (onSubmit):', JSON.stringify(validData, null, 2));
       await onApplyFilters(validData)
-      closeDrawer()
+      
+      // ✅ FIX: Cerrar drawer DESPUÉS del await con delay mínimo
+      // Permite que React complete el render antes de cerrar
+      setTimeout(() => closeDrawer(), 100)
     } catch (error) {
-      console.error('Error al aplicar filtros:', error)
+      setIsError(true)
+      setError(error?.message || 'Error al aplicar filtros')
     } finally {
-      setSubmitting(false)
+      setIsSubmitting(false)
     }
   }
 
@@ -157,9 +177,9 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
       marca: [],
       caja: [],
       combustible: [],
-      año: [1990, 2024],
-      precio: [5000000, 100000000],
-      kilometraje: [0, 200000]
+      año: [FILTER_DEFAULTS.AÑO.min, FILTER_DEFAULTS.AÑO.max],
+      precio: [FILTER_DEFAULTS.PRECIO.min, FILTER_DEFAULTS.PRECIO.max],
+      kilometraje: [FILTER_DEFAULTS.KILOMETRAJE.min, FILTER_DEFAULTS.KILOMETRAJE.max]
     })
   }
 
@@ -211,7 +231,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
       <div className={`${styles.mobileActionsContainer} ${isVisible ? styles.visible : ''}`}>
         <button 
           className={styles.mobileActionButton}
-          onClick={() => console.log('Ordenar por')}
+          onClick={() => {}} // TODO: Implementar ordenamiento
           disabled={isLoading || isSubmitting}
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -285,6 +305,15 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 </svg>
               </button>
               <button 
+                type="button" 
+                onClick={handleClear}
+                className={styles.clearButton}
+                disabled={isLoading || isSubmitting}
+                data-testid="clear-filters"
+              >
+                Limpiar
+              </button>
+              <button 
                 type="submit" 
                 className={styles.applyButton}
                 disabled={isLoading || isSubmitting}
@@ -301,8 +330,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
             <div className={styles.formGroup}>
               <RangeSlider
                 label="Año"
-                min={1990}
-                max={2024}
+                min={FILTER_DEFAULTS.AÑO.min}
+                max={FILTER_DEFAULTS.AÑO.max}
                 step={1}
                 value={añoRange}
                 onChange={handleAñoChange}
@@ -314,8 +343,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
             <div className={styles.formGroup}>
               <RangeSlider
                 label="Precio"
-                min={5000000}
-                max={100000000}
+                min={FILTER_DEFAULTS.PRECIO.min}
+                max={FILTER_DEFAULTS.PRECIO.max}
                 step={1000000}
                 value={precioRange}
                 onChange={handlePrecioChange}
@@ -327,8 +356,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
             <div className={styles.formGroup}>
               <RangeSlider
                 label="Kms"
-                min={0}
-                max={200000}
+                min={FILTER_DEFAULTS.KILOMETRAJE.min}
+                max={FILTER_DEFAULTS.KILOMETRAJE.max}
                 step={5000}
                 value={kilometrajeRange}
                 onChange={handleKilometrajeChange}

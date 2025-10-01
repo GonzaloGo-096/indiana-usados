@@ -4,8 +4,15 @@
  * Constantes utilizadas en los filtros de búsqueda
  * 
  * @author Indiana Usados
- * @version 1.1.0 - Opciones duplicadas eliminadas
+ * @version 1.2.0 - Valores por defecto centralizados
  */
+
+// ✅ NUEVO: Valores por defecto centralizados
+export const FILTER_DEFAULTS = {
+  AÑO: { min: 1990, max: 2024 },
+  PRECIO: { min: 5000000, max: 100000000 },
+  KILOMETRAJE: { min: 0, max: 200000 }
+}
 
 // Marcas de vehículos (sin duplicados)
 export const marcas = [

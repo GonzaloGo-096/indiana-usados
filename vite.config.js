@@ -51,11 +51,37 @@ export default defineConfig({
     sourcemap: false, // Solo en desarrollo
     chunkSizeWarningLimit: 1000,
     
+    // ✅ ESBUILD: Eliminar console/debugger en producción
+    esbuild: {
+      drop: ['console', 'debugger'],
+      legalComments: 'none',
+    },
+    
     // ✅ OPTIMIZACIÓN DE IMÁGENES
     rollupOptions: {
       output: {
-        // Vite maneja el code splitting automáticamente
-        manualChunks: undefined,
+        // ✅ VENDOR CHUNKS: 3 grupos para mejor cache
+        manualChunks: (id) => {
+          // vendor-react: React core (cache muy estable - meses)
+          if (id.includes('node_modules/react/') || 
+              id.includes('node_modules/react-dom/')) {
+            return 'vendor-react'
+          }
+          
+          // vendor-core: Libs principales del stack (cache estable - semanas)
+          if (id.includes('node_modules/react-router-dom/') ||
+              id.includes('node_modules/react-router/') ||
+              id.includes('node_modules/@remix-run/') ||
+              id.includes('node_modules/@tanstack/react-query') ||
+              id.includes('node_modules/axios/')) {
+            return 'vendor-core'
+          }
+          
+          // vendor-misc: Resto de node_modules
+          if (id.includes('node_modules/')) {
+            return 'vendor-misc'
+          }
+        },
         // ✅ ORGANIZACIÓN DE ASSETS POR TIPO
         assetFileNames: (assetInfo) => {
           const info = assetInfo.name.split('.')

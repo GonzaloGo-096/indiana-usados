@@ -353,7 +353,6 @@ export const validateImageFields = (imageFiles, mode = 'create') => {
   } else {
     // ✅ MODO EDIT: NO VALIDAR NADA - TODO OPCIONAL
     // El usuario puede editar solo texto sin tocar imágenes
-    console.log('✅ MODO EDIT: Sin validaciones de imágenes - todo opcional')
   }
 
   return errors

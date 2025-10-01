@@ -48,9 +48,7 @@ export const CardAuto = memo(({ auto }) => {
     
     // ✅ URLs de imágenes optimizadas con useMemo
     const images = useMemo(() => ({
-        primary: auto.fotoPrincipal || 
-                auto.imagen || 
-                '/src/assets/auto1.jpg',
+        primary: auto.fotoPrincipal || auto.imagen || '/auto1.jpg',
         hover: auto.fotoHover
     }), [auto.fotoPrincipal, auto.imagen, auto.fotoHover])
     
@@ -160,8 +158,8 @@ export const CardAuto = memo(({ auto }) => {
                     variant="fluid"
                     widths={IMAGE_WIDTHS.card}
                     sizes={IMAGE_SIZES.card}
-                    loading="eager"
-                    fetchpriority="high"
+                    loading="lazy"
+                    fetchpriority="low"
                     qualityMode="eco"
                     className={`${styles['card__image']} ${styles['card__image_primary']}`}
                 />

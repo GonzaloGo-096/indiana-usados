@@ -427,7 +427,7 @@
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 0.5rem 0 0 0.5rem;
     background: #ffffff;
-    overflow: hidden;
+    overflow: visible; /* Permitir que los dropdowns se vean por fuera del contenedor */
     display: flex;
     flex-direction: column;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
@@ -539,6 +539,10 @@
   
   /* ✅ Ocultar botón "Aplicar" desktop en mobile */
   .titleActions .applyButton {
+    display: none;
+  }
+  /* ✅ Ocultar botón "Limpiar" del encabezado en mobile (queda solo el de abajo) */
+  .titleActions .clearButton {
     display: none;
   }
 
