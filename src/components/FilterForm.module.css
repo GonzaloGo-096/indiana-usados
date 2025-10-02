@@ -1,20 +1,19 @@
 /**
- * FilterFormSimplified.module.css
+ * FilterForm.module.css - Estilos para formulario de filtros
  * 
- * Estilos optimizados para el formulario de filtros
- * Performance-first, mantenible y escalable
+ * Estilos extraídos del FilterFormSimplified para reutilización
  * 
- * @version 6.0.0 - Optimizado con mejores prácticas
  * @author Indiana Usados
+ * @version 1.0.0 - Modular
  */
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
-.filterContainer {
+.filterForm {
   position: relative;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 0; /* ✅ PEGADO: Sin margin-top para estar muy cerca del título */
+  margin-top: 0;
   display: flex;
   justify-content: center;
 }
@@ -71,31 +70,13 @@
   font-weight: 500;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 0.5rem;
   animation: slideIn 0.3s ease;
 }
 
-.retryButton {
-  background: #dc2626;
-  color: white;
-  border: none;
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.retryButton:hover {
-  background: #b91c1c;
-}
-
-.retryButton:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
+.errorMessage::before {
+  content: "⚠️";
+  font-size: 1rem;
 }
 
 @keyframes slideIn {
@@ -118,54 +99,9 @@
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
-  overflow: visible; /* ✅ CAMBIADO: Permitir que los dropdowns se vean */
-  z-index: 10; /* ✅ AGREGADO: Establecer stacking context */
-  padding: 0 1rem; /* ✅ AJUSTADO: Padding horizontal reducido a la mitad */
-}
-
-/* ===== FORM HEADER MOBILE ===== */
-.formHeaderMobile {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  background: #0a0d14;
-  color: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  position: sticky;
-  top: 0;
+  overflow: visible;
   z-index: 10;
-}
-
-.formHeaderMobile h2 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  margin: 0;
-  color: #ffffff;
-}
-
-.closeButton {
-  background: none;
-  border: none;
-  color: #ffffff;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2.5rem;
-  min-height: 2.5rem;
-}
-
-.closeButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.closeButton svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  padding: 0 1rem;
 }
 
 /* ===== FORMULARIO PRINCIPAL ===== */
@@ -180,15 +116,15 @@
 .formTitle {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* ✅ MANTENER: Centrado vertical */
+  align-items: center;
   margin-bottom: 0.0625rem;
-  padding: 0.5rem 0; /* ✅ AJUSTADO: Padding más sutil que se adapta a los botones */
+  padding: 0.5rem 0;
   border-bottom: 1px solid #e5e7eb;
 }
 
 .formTitle h3 {
   color: #0a0d14;
-  font-size: 1rem; /* ✅ AUMENTADO: De 0.875rem a 1rem */
+  font-size: 1rem;
   font-weight: 600;
   font-family: 'Barlow Condensed', sans-serif;
   margin: 0;
@@ -220,7 +156,7 @@
 
 .rangesSection {
   margin-bottom: 0.0625rem;
-  z-index: 20; /* ✅ AGREGADO: Z-index alto para que los sliders se vean */
+  z-index: 20;
   position: relative;
 }
 
@@ -239,8 +175,8 @@
   background: #ffffff;
   padding: 0.5rem;
   border-radius: 0.375rem;
-  border: none; /* ✅ CAMBIADO: Sin borde */
-  position: relative; /* ✅ MANTENER: Stacking context esencial */
+  border: none;
+  position: relative;
 }
 
 /* ===== FORM GROUPS ===== */
@@ -253,8 +189,8 @@
   margin-bottom: 0.03125rem;
   max-width: none;
   padding: 0 0.25rem;
-  overflow: visible; /* ✅ AGREGADO: Para que los sliders se vean */
-  z-index: 15; /* ✅ AGREGADO: Z-index para stacking */
+  overflow: visible;
+  z-index: 15;
   position: relative;
 }
 
@@ -300,14 +236,6 @@
 }
 
 .formGroup label {
-  color: #0a0d14;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  font-size: 0.625rem;
-}
-
-/* ===== LABELS ===== */
-.formGroup label {
   text-align: center;
   font-weight: 600;
   font-size: 0.625rem;
@@ -323,7 +251,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.375rem 0.75rem; /* ✅ REDUCIDO: De 0.5rem 1rem a 0.375rem 0.75rem */
+  padding: 0.375rem 0.75rem;
   border-radius: 0.375rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -331,7 +259,7 @@
   transition: all 0.2s ease;
   border: 1px solid transparent;
   text-decoration: none;
-  min-height: 2rem; /* ✅ REDUCIDO: De 2.5rem a 2rem */
+  min-height: 2rem;
 }
 
 .applyButton {
@@ -390,15 +318,11 @@
     max-width: 700px;
   }
   
-  .filterContainer {
+  .filterForm {
     margin-top: 2rem;
   }
 
   /* Hide mobile elements on desktop */
-  .formHeaderMobile {
-    display: none;
-  }
-
   .mobileButtons {
     display: none;
   }
@@ -412,74 +336,13 @@
 /* Mobile styles */
 @media (max-width: 768px) {
   /* ===== CONTAINER PRINCIPAL ===== */
-  .filterContainer {
+  .filterForm {
     margin-top: 1.5rem;
-    padding-bottom: 0; /* Removido porque el contenedor fijo ahora está arriba */
+    padding-bottom: 0;
   }
   
   .filterButtonMobile {
     display: none; /* Ocultar el botón original en mobile */
-  }
-  
-  /* ===== OVERLAY Y DRAWER ===== */
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    cursor: pointer;
-  }
-  
-  /* Mobile drawer - 45% width, slide from right */
-  .formWrapper {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 45%;
-    height: 100vh;
-    z-index: 1001;
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 0.5rem 0 0 0.5rem;
-    background: #ffffff;
-    overflow: visible; /* Permitir que los dropdowns se vean por fuera del contenedor */
-    display: flex;
-    flex-direction: column;
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
-  }
-  
-  .filterContainer.open .formWrapper {
-    transform: translateX(0);
-  }
-  
-  /* ===== HEADER MOBILE (OCULTO) ===== */
-  .formHeaderMobile {
-    display: none; /* ✅ OCULTO: Ya no se usa */
-  }
-
-  .formHeaderMobile h2 {
-    display: none;
-  }
-
-  .formHeaderMobile .closeButton {
-    display: none;
-    min-width: 2.5rem;
-    min-height: 2.5rem;
-    z-index: 11;
-    position: relative;
-  }
-
-  .formHeaderMobile .closeButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .formHeaderMobile .closeButton svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    display: block;
   }
   
   /* ===== CONTENIDO DEL FORMULARIO ===== */
@@ -525,7 +388,7 @@
   }
 
   .titleActions {
-    display: flex; /* ✅ CAMBIADO: Mostrar en mobile */
+    display: flex;
     gap: 0.5rem;
     align-items: center;
   }
@@ -667,4 +530,4 @@
   .filterButtonMobile:hover {
     transform: none;
   }
-} 
+}

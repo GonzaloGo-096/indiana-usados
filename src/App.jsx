@@ -13,6 +13,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Navigate } from 'react-router-dom'
 import './App.module.css'
+import { DeviceProvider } from '@hooks/useDeviceDetection'
 
 // Routes
 import PublicRoutes from './routes/PublicRoutes'
@@ -27,18 +28,20 @@ function App() {
                 v7_relativeSplatPath: true
             }}
         >
-            <div className="app">
-                <Routes>
-                    {/* Rutas públicas */}
-                    <Route path="/*" element={<PublicRoutes />} />
+            <DeviceProvider>
+                <div className="app">
+                    <Routes>
+                        {/* Rutas públicas */}
+                        <Route path="/*" element={<PublicRoutes />} />
 
-                    {/* Rutas del admin */}
-                    <Route path="/admin/*" element={<AdminRoutes />} />
+                        {/* Rutas del admin */}
+                        <Route path="/admin/*" element={<AdminRoutes />} />
 
-                    {/* Ruta por defecto */}
-                    <Route path="*" element={<Navigate to="/" />} />
-                </Routes>
-            </div>
+                        {/* Ruta por defecto */}
+                        <Route path="*" element={<Navigate to="/" />} />
+                    </Routes>
+                </div>
+            </DeviceProvider>
         </Router>
     )
 }

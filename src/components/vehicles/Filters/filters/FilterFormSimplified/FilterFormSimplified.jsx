@@ -17,18 +17,22 @@ import { useSearchParams } from 'react-router-dom'
 import { RangeSlider } from '@ui'
 import { MultiSelect } from '@ui'
 import { marcas, combustibles, cajas, FILTER_DEFAULTS } from '@constants'
-import { parseFilters } from '@utils'
+import { useScrollDetection, useRangeHandlers, useSelectHandlers } from '@hooks'
+import { parseFilters, validateRange, formatPrice, formatYear } from '@utils'
 import styles from './FilterFormSimplified.module.css'
 
 const FilterFormSimplified = React.memo(React.forwardRef(({ 
   onApplyFilters,
-  isLoading = false 
+  isLoading = false,
+  isError = false,
+  error = null,
+  onRetry = null
 }, ref) => {
   // ✅ SIMPLIFICADO: useState en lugar de useFilterReducer
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isError, setIsError] = useState(false)
-  const [error, setError] = useState(null)
+  const [isLocalError, setIsLocalError] = useState(false)
+  const [localError, setLocalError] = useState(null)
   
   // ✅ NUEVO: Obtener filtros actuales de la URL
   const [searchParams] = useSearchParams()
@@ -38,64 +42,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   const toggleDrawer = () => setIsDrawerOpen(prev => !prev)
   const closeDrawer = () => setIsDrawerOpen(false)
 
-  // Estados para contenedor fijo mobile
-  const [isVisible, setIsVisible] = useState(false)
-
-  // Detectar scroll optimizado para mobile
-  useEffect(() => {
-    let scrollTimeout
-    let hideTimeout
-    let lastScrollTop = 0
-
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || 
-                       document.documentElement.scrollTop || 
-                       document.body.scrollTop || 0
-      
-      // Solo procesar cambios significativos
-      if (Math.abs(scrollTop - lastScrollTop) < 10) return
-      
-      lastScrollTop = scrollTop
-      const shouldShow = scrollTop > 50
-      
-      if (shouldShow) {
-        setIsVisible(true)
-        if (hideTimeout) {
-          clearTimeout(hideTimeout)
-          hideTimeout = null
-        }
-      } else {
-        setIsVisible(false)
-      }
-    }
-
-    const handleScrollEnd = () => {
-      if (hideTimeout) {
-        clearTimeout(hideTimeout)
-      }
-      hideTimeout = setTimeout(() => setIsVisible(false), 2000)
-    }
-
-    const handleScrollWithDelay = () => {
-      handleScroll()
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout)
-      }
-      const delay = 'ontouchstart' in window ? 100 : 150
-      scrollTimeout = setTimeout(handleScrollEnd, delay)
-    }
-
-    window.addEventListener('scroll', handleScrollWithDelay, { passive: true })
-    
-    return () => {
-      window.removeEventListener('scroll', handleScrollWithDelay)
-      if (scrollTimeout) clearTimeout(scrollTimeout)
-      if (hideTimeout) clearTimeout(hideTimeout)
-    }
-  }, [])
-
-  // ✅ NUEVO: Función para validar rangos (min siempre <= max)
-  const validateRange = ([min, max]) => [Math.min(min, max), Math.max(min, max)]
+  // Estados para contenedor fijo mobile (modularizado)
+  const { isVisible } = useScrollDetection()
 
   // ✅ NUEVO: Valores por defecto que se sincronizan con la URL
   const getDefaultValues = () => ({
@@ -165,8 +113,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
       // Permite que React complete el render antes de cerrar
       setTimeout(() => closeDrawer(), 100)
     } catch (error) {
-      setIsError(true)
-      setError(error?.message || 'Error al aplicar filtros')
+      setIsLocalError(true)
+      setLocalError(error?.message || 'Error al aplicar filtros')
     } finally {
       setIsSubmitting(false)
     }
@@ -183,40 +131,17 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     })
   }
 
-  // Formateadores
-  const formatPrice = (value) => `$${value.toLocaleString()}`
-  const formatKms = (value) => `${value.toLocaleString()} km`
-  const formatYear = (value) => value.toString()
 
   // Ranges como arrays únicos
   const añoRange = año
   const precioRange = precio
   const kilometrajeRange = kilometraje
 
-  // Handlers simples para ranges únicos
-  const handleAñoChange = ([min, max]) => {
-    setValue('año', [min, max])
-  }
+  // Handlers para ranges (modularizados)
+  const { handleAñoChange, handlePrecioChange, handleKilometrajeChange } = useRangeHandlers(setValue)
 
-  const handlePrecioChange = ([min, max]) => {
-    setValue('precio', [min, max])
-  }
-
-  const handleKilometrajeChange = ([min, max]) => {
-    setValue('kilometraje', [min, max])
-  }
-
-  const handleMarcaChange = (values) => {
-    setValue('marca', values)
-  }
-
-  const handleCombustibleChange = (values) => {
-    setValue('combustible', values)
-  }
-
-  const handleCajaChange = (values) => {
-    setValue('caja', values)
-  }
+  // Handlers para selects (modularizados)
+  const { handleMarcaChange, handleCombustibleChange, handleCajaChange } = useSelectHandlers(setValue)
 
   // ✅ NUEVO: Exponer toggleDrawer para uso externo
   useImperativeHandle(ref, () => ({
@@ -272,10 +197,26 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
         )}
       </button>
 
-      {/* Error message */}
+      {/* Error message - API errors */}
       {isError && error && (
         <div className={styles.errorMessage}>
-          Error: {error}
+          ⚠️ Error: {error.message || error}
+          {onRetry && (
+            <button 
+              onClick={onRetry}
+              className={styles.retryButton}
+              disabled={isLoading}
+            >
+              Reintentar
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Error message - Local errors */}
+      {isLocalError && localError && (
+        <div className={styles.errorMessage}>
+          ⚠️ Error: {localError}
         </div>
       )}
 
@@ -336,6 +277,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 value={añoRange}
                 onChange={handleAñoChange}
                 formatValue={formatYear}
+                aria-label="Rango de años"
+                aria-describedby="año-description"
               />
             </div>
 
@@ -349,6 +292,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 value={precioRange}
                 onChange={handlePrecioChange}
                 formatValue={formatPrice}
+                aria-label="Rango de precios"
+                aria-describedby="precio-description"
               />
             </div>
 
@@ -361,7 +306,9 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 step={5000}
                 value={kilometrajeRange}
                 onChange={handleKilometrajeChange}
-                formatValue={formatKms}
+                formatValue={(value) => value.toLocaleString()}
+                aria-label="Rango de kilometraje"
+                aria-describedby="kilometraje-description"
               />
             </div>
           </div>
@@ -376,6 +323,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 value={marca || []}
                 onChange={handleMarcaChange}
                 placeholder="Todas las marcas"
+                aria-label="Seleccionar marcas"
+                aria-describedby="marca-description"
               />
             </div>
 
@@ -387,6 +336,8 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 value={combustible || []}
                 onChange={handleCombustibleChange}
                 placeholder="Todos los combustibles"
+                aria-label="Seleccionar combustibles"
+                aria-describedby="combustible-description"
               />
             </div>
 
@@ -394,10 +345,12 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
             <div className={styles.formGroup}>
               <MultiSelect
                 label="Caja"
-                        options={cajas}
-        value={caja || []}
-        onChange={handleCajaChange}
+                options={cajas}
+                value={caja || []}
+                onChange={handleCajaChange}
                 placeholder="Todas las cajas"
+                aria-label="Seleccionar cajas"
+                aria-describedby="caja-description"
               />
             </div>
           </div>

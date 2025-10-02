@@ -9,6 +9,7 @@
  */
 
 import React, { useState, lazy, Suspense, useEffect } from 'react'
+import { useDevice } from '@hooks'
 
 // ✅ LAZY LOADING: Cargar FilterFormSimplified y sus dependencias pesadas
 const FilterFormSimplified = lazy(async () => {
@@ -77,23 +78,11 @@ const FilterFormSkeleton = () => (
 )
 
 // ✅ COMPONENTE PRINCIPAL
-const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading }, ref) => {
+const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading, isError, error, onRetry }, ref) => {
   const [showFilters, setShowFilters] = useState(false)
   const [isPreloading, setIsPreloading] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
-  // Simplificado: sin estado isApplying
-
-  // ✅ DETECTAR SI ES MOBILE
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
-    
-    checkIsMobile()
-    window.addEventListener('resize', checkIsMobile)
-    
-    return () => window.removeEventListener('resize', checkIsMobile)
-  }, [])
+  // Detección de dispositivo por contexto global
+  const { isMobile } = useDevice()
 
   // ✅ PREFETCH: Cargar en background cuando el usuario hace hover
   const handleMouseEnter = () => {
@@ -111,7 +100,6 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading }, ref) => 
   // ✅ NUEVO: Función para cerrar filtros
   const handleHideFilters = () => {
     setShowFilters(false)
-    setIsApplying(false)  // Reset applying state
   }
   
   // Handler para aplicar desde el formulario y cerrar
@@ -178,12 +166,15 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading }, ref) => 
               }
             }
           `}</style>
-          <Suspense fallback={<FilterFormSkeleton />}>
-            <FilterFormSimplified 
-              onApplyFilters={handleApplyAndClose}
-              isLoading={isLoading}
-            />
-          </Suspense>
+                 <Suspense fallback={<FilterFormSkeleton />}>
+                   <FilterFormSimplified
+                     onApplyFilters={handleApplyAndClose}
+                     isLoading={isLoading}
+                     isError={isError}
+                     error={error}
+                     onRetry={onRetry}
+                   />
+                 </Suspense>
         </div>
       </div>
     )
@@ -192,16 +183,19 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading }, ref) => 
   // ✅ EN MOBILE: Cargar directamente el FilterFormSimplified (que tiene su propio botón móvil)
   if (isMobile) {
     return (
-      <div style={{
-        marginBottom: '20px'
-      }}>
-        <Suspense fallback={<FilterFormSkeleton />}>
-          <FilterFormSimplified 
-            onApplyFilters={onApplyFilters}
-            isLoading={isLoading}
-          />
-        </Suspense>
-      </div>
+             <div style={{
+               marginBottom: '20px'
+             }}>
+               <Suspense fallback={<FilterFormSkeleton />}>
+                 <FilterFormSimplified
+                   onApplyFilters={onApplyFilters}
+                   isLoading={isLoading}
+                   isError={isError}
+                   error={error}
+                   onRetry={onRetry}
+                 />
+               </Suspense>
+             </div>
     )
   }
 

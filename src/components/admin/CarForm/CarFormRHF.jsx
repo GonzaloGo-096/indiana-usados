@@ -8,7 +8,7 @@
 import React, { useEffect, useCallback, useMemo } from 'react'
 import { logger } from '@utils/logger'
 import { useForm } from 'react-hook-form'
-import { useImageReducer, IMAGE_FIELDS } from './useImageReducer'
+import { useImageReducer, IMAGE_FIELDS } from '../hooks/useImageReducer'
 import styles from './CarFormRHF.module.css'
 
 // ✅ CONSTANTES
@@ -102,75 +102,18 @@ const CarFormRHF = ({
         }
     })
 
-    // ✅ CARGAR DATOS INICIALES (campos básicos) y sincronizar imágenes
+    // ✅ INICIALIZAR FORMULARIO CON DATOS INICIALES
     useEffect(() => {
-        if (mode === MODE.EDIT && initialData) {
-            // ✅ CARGAR DATOS BÁSICOS
-            const basicFields = [
-                'marca', 'modelo', 'version', 'precio', 'caja', 'segmento',
-                'cilindrada', 'color', 'anio', 'combustible', 'transmision',
-                'kilometraje', 'traccion', 'tapizado', 'categoriaVehiculo',
-                'frenos', 'turbo', 'llantas', 'HP', 'detalle'
-            ]
+        if (initialData && Object.keys(initialData).length > 0) {
+            const formData = { ...initialData }
+            delete formData.urls // Los URLs se manejan por separado
             
-            basicFields.forEach(field => {
-                if (initialData[field] !== undefined) {
-                    setValue(field, initialData[field])
-                }
-            })
-            
-            // ✅ Sincronizar estado de imágenes desde initialData
+            reset(formData)
             initImageState(mode, initialData)
-        } else if (mode === MODE.CREATE) {
-            // ✅ RESETEAR FORMULARIO EN MODO CREATE
-            reset()
-            initImageState(mode, {})
         }
-    }, [mode, initialData, setValue, reset, initImageState])
+    }, [initialData, mode, reset, initImageState])
 
-    // ✅ MANEJADORES DE IMAGENES
-    const handleFileChange = useCallback((key) => (event) => {
-        const file = event.target.files && event.target.files[0] ? event.target.files[0] : null
-        setFile(key, file)
-        
-        // ✅ RESETEAR INPUT PARA PERMITIR SELECCIONAR EL MISMO ARCHIVO
-        event.target.value = ''
-    }, [setFile])
-
-    const handleRemoveImage = useCallback((key) => () => {
-        removeImage(key)
-    }, [removeImage])
-
-    // ✅ NUEVO: Manejador para input múltiple de fotos extras
-    const handleMultipleExtrasChange = useCallback((event) => {
-        const files = event.target.files
-        console.log('🔍 handleMultipleExtrasChange - Triggered:', {
-            filesLength: files?.length || 0,
-            files: files ? Array.from(files).map(f => ({ name: f.name, size: f.size })) : []
-        })
-        
-        if (files && files.length > 0) {
-            console.log(`📁 Llamando setMultipleExtras con ${files.length} archivos`)
-            setMultipleExtras(files)
-            console.log(`✅ setMultipleExtras llamado exitosamente`)
-        } else {
-            console.warn('⚠️ No se seleccionaron archivos o files es null')
-        }
-        
-        // Resetear input para permitir seleccionar los mismos archivos si es necesario
-        event.target.value = ''
-    }, [setMultipleExtras])
-
-    // ✅ NUEVOS: Manejadores para fotos existentes
-    const handleRemoveExistingExtra = useCallback((index) => () => {
-        removeExistingExtra(index)
-    }, [removeExistingExtra])
-
-    const handleRestoreExistingExtra = useCallback((index) => () => {
-        restoreExistingExtra(index)
-    }, [restoreExistingExtra])
-
-    // ✅ VALIDACIÓN CONDICIONAL POR MODO
+    // ✅ VALIDAR FORMULARIO COMPLETO
     const validateForm = useCallback((data) => {
         const errors = {}
         
@@ -183,19 +126,15 @@ const CarFormRHF = ({
         ]
         
         requiredFields.forEach(field => {
-            const value = data[field]
-            
-            if (field === 'precio' || field === 'cilindrada' || field === 'anio' || field === 'kilometraje') {
-                // ✅ VALIDAR NÚMEROS
-                const numValue = Number(value)
-                if (!value || isNaN(numValue)) {
-                    errors[field] = `${field} es requerido y debe ser un número`
-                }
-            } else {
-                // ✅ VALIDAR STRINGS
-                if (!value || value.trim() === '') {
-                    errors[field] = `${field} es requerido`
-                }
+            if (!data[field] || data[field].toString().trim() === '') {
+                errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} es requerido`
+            }
+        })
+        
+        // ✅ VALIDAR NÚMEROS
+        NUMERIC_FIELDS.forEach(field => {
+            if (data[field] && isNaN(Number(data[field]))) {
+                errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} debe ser un número válido`
             }
         })
         
@@ -299,106 +238,83 @@ const CarFormRHF = ({
                         </>
                     ) : (
                         <>
-                            <p><strong>Modo edición:</strong> Las imágenes son opcionales</p>
-                            <p><strong>Puedes editar solo texto sin tocar las imágenes</strong></p>
+                            <p><strong>Imágenes existentes:</strong> Puedes reemplazarlas o mantenerlas</p>
+                            <p><strong>Opcional:</strong> Todos los cambios de imágenes son opcionales</p>
                         </>
                     )}
                 </div>
-
-                {/* ✅ GRID DE IMÁGENES PRINCIPALES CON ESTILO MODERNO */}
-                <div className={styles.principalPhotosGrid}>
-                    {IMAGE_FIELDS.principales.map((field, index) => {
+                
+                {/* ✅ GRID DE IMÁGENES PRINCIPALES */}
+                <div className={styles.principalImagesGrid}>
+                    {IMAGE_FIELDS.principales.map(field => {
+                        const { file, existingUrl, remove } = imageState[field] || {}
                         const preview = getPreviewFor(field)
-                        const isRemoved = imageState[field]?.remove
-                        const fieldTitle = field === 'fotoPrincipal' ? 'Foto Principal' : 'Foto Hover'
                         
                         return (
-                            <div key={field} className={styles.principalPhotoCard}>
-                                <div className={styles.principalPhotoHeader}>
-                                    <h5>{fieldTitle}</h5>
-                                    {errors[field] && <span className={styles.error}>* Requerida</span>}
+                            <div key={field} className={styles.imageCard}>
+                                <label className={styles.imageLabel}>
+                                    {field === 'fotoPrincipal' ? 'Foto Principal *' : 'Foto Hover *'}
+                                </label>
+                                
+                                <div className={styles.imageContainer}>
+                                    {preview ? (
+                                        <img 
+                                            src={preview} 
+                                            alt={`Preview ${field}`}
+                                            className={styles.previewImage}
+                                        />
+                                    ) : (
+                                        <div className={styles.placeholder}>
+                                            <span>📷</span>
+                                            <p>Seleccionar imagen</p>
+                                        </div>
+                                    )}
+                                    
+                                    {remove && (
+                                        <div className={styles.removedOverlay}>
+                                            <span>🗑️ Eliminada</span>
+                                        </div>
+                                    )}
                                 </div>
-
-                                {/* ✅ PREVIEW DE IMAGEN CON MISMO ESTILO QUE EXTRAS */}
-                                {isRemoved ? (
-                                    // Foto marcada para eliminar
-                                    <div className={styles.removedPhotoPlaceholder}>
-                                        <div className={styles.removedIcon}>🗑️</div>
-                                        <span className={styles.removedText}>Marcada para eliminar</span>
+                                
+                                <div className={styles.imageActions}>
+                                    <input
+                                        type="file"
+                                        accept=".jpg,.jpeg,.png"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0]
+                                            if (file) {
+                                                setFile(field, file)
+                                            }
+                                        }}
+                                        className={styles.fileInput}
+                                        id={`${field}-input`}
+                                    />
+                                    <label htmlFor={`${field}-input`} className={styles.fileButton}>
+                                        {file ? 'Cambiar' : 'Seleccionar'}
+                                    </label>
+                                    
+                                    {existingUrl && !file && (
+                                        <button
+                                            type="button"
+                                            onClick={() => removeImage(field)}
+                                            className={styles.removeButton}
+                                        >
+                                            Eliminar
+                                        </button>
+                                    )}
+                                    
+                                    {remove && (
                                         <button
                                             type="button"
                                             onClick={() => restoreImage(field)}
                                             className={styles.restoreButton}
                                         >
-                                            ↺ Restaurar
-                                        </button>
-                                    </div>
-                                ) : preview ? (
-                                    // Foto normal (existente o nueva)
-                                    <>
-                                        <img 
-                                            src={preview} 
-                                            alt={`${fieldTitle}`}
-                                            className={styles.principalPhotoImg}
-                                        />
-                                        <div className={styles.principalPhotoInfo}>
-                                            {imageState[field]?.file ? (
-                                                <small>Nueva imagen seleccionada</small>
-                                            ) : (
-                                                <div>
-                                                    <small>Imagen existente</small>
-                                                    {imageState[field]?.publicId && (
-                                                        <small className={styles.publicIdInfo}>
-                                                            ID: {imageState[field].publicId.slice(-8)}
-                                                        </small>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </>
-                                ) : (
-                                    // Sin imagen - placeholder
-                                    <div className={styles.emptyPhotoPlaceholder}>
-                                        <div className={styles.emptyIcon}>📷</div>
-                                        <span className={styles.emptyText}>Sin imagen</span>
-                                        <small className={styles.emptyHint}>
-                                            {mode === MODE.CREATE ? 'Requerida' : 'Opcional'}
-                                        </small>
-                                    </div>
-                                )}
-
-                                {/* ✅ INPUT DE ARCHIVO OCULTO */}
-                                <input
-                                    type="file"
-                                    accept=".jpg,.jpeg,.png"
-                                    onChange={handleFileChange(field)}
-                                    className={styles.hiddenFileInput}
-                                    id={`input-${field}`}
-                                />
-
-                                {/* ✅ BOTONES DE ACCIÓN CON MISMO ESTILO QUE EXTRAS */}
-                                <div className={styles.principalPhotoActions}>
-                                    {!isRemoved && (
-                                        <label
-                                            htmlFor={`input-${field}`}
-                                            className={styles.selectButton}
-                                        >
-                                            📁 {preview ? 'Cambiar foto' : 'Seleccionar foto'}
-                                        </label>
-                                    )}
-                                    
-                                    {mode === MODE.EDIT && preview && !isRemoved && (
-                                        <button
-                                            type="button"
-                                            onClick={handleRemoveImage(field)}
-                                            className={styles.removeButton}
-                                            title="Eliminar esta foto"
-                                        >
-                                            🗑️ Eliminar
+                                            Restaurar
                                         </button>
                                     )}
                                 </div>
-
+                                
                                 {/* ✅ ERROR ESPECÍFICO DEL CAMPO */}
                                 {errors[field] && (
                                     <div className={styles.fieldError}>
@@ -446,7 +362,7 @@ const CarFormRHF = ({
                                             <span className={styles.removedText}>Marcada para eliminar</span>
                                             <button
                                                 type="button"
-                                                onClick={handleRestoreExistingExtra(index)}
+                                                onClick={() => restoreExistingExtra(index)}
                                                 className={styles.restoreButton}
                                             >
                                                 ↺ Restaurar
@@ -463,7 +379,7 @@ const CarFormRHF = ({
                                             <div className={styles.existingPhotoActions}>
                                                 <button
                                                     type="button"
-                                                    onClick={handleRemoveExistingExtra(index)}
+                                                    onClick={() => removeExistingExtra(index)}
                                                     className={styles.removeButton}
                                                     title="Eliminar esta foto"
                                                 >
@@ -493,42 +409,43 @@ const CarFormRHF = ({
                                 type="file"
                                 accept=".jpg,.jpeg,.png"
                                 multiple
-                                onChange={handleMultipleExtrasChange}
+                                onChange={(e) => {
+                                    const files = e.target.files
+                                    if (files && files.length > 0) {
+                                        setMultipleExtras(files)
+                                    }
+                                }}
                                 className={styles.multipleFileInput}
                             />
                             <div className={styles.multipleInputUI}>
                                 <span className={styles.multipleInputIcon}>📁</span>
                                 <span className={styles.multipleInputText}>
-                                    {mode === MODE.CREATE 
-                                        ? 'Seleccionar 5-8 fotos extras'
-                                        : 'Seleccionar fotos para agregar'
+                                    {imageState.fotosExtra?.length > 0 
+                                        ? `${imageState.fotosExtra.length} archivo(s) seleccionado(s)`
+                                        : 'Seleccionar múltiples archivos'
                                     }
                                 </span>
-                                <small className={styles.multipleInputHint}>
-                                    Puedes seleccionar varios archivos a la vez
-                                </small>
                             </div>
                         </label>
                     </div>
-
-                    {/* ✅ DEBUG: Logging del estado */}
-                    {console.log('🔍 CarFormRHF - imageState.fotosExtra:', imageState.fotosExtra)}
                     
-                    {/* ✅ PREVIEW DE ARCHIVOS SELECCIONADOS */}
+                    {/* ✅ PREVIEW DE ARCHIVOS NUEVOS */}
                     {imageState.fotosExtra && imageState.fotosExtra.length > 0 && (
-                        <div className={styles.newPhotosPreview}>
-                            <h5>Fotos seleccionadas ({imageState.fotosExtra.length})</h5>
-                            <div className={styles.newPhotosGrid}>
+                        <div className={styles.newFilesPreview}>
+                            <h5>Archivos Nuevos:</h5>
+                            <div className={styles.newFilesGrid}>
                                 {imageState.fotosExtra.map((file, index) => (
-                                    <div key={index} className={styles.newPhotoCard}>
+                                    <div key={index} className={styles.newFileCard}>
                                         <img 
                                             src={URL.createObjectURL(file)} 
-                                            alt={`Nueva foto ${index + 1}`}
-                                            className={styles.newPhotoImg}
+                                            alt={`Nuevo archivo ${index + 1}`}
+                                            className={styles.newFileImg}
                                         />
-                                        <div className={styles.newPhotoInfo}>
-                                            <small>{file.name}</small>
-                                            <small>{(file.size / 1024 / 1024).toFixed(2)} MB</small>
+                                        <div className={styles.newFileInfo}>
+                                            <span className={styles.newFileName}>{file.name}</span>
+                                            <span className={styles.newFileSize}>
+                                                {(file.size / 1024 / 1024).toFixed(2)} MB
+                                            </span>
                                         </div>
                                     </div>
                                 ))}
@@ -537,15 +454,15 @@ const CarFormRHF = ({
                     )}
                 </div>
                 
-                {/* ✅ ERROR GENERAL DE FOTOS EXTRAS */}
+                {/* ✅ ERROR DE FOTOS EXTRAS */}
                 {errors.fotosExtra && (
-                    <div className={styles.errorMessage}>
-                        ❌ {errors.fotosExtra}
+                    <div className={styles.fieldError}>
+                        {errors.fotosExtra}
                     </div>
                 )}
             </div>
 
-            {/* ✅ SECCIÓN DE DATOS BÁSICOS */}
+            {/* ✅ SECCIÓN DE DATOS DEL VEHÍCULO */}
             <div className={styles.dataSection}>
                 <h3>Datos del Vehículo</h3>
                 
@@ -747,9 +664,10 @@ const CarFormRHF = ({
                     <div className={styles.formGroup}>
                         <label>HP *</label>
                         <input
-                            type="text"
+                            type="number"
                             {...register('HP', { required: 'HP es requerido' })}
                             className={styles.input}
+                            placeholder="0"
                         />
                         {errors.HP && <span className={styles.error}>{errors.HP.message}</span>}
                     </div>
@@ -759,7 +677,8 @@ const CarFormRHF = ({
                         <textarea
                             {...register('detalle', { required: 'Detalle es requerido' })}
                             className={styles.textarea}
-                            rows="3"
+                            rows="4"
+                            placeholder="Descripción detallada del vehículo..."
                         />
                         {errors.detalle && <span className={styles.error}>{errors.detalle.message}</span>}
                     </div>
@@ -767,29 +686,23 @@ const CarFormRHF = ({
             </div>
 
             {/* ✅ BOTONES DE ACCIÓN */}
-            <div className={styles.formActions}>
-                <button 
-                    type="submit" 
+            <div className={styles.actionButtons}>
+                <button
+                    type="button"
+                    onClick={onClose}
+                    className={styles.cancelButton}
+                    disabled={isLoading}
+                >
+                    Cancelar
+                </button>
+                
+                <button
+                    type="submit"
                     className={styles.submitButton}
                     disabled={isLoading}
                 >
-                    {isLoading ? (
-                        <span>
-                            <span className={styles.loadingSpinner}></span>
-                            {mode === MODE.CREATE ? 'Creando auto...' : 'Guardando cambios...'}
-                        </span>
-                    ) : (
-                        mode === MODE.CREATE ? 'Crear Auto' : 'Actualizar Auto'
-                    )}
+                    {isLoading ? 'Procesando...' : (mode === MODE.CREATE ? 'Crear Auto' : 'Actualizar Auto')}
                 </button>
-                
-                {/* ✅ MENSAJE DE PROGRESO PARA OPERACIONES CON IMÁGENES */}
-                {isLoading && (
-                    <div className={styles.uploadProgress}>
-                        <p>⏳ Las imágenes pueden tardar un momento en subirse...</p>
-                        <small>Por favor no cierres esta ventana</small>
-                    </div>
-                )}
             </div>
         </form>
     )

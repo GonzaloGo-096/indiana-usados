@@ -1,0 +1,180 @@
+/**
+ * ServiceCard.module.css - Estilos para tarjetas de servicios
+ * 
+ * Layout: 30% imagen / 70% contenido
+ * Responsive: Stack vertical en móviles
+ * Estilos alineados con el resto de la página
+ * 
+ * @author Indiana Usados
+ * @version 2.0.0
+ */
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card.reverse {
+  flex-direction: row-reverse;
+}
+
+.imageContainer {
+  flex: 0 0 30%;
+  min-width: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: #f9fafb;
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.card:hover .image {
+  transform: scale(1.05);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  line-height: 1.3;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+.subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6b7280;
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #374151;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Responsive - Tablet */
+@media (max-width: var(--breakpoint-lg)) {
+  .card {
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+  }
+  
+  .title {
+    font-size: 20px;
+  }
+  
+  .subtitle {
+    font-size: 15px;
+  }
+  
+  .description {
+    font-size: 13px;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: var(--breakpoint-md)) {
+  .card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .card.reverse {
+    flex-direction: column;
+  }
+  
+  .imageContainer {
+    flex: none;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .content {
+    width: 100%;
+    padding: 0.75rem;
+  }
+  
+  .title {
+    font-size: 18px;
+  }
+  
+  .subtitle {
+    font-size: 14px;
+  }
+  
+  .description {
+    font-size: 12px;
+  }
+}
+
+/* Responsive - Small Mobile */
+@media (max-width: var(--breakpoint-sm)) {
+  .card {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .content {
+    padding: 0.5rem;
+  }
+  
+  .title {
+    font-size: 16px;
+  }
+  
+  .subtitle {
+    font-size: 13px;
+  }
+  
+  .description {
+    font-size: 11px;
+  }
+}

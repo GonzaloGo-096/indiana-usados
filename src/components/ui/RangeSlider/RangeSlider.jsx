@@ -19,7 +19,9 @@ const RangeSlider = React.memo(({
   onChange,
   label,
   formatValue = (val) => val,
-  className = ''
+  className = '',
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy
 }) => {
   const [localValue, setLocalValue] = useState(value)
   const [isDragging, setIsDragging] = useState(false)
@@ -118,13 +120,21 @@ const RangeSlider = React.memo(({
 
   return (
     <div className={`${styles.rangeSlider} ${className}`}>
-      {label && <label className={styles.label}>{label}</label>}
+      {label && <label className={styles.label} htmlFor={`${label}-slider`}>{label}</label>}
       
       <div className={styles.container}>
         <div 
           ref={sliderRef}
           className={styles.track}
           onClick={handleTrackClick}
+          role="slider"
+          aria-label={ariaLabel || `${label} range slider`}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          aria-valuenow={localValue[0]}
+          aria-valuetext={`${formatValue(localValue[0])} to ${formatValue(localValue[1])}`}
+          tabIndex={0}
+          aria-describedby={ariaDescribedBy}
         >
           <div 
             className={styles.range}

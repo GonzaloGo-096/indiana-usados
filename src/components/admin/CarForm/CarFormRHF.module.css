@@ -412,7 +412,7 @@
 }
 
 /* ✅ BOTONES DE ACCIÓN */
-.formActions {
+.actionButtons {
     display: flex;
     justify-content: center;
     gap: 15px;
@@ -449,6 +449,27 @@
     transform: none;
     box-shadow: none;
     opacity: 0.7;
+}
+
+.cancelButton {
+    padding: 14px 32px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancelButton:hover {
+    background: #5a6268;
+}
+
+.cancelButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }
 
 /* ✅ RESPONSIVE DESIGN */
@@ -520,14 +541,14 @@
 /* ✅ ESTILOS PARA IMÁGENES PRINCIPALES (MODERNIZADO) */
 
 /* Grid de fotos principales */
-.principalPhotosGrid {
+.principalImagesGrid {
     display: flex;
     gap: 20px;
     margin-bottom: 30px;
     justify-content: center; /* ✅ CENTRADO */
 }
 
-.principalPhotoCard {
+.imageCard {
     background: white;
     border-radius: 8px;
     overflow: hidden;
@@ -538,44 +559,70 @@
     flex-shrink: 0; /* ✅ No se comprime */
 }
 
-.principalPhotoCard:hover {
+.imageCard:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     border-color: #007bff;
 }
 
-.principalPhotoHeader {
+.imageLabel {
     padding: 12px 16px;
     background: #f8f9fa;
     border-bottom: 1px solid #e9ecef;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.principalPhotoHeader h5 {
-    margin: 0;
-    font-size: 14px;
     font-weight: 600;
     color: #495057;
+    font-size: 14px;
+    margin: 0;
 }
 
-.principalPhotoImg {
+.imageContainer {
     width: 100%;
     height: 150px;
-    object-fit: cover;
-    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    position: relative;
 }
 
-.principalPhotoInfo {
-    padding: 8px 12px;
-    background: #f8f9fa;
+.previewImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
     text-align: center;
 }
 
-.principalPhotoInfo small {
-    color: #6c757d;
-    font-size: 11px;
+.placeholder span {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.placeholder p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.removedOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(220, 53, 69, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
 }
 
 /* Placeholder para foto vacía */
@@ -619,7 +666,7 @@
     flex-wrap: wrap;
 }
 
-.selectButton {
+.fileButton {
     background: #007bff;
     color: white;
     border: none;
@@ -633,7 +680,7 @@
     text-align: center;
 }
 
-.selectButton:hover {
+.fileButton:hover {
     background: #0056b3;
 }
 
@@ -821,53 +868,61 @@
 }
 
 /* Preview de fotos nuevas */
-.newPhotosPreview {
+.newFilesPreview {
     padding: 20px;
     background: #e7f3ff;
     border-radius: 8px;
     border: 1px solid #007bff;
 }
 
-.newPhotosPreview h5 {
+.newFilesPreview h5 {
     color: #0056b3;
     margin: 0 0 15px 0;
     font-size: 14px;
     font-weight: 600;
 }
 
-.newPhotosGrid {
+.newFilesGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 10px;
 }
 
-.newPhotoCard {
+.newFileCard {
     background: white;
     border-radius: 6px;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.newPhotoImg {
+.newFileImg {
     width: 100%;
     height: 60px;
     object-fit: cover;
     border-bottom: 1px solid #e9ecef;
 }
 
-.newPhotoInfo {
+.newFileInfo {
     padding: 6px;
     text-align: center;
 }
 
-.newPhotoInfo small {
+.newFileName {
     display: block;
-    color: #6c757d;
+    color: #495057;
     font-size: 10px;
+    font-weight: 500;
     line-height: 1.3;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.newFileSize {
+    display: block;
+    color: #6c757d;
+    font-size: 9px;
+    margin-top: 2px;
 }
 
 /* Botones mejorados */
@@ -889,18 +944,18 @@
 /* Responsive para nueva estructura */
 @media (max-width: 768px) {
     /* Responsive para fotos principales */
-    .principalPhotosGrid {
+    .principalImagesGrid {
         flex-direction: column;
         gap: 15px;
     }
     
-    .principalPhotoCard {
+    .imageCard {
         width: 100%; /* ✅ En móvil sí ocupa todo el ancho */
         max-width: 400px; /* ✅ Pero con un máximo */
         align-self: center; /* ✅ Centrado */
     }
     
-    .principalPhotoImg {
+    .imageContainer {
         height: 120px;
     }
     
@@ -919,7 +974,7 @@
         gap: 10px;
     }
     
-    .newPhotosGrid {
+    .newFilesGrid {
         grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
         gap: 8px;
     }
@@ -938,7 +993,7 @@
     }
     
     .existingPhotosSection,
-    .newPhotosPreview {
+    .newFilesPreview {
         padding: 15px;
     }
 }

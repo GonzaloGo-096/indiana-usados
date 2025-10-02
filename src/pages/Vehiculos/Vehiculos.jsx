@@ -122,11 +122,14 @@ const Vehiculos = () => {
             </div>
 
             {/* ✅ NUEVO: Formulario de filtros debajo del título */}
-            <LazyFilterForm 
-                ref={filterFormRef}
-                onApplyFilters={onApply}
-                isLoading={isLoading}
-            />
+        <LazyFilterForm
+          ref={filterFormRef}
+          onApplyFilters={onApply}
+          isLoading={isLoading}
+          isError={isError}
+          error={error}
+          onRetry={refetch}
+        />
 
             {/* ✅ NUEVO: Grid de vehículos unificado */}
             <div className={styles.vehiclesGrid}>

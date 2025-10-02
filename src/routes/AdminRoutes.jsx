@@ -38,16 +38,6 @@ const AdminRoutes = () => (
                         <Dashboard />
                     </RequireAuth>
                 } />
-                <Route path="/autos" element={
-                    <RequireAuth>
-                        <div>Lista de Autos Admin</div>
-                    </RequireAuth>
-                } />
-                <Route path="/autos/:id/editar" element={
-                    <RequireAuth>
-                        <div>Editar Auto</div>
-                    </RequireAuth>
-                } />
             </Routes>
         </Suspense>
     </div>

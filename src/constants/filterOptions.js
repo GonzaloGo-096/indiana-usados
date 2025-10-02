@@ -90,7 +90,8 @@ export const combustibles = [
 // Tipos de caja de cambios (simplificados)
 export const cajas = [
     'Manual',
-    'Automático'
+    'Automático',
+    'Secuencial'
 ]
 
 // Constantes eliminadas: anios, rangosPrecio, rangosKilometros (no usadas)

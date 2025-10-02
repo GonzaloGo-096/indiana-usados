@@ -22,7 +22,9 @@ const MultiSelect = React.memo(({
   className = '',
   disabled = false,
   error = false,
-  required = false
+  required = false,
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
@@ -106,7 +108,8 @@ const MultiSelect = React.memo(({
           disabled={disabled}
           aria-expanded={isOpen}
           aria-haspopup="listbox"
-          aria-label={placeholder}
+          aria-label={ariaLabel || `${label} selector`}
+          aria-describedby={ariaDescribedBy}
           tabIndex={disabled ? -1 : 0}
         >
           <span className={styles.text}>{placeholder}</span>

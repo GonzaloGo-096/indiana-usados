@@ -1,28 +1,33 @@
 /**
- * Hooks - Exportaciones centralizadas LIMPIAS
+ * Hooks - Exportaciones centralizadas
  * 
- * Solo hooks que realmente existen y se usan
+ * Agrupa todas las exportaciones de hooks para facilitar las importaciones
  * 
  * @author Indiana Usados
- * @version 4.0.0 - Limpiado y consolidado
+ * @version 2.0.0 - Modular
  */
 
-// ✅ HOOKS DE VEHÍCULOS
-export { useVehiclesList } from './vehicles/useVehiclesList'
-export { useVehicleDetail } from './vehicles/useVehicleDetail'
+// ===== HOOKS MODULARES =====
+export { useDeviceDetection, DeviceProvider, useDevice } from './useDeviceDetection'
+export { useFilterForm } from './useFilterForm'
+export { useScrollDetection } from './useScrollDetection'
+export { useRangeHandlers } from './useRangeHandlers'
+export { useSelectHandlers } from './useSelectHandlers'
 
-// ✅ HOOKS DE MUTACIONES
-export { useCarMutation } from './useCarMutation'
-
-// ✅ HOOKS DE PRELOADING
-export { usePreloadRoute } from './usePreloadRoute'
-export { usePreloadImages } from './usePreloadImages'
-
-// ✅ HOOKS DE CONFIGURACIÓN
-export { useImageOptimization } from './useImageOptimization'
-export { useScrollPosition } from './useScrollPosition'
-export { useAutoLogout } from './useAutoLogout'
-export { useVehicleData } from './useVehicleData'
-export { useAdminMutations } from './useAdminMutations'
+// ===== HOOKS EXISTENTES =====
 export { useAuth } from './useAuth'
+export { useAutoLogout } from './useAutoLogout'
+export { useCarMutation } from './useCarMutation'
+export { useImageOptimization } from './useImageOptimization'
+export { usePreloadImages } from './usePreloadImages'
+export { usePreloadRoute } from './usePreloadRoute'
+export { useScrollPosition } from './useScrollPosition'
+export { useVehicleData } from './useVehicleData'
 export { useVehicleImage } from './useVehicleImage'
+export { useAdminMutations } from './useAdminMutations'
+
+// ===== HOOKS DE VEHICULOS =====
+export * from './vehicles'
+
+// ===== HOOKS DE FILTROS =====
+// export { useFilterReducer } from './filters/useFilterReducer' // Removed
