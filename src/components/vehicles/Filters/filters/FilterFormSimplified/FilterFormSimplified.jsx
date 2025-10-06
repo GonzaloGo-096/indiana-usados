@@ -11,13 +11,13 @@
  * @version 4.2.0 - Mobile optimized
  */
 
-import React, { useEffect, useState, useImperativeHandle, useMemo } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useEffect, useState, useImperativeHandle } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { RangeSlider } from '@ui'
 import { MultiSelect } from '@ui'
 import { marcas, combustibles, cajas, FILTER_DEFAULTS } from '@constants'
-import { useScrollUnified, useRangeHandlers, useSelectHandlers, useSorting } from '@hooks'
+import { useFilterForm } from '@hooks/useFilterForm'
+import { useScrollUnified, useSorting } from '@hooks'
 import { parseFilters, validateRange, formatPrice, formatYear } from '@utils'
 import SortDropdown from '../../SortDropdown'
 import styles from './FilterFormSimplified.module.css'
@@ -31,17 +31,11 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   onSortClick = () => {}, // ✅ NUEVO: Handler para sorting
   selectedSort = null // ✅ NUEVO: Sort seleccionado
 }, ref) => {
-  // ✅ SIMPLIFICADO: useState en lugar de useFilterReducer
+  // ✅ SIMPLIFICADO: Usar el hook unificado
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLocalError, setIsLocalError] = useState(false)
   const [localError, setLocalError] = useState(null)
-  // ✅ OPTIMIZADO: Usar el hook unificado de sorting
-  const sorting = useSorting({
-    syncWithUrl: true,
-    urlKey: 'sort',
-    defaultSort: null
-  })
   
   // ✅ NUEVO: Obtener filtros actuales de la URL
   const [searchParams] = useSearchParams()
@@ -51,53 +45,52 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   const toggleDrawer = () => setIsDrawerOpen(prev => !prev)
   const closeDrawer = () => setIsDrawerOpen(false)
 
-  // ✅ NUEVO: Valores por defecto que se sincronizan con la URL
-  const getDefaultValues = () => ({
-    marca: currentFilters.marca || [],
-    caja: currentFilters.caja || [],
-    combustible: currentFilters.combustible || [],
-    año: currentFilters.año || [FILTER_DEFAULTS.AÑO.min, FILTER_DEFAULTS.AÑO.max],
-    precio: currentFilters.precio || [FILTER_DEFAULTS.PRECIO.min, FILTER_DEFAULTS.PRECIO.max],
-    kilometraje: currentFilters.kilometraje || [FILTER_DEFAULTS.KILOMETRAJE.min, FILTER_DEFAULTS.KILOMETRAJE.max]
-  })
-
-  // Configurar React Hook Form
+  // ✅ OPTIMIZADO: Usar el hook unificado de formulario
   const {
     register,
     handleSubmit,
     setValue,
     reset,
     watch,
-    formState: { errors }
-  } = useForm({
-    defaultValues: getDefaultValues()
+    errors,
+    marca,
+    combustible,
+    caja,
+    año,
+    precio,
+    kilometraje,
+    activeFiltersCount,
+    defaultValues,
+    prepareSubmitData,
+    handleClear,
+    handleAñoChange,
+    handlePrecioChange,
+    handleKilometrajeChange,
+    handleMarcaChange,
+    handleCombustibleChange,
+    handleCajaChange,
+    formatPrice: formatPriceHook,
+    formatKms,
+    formatYear: formatYearHook
+  } = useFilterForm(currentFilters)
+
+  // ✅ OPTIMIZADO: Usar el hook unificado de sorting
+  const sorting = useSorting({
+    syncWithUrl: true,
+    urlKey: 'sort',
+    defaultSort: null
   })
 
-  // ✅ NUEVO: Sincronizar formulario con cambios en la URL
+  // ✅ FIX DEFINITIVO: Sincronización controlada solo cuando cambian los parámetros
   useEffect(() => {
-    const newValues = getDefaultValues()
-    reset(newValues)
-  }, [searchParams, reset])
-
-  // Watch específico por campo
-  const marca = watch('marca')
-  const combustible = watch('combustible')
-  const caja = watch('caja')
-  const año = watch('año') || [FILTER_DEFAULTS.AÑO.min, FILTER_DEFAULTS.AÑO.max]
-  const precio = watch('precio') || [FILTER_DEFAULTS.PRECIO.min, FILTER_DEFAULTS.PRECIO.max]
-  const kilometraje = watch('kilometraje') || [FILTER_DEFAULTS.KILOMETRAJE.min, FILTER_DEFAULTS.KILOMETRAJE.max]
-  
-  // Cálculo de filtros activos
-  const activeFiltersCount = (() => {
-    const hasMarca = marca?.length > 0
-    const hasCombustible = combustible?.length > 0
-    const hasCaja = caja?.length > 0
-    const hasRanges = año[0] !== FILTER_DEFAULTS.AÑO.min || año[1] !== FILTER_DEFAULTS.AÑO.max || 
-                     precio[0] !== FILTER_DEFAULTS.PRECIO.min || precio[1] !== FILTER_DEFAULTS.PRECIO.max || 
-                     kilometraje[0] !== FILTER_DEFAULTS.KILOMETRAJE.min || kilometraje[1] !== FILTER_DEFAULTS.KILOMETRAJE.max
+    // Solo resetear cuando realmente cambien los filtros de la URL
+    const urlFilters = parseFilters(searchParams)
+    const hasUrlChanges = JSON.stringify(urlFilters) !== JSON.stringify(currentFilters)
     
-    return [hasMarca, hasCombustible, hasCaja, hasRanges].filter(Boolean).length
-  })()
+    if (hasUrlChanges) {
+      reset(urlFilters)
+    }
+  }, [searchParams.toString()]) // Solo dependencia de URL string
 
   // ✅ OPTIMIZADO: Hook unificado para scroll (solo detección)
   const scroll = useScrollUnified({
@@ -109,24 +102,17 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     hasActiveFilters: activeFiltersCount > 0
   })
 
-  // Handlers optimizados
+  // ✅ SIMPLIFICADO: Usar handlers del hook
   const onSubmit = async (data) => {
     setIsSubmitting(true)
+    setIsLocalError(false)
+    setLocalError(null)
+    
     try {
-      // ✅ RESTRUCTURADO: Ranges como arrays únicos con validación
-      const validData = {
-        marca: data.marca || [],
-        caja: data.caja || [],
-        combustible: data.combustible || [],
-        año: validateRange(data.año || [FILTER_DEFAULTS.AÑO.min, FILTER_DEFAULTS.AÑO.max]),
-        precio: validateRange(data.precio || [FILTER_DEFAULTS.PRECIO.min, FILTER_DEFAULTS.PRECIO.max]),
-        kilometraje: validateRange(data.kilometraje || [FILTER_DEFAULTS.KILOMETRAJE.min, FILTER_DEFAULTS.KILOMETRAJE.max])
-      }
-
+      const validData = prepareSubmitData(data)
       await onApplyFilters(validData)
       
       // ✅ FIX: Cerrar drawer DESPUÉS del await con delay mínimo
-      // Permite que React complete el render antes de cerrar
       setTimeout(() => closeDrawer(), 100)
     } catch (error) {
       setIsLocalError(true)
@@ -136,28 +122,11 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     }
   }
 
-  const handleClear = () => {
-    reset({
-      marca: [],
-      caja: [],
-      combustible: [],
-      año: [FILTER_DEFAULTS.AÑO.min, FILTER_DEFAULTS.AÑO.max],
-      precio: [FILTER_DEFAULTS.PRECIO.min, FILTER_DEFAULTS.PRECIO.max],
-      kilometraje: [FILTER_DEFAULTS.KILOMETRAJE.min, FILTER_DEFAULTS.KILOMETRAJE.max]
-    })
-  }
-
 
   // Ranges como arrays únicos
   const añoRange = año
   const precioRange = precio
   const kilometrajeRange = kilometraje
-
-  // Handlers para ranges (modularizados)
-  const { handleAñoChange, handlePrecioChange, handleKilometrajeChange } = useRangeHandlers(setValue)
-
-  // Handlers para selects (modularizados)
-  const { handleMarcaChange, handleCombustibleChange, handleCajaChange } = useSelectHandlers(setValue)
 
   // ✅ NUEVO: Exponer toggleDrawer para uso externo
   useImperativeHandle(ref, () => ({
@@ -305,7 +274,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 step={1}
                 value={añoRange}
                 onChange={handleAñoChange}
-                formatValue={formatYear}
+                formatValue={formatYearHook}
                 aria-label="Rango de años"
                 aria-describedby="año-description"
               />
@@ -320,7 +289,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 step={1000000}
                 value={precioRange}
                 onChange={handlePrecioChange}
-                formatValue={formatPrice}
+                formatValue={formatPriceHook}
                 aria-label="Rango de precios"
                 aria-describedby="precio-description"
               />
@@ -335,7 +304,7 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
                 step={5000}
                 value={kilometrajeRange}
                 onChange={handleKilometrajeChange}
-                formatValue={(value) => value.toLocaleString()}
+                formatValue={formatKms}
                 aria-label="Rango de kilometraje"
                 aria-describedby="kilometraje-description"
               />

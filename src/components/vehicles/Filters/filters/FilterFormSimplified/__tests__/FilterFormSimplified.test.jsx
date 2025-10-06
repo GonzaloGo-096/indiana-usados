@@ -61,26 +61,33 @@ vi.mock('@ui', () => ({
   )
 }))
 
-vi.mock('@hooks/filters', () => ({
-  useFilterReducer: () => ({
-    filters: {
-      marca: [],
-      modelo: [],
-      caja: [],
-      combustible: [],
-      color: [],
-      estado: [],
-      precioMin: 0,
-      precioMax: 1000000,
-      añoMin: 1990,
-      añoMax: 2024
-    },
-    dispatch: vi.fn(),
-    isSubmitting: false,
-    setSubmitting: vi.fn(),
-    isDrawerOpen: false,
-    toggleDrawer: vi.fn(),
-    closeDrawer: vi.fn()
+vi.mock('@hooks/useFilterForm', () => ({
+  useFilterForm: () => ({
+    register: vi.fn(),
+    handleSubmit: vi.fn(),
+    setValue: vi.fn(),
+    reset: vi.fn(),
+    watch: vi.fn(() => ({})),
+    errors: {},
+    marca: [],
+    combustible: [],
+    caja: [],
+    año: [1990, 2024],
+    precio: [0, 1000000],
+    kilometraje: [0, 500000],
+    activeFiltersCount: 0,
+    defaultValues: {},
+    prepareSubmitData: vi.fn((data) => data),
+    handleClear: vi.fn(),
+    handleAñoChange: vi.fn(),
+    handlePrecioChange: vi.fn(),
+    handleKilometrajeChange: vi.fn(),
+    handleMarcaChange: vi.fn(),
+    handleCombustibleChange: vi.fn(),
+    handleCajaChange: vi.fn(),
+    formatPrice: vi.fn((value) => `$${value}`),
+    formatKms: vi.fn((value) => `${value} km`),
+    formatYear: vi.fn((value) => value.toString())
   })
 }))
 

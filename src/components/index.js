@@ -8,9 +8,6 @@
  */
 
 // ===== COMPONENTES MODULARES =====
-export { default as FilterContainer } from './FilterContainer'
-export { default as FilterForm } from './FilterForm'
-export { default as FilterLayout } from './FilterLayout'
 export { ServiceCard } from './ServiceCard'
 
 // ===== COMPONENTES EXISTENTES =====
