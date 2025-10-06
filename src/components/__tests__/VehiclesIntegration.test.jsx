@@ -28,7 +28,7 @@ vi.mock('@hooks', () => ({
     clearError: vi.fn(),
     handleError: vi.fn()
   }),
-  useFilterForm: () => ({
+  // useFilterForm: () => ({
     register: vi.fn(),
     handleSubmit: vi.fn(),
     setValue: vi.fn(),
@@ -54,11 +54,11 @@ vi.mock('@hooks', () => ({
     formatPrice: vi.fn((value) => `$${value}`),
     formatKms: vi.fn((value) => `${value} km`),
     formatYear: vi.fn((value) => value.toString())
-  })
+  // })
 }))
 
 vi.mock('@vehicles', () => ({
-  FilterFormSimplified: ({ onApplyFilters, isLoading }) => (
+  FilterFormSimple: ({ onApplyFilters, isLoading }) => (
     <div data-testid="filter-form">
       <button 
         onClick={() => onApplyFilters?.(createFilters())}
@@ -103,7 +103,7 @@ describe('Vehicles Integration', () => {
       render(
         <TestHarness>
           <div>
-            {/* Simular FilterFormSimplified */}
+            {/* Simular FilterFormSimple */}
             <div data-testid="filter-form">
               <button 
                 onClick={() => {

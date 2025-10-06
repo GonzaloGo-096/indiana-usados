@@ -1,10 +1,10 @@
 /**
- * FilterFormSimplified.module.css
+ * FilterFormSimple.module.css
  * 
- * Estilos optimizados para el formulario de filtros
- * Performance-first, mantenible y escalable
+ * Estilos copiados exactamente del sistema actual
+ * Para preservar 100% la apariencia visual
  * 
- * @version 6.0.0 - Optimizado con mejores prácticas
+ * @version 1.0.0 - Copia exacta
  * @author Indiana Usados
  */
 
@@ -376,6 +376,61 @@
   box-shadow: none;
 }
 
+/* ===== SORT DROPDOWN ===== */
+.sortDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 8px 0;
+  margin-top: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 1300;
+  animation: fadeInDown 0.2s ease-out;
+}
+
+.sortDropdown button {
+  width: 100%;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sortDropdown button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sortDropdown button.active {
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 600;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 
 /* Desktop styles */
@@ -683,4 +738,4 @@
   .filterButtonMobile:hover {
     transform: none;
   }
-} 
+}

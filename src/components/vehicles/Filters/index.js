@@ -5,9 +5,7 @@
  * @version 2.0.0 - Sistema simplificado
  */
 
-// Componente principal unificado
-export { default as LazyFilterForm } from './LazyFilterForm'
-export { default as FilterFormSimplified } from './filters/FilterFormSimplified/FilterFormSimplified'
-
-// Componentes auxiliares
-export { default as SortDropdown } from './filters/SortDropdown'
+// Sistema de filtros simplificado
+export { default as LazyFilterFormSimple } from './LazyFilterFormSimple'
+export { default as FilterFormSimple } from './FilterFormSimple'
+export { default as SortDropdown } from './SortDropdown'

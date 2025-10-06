@@ -9,11 +9,8 @@
 
 // ===== HOOKS MODULARES =====
 export { useDeviceDetection, DeviceProvider, useDevice } from './useDeviceDetection'
-export { useFilterForm } from './useFilterForm'
 export { useScrollDetection } from './useScrollDetection'
 export { useScrollPosition } from './useScrollPosition'
-export { useScrollUnified } from './useScrollUnified'
-export { useSorting } from './useSorting'
 export { useRangeHandlers } from './useRangeHandlers'
 export { useSelectHandlers } from './useSelectHandlers'
 
@@ -32,4 +29,4 @@ export { useAdminMutations } from './useAdminMutations'
 export * from './vehicles'
 
 // ===== HOOKS DE FILTROS =====
-// export { useFilterReducer } from './filters/useFilterReducer' // Removed
+// ✅ LIMPIADO: useFilterReducer obsoleto eliminado

@@ -8,9 +8,9 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { parseFilters, serializeFilters, hasAnyFilter, sortVehicles } from '@utils'
-import { useVehiclesList, useSorting, useScrollUnified } from '@hooks'
+import { useVehiclesList } from '@hooks'
 import { AutosGrid } from '@vehicles'
-import LazyFilterForm from '@vehicles/Filters/LazyFilterForm'
+import LazyFilterFormSimple from '@vehicles/Filters/LazyFilterFormSimple'
 import SortDropdown from '@vehicles/Filters/SortDropdown'
 import styles from './Vehiculos.module.css'
 
@@ -20,31 +20,14 @@ const Vehiculos = () => {
     const [isUsingMockData, setIsUsingMockData] = useState(false)
     const filterFormRef = useRef(null)
     
-    // ✅ OPTIMIZADO: Hook unificado para sorting
-    const sorting = useSorting({
-        syncWithUrl: true,
-        urlKey: 'sort',
-        defaultSort: null
-    })
+    // ✅ SIMPLIFICADO: Estado de sorting simple
+    const [selectedSort, setSelectedSort] = useState(null)
+    const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
 
-    // ✅ OPTIMIZADO: Hook unificado para scroll
-    const scroll = useScrollUnified({
-        key: 'vehicles-list',
-        enableDetection: false, // No necesitamos detección de scroll aquí
-        enablePosition: true,   // Solo posición para navegación
-        enabled: true
-    })
-
-
-    // ✅ OPTIMIZADO: Restaurar scroll cuando el componente se monte
+    // ✅ SIMPLIFICADO: Sincronización con URL para sorting
     useEffect(() => {
-        // Pequeño delay para asegurar que el DOM esté renderizado
-        const timer = setTimeout(() => {
-            scroll.restoreScrollPosition()
-        }, 100)
-        
-        return () => clearTimeout(timer)
-    }, [scroll.restoreScrollPosition])
+        setSelectedSort(sp.get('sort'))
+    }, [sp])
 
     // ✅ NUEVO: Parsear filtros del querystring
     const filters = parseFilters(sp)
@@ -53,10 +36,10 @@ const Vehiculos = () => {
     // ✅ NUEVO: Hook unificado para vehículos
     const { vehicles, total, hasNextPage, loadMore, isLoadingMore, isLoading, isError, error, refetch } = useVehiclesList(filters)
 
-    // ✅ OPTIMIZADO: Vehículos ordenados (performance optimizada con useMemo)
+    // ✅ SIMPLIFICADO: Vehículos ordenados
     const sortedVehicles = useMemo(() => {
-        return sortVehicles(vehicles, sorting.selectedSort)
-    }, [vehicles, sorting.selectedSort])
+        return sortVehicles(vehicles, selectedSort)
+    }, [vehicles, selectedSort])
 
 
 
@@ -85,10 +68,20 @@ const Vehiculos = () => {
         }
     }
 
-    // ✅ OPTIMIZADO: Handlers para sorting (ahora vienen del hook)
-    const handleSortClick = sorting.toggleDropdown
-    const handleSortChange = sorting.handleSortChange
-    const handleCloseSortDropdown = sorting.closeDropdown
+    // ✅ SIMPLIFICADO: Handlers para sorting
+    const handleSortClick = () => setIsSortDropdownOpen(!isSortDropdownOpen)
+    const handleSortChange = (sortOption) => {
+        setSelectedSort(sortOption)
+        setIsSortDropdownOpen(false)
+        const newParams = new URLSearchParams(sp)
+        if (sortOption) {
+            newParams.set('sort', sortOption)
+        } else {
+            newParams.delete('sort')
+        }
+        setSp(newParams, { replace: true })
+    }
+    const handleCloseSortDropdown = () => setIsSortDropdownOpen(false)
 
     return (
         <div className={styles.container}>
@@ -128,7 +121,7 @@ const Vehiculos = () => {
                     
                     <div style={{ position: 'relative' }}>
                         <button 
-                            className={`${styles.actionButton} ${sorting.hasActiveSort ? styles.active : ''}`}
+                            className={`${styles.actionButton} ${selectedSort ? styles.active : ''}`}
                             onClick={handleSortClick}
                             disabled={isLoading || isLoadingMore}
                         >
@@ -141,8 +134,8 @@ const Vehiculos = () => {
                         </button>
                         
                         <SortDropdown
-                            isOpen={sorting.isDropdownOpen}
-                            selectedSort={sorting.selectedSort}
+                            isOpen={isSortDropdownOpen}
+                            selectedSort={selectedSort}
                             onSortChange={handleSortChange}
                             onClose={handleCloseSortDropdown}
                             disabled={isLoading || isLoadingMore}
@@ -152,15 +145,13 @@ const Vehiculos = () => {
             </div>
 
             {/* ✅ NUEVO: Formulario de filtros debajo del título */}
-        <LazyFilterForm
+        <LazyFilterFormSimple
           ref={filterFormRef}
           onApplyFilters={onApply}
           isLoading={isLoading}
           isError={isError}
           error={error}
           onRetry={refetch}
-          onSortClick={handleSortChange}
-          selectedSort={sorting.selectedSort}
         />
 
             {/* ✅ NUEVO: Grid de vehículos unificado */}
