@@ -126,10 +126,7 @@
   outline: none;
 }
 
-.option:hover {
-  background: var(--color-neutral-50);
-}
-
+.option:hover,
 .option:focus {
   background: var(--color-neutral-100);
 }

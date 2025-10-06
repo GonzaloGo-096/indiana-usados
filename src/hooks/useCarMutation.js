@@ -183,7 +183,7 @@ export const useCarMutation = () => {
             // ✅ DEBUG: Logging del FormData antes del envío
             // Evitar dumps de headers/token
             
-            // ✅ DEBUG: Verificar si fotosExtra está presente
+            // ✅ DEBUG: Verificar si fotos Extra está presente
             const hasFotosExtra = Array.from(formData.entries()).some(([key]) => key === 'fotosExtra')
             if (import.meta.env.DEV) logger.debug('cars:mutation', '¿Incluye fotosExtra?', hasFotosExtra)
             

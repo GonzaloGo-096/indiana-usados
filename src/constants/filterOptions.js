@@ -38,46 +38,16 @@ export const marcas = [
     'Mercedes-Benz',
     'Audi',
     'Volvo',
-    'Saab',
     'Jaguar',
     'Land Rover',
     'Mini',
     'Smart',
     'Alfa Romeo',
-    'Lancia',
-    'Seat',
-    'Skoda',
-    'Dacia',
-    'Lada',
-    'Tata',
-    'Mahindra',
     'Chery',
     'Geely',
     'BYD',
-    'Great Wall',
-    'Haval',
-    'Changan',
-    'Dongfeng',
-    'FAW',
-    'BAIC',
-    'GAC',
-    'SAIC',
-    'MG',
-    'Roewe',
-    'Wuling',
-    'Baojun',
-    'Hongqi',
-    'NIO',
-    'XPeng',
-    'Li Auto',
     'Tesla',
-    'Lucid',
-    'Rivian',
-    'Fisker',
-    'Nikola',
-    'Lordstown',
-    'Canoo',
-    'Arrival'
+   
 ]
 
 // Tipos de combustible (simplificados)
@@ -92,6 +62,14 @@ export const cajas = [
     'Manual',
     'Automático',
     'Secuencial'
+]
+
+// ✅ NUEVO: Opciones de ordenamiento
+export const SORT_OPTIONS = [
+  { value: 'precio_desc', label: 'Precio: Mayor a menor' },
+  { value: 'precio_asc', label: 'Precio: Menor a mayor' },
+  { value: 'km_desc', label: 'Kilometraje: Mayor a menor' },
+  { value: 'km_asc', label: 'Kilometraje: Menor a mayor' }
 ]
 
 // Constantes eliminadas: anios, rangosPrecio, rangosKilometros (no usadas)

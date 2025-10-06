@@ -21,8 +21,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
-  text-align: center; /* ✅ NUEVO: Centrar contenido */
-  align-items: center; /* ✅ NUEVO: Centrar elementos flex */
 }
 
 /* ✅ TÍTULO DE MÓDULO - Jerarquía semántica */
@@ -31,20 +29,7 @@
   font-weight: var(--font-weight-semibold);
   color: var(--color-white);
   margin: 0;
-  position: relative;
-}
-
-/* ✅ Línea decorativa bajo el título */
-.moduleTitle::after {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  left: 50%; /* ✅ CAMBIADO: Centrar desde el medio */
-  transform: translateX(-50%); /* ✅ NUEVO: Centrar perfectamente */
-  width: 32px;
-  height: 2px;
-  background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
-  border-radius: 1px;
+  text-align: left; /* ✅ ALINEAR TÍTULO A LA IZQUIERDA */
 }
 
 /* ✅ LISTA DE ÍTEMS */
@@ -55,7 +40,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2); /* ✅ REDUCIDO: De spacing-3 a spacing-2 para items más cerca */
-  align-items: center; /* ✅ NUEVO: Centrar ítems */
+  align-items: flex-start; /* ✅ CAMBIADO: Alinear items a la izquierda */
 }
 
 /* ✅ ÍTEM INDIVIDUAL */

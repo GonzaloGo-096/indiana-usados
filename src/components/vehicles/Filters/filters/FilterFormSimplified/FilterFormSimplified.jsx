@@ -17,8 +17,9 @@ import { useSearchParams } from 'react-router-dom'
 import { RangeSlider } from '@ui'
 import { MultiSelect } from '@ui'
 import { marcas, combustibles, cajas, FILTER_DEFAULTS } from '@constants'
-import { useScrollDetection, useRangeHandlers, useSelectHandlers } from '@hooks'
+import { useScrollUnified, useRangeHandlers, useSelectHandlers, useSorting } from '@hooks'
 import { parseFilters, validateRange, formatPrice, formatYear } from '@utils'
+import SortDropdown from '../../SortDropdown'
 import styles from './FilterFormSimplified.module.css'
 
 const FilterFormSimplified = React.memo(React.forwardRef(({ 
@@ -26,13 +27,21 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   isLoading = false,
   isError = false,
   error = null,
-  onRetry = null
+  onRetry = null,
+  onSortClick = () => {}, // ✅ NUEVO: Handler para sorting
+  selectedSort = null // ✅ NUEVO: Sort seleccionado
 }, ref) => {
   // ✅ SIMPLIFICADO: useState en lugar de useFilterReducer
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLocalError, setIsLocalError] = useState(false)
   const [localError, setLocalError] = useState(null)
+  // ✅ OPTIMIZADO: Usar el hook unificado de sorting
+  const sorting = useSorting({
+    syncWithUrl: true,
+    urlKey: 'sort',
+    defaultSort: null
+  })
   
   // ✅ NUEVO: Obtener filtros actuales de la URL
   const [searchParams] = useSearchParams()
@@ -41,9 +50,6 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   // Funciones simples para drawer
   const toggleDrawer = () => setIsDrawerOpen(prev => !prev)
   const closeDrawer = () => setIsDrawerOpen(false)
-
-  // Estados para contenedor fijo mobile (modularizado)
-  const { isVisible } = useScrollDetection()
 
   // ✅ NUEVO: Valores por defecto que se sincronizan con la URL
   const getDefaultValues = () => ({
@@ -92,6 +98,16 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
     
     return [hasMarca, hasCombustible, hasCaja, hasRanges].filter(Boolean).length
   })()
+
+  // ✅ OPTIMIZADO: Hook unificado para scroll (solo detección)
+  const scroll = useScrollUnified({
+    enableDetection: true,  // Solo detección para mostrar/ocultar botones
+    enablePosition: false,  // No necesitamos posición aquí
+    enabled: true,
+    hasActiveDropdown: sorting.isDropdownOpen,
+    hasActiveDrawer: isDrawerOpen,
+    hasActiveFilters: activeFiltersCount > 0
+  })
 
   // Handlers optimizados
   const onSubmit = async (data) => {
@@ -153,11 +169,15 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
   return (
     <div className={`${styles.filterContainer} ${isDrawerOpen ? styles.open : ''}`}>
       {/* Contenedor fijo mobile */}
-      <div className={`${styles.mobileActionsContainer} ${isVisible ? styles.visible : ''}`}>
+      <div className={`${styles.mobileActionsContainer} ${scroll.isVisible ? styles.visible : ''}`}>
         <button 
-          className={styles.mobileActionButton}
-          onClick={() => {}} // TODO: Implementar ordenamiento
+          className={`${styles.mobileActionButton} ${sorting.hasActiveSort ? styles.active : ''}`}
+          onClick={(e) => {
+            e.stopPropagation()
+            sorting.toggleDropdown()
+          }}
           disabled={isLoading || isSubmitting}
+          style={{ position: 'relative' }}
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M3 6h18"></path>
@@ -165,6 +185,15 @@ const FilterFormSimplified = React.memo(React.forwardRef(({
             <path d="M9 18h6"></path>
           </svg>
           <span>Ordenar por</span>
+          
+          <SortDropdown
+            isOpen={sorting.isDropdownOpen}
+            selectedSort={sorting.selectedSort}
+            onSortChange={sorting.handleSortChange}
+            onClose={sorting.closeDropdown}
+            disabled={isLoading || isSubmitting}
+            preventAutoClose={true}
+          />
         </button>
         
         <button 

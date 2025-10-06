@@ -78,7 +78,7 @@ const FilterFormSkeleton = () => (
 )
 
 // ✅ COMPONENTE PRINCIPAL
-const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading, isError, error, onRetry }, ref) => {
+const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading, isError, error, onRetry, onSortClick, selectedSort }, ref) => {
   const [showFilters, setShowFilters] = useState(false)
   const [isPreloading, setIsPreloading] = useState(false)
   // Detección de dispositivo por contexto global
@@ -136,20 +136,23 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading, isError, e
           position: 'relative'
         }}
       >
-        {/* Overlay invisible para detectar clicks fuera */}
-        <div 
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 5,
-            background: 'transparent'
-          }}
-          role="presentation"
-          onClick={handleHideFilters}
-        />
+        {/* Overlay invisible para detectar clicks fuera - SOLO EN DESKTOP */}
+        {!isMobile && (
+          <div 
+            className="filter-overlay"
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 5,
+              background: 'transparent'
+            }}
+            role="presentation"
+            onClick={handleHideFilters}
+          />
+        )}
         
         <div style={{ position: 'relative', zIndex: 10 }}>
           <style>{`
@@ -173,6 +176,8 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading, isError, e
                      isError={isError}
                      error={error}
                      onRetry={onRetry}
+                     onSortClick={onSortClick}
+                     selectedSort={selectedSort}
                    />
                  </Suspense>
         </div>
@@ -193,6 +198,8 @@ const LazyFilterForm = React.forwardRef(({ onApplyFilters, isLoading, isError, e
                    isError={isError}
                    error={error}
                    onRetry={onRetry}
+                   onSortClick={onSortClick}
+                   selectedSort={selectedSort}
                  />
                </Suspense>
              </div>

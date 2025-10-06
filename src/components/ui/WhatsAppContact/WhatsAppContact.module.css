@@ -1,11 +1,12 @@
 /**
- * ContactoDirecto.module.css - Estilos locales minimalistas
+ * WhatsAppContact.module.css - Estilos para componente de contacto WhatsApp
  * 
- * Layout 70/30 con flex, responsive stack vertical en mobile
- * Usa variables CSS locales para fácil customización
+ * Layout: Icono izquierda + Título/Botón derecha
+ * Estilo: Card limpia con fondo blanco
+ * Icono: Círculo negro con icono verde WhatsApp
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 2.0.0 - Nuevo diseño unificado
  */
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
@@ -23,6 +24,34 @@
   margin: 0 auto;
 }
 
+/* ===== MODO COMPACTO ===== */
+.container.compact {
+  padding: 0.8rem;
+  gap: 0.8rem;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.container.compact .title {
+  font-size: 1.1rem;
+}
+
+.container.compact .whatsappButton {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  min-width: 120px;
+}
+
+.container.compact .iconButton {
+  width: 50px;
+  height: 50px;
+}
+
+.container.compact .whatsappIcon {
+  width: 36px;
+  height: 36px;
+}
+
 /* ===== ICONO IZQUIERDO ===== */
 .iconContainer {
   flex-shrink: 0;
@@ -38,6 +67,7 @@
   flex-direction: column;
   gap: 0.6rem;
   text-align: left;
+  justify-content: center;
 }
 
 .title {
@@ -70,6 +100,11 @@
   transition: all 0.2s ease;
   font-family: 'Barlow Condensed', sans-serif;
   min-width: 140px;
+}
+
+/* Cuando no hay título, centrar el botón */
+.content.noTitle .whatsappButton {
+  align-self: center;
 }
 
 .whatsappButton:hover {
@@ -108,7 +143,7 @@
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
-/* Desktop: mantener 70/30 */
+/* Desktop: mantener layout horizontal */
 @media (min-width: 768px) {
   .container {
     /* Ya está configurado arriba */
@@ -120,6 +155,13 @@
   .container {
     gap: 0.8rem;
     padding: 0.8rem;
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
+  }
+  
+  .container.compact {
+    padding: 0.6rem;
     width: fit-content;
     max-width: 100%;
     min-width: 0;
@@ -151,18 +193,3 @@
     height: 32px;
   }
 }
-
-/* ===== NOTAS DE IMPLEMENTACIÓN ===== */
-/*
-  NUEVO DISEÑO:
-  - Layout: Icono izquierda + Título/Botón derecha
-  - Estilo: Card limpia con fondo blanco
-  - Icono: Círculo verde claro con borde
-  - Botón: Verde WhatsApp (#25D366)
-  - Responsive: Mantiene layout horizontal en mobile
-  
-  PERSONALIZACIÓN:
-  - Cambiar colores en .iconButton (fondo/color) y .whatsappButton (background)
-  - Ajustar tamaños con width/height en iconos y padding en botones
-  - Modificar max-width para controlar ancho del contenedor
-*/

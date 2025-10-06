@@ -108,3 +108,31 @@ export const hasAnyFilter = (filters = {}) => {
 export const filtersKey = (filters = {}) => {
   return JSON.stringify(filters);
 };
+
+// ✅ NUEVO: Utilidades de sorting
+export const sortVehicles = (vehicles = [], sortOption) => {
+  if (!sortOption || !Array.isArray(vehicles) || vehicles.length === 0) {
+    return vehicles;
+  }
+
+  return [...vehicles].sort((a, b) => {
+    switch (sortOption) {
+      case 'precio_desc':
+        return (b.precio || 0) - (a.precio || 0);
+      case 'precio_asc':
+        return (a.precio || 0) - (b.precio || 0);
+      case 'km_desc':
+        return (b.kilometraje || 0) - (a.kilometraje || 0);
+      case 'km_asc':
+        return (a.kilometraje || 0) - (b.kilometraje || 0);
+      default:
+        return 0;
+    }
+  });
+};
+
+// ✅ NUEVO: Validar opción de sorting
+export const isValidSortOption = (sortOption) => {
+  const validOptions = ['precio_desc', 'precio_asc', 'km_desc', 'km_asc'];
+  return validOptions.includes(sortOption);
+};

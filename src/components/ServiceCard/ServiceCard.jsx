@@ -9,6 +9,7 @@
  */
 
 import React from 'react'
+import { WhatsAppContact } from '@ui'
 import styles from './ServiceCard.module.css'
 
 // Importar imágenes locales
@@ -32,6 +33,7 @@ const imageMap = {
  * @param {string} props.image - Clave de la imagen (taller-2, taller-3-jpeg, taller-motor)
  * @param {string} props.alt - Texto alternativo para la imagen
  * @param {boolean} props.reverse - Si true, invierte el orden (imagen a la derecha)
+ * @param {string} props.whatsappMessage - Mensaje personalizado para WhatsApp
  */
 export const ServiceCard = ({
   title,
@@ -39,9 +41,14 @@ export const ServiceCard = ({
   description,
   image,
   alt,
-  reverse = false
+  reverse = false,
+  whatsappMessage = ""
 }) => {
   const imageSrc = imageMap[image] || taller2Image // Fallback a taller-2
+
+  // Generar mensaje de WhatsApp personalizado
+  const defaultMessage = `¡Hola! Quiero reservar un turno para el servicio de ${title.toLowerCase()}. ¿Cuál es la disponibilidad más cercana?`
+  const finalMessage = whatsappMessage || defaultMessage
 
   return (
     <article className={`${styles.card} ${reverse ? styles.reverse : ''}`}>
@@ -59,6 +66,18 @@ export const ServiceCard = ({
         <h3 className={styles.title}>{title}</h3>
         <h4 className={styles.subtitle}>{subtitle}</h4>
         <p className={styles.description}>{description}</p>
+        
+        {/* Componente de contacto WhatsApp simplificado */}
+        <div className={styles.contactSection}>
+          <WhatsAppContact
+            title=""
+            subtitle=""
+            message={finalMessage}
+            buttonText="Solicitar Turno"
+            compact={true}
+            hideTitle={true}
+          />
+        </div>
       </div>
     </article>
   )

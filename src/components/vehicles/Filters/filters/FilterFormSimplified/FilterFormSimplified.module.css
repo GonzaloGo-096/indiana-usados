@@ -642,6 +642,22 @@
     justify-content: center;
   }
 
+  .mobileActionButton svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    /* Asegurar que el ícono siempre sea el mismo */
+    stroke-dasharray: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .mobileActionButton.active {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
   .mobileActionButton:first-child {
     border-right: 1px solid rgba(255, 255, 255, 0.3);
   }

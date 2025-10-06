@@ -18,4 +18,5 @@ export { default as MultiSelect } from './MultiSelect/MultiSelect'
 
 // ✅ NUEVOS: Componentes para Code Splitting
 export { LoadingSpinner } from './LoadingSpinner'
-export { ScrollToTop } from './ScrollToTop' 
+export { ScrollToTop } from './ScrollToTop'
+export { default as WhatsAppContact } from './WhatsAppContact' 

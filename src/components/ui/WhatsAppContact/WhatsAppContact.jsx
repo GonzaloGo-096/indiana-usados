@@ -1,31 +1,38 @@
 /**
- * ContactoDirecto - Componente de contacto directo refactorizado
+ * WhatsAppContact - Componente reutilizable para contacto por WhatsApp
  * 
+ * Basado en ContactoDirecto pero más flexible y reutilizable
  * Layout 70/30: izquierda (título, subtítulo, botón) / derecha (icono WhatsApp)
- * Solo WhatsApp, sin Gmail
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Refactorización completa
+ * @version 1.0.0
  */
 
+import React from 'react'
 import { WhatsAppIconOptimized } from '@ui/icons'
-import styles from './ContactoDirecto.module.css'
+import styles from './WhatsAppContact.module.css'
 
 /**
- * Componente ContactoDirecto
+ * Componente WhatsAppContact
  * @param {Object} props - Propiedades del componente
  * @param {string} props.title - Título principal (default: "Contacto Directo")
- * @param {string} props.subtitle - Subtítulo descriptivo (default: "¿Consultas sobre este vehículo?")
+ * @param {string} props.subtitle - Subtítulo descriptivo (default: "¿Consultas?")
  * @param {string} props.whatsNumber - Número de WhatsApp formato internacional (ej: 549XXXXXXXXXX)
  * @param {string} props.className - Clases CSS adicionales para extender estilos
  * @param {string} props.message - Mensaje predefinido para WhatsApp (opcional)
+ * @param {string} props.buttonText - Texto del botón (default: "Ir a WhatsApp")
+ * @param {boolean} props.compact - Modo compacto (default: false)
+ * @param {boolean} props.hideTitle - Ocultar título y subtítulo (default: false)
  */
-const ContactoDirecto = ({
+const WhatsAppContact = ({
   title = "Contacto Directo",
-  subtitle = "¿Consultas sobre este vehículo?",
+  subtitle = "¿Consultas?",
   whatsNumber = "5491123456789", // TODO: Reemplazar con número real
   className = "",
-  message = ""
+  message = "",
+  buttonText = "Ir a WhatsApp",
+  compact = false,
+  hideTitle = false
 }) => {
   // Construir URL de WhatsApp
   // Formato esperado del número: 549XXXXXXXXXX (código país + área + número)
@@ -36,7 +43,7 @@ const ContactoDirecto = ({
   }
 
   return (
-    <div className={`${styles.container} ${className}`}>
+    <div className={`${styles.container} ${compact ? styles.compact : ''} ${className}`}>
       {/* Icono izquierdo */}
       <div className={styles.iconContainer}>
         <button
@@ -45,25 +52,25 @@ const ContactoDirecto = ({
           aria-label="Contactar por WhatsApp"
         >
           <WhatsAppIconOptimized 
-            size={40} 
+            size={compact ? 32 : 40} 
             className={styles.whatsappIcon}
           />
         </button>
       </div>
 
       {/* Contenido derecho */}
-      <div className={styles.content}>
-        <h4 className={styles.title}>{title}</h4>
+      <div className={`${styles.content} ${hideTitle ? styles.noTitle : ''}`}>
+        {!hideTitle && <h4 className={styles.title}>{title}</h4>}
         <button 
           className={styles.whatsappButton}
           onClick={handleWhatsAppClick}
-          aria-label={`Abrir WhatsApp para contactar sobre este vehículo`}
+          aria-label={`Abrir WhatsApp para contactar`}
         >
-          Ir a WhatsApp
+          {buttonText}
         </button>
       </div>
     </div>
   )
 }
 
-export default ContactoDirecto
+export default WhatsAppContact

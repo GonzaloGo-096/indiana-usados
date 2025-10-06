@@ -5,7 +5,7 @@
  * @version 2.0.0 - Restaurado con useImageReducer y lógica avanzada de imágenes
  */
 
-import React, { useEffect, useCallback, useMemo } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { logger } from '@utils/logger'
 import { useForm } from 'react-hook-form'
 import { useImageReducer, IMAGE_FIELDS } from '../hooks/useImageReducer'
@@ -19,8 +19,6 @@ const MODE = {
 
 // ✅ CAMPOS NUMÉRICOS (para coerción automática)
 const NUMERIC_FIELDS = ['precio', 'cilindrada', 'anio', 'kilometraje']
-
-// (endpoints removidos: las mutaciones ahora las gestiona el padre)
 
 // ✅ VALIDACIONES
 const VALIDATION_RULES = {
@@ -148,7 +146,6 @@ const CarFormRHF = ({
     const buildVehicleFormData = useCallback((data) => {
         const formData = new FormData()
         
-        
         // ✅ AGREGAR CAMPOS DE DATOS PRIMITIVOS
         Object.entries(data).forEach(([key, value]) => {
             if (NUMERIC_FIELDS.includes(key)) {
@@ -160,16 +157,14 @@ const CarFormRHF = ({
             }
         })
         
-        
         // ✅ AGREGAR IMÁGENES SEGÚN ESTADO
         buildImageFormData(formData)
         
         return formData
-    }, [mode, buildImageFormData])
+    }, [buildImageFormData])
 
     // ✅ MANEJAR SUBMIT
     const onSubmit = async (data) => {
-        
         try {
             clearErrors()
 
@@ -218,9 +213,6 @@ const CarFormRHF = ({
             <div className={styles.formHeader}>
                 <h2>{mode === MODE.CREATE ? 'Crear Nuevo Auto' : 'Editar Auto'}</h2>
                 <p>Complete todos los campos requeridos</p>
-                
-                {/* ✅ MENSAJES DE ESTADO */}
-                {/* Los mensajes de error/éxito ahora los muestra el contenedor (Dashboard) */}
             </div>
 
             {/* ✅ SECCIÓN DE IMÁGENES PRINCIPALES - ESTILO MODERNIZADO */}
@@ -358,7 +350,7 @@ const CarFormRHF = ({
                                     {photo.remove ? (
                                         // Foto marcada para eliminar
                                         <div className={styles.removedPhotoPlaceholder}>
-                                                    <div className={styles.removedIcon}>🗑️</div>
+                                            <div className={styles.removedIcon}>🗑️</div>
                                             <span className={styles.removedText}>Marcada para eliminar</span>
                                             <button
                                                 type="button"
@@ -369,7 +361,7 @@ const CarFormRHF = ({
                                             </button>
                                         </div>
                                     ) : (
-                                        // Foto normal
+                                        // Photo normal
                                         <>
                                             <img 
                                                 src={photo.url} 
@@ -392,13 +384,13 @@ const CarFormRHF = ({
                                                 )}
                                             </div>
                                         </>
-                                        )}
+                                    )}
                                 </div>
                             ))}
                         </div>
-                                    </div>
-                                )}
-                                
+                    </div>
+                )}
+                
                 {/* ✅ INPUT MÚLTIPLE PARA AGREGAR FOTOS */}
                 <div className={styles.multipleInputSection}>
                     <h4>{mode === MODE.CREATE ? 'Seleccionar Fotos Extras' : 'Agregar Fotos Nuevas'}</h4>

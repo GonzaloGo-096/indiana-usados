@@ -1,70 +1,142 @@
 /**
  * Postventa.module.css - Estilos para la página Postventa
  * 
- * Incluye header y sección de servicios con cards
- * Estilos alineados con el resto de la página
+ * Diseño responsive profesional con contenido aumentado 30%
+ * Centrado y adaptado al sistema de diseño del proyecto
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 3.0.0 - Diseño profesional responsive
  */
 
 .container {
-  max-width: var(--container-max-width);
+  max-width: 1400px; /* Aumentado para acomodar contenido más grande */
   margin: 0 auto;
-  padding: 3rem 1rem;
+  padding: 4rem 2rem;
   min-height: 100vh;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header {
   text-align: center;
   margin-bottom: 5rem;
   padding: 2rem 0;
+  width: 100%;
+  max-width: 1000px;
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: 3.5rem; /* Tamaño aumentado y responsive */
   font-weight: 400;
   color: #333;
   margin: 0 0 1rem 0;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: 'Barlow Condensed', sans-serif;
+  line-height: 1.1;
 }
 
 .subtitle {
-  font-size: 1.5rem;
+  font-size: 2.2rem; /* Tamaño aumentado y responsive */
   font-weight: 600;
   color: #6b7280;
   margin: 0 0 1.5rem 0;
   font-family: 'Barlow Condensed', sans-serif;
   letter-spacing: 0.5px;
+  line-height: 1.2;
 }
 
 .description {
-  font-size: 1rem;
+  font-size: 2rem; /* Tamaño aumentado y responsive */
   line-height: 1.6;
   color: #374151;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   font-weight: 500;
+  text-align: center;
 }
 
 .services {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  align-items: center;
 }
 
-/* Responsive - Tablet */
-@media (max-width: var(--breakpoint-lg)) {
+/* ===== RESPONSIVE DESIGN PROFESIONAL ===== */
+
+/* Tablet Large */
+@media (max-width: 1200px) {
   .container {
-    padding: 1.5rem 1rem;
+    max-width: 100%;
+    padding: 3rem 1.5rem;
   }
   
   .header {
+    max-width: 900px;
     margin-bottom: 4rem;
+  }
+  
+  .title {
+    font-size: 3rem;
+  }
+  
+  .subtitle {
+    font-size: 1.8rem;
+  }
+  
+  .description {
+    font-size: 1.6rem;
+    max-width: 800px;
+  }
+  
+  .services {
+    max-width: 1000px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  .container {
+    padding: 2.5rem 1rem;
+  }
+  
+  .header {
+    margin-bottom: 3.5rem;
     padding: 1.5rem 0;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .description {
+    font-size: 1.3rem;
+    max-width: 700px;
+  }
+  
+  .services {
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile Large */
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+  
+  .header {
+    margin-bottom: 3rem;
+    padding: 1rem 0;
   }
   
   .title {
@@ -72,35 +144,42 @@
   }
   
   .subtitle {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
   }
   
   .description {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+    max-width: 600px;
+  }
+  
+  .services {
+    gap: 1.25rem;
   }
 }
 
-/* Responsive - Mobile */
-@media (max-width: var(--breakpoint-md)) {
+/* Mobile */
+@media (max-width: 576px) {
   .container {
-    padding: 1.125rem 0.25rem;
+    padding: 1.5rem 0.75rem;
   }
   
   .header {
-    margin-bottom: 3.5rem;
-    padding: 1rem 0;
+    margin-bottom: 2.5rem;
+    padding: 0.75rem 0;
   }
   
   .title {
     font-size: 1.75rem;
+    line-height: 1.2;
   }
   
   .subtitle {
-    font-size: 1.125rem;
+    font-size: 1.1rem;
   }
   
   .description {
-    font-size: 0.875rem;
+    font-size: 1rem;
+    max-width: 100%;
   }
   
   .services {
@@ -108,15 +187,14 @@
   }
 }
 
-/* Responsive - Small Mobile */
-@media (max-width: var(--breakpoint-sm)) {
+/* Small Mobile */
+@media (max-width: 480px) {
   .container {
     padding: 1rem 0.5rem;
   }
   
   .header {
-    margin-bottom: 3rem;
-    padding: 0.75rem 0;
+    margin-bottom: 2rem;
   }
   
   .title {
@@ -128,7 +206,7 @@
   }
   
   .description {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 }
 

@@ -336,36 +336,37 @@
 }
 
 .loadMoreButton {
-    background: #2563eb; /* ✅ MISMO COLOR que botón "Subir" */
+    background: #1f2937; /* ✅ MISMO COLOR que botón "Volver a la lista" */
     color: white;
     border: none;
-    border-radius: 50px; /* ✅ MISMO BORDER-RADIUS que botón "Subir" */
-    padding: 0.875rem 1.5rem; /* ✅ MISMO PADDING que botón "Subir" */
-    font-size: 0.875rem;
+    border-radius: 6px; /* ✅ MISMO BORDER-RADIUS que botón "Volver a la lista" */
+    padding: 0.75rem 1.25rem; /* ✅ AJUSTADO: Más padding para igualar altura */
+    font-size: 0.8rem; /* ✅ MISMO FONT-SIZE que botón "Volver a la lista" */
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* ✅ MISMA TRANSICIÓN */
-    min-width: 200px;
-    /* ✅ OPTIMIZACIÓN: Performance */
-    will-change: transform, opacity;
-    transform: translateZ(0);
+    transition: all 0.2s ease; /* ✅ MISMA TRANSICIÓN que botón "Volver a la lista" */
+    min-width: 160px; /* ✅ REDUCIDO: De 200px a 160px */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* ✅ MISMA SOMBRA que botón "Volver a la lista" */
+    display: inline-flex; /* ✅ MISMO DISPLAY que botón "Volver a la lista" */
+    align-items: center; /* ✅ MISMO ALIGN-ITEMS que botón "Volver a la lista" */
+    justify-content: center; /* ✅ CENTRAR TEXTO */
 }
 
 .loadMoreButton:hover:not(:disabled) {
-    background: #1d4ed8; /* ✅ COLOR HOVER más oscuro */
-    transform: translateY(-2px); /* ✅ MISMO EFECTO que botón "Subir" */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* ✅ MISMA SOMBRA */
+    background: #374151; /* ✅ MISMO COLOR HOVER que botón "Volver a la lista" */
+    transform: translateY(-1px); /* ✅ MISMO EFECTO que botón "Volver a la lista" */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* ✅ MISMA SOMBRA HOVER */
 }
 
 .loadMoreButton:disabled {
-    background: var(--color-neutral-400);
+    background: #9ca3af;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
 
 .loadMoreButton:active:not(:disabled) {
-    transform: translateY(0); /* ✅ MISMO EFECTO que botón "Subir" */
+    transform: translateY(0); /* ✅ MISMO EFECTO que botón "Volver a la lista" */
 }
 
 /* ✅ ANIMACIÓN: Entrada suave como botón "Subir" */

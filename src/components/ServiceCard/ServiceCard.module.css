@@ -3,10 +3,11 @@
  * 
  * Layout: 30% imagen / 70% contenido
  * Responsive: Stack vertical en móviles
- * Estilos alineados con el resto de la página
+ * Contenedor adaptativo al contenido
+ * Optimizado: Solo efectos en CTA
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 4.0.0 - Optimizado y eficiente
  */
 
 .card {
@@ -18,14 +19,12 @@
   padding: 1.5rem;
   border: 1px solid #e5e7eb;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-bottom: 1.5rem;
   position: relative;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .card.reverse {
@@ -33,8 +32,10 @@
 }
 
 .imageContainer {
-  flex: 0 0 30%;
-  min-width: 0;
+  flex: 0 0 auto;
+  width: 280px;
+  min-width: 250px;
+  max-width: 350px;
   border-radius: 8px;
   overflow: hidden;
   aspect-ratio: 4 / 3;
@@ -46,17 +47,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-}
-
-.card:hover .image {
-  transform: scale(1.05);
 }
 
 .content {
@@ -67,6 +57,8 @@
   background: #ffffff;
   padding: 1rem;
   border-radius: 8px;
+  min-width: 0;
+  max-width: 600px;
 }
 
 .title {
@@ -95,12 +87,34 @@
   font-weight: 500;
 }
 
+.contactSection {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Responsive - Tablet */
 @media (max-width: var(--breakpoint-lg)) {
   .card {
     gap: 1rem;
     padding: 1rem;
     border-radius: 10px;
+    width: fit-content;
+    max-width: 100%;
+  }
+  
+  .imageContainer {
+    width: 250px;
+    min-width: 200px;
+    max-width: 300px;
+  }
+  
+  .content {
+    max-width: 500px;
   }
   
   .title {
@@ -117,29 +131,34 @@
 }
 
 /* Responsive - Mobile */
-@media (max-width: var(--breakpoint-md)) {
+@media (max-width: 768px) {
   .card {
-    flex-direction: column;
+    flex-direction: column !important;
     text-align: center;
     gap: 1rem;
     padding: 1rem;
     border-radius: 8px;
+    width: fit-content;
+    max-width: 100%;
   }
   
   .card.reverse {
-    flex-direction: column;
+    flex-direction: column !important;
   }
   
   .imageContainer {
-    flex: none;
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
+    flex: none !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
+    order: 1 !important;
   }
   
   .content {
-    width: 100%;
+    width: 100% !important;
+    max-width: 400px !important;
     padding: 0.75rem;
+    order: 2 !important;
   }
   
   .title {
@@ -156,14 +175,30 @@
 }
 
 /* Responsive - Small Mobile */
-@media (max-width: var(--breakpoint-sm)) {
+@media (max-width: 576px) {
   .card {
     padding: 0.75rem;
     margin-bottom: 1rem;
+    flex-direction: column !important;
+    width: fit-content;
+    max-width: 100%;
+  }
+  
+  .card.reverse {
+    flex-direction: column !important;
+  }
+  
+  .imageContainer {
+    order: 1 !important;
+    width: 100% !important;
+    max-width: 350px !important;
+    margin: 0 auto !important;
   }
   
   .content {
     padding: 0.5rem;
+    order: 2 !important;
+    max-width: 350px !important;
   }
   
   .title {

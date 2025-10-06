@@ -49,7 +49,7 @@ const Postventa = () => {
         <p className={styles.description}>
           Te acompañamos después de la compra con servicios de mantenimiento, 
           reparación y restauración. Nuestro taller cuenta con técnicos especializados 
-          y equipamiento de última generación.
+          y equipamiento de última generación. <strong>¡Reserva tu turno ahora y mantén tu vehículo en perfecto estado!</strong>
         </p>
       </header>
 

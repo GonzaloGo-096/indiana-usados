@@ -371,22 +371,44 @@ export const useImageReducer = (mode, initialData = {}) => {
             })
         }
         
-        // 3. Enviar archivos al backend (mantener exactamente la misma estructura que antes)
+        // 3. STRATEGY B: Estructura JSON completa en un solo campo
+        const fotosState = {
+            fotosNuevas: extraFiles.length > 0 ? extraFiles.map(file => ({
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                // No podemos enviar el archivo directo en JSON, pero el backend puede usar esto para validación
+                sent: true
+            })) : [],
+            eliminadas: publicIdsToDelete,
+            timestamp: new Date().toISOString(),
+            hasChanges: extraFiles.length > 0 || publicIdsToDelete.length > 0
+        }
+        
+        // ✅ STRATEGY B: Enviar estado completo como JSON
+        formData.append('fotosState', JSON.stringify(fotosState))
+        console.log('📁 fotosState - STRATEGY B: Enviando estructura completa:', fotosState)
+        
+        // ✅ SOLUCIÓN DEFINITIVA: Siempre enviar algo a fotosExtra
         if (extraFiles.length > 0) {
             extraFiles.forEach(file => {
                 formData.append('fotosExtra', file)
             })
             console.log(`📁 fotosExtra - enviando ${extraFiles.length} archivos nuevos al backend`)
         } else {
-            console.log('📷 fotosExtra - sin archivos nuevos (NO enviar nada al backend)')
+            // ✅ CRITICAL: El backend necesita este campo para procesar correctamente
+            // Enviar placeholder JSON que el backend puede ignorar pero reconoce el campo
+            formData.append('fotosExtraState', JSON.stringify({ preserve: true }))
+            console.log('📷 fotosExtraState - enviando flag para preservar fotos (backend compatibility)')
         }
         
-        // ✅ ENVIAR ARRAY DE ELIMINADAS AL BACKEND
+        // ✅ MANTENER COMPATIBILIDAD: También enviar eliminadas si existen
         if (publicIdsToDelete.length > 0) {
             formData.append('eliminadas', JSON.stringify(publicIdsToDelete))
             console.log(`🗑️ eliminadas - enviando al backend:`, publicIdsToDelete)
         } else {
-            console.log('🗑️ eliminadas - sin fotos para eliminar')
+            formData.append('eliminadas', JSON.stringify([]))
+            console.log('🗑️ eliminadas - enviando array vacío')
         }
         
         return formData

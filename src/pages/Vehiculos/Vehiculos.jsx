@@ -5,13 +5,13 @@
  * @version 3.2.0 - Título "Nuestros Usados" restaurado
  */
 
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import { parseFilters, serializeFilters, hasAnyFilter } from '@utils'
-import { useVehiclesList } from '@hooks'
+import { parseFilters, serializeFilters, hasAnyFilter, sortVehicles } from '@utils'
+import { useVehiclesList, useSorting, useScrollUnified } from '@hooks'
 import { AutosGrid } from '@vehicles'
 import LazyFilterForm from '@vehicles/Filters/LazyFilterForm'
-import { useScrollPosition } from '@hooks/useScrollPosition'
+import SortDropdown from '@vehicles/Filters/SortDropdown'
 import styles from './Vehiculos.module.css'
 
 const Vehiculos = () => {
@@ -19,23 +19,32 @@ const Vehiculos = () => {
     const navigate = useNavigate()
     const [isUsingMockData, setIsUsingMockData] = useState(false)
     const filterFormRef = useRef(null)
+    
+    // ✅ OPTIMIZADO: Hook unificado para sorting
+    const sorting = useSorting({
+        syncWithUrl: true,
+        urlKey: 'sort',
+        defaultSort: null
+    })
 
-    // ✅ NUEVO: Hook para restaurar scroll
-    const { restoreScrollPosition } = useScrollPosition({
+    // ✅ OPTIMIZADO: Hook unificado para scroll
+    const scroll = useScrollUnified({
         key: 'vehicles-list',
+        enableDetection: false, // No necesitamos detección de scroll aquí
+        enablePosition: true,   // Solo posición para navegación
         enabled: true
     })
 
 
-    // ✅ NUEVO: Restaurar scroll cuando el componente se monte
+    // ✅ OPTIMIZADO: Restaurar scroll cuando el componente se monte
     useEffect(() => {
         // Pequeño delay para asegurar que el DOM esté renderizado
         const timer = setTimeout(() => {
-            restoreScrollPosition()
+            scroll.restoreScrollPosition()
         }, 100)
         
         return () => clearTimeout(timer)
-    }, [restoreScrollPosition])
+    }, [scroll.restoreScrollPosition])
 
     // ✅ NUEVO: Parsear filtros del querystring
     const filters = parseFilters(sp)
@@ -43,6 +52,11 @@ const Vehiculos = () => {
 
     // ✅ NUEVO: Hook unificado para vehículos
     const { vehicles, total, hasNextPage, loadMore, isLoadingMore, isLoading, isError, error, refetch } = useVehiclesList(filters)
+
+    // ✅ OPTIMIZADO: Vehículos ordenados (performance optimizada con useMemo)
+    const sortedVehicles = useMemo(() => {
+        return sortVehicles(vehicles, sorting.selectedSort)
+    }, [vehicles, sorting.selectedSort])
 
 
 
@@ -70,6 +84,11 @@ const Vehiculos = () => {
             filterFormRef.current.toggleFilters()
         }
     }
+
+    // ✅ OPTIMIZADO: Handlers para sorting (ahora vienen del hook)
+    const handleSortClick = sorting.toggleDropdown
+    const handleSortChange = sorting.handleSortChange
+    const handleCloseSortDropdown = sorting.closeDropdown
 
     return (
         <div className={styles.container}>
@@ -107,17 +126,28 @@ const Vehiculos = () => {
                         Filtrar
                     </button>
                     
-                    <button 
-                        className={styles.actionButton}
-                        onClick={() => console.log('Ordenar clicked')}
-                    >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M3 6h18"></path>
-                            <path d="M6 12h12"></path>
-                            <path d="M9 18h6"></path>
-                        </svg>
-                        Ordenar
-                    </button>
+                    <div style={{ position: 'relative' }}>
+                        <button 
+                            className={`${styles.actionButton} ${sorting.hasActiveSort ? styles.active : ''}`}
+                            onClick={handleSortClick}
+                            disabled={isLoading || isLoadingMore}
+                        >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M3 6h18"></path>
+                                <path d="M6 12h12"></path>
+                                <path d="M9 18h6"></path>
+                            </svg>
+                            Ordenar
+                        </button>
+                        
+                        <SortDropdown
+                            isOpen={sorting.isDropdownOpen}
+                            selectedSort={sorting.selectedSort}
+                            onSortChange={handleSortChange}
+                            onClose={handleCloseSortDropdown}
+                            disabled={isLoading || isLoadingMore}
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -129,12 +159,14 @@ const Vehiculos = () => {
           isError={isError}
           error={error}
           onRetry={refetch}
+          onSortClick={handleSortChange}
+          selectedSort={sorting.selectedSort}
         />
 
             {/* ✅ NUEVO: Grid de vehículos unificado */}
             <div className={styles.vehiclesGrid}>
                 <AutosGrid
-                    vehicles={vehicles}
+                    vehicles={sortedVehicles}
                     isLoading={isLoading}
                     hasNextPage={hasNextPage}
                     isLoadingMore={isLoadingMore}
@@ -144,6 +176,7 @@ const Vehiculos = () => {
                     error={error}
                 />
             </div>
+
 
             {/* ✅ NUEVO: Botón para volver a lista principal */}
             {isFiltered && (

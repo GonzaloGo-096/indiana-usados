@@ -8,44 +8,45 @@
  * @version 1.0.0 - Modular
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
-export const useScrollDetection = () => {
+export const useScrollDetection = (options = {}) => {
+  const {
+    hasActiveDropdown = false,
+    hasActiveFilters = false,
+    hasActiveDrawer = false,
+    preventHide = false
+  } = options
+  
   const [isVisible, setIsVisible] = useState(false)
+
+  // ✅ OPTIMIZADO: useCallback para evitar recreaciones
+  const handleScroll = useCallback(() => {
+    const scrollTop = window.pageYOffset || 
+                     document.documentElement.scrollTop || 
+                     document.body.scrollTop || 0
+    
+    const shouldShow = scrollTop > 50
+    setIsVisible(shouldShow)
+  }, [])
+
+  const handleScrollEnd = useCallback(() => {
+    // ✅ CORREGIDO: Solo verificar interacciones al intentar ocultar
+    const hideTimeout = setTimeout(() => {
+      // Verificar si hay interacciones activas antes de ocultar
+      const hasActiveInteractions = hasActiveDropdown || hasActiveFilters || hasActiveDrawer || preventHide
+      
+      if (!hasActiveInteractions) {
+        setIsVisible(false)
+      }
+    }, 10000)
+    
+    return hideTimeout
+  }, [hasActiveDropdown, hasActiveFilters, hasActiveDrawer, preventHide])
 
   useEffect(() => {
     let scrollTimeout
     let hideTimeout
-    let lastScrollTop = 0
-
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || 
-                       document.documentElement.scrollTop || 
-                       document.body.scrollTop || 0
-      
-      // Solo procesar cambios significativos
-      if (Math.abs(scrollTop - lastScrollTop) < 10) return
-      
-      lastScrollTop = scrollTop
-      const shouldShow = scrollTop > 50
-      
-      if (shouldShow) {
-        setIsVisible(true)
-        if (hideTimeout) {
-          clearTimeout(hideTimeout)
-          hideTimeout = null
-        }
-      } else {
-        setIsVisible(false)
-      }
-    }
-
-    const handleScrollEnd = () => {
-      if (hideTimeout) {
-        clearTimeout(hideTimeout)
-      }
-      hideTimeout = setTimeout(() => setIsVisible(false), 2000)
-    }
 
     const handleScrollWithDelay = () => {
       handleScroll()
@@ -53,17 +54,31 @@ export const useScrollDetection = () => {
         clearTimeout(scrollTimeout)
       }
       const delay = 'ontouchstart' in window ? 100 : 150
-      scrollTimeout = setTimeout(handleScrollEnd, delay)
+      scrollTimeout = setTimeout(() => {
+        hideTimeout = handleScrollEnd()
+      }, delay)
     }
 
-    window.addEventListener('scroll', handleScrollWithDelay, { passive: true })
+    // ✅ OPTIMIZADO: Throttling para mejor performance
+    let ticking = false
+    const throttledScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScrollWithDelay()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', throttledScroll, { passive: true })
     
     return () => {
-      window.removeEventListener('scroll', handleScrollWithDelay)
+      window.removeEventListener('scroll', throttledScroll)
       if (scrollTimeout) clearTimeout(scrollTimeout)
       if (hideTimeout) clearTimeout(hideTimeout)
     }
-  }, [])
+  }, [handleScroll, handleScrollEnd])
 
   return {
     isVisible,
