@@ -17,6 +17,7 @@ import { RangeSlider } from '@ui'
 import { MultiSelect } from '@ui'
 import { marcas, combustibles, cajas, FILTER_DEFAULTS, SORT_OPTIONS } from '@constants'
 import { parseFilters, buildFiltersForBackend } from '@utils'
+import { logger } from '@utils/logger'
 import styles from './FilterFormSimple.module.css'
 
 const FilterFormSimple = React.memo(React.forwardRef(({
@@ -120,7 +121,7 @@ const FilterFormSimple = React.memo(React.forwardRef(({
         timeoutRef.current = null
       }, 100)
     } catch (error) {
-      console.error('Error applying filters:', error)
+      logger.error('filters:apply', 'Error applying filters', { error: error.message })
     } finally {
       setIsSubmitting(false)
     }
@@ -292,7 +293,7 @@ const FilterFormSimple = React.memo(React.forwardRef(({
                 options={combustibles}
                 value={filters.combustible}
                 onChange={(val) => handleFilterChange('combustible', val)}
-                placeholder="Todos los combustibles"
+                placeholder="Seleccionar combustibles"
               />
             </div>
             <div className={styles.formGroup}>

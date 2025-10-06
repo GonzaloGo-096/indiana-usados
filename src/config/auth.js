@@ -11,9 +11,7 @@ export const AUTH_CONFIG = {
     // URL del backend REAL
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001',
     endpoints: {
-      login: '/user/loginuser', // ✅ ENDPOINT REAL DEL BACKEND
-      // logout: '/auth/logout', // ❌ NO EXISTE EN BACKEND REAL
-      // verify: '/auth/verify' // ❌ NO EXISTE EN BACKEND REAL
+      login: '/user/loginuser'
     },
     // Timeout para requests (en ms)
     timeout: 10000
@@ -32,9 +30,7 @@ export const AUTH_CONFIG = {
     home: '/'
   },
 
-
-
-  // ✅ NUEVO: Configuración de headers para autorización
+  // Configuración de headers para autorización
   headers: {
     authorization: 'Authorization',
     bearerPrefix: 'Bearer '

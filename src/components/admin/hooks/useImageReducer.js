@@ -6,6 +6,7 @@
  */
 
 import React, { useReducer, useCallback, useMemo } from 'react'
+import { logger } from '@utils/logger'
 
 // ✅ CAMPOS DE IMAGEN (estructura actualizada)
 export const IMAGE_FIELDS = {
@@ -153,9 +154,11 @@ const imageReducer = (state, action) => {
             // ✅ REEMPLAZAR ARCHIVOS DESDE INPUT MÚLTIPLE
             const { files } = action.payload
             
-            console.log('🔧 SET_MULTIPLE_EXTRAS - Files recibidos:', files?.length || 0)
-            console.log('🔧 SET_MULTIPLE_EXTRAS - Files es Array:', Array.isArray(files))
-            console.log('🔧 SET_MULTIPLE_EXTRAS - Primer archivo:', files?.[0]?.name || 'No hay archivos')
+            logger.debug('image:setMultipleExtras', 'Files recibidos', {
+                count: files?.length || 0,
+                isArray: Array.isArray(files),
+                firstFile: files?.[0]?.name || 'No hay archivos'
+            })
             
             return {
                 ...state,
@@ -165,8 +168,10 @@ const imageReducer = (state, action) => {
         case IMAGE_ACTIONS.REMOVE_EXISTING_EXTRA:
             // ✅ MARCAR FOTO EXISTENTE COMO ELIMINADA
             const { index } = action.payload
-            console.log(`🗑️ REDUCER REMOVE_EXISTING_EXTRA - index: ${index}`)
-            console.log(`🗑️ REDUCER - Estado antes:`, state.existingExtras?.[index])
+            logger.debug('image:removeExistingExtra', 'Marcando foto para eliminar', {
+                index,
+                currentState: state.existingExtras?.[index]
+            })
             
             const existingExtras = [...state.existingExtras]
             
@@ -175,9 +180,12 @@ const imageReducer = (state, action) => {
                     ...existingExtras[index],
                     remove: true
                 }
-                console.log(`🗑️ REDUCER - Foto marcada para eliminar:`, existingExtras[index])
+                logger.debug('image:removeExistingExtra', 'Foto marcada para eliminar', {
+                    index,
+                    photo: existingExtras[index]
+                })
             } else {
-                console.log(`❌ REDUCER - No se encontró foto en índice ${index}`)
+                logger.warn('image:removeExistingExtra', 'No se encontró foto en índice', { index })
             }
             
             return {
@@ -188,8 +196,10 @@ const imageReducer = (state, action) => {
         case IMAGE_ACTIONS.RESTORE_EXISTING_EXTRA:
             // ✅ RESTAURAR FOTO EXISTENTE MARCADA COMO ELIMINADA
             const { index: restoreIndex } = action.payload
-            console.log(`↺ REDUCER RESTORE_EXISTING_EXTRA - index: ${restoreIndex}`)
-            console.log(`↺ REDUCER - Estado antes:`, state.existingExtras?.[restoreIndex])
+            logger.debug('image:restoreExistingExtra', 'Restaurando foto', {
+                index: restoreIndex,
+                currentState: state.existingExtras?.[restoreIndex]
+            })
             
             const existingExtrasToRestore = [...state.existingExtras]
             
@@ -198,9 +208,12 @@ const imageReducer = (state, action) => {
                     ...existingExtrasToRestore[restoreIndex],
                     remove: false
                 }
-                console.log(`↺ REDUCER - Foto restaurada:`, existingExtrasToRestore[restoreIndex])
+                logger.debug('image:restoreExistingExtra', 'Foto restaurada', {
+                    index: restoreIndex,
+                    photo: existingExtrasToRestore[restoreIndex]
+                })
             } else {
-                console.log(`❌ REDUCER - No se encontró foto en índice ${restoreIndex}`)
+                logger.warn('image:restoreExistingExtra', 'No se encontró foto en índice', { index: restoreIndex })
             }
             
             return {
@@ -263,7 +276,7 @@ export const useImageReducer = (mode, initialData = {}) => {
 
     // ✅ NUEVOS MANEJADORES PARA FOTOS EXTRAS
     const setMultipleExtras = useCallback((files) => {
-        console.log('🔧 setMultipleExtras - Llamado con:', {
+        logger.debug('image:setMultipleExtras', 'Función llamada', {
             filesCount: files?.length || 0,
             currentFotosExtra: imageState.fotosExtra?.length || 0,
             filesType: typeof files,
@@ -272,21 +285,25 @@ export const useImageReducer = (mode, initialData = {}) => {
         
         // ✅ CONVERTIR FileList a Array ANTES del dispatch
         const filesArray = Array.from(files || [])
-        console.log('🔧 setMultipleExtras - Convertido a Array:', filesArray.length)
+        logger.debug('image:setMultipleExtras', 'Convertido a Array', { count: filesArray.length })
         
         dispatch({ type: IMAGE_ACTIONS.SET_MULTIPLE_EXTRAS, payload: { files: filesArray } })
-        console.log('🔧 setMultipleExtras - Dispatch ejecutado')
+        logger.debug('image:setMultipleExtras', 'Dispatch ejecutado')
     }, [imageState.fotosExtra])
 
     const removeExistingExtra = useCallback((index) => {
-        console.log(`🗑️ removeExistingExtra - Marcando foto ${index} para eliminar`)
-        console.log(`🗑️ removeExistingExtra - Estado antes:`, imageState.existingExtras?.[index])
+        logger.debug('image:removeExistingExtra', 'Marcando foto para eliminar', {
+            index,
+            currentState: imageState.existingExtras?.[index]
+        })
         dispatch({ type: IMAGE_ACTIONS.REMOVE_EXISTING_EXTRA, payload: { index } })
     }, [imageState.existingExtras])
 
     const restoreExistingExtra = useCallback((index) => {
-        console.log(`↺ restoreExistingExtra - Restaurando foto ${index}`)
-        console.log(`↺ restoreExistingExtra - Estado antes:`, imageState.existingExtras?.[index])
+        logger.debug('image:restoreExistingExtra', 'Restaurando foto', {
+            index,
+            currentState: imageState.existingExtras?.[index]
+        })
         dispatch({ type: IMAGE_ACTIONS.RESTORE_EXISTING_EXTRA, payload: { index } })
     }, [imageState.existingExtras])
 
@@ -294,12 +311,13 @@ export const useImageReducer = (mode, initialData = {}) => {
     const validateImages = useCallback((mode) => {
         const errors = {}
 
-        console.log('🔍 ===== VALIDATE IMAGES START =====')
-        console.log('🔍 validateImages - mode:', mode)
-        console.log('🔍 validateImages - newExtras count:', imageState.newExtras?.length || 0)
+        logger.debug('image:validateImages', 'Iniciando validación', {
+            mode,
+            newExtrasCount: imageState.newExtras?.length || 0
+        })
 
         if (mode === 'create') {
-            console.log('🔍 MODO CREATE - Validando cantidad de fotos')
+            logger.debug('image:validateImages', 'Modo CREATE - Validando cantidad de fotos')
             
             // ✅ VALIDAR IMÁGENES PRINCIPALES
             IMAGE_FIELDS.principales.forEach(field => {
@@ -312,18 +330,18 @@ export const useImageReducer = (mode, initialData = {}) => {
             // ✅ VALIDAR FOTOS EXTRAS - Contar archivos nuevos del input múltiple
             const fotosExtraCount = imageState.fotosExtra?.length || 0
 
-            console.log('🔍 MODO CREATE - fotosExtraCount:', fotosExtraCount)
+            logger.debug('image:validateImages', 'Modo CREATE - Contando fotos extras', { fotosExtraCount })
 
             if (fotosExtraCount < 5) {
                 errors.fotosExtra = 'Se requieren mínimo 5 fotos extras (total mínimo: 7 fotos)'
-                console.log('❌ MODO CREATE - Error: Se requieren mínimo 5 fotos extras')
+                logger.warn('image:validateImages', 'Error: Se requieren mínimo 5 fotos extras')
             }
             
             if (fotosExtraCount > 8) {
                 errors.fotosExtra = 'Máximo 8 fotos extras permitidas'
             }
         } else {
-            // ✅ EDIT: NO VALIDAR NADA - TODO OPCIONAL
+            // ✅ EDIT: Validación opcional - usuario puede editar solo texto sin tocar imágenes
         }
 
         return errors
@@ -331,16 +349,20 @@ export const useImageReducer = (mode, initialData = {}) => {
 
     // ✅ CONSTRUIR FORMDATA PARA IMÁGENES (nueva estructura manteniendo compatibilidad backend)
     const buildImageFormData = useCallback((formData) => {
-        console.log('🔧 buildImageFormData - Construyendo FormData...')
+        logger.debug('image:buildImageFormData', 'Construyendo FormData')
         
         // ✅ PRINCIPALES - Overwrite automático por backend
         IMAGE_FIELDS.principales.forEach(key => {
             const { file, remove, publicId, existingUrl } = imageState[key] || {}
             if (file) {
                 formData.append(key, file)
-                console.log(`📁 ${key} - archivo nuevo enviado:`, { name: file.name, size: file.size })
+                logger.debug('image:buildImageFormData', 'Archivo nuevo enviado', {
+                    field: key,
+                    name: file.name,
+                    size: file.size
+                })
             } else {
-                console.log(`📷 ${key} - mantener imagen existente (no enviar archivo)`)
+                logger.debug('image:buildImageFormData', 'Mantener imagen existente', { field: key })
             }
             
             // Nota: Backend hace overwrite con mismo public_id, no genera zombies
@@ -353,7 +375,9 @@ export const useImageReducer = (mode, initialData = {}) => {
         // 1. Agregar archivos nuevos del input múltiple
         if (imageState.fotosExtra && imageState.fotosExtra.length > 0) {
             extraFiles.push(...imageState.fotosExtra)
-            console.log(`📁 Agregando ${imageState.fotosExtra.length} archivos nuevos del input múltiple`)
+            logger.debug('image:buildImageFormData', 'Agregando archivos del input múltiple', {
+                count: imageState.fotosExtra.length
+            })
         }
         
         // 2. Recopilar públic_ids de fotos existentes marcadas para eliminar
@@ -362,8 +386,8 @@ export const useImageReducer = (mode, initialData = {}) => {
             imageState.existingExtras.forEach((existingPhoto, index) => {
                 if (existingPhoto.remove && existingPhoto.publicId) {
                     publicIdsToDelete.push(existingPhoto.publicId)
-                    console.log(`🗑️ Foto existente marcada para eliminar:`, { 
-                        index, 
+                    logger.debug('image:buildImageFormData', 'Foto existente marcada para eliminar', {
+                        index,
                         publicId: existingPhoto.publicId,
                         url: existingPhoto.url 
                     })
@@ -387,28 +411,32 @@ export const useImageReducer = (mode, initialData = {}) => {
         
         // ✅ STRATEGY B: Enviar estado completo como JSON
         formData.append('fotosState', JSON.stringify(fotosState))
-        console.log('📁 fotosState - STRATEGY B: Enviando estructura completa:', fotosState)
+        logger.debug('image:buildImageFormData', 'STRATEGY B: Enviando estructura completa', { fotosState })
         
         // ✅ SOLUCIÓN DEFINITIVA: Siempre enviar algo a fotosExtra
         if (extraFiles.length > 0) {
             extraFiles.forEach(file => {
                 formData.append('fotosExtra', file)
             })
-            console.log(`📁 fotosExtra - enviando ${extraFiles.length} archivos nuevos al backend`)
+            logger.debug('image:buildImageFormData', 'Enviando archivos nuevos al backend', {
+                count: extraFiles.length
+            })
         } else {
             // ✅ CRITICAL: El backend necesita este campo para procesar correctamente
             // Enviar placeholder JSON que el backend puede ignorar pero reconoce el campo
             formData.append('fotosExtraState', JSON.stringify({ preserve: true }))
-            console.log('📷 fotosExtraState - enviando flag para preservar fotos (backend compatibility)')
+            logger.debug('image:buildImageFormData', 'Enviando flag para preservar fotos (backend compatibility)')
         }
         
         // ✅ MANTENER COMPATIBILIDAD: También enviar eliminadas si existen
         if (publicIdsToDelete.length > 0) {
             formData.append('eliminadas', JSON.stringify(publicIdsToDelete))
-            console.log(`🗑️ eliminadas - enviando al backend:`, publicIdsToDelete)
+            logger.debug('image:buildImageFormData', 'Enviando fotos eliminadas al backend', {
+                publicIdsToDelete
+            })
         } else {
             formData.append('eliminadas', JSON.stringify([]))
-            console.log('🗑️ eliminadas - enviando array vacío')
+            logger.debug('image:buildImageFormData', 'Enviando array vacío de eliminadas')
         }
         
         return formData
@@ -431,7 +459,12 @@ export const useImageReducer = (mode, initialData = {}) => {
         const preview = existingUrl || null
         if (!preview && key.startsWith('fotoExtra')) {
             // 🔍 Diagnóstico: por qué no hay preview para extras
-            console.log('🔎 getPreviewFor sin preview:', key, { existingUrl, hasFile: !!file, remove })
+            logger.debug('image:getPreviewFor', 'Sin preview disponible', {
+                key,
+                existingUrl,
+                hasFile: !!file,
+                remove
+            })
         }
         return preview
     }, [imageState])

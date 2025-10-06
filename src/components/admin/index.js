@@ -7,6 +7,7 @@
 
 // ===== COMPONENTES DE FORMULARIO =====
 export { default as CarFormRHF } from './CarForm/CarFormRHF'
+export { default as LazyCarForm } from './CarForm/LazyCarForm'
 
 // ===== HOOKS =====
 export { useImageReducer, IMAGE_FIELDS } from './hooks/useImageReducer'

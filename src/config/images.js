@@ -11,8 +11,9 @@
 // Importar imagen por defecto (esto funciona en Vite)
 import { defaultCarImage } from '@assets'
 
-// Configuración del entorno
-const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT || 'development'
+// Configuración del entorno - usar config centralizado
+import { config } from '@config'
+const ENVIRONMENT = config.environment
 
 // Configuración de imágenes locales (usando rutas públicas)
 const LOCAL_IMAGES = {

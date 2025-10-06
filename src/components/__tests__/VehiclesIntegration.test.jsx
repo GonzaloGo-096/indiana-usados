@@ -109,7 +109,7 @@ describe('Vehicles Integration', () => {
                 onClick={() => {
                   // Simular aplicación de filtros
                   const mockFilters = createFilters({ marca: ['Toyota'] })
-                  console.log('Filtros aplicados:', mockFilters)
+                  // Test code - no necesita logger
                 }}
               >
                 Aplicar Filtros

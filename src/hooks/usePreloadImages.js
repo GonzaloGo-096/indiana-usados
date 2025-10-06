@@ -137,7 +137,7 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
 
   // Función para limpiar preloads y cancelar requests en curso
   const clearPreloads = useCallback(() => {
-    // Cancelar todos los requests en curso
+    // Cancelar requests en curso
     abortControllers.current.forEach((controller) => {
       controller.abort()
     })
@@ -188,7 +188,7 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
       if (observerRef.current) {
         observerRef.current.disconnect()
       }
-      // Cancelar todos los requests pendientes al desmontar
+      // Cancelar requests pendientes al desmontar
       clearPreloads()
     }
   }, [vehicles, preloadDistance, maxPreload, preloadVehicle, enablePreload, clearPreloads])

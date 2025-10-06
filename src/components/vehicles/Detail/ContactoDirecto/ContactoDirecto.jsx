@@ -9,6 +9,7 @@
  */
 
 import { WhatsAppIconOptimized } from '@ui/icons'
+import { config } from '@config'
 import styles from './ContactoDirecto.module.css'
 
 /**
@@ -23,7 +24,7 @@ import styles from './ContactoDirecto.module.css'
 const ContactoDirecto = ({
   title = "Contacto Directo",
   subtitle = "¿Consultas sobre este vehículo?",
-  whatsNumber = "5491123456789", // TODO: Reemplazar con número real
+  whatsNumber = config.contact.whatsapp,
   className = "",
   message = ""
 }) => {

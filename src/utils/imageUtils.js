@@ -351,8 +351,7 @@ export const validateImageFields = (imageFiles, mode = 'create') => {
       }
     }
   } else {
-    // ✅ MODO EDIT: NO VALIDAR NADA - TODO OPCIONAL
-    // El usuario puede editar solo texto sin tocar imágenes
+    // ✅ MODO EDIT: Validación opcional - el usuario puede editar solo texto sin tocar imágenes
   }
 
   return errors
@@ -432,7 +431,7 @@ export const prepareMultipleImagesForUpload = (imageFiles) => {
     if (fileList && fileList.length > 0) {
       try {
         if (fieldName === 'fotosExtra') {
-          // ✅ FOTOS EXTRAS: Procesar todos los archivos
+          // ✅ FOTOS EXTRAS: Procesar archivos múltiples
           const preparedExtraFiles = fileList.map(file => prepareImageForUpload(file, fieldName))
           preparedFiles[fieldName] = preparedExtraFiles
         } else {

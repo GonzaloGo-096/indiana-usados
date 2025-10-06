@@ -11,13 +11,13 @@ import { LoginForm } from '@components/auth/LoginForm'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@hooks/useAuth'
 import { AUTH_CONFIG } from '@config/auth'
+import { config } from '@config'
 import styles from './Login.module.css'
 
 const Login = () => {
     const navigate = useNavigate()
     const { login, isAuthenticated, isLoading, error, clearError } = useAuth()
-    const [errors, setErrors] = React.useState({})
-    const [isSubmitting, setIsSubmitting] = React.useState(false) // ✅ ESTADO SEPARADO PARA SUBMIT
+    const [isSubmitting, setIsSubmitting] = React.useState(false) // ✅ ESTADO SIMPLIFICADO
     
     // ✅ DEBUG TEMPORAL: Ver estado del hook
     logger.debug('auth:login', 'LOGIN DEBUG', {
@@ -35,16 +35,10 @@ const Login = () => {
         }
     }, [isAuthenticated, isLoading, navigate])
 
-    // ✅ SINCRONIZAR ERRORES DEL HOOK CON ESTADO LOCAL
-    React.useEffect(() => {
-        if (error) {
-            setErrors({ general: error })
-        }
-    }, [error])
+    // ✅ ERRORES MANEJADOS DIRECTAMENTE POR useAuth
 
     const handleSubmit = async (values) => {
         clearError()
-        setErrors({})
         setIsSubmitting(true)
         
         try {
@@ -52,16 +46,15 @@ const Login = () => {
             const result = await login(values)
             
             if (result.success) {
-                // Login exitoso
+                // Login exitoso - useAuth maneja la navegación automáticamente
+                logger.info('auth:login', 'Login exitoso, redirigiendo')
                 navigate('/admin')
             } else {
-                // Error en login
-                logger.warn('auth:login', 'LOGIN FALLIDO', result.error)
-                setErrors({ general: result.error || 'Error al iniciar sesión' })
+                // Error en login - useAuth ya maneja el error
+                logger.warn('auth:login', 'Login fallido', { error: result.error })
             }
         } catch (error) {
-            logger.error('auth:login', 'ERROR', error)
-            setErrors({ general: 'Error al iniciar sesión' })
+            logger.error('auth:login', 'Error durante login', { error: error.message })
         } finally {
             setIsSubmitting(false)
         }
@@ -91,10 +84,12 @@ const Login = () => {
                     <div className={styles.cardBody}>
                         <h2 className={styles.title}>Iniciar Sesión</h2>
                         
-                        <div className={styles.credentials}>
-                            <p>Usuario: indiana-autos</p>
-                            <p>Contraseña: 12345678</p>
-                        </div>
+                        {/* ✅ CREDENCIALES SOLO EN DESARROLLO */}
+                        {config.isDevelopment && (
+                            <div className={styles.credentials}>
+                                <p><strong>Desarrollo:</strong> Usuario: indiana-autos | Contraseña: 12345678</p>
+                            </div>
+                        )}
                         
                         {/* Mostrar error general */}
                         {error && (
@@ -103,16 +98,10 @@ const Login = () => {
                             </div>
                         )}
                         
-                        {errors.general && (
-                            <div className={styles.error}>
-                                {errors.general}
-                            </div>
-                        )}
-                        
                         <LoginForm 
                             onSubmit={handleSubmit} 
                             isSubmitting={isSubmitting} 
-                            errors={errors} 
+                            errors={{}} 
                         />
                     </div>
                 </div>

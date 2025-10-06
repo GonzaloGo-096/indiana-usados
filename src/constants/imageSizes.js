@@ -28,7 +28,7 @@ export const IMAGE_SIZES = {
 // Anchos para generar srcset
 // OPTIMIZADO: Solo los tamaños necesarios para reducir ancho de banda
 export const IMAGE_WIDTHS = {
-  // Cards: 2 tamaños (base + retina 2x) - suficiente para todos los casos
+  // Cards: 2 tamaños (base + retina 2x) - suficiente para la mayoría de casos
   card: [400, 800],
   
   // Carrusel: 4 tamaños para cubrir mobile, tablet, desktop y retina

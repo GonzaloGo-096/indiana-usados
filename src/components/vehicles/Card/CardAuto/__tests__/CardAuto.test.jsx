@@ -23,7 +23,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
-import CardAuto from '../CardAuto'
+import CardAuto from '@components/vehicles/Card/CardAuto/CardAuto'
 import { createVehicle } from '@test'
 
 // 📋 Tests

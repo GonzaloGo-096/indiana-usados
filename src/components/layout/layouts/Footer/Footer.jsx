@@ -32,7 +32,7 @@ const Footer = () => {
         {/* ✅ LÍNEA DE COPYRIGHT */}
         <div className={styles.bottom}>
           <p className={styles.copyright}>
-            © {currentYear} Indiana Usados. Todos los derechos reservados.
+            © {currentYear} Indiana Usados. Derechos reservados.
           </p>
         </div>
       </div>

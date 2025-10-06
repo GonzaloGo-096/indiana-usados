@@ -4,7 +4,7 @@
  * Responsabilidades:
  * - Normalizar datos del backend
  * - Manejar estados de carga y error
- * - Lógica centralizada para todos los componentes
+ * - Lógica centralizada para los componentes
  * 
  * @author Indiana Usados
  * @version 1.1.0 - Preserva campos de imagen originales

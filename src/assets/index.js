@@ -1,7 +1,7 @@
 /**
  * Assets Index - Centralización de recursos estáticos
  * 
- * Centraliza todos los assets de la aplicación para facilitar
+ * Centraliza los assets de la aplicación para facilitar
  * imports y mantenimiento
  * 
  * @author Indiana Usados

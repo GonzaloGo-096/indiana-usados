@@ -950,7 +950,7 @@
     }
     
     .imageCard {
-        width: 100%; /* ✅ En móvil sí ocupa todo el ancho */
+        width: 100%; /* ✅ En móvil ocupa todo el ancho */
         max-width: 400px; /* ✅ Pero con un máximo */
         align-self: center; /* ✅ Centrado */
     }
@@ -981,7 +981,7 @@
     
     .multipleInputUI {
         padding: 10px 12px; /* ✅ Padding súper compacto en móvil */
-        max-width: 100%; /* ✅ Puede usar todo el ancho en móvil */
+        max-width: 100%; /* ✅ Usa todo el ancho en móvil */
     }
     
     .multipleInputText {

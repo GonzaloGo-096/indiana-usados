@@ -82,7 +82,7 @@ export const useCarMutation = () => {
             Object.entries(preparedImages).forEach(([fieldName, fileList]) => {
                 if (fileList && fileList.length > 0) {
                     if (fieldName === 'fotosExtra') {
-                        // ✅ FOTOS EXTRAS: Enviar todos los archivos
+                        // ✅ FOTOS EXTRAS: Enviar archivos múltiples
                         fileList.forEach(file => {
                             cloudinaryFormData.append(fieldName, file)
                         })
@@ -145,7 +145,7 @@ export const useCarMutation = () => {
         setSuccess(false)
 
         try {
-            console.log('🔄 Enviando actualización al endpoint...', { id })
+            logger.debug('car:update', 'Enviando actualización al endpoint', { id })
             
             // ✅ OBTENER TOKEN DE AUTORIZACIÓN
             const token = getAuthToken()
@@ -188,20 +188,20 @@ export const useCarMutation = () => {
             if (import.meta.env.DEV) logger.debug('cars:mutation', '¿Incluye fotosExtra?', hasFotosExtra)
             
             // ✅ LOGGING DETALLADO DE CADA CAMPO
-            console.log('🔍 ===== FORMDATA COMPLETO ENVIADO AL BACKEND =====')
+            logger.debug('car:update', 'FormData completo enviado al backend')
             for (let [key, value] of formData.entries()) {
                 if (value instanceof File) {
-                    console.log(`📁 ${key}:`, {
+                    logger.debug('car:update', 'Archivo en FormData', {
+                        field: key,
                         name: value.name,
                         size: value.size,
                         type: value.type,
                         lastModified: value.lastModified
                     })
                 } else {
-                    console.log(`📝 ${key}:`, value)
+                    logger.debug('car:update', 'Campo en FormData', { field: key, value })
                 }
             }
-            console.log('🔍 ===== FIN FORMDATA =====')
             
             // ✅ USAR ENDPOINT CORRECTO: PUT /photos/updatephoto/:id
             const response = await vehiclesService.updateVehicle(id, formData)

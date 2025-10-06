@@ -16,7 +16,7 @@ import vehiclesService from '@services/vehiclesApi'
 import { normalizeDetailToFormInitialData, unwrapDetail } from '@components/admin/mappers/normalizeForForm'
 
 import { useNavigate } from 'react-router-dom'
-import CarFormRHF from '@components/admin/CarForm/CarFormRHF'
+import LazyCarForm from '@components/admin/CarForm/LazyCarForm'
 import { 
     carModalReducer, 
     initialCarModalState, 
@@ -462,7 +462,7 @@ const Dashboard = () => {
                                 </div>
                             )}
                             
-                            <CarFormRHF
+                            <LazyCarForm
                                 mode={modalState.mode}
                                 initialData={modalState.initialData}
                                 onSubmitFormData={handleFormSubmit}

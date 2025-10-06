@@ -57,23 +57,24 @@ export const vehiclesService = {
    */
   async updateVehicle(id, formData) {
     try {
-      console.log(`🔄 Actualizando vehículo ${id} con PUT /photos/updatephoto/${id}`)
+      logger.debug('vehicles:update', 'Actualizando vehículo', { id, endpoint: '/photos/updatephoto/' })
       
       // ✅ LOGGING DETALLADO DEL FORMDATA
       const fileCount = Array.from(formData.entries()).filter(([key, value]) => value instanceof File).length
-      console.log(`📁 FormData contiene ${fileCount} archivos`)
+      logger.debug('vehicles:update', 'FormData contiene archivos', { fileCount })
       
       const response = await authAxiosInstance.put(`/photos/updatephoto/${id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         timeout: 60000 // ✅ 60 segundos para actualizar con múltiples imágenes
       })
-      console.log(`✅ Vehículo actualizado exitosamente - Status: ${response.status}`)
+      logger.info('vehicles:update', 'Vehículo actualizado exitosamente', { status: response.status })
       return response.data
     } catch (error) {
       const status = error.response?.status || 'Sin respuesta'
       const isTimeout = error.code === 'ECONNABORTED' || error.message?.includes('timeout')
       
-      console.error(`❌ Error al actualizar vehículo - Status: ${status}`, {
+      logger.error('vehicles:update', 'Error al actualizar vehículo', {
+        status,
         message: error.message,
         isTimeout,
         code: error.code

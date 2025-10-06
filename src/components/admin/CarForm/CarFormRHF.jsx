@@ -8,7 +8,7 @@
 import React, { useEffect, useCallback } from 'react'
 import { logger } from '@utils/logger'
 import { useForm } from 'react-hook-form'
-import { useImageReducer, IMAGE_FIELDS } from '../hooks/useImageReducer'
+import { useImageReducer, IMAGE_FIELDS } from '@components/admin/hooks/useImageReducer'
 import styles from './CarFormRHF.module.css'
 
 // ✅ CONSTANTES
@@ -55,7 +55,7 @@ const CarFormRHF = ({
     } = useImageReducer(mode, initialData)
 
     // ✅ DEBUG: Verificar estado inicial
-    console.log('🔍 CarFormRHF - Estado inicial del imageState:', {
+    logger.debug('carform:init', 'Estado inicial del imageState', {
         mode,
         hasFotosExtra: !!imageState.fotosExtra,
         fotosExtraLength: imageState.fotosExtra?.length || 0,
@@ -212,7 +212,7 @@ const CarFormRHF = ({
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             <div className={styles.formHeader}>
                 <h2>{mode === MODE.CREATE ? 'Crear Nuevo Auto' : 'Editar Auto'}</h2>
-                <p>Complete todos los campos requeridos</p>
+                <p>Complete los campos requeridos</p>
             </div>
 
             {/* ✅ SECCIÓN DE IMÁGENES PRINCIPALES - ESTILO MODERNIZADO */}
@@ -231,7 +231,7 @@ const CarFormRHF = ({
                     ) : (
                         <>
                             <p><strong>Imágenes existentes:</strong> Puedes reemplazarlas o mantenerlas</p>
-                            <p><strong>Opcional:</strong> Todos los cambios de imágenes son opcionales</p>
+                            <p><strong>Opcional:</strong> Los cambios de imágenes son opcionales</p>
                         </>
                     )}
                 </div>
@@ -335,7 +335,7 @@ const CarFormRHF = ({
                         <>
                             <p><strong>Fotos existentes:</strong> Puedes eliminar las que ya no necesites</p>
                             <p><strong>Agregar nuevas:</strong> Usa el input múltiple para subir hasta 8 fotos nuevas</p>
-                            <p><strong>Opcional:</strong> Todos los cambios de fotos son opcionales</p>
+                            <p><strong>Opcional:</strong> Los cambios de fotos son opcionales</p>
                         </>
                     )}
                 </div>

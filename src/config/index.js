@@ -17,7 +17,10 @@ const validateEnvironment = () => {
   const validEnvironments = ['development', 'staging', 'production']
   
   if (!validEnvironments.includes(environment)) {
-    console.warn(`⚠️ Entorno inválido: ${environment}. Usando 'development'`)
+    // Usar logger en lugar de console.warn
+    if (typeof window !== 'undefined' && window.logger) {
+      window.logger.warn('config:env', `Entorno inválido: ${environment}. Usando 'development'`)
+    }
     return 'development'
   }
   
@@ -76,6 +79,24 @@ const getContactConfig = () => {
   }
 }
 
+// ===== CONFIGURACIÓN DE IMÁGENES =====
+const getImagesConfig = () => {
+  return {
+    cloudinary: {
+      cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'duuwqmpmn',
+      progressiveJpeg: import.meta.env.VITE_IMG_PROGRESSIVE_JPEG === 'true',
+      blurPlaceholder: import.meta.env.VITE_IMG_PLACEHOLDER_BLUR === 'true'
+    }
+  }
+}
+
+// ===== CONFIGURACIÓN DE MÉTRICAS =====
+const getMetricsConfig = () => {
+  return {
+    enabled: import.meta.env.VITE_IMG_METRICS === 'true'
+  }
+}
+
 // ===== CONFIGURACIÓN PRINCIPAL =====
 export const config = {
   // Entorno
@@ -93,6 +114,12 @@ export const config = {
   // Contacto
   contact: getContactConfig(),
   
+  // Imágenes
+  images: getImagesConfig(),
+  
+  // Métricas
+  metrics: getMetricsConfig(),
+  
   // Utilidades
   isDevelopment: validateEnvironment() === 'development',
   isProduction: validateEnvironment() === 'production',
@@ -101,15 +128,18 @@ export const config = {
 
 // ===== LOGGING DE CONFIGURACIÓN (solo en desarrollo) =====
 if (config.isDevelopment && config.features.debug) {
-  console.log('🔧 CONFIGURACIÓN CARGADA:', {
-    environment: config.environment,
-    api: {
-      baseURL: config.api.baseURL,
-      timeout: config.api.timeout
-    },
-    features: config.features,
-    auth: config.auth
-  })
+  // Usar logger en lugar de console.log
+  if (typeof window !== 'undefined' && window.logger) {
+    window.logger.info('config:loaded', 'CONFIGURACIÓN CARGADA', {
+      environment: config.environment,
+      api: {
+        baseURL: config.api.baseURL,
+        timeout: config.api.timeout
+      },
+      features: config.features,
+      auth: config.auth
+    })
+  }
 }
 
 // ===== VALIDACIÓN DE CONFIGURACIÓN =====
@@ -132,7 +162,10 @@ export const validateConfig = () => {
   }
   
   if (errors.length > 0) {
-    console.error('❌ ERRORES DE CONFIGURACIÓN:', errors)
+    // Usar logger en lugar de console.error
+    if (typeof window !== 'undefined' && window.logger) {
+      window.logger.error('config:validation', 'ERRORES DE CONFIGURACIÓN', { errors })
+    }
     return false
   }
   

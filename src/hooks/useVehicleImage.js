@@ -4,7 +4,7 @@
  * Responsabilidades:
  * - Obtener URL de imagen de un vehículo
  * - Manejar fallbacks de imagen
- * - Lógica centralizada para todos los componentes
+ * - Lógica centralizada para los componentes
  * 
  * @author Indiana Usados
  * @version 1.0.0

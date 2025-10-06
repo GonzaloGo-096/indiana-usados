@@ -1,7 +1,7 @@
 /**
  * UI Components - Exportaciones centralizadas
  * 
- * Agrupa todos los componentes UI base
+ * Agrupa los componentes UI base
  * para facilitar las importaciones
  * 
  * @author Indiana Usados

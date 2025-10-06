@@ -1,5 +1,6 @@
 import { AUTH_CONFIG } from '@config/auth'
 import { authAxiosInstance } from '@api/axiosInstance'
+import { logger } from '@utils/logger'
 
 /**
  * Servicio de autenticación para backend Node.js REAL
@@ -32,20 +33,20 @@ export const authService = {
     }
 
     try {
-      // ✅ LOG ESENCIAL: Intentando login
-      console.log('🔐 LOGIN:', {
+      // ✅ LOG PROFESIONAL: Intentando login
+      logger.debug('auth:login', 'Iniciando proceso de login', {
         endpoint: AUTH_CONFIG.api.endpoints.login,
         baseURL: AUTH_CONFIG.api.baseURL,
         timeout: AUTH_CONFIG.api.timeout,
-        credentials: { username: credentials.username, password: '***' }
+        username: credentials.username
       })
 
       // ✅ USAR AXIOS INSTANCE EN LUGAR DE FETCH
-      console.log('🚀 Enviando request al backend...')
+      logger.debug('auth:login', 'Enviando request al backend')
       const response = await authAxiosInstance.post(AUTH_CONFIG.api.endpoints.login, loginData)
 
-      // ✅ LOG ESENCIAL: Respuesta del backend
-      console.log('📥 RESPUESTA:', {
+      // ✅ LOG PROFESIONAL: Respuesta del backend
+      logger.info('auth:login', 'Respuesta recibida del backend', {
         status: response.status,
         hasError: !!response.data.error,
         hasToken: !!response.data.token
@@ -67,8 +68,8 @@ export const authService = {
         }
       }
     } catch (error) {
-      // ✅ LOG ESENCIAL: Error detallado
-      console.error('❌ ERROR:', {
+      // ✅ LOG PROFESIONAL: Error detallado
+      logger.error('auth:login', 'Error durante login', {
         message: error.message,
         status: error.response?.status,
         code: error.code,
@@ -106,9 +107,9 @@ export const authService = {
     if (token) {
       try {
         // ✅ BACKEND REAL: No hay endpoint de logout, solo limpiar local
-        console.log('Logout: Token encontrado, limpiando localStorage')
+        logger.debug('auth:logout', 'Token encontrado, limpiando localStorage')
       } catch (error) {
-        console.error('Error durante logout:', error)
+        logger.error('auth:logout', 'Error durante logout', { error: error.message })
         // Continuar con la limpieza local aunque falle
       }
     }
@@ -122,14 +123,17 @@ export const authService = {
     const token = localStorage.getItem(AUTH_CONFIG.storage.tokenKey)
     
     if (!token) {
+      logger.debug('auth:verify', 'No token found')
       return { valid: false }
     }
 
     try {
-      // ✅ BACKEND REAL: No hay endpoint de verificación, solo verificar existencia local
-      // En el futuro se puede implementar verificación JWT en el frontend
-      return { valid: true, user: { username: 'indiana-autos', role: 'user' } }
+      // ✅ BACKEND REAL: No hay endpoint de verificación
+      // Los interceptors de Axios manejan tokens expirados automáticamente
+      logger.debug('auth:verify', 'Token found, trusting interceptors for validation')
+      return { valid: true }
     } catch (error) {
+      logger.error('auth:verify', 'Error during token verification', { error: error.message })
       return { valid: false, error: error.message }
     }
   },

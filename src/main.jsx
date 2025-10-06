@@ -22,6 +22,7 @@ import { initImageMetrics } from './metrics/imageTiming'
 
 // Validar configuración al inicio
 if (!validateConfig()) {
+  // Error crítico - usar console.error como fallback ya que logger podría no estar disponible
   console.error('❌ Error en configuración de la aplicación')
 }
 

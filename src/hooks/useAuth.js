@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { AUTH_CONFIG } from '@config/auth'
+import { logger } from '@utils/logger'
 import { authService } from '@services'
 
 export const useAuth = () => {
@@ -8,18 +9,17 @@ export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Función de logout
+  // Función de logout simplificada
   const logout = useCallback(async () => {
     try {
-      // Llamar al backend para invalidar el token
+      // authService.logout() ya maneja clearLocalStorage internamente
       await authService.logout()
+      logger.info('auth:logout', 'Logout exitoso')
     } catch (error) {
-      console.error('Error during logout:', error)
+      logger.error('auth:logout', 'Error durante logout', { error: error.message })
       // Continuar con la limpieza local aunque falle la API
     } finally {
-      // Limpiar localStorage usando función centralizada
-      authService.clearLocalStorage()
-      
+      // Solo limpiar estado local - localStorage ya fue limpiado por authService
       setUser(null)
       setIsAuthenticated(false)
       setError(null)
@@ -39,7 +39,7 @@ export const useAuth = () => {
           setUser(parsedUser)
           setIsAuthenticated(true)
         } catch (error) {
-          console.error('Error parsing user data:', error)
+          logger.error('auth:parseUserData', 'Error parsing user data', { error: error.message })
           logout()
         }
       } else {
@@ -48,7 +48,7 @@ export const useAuth = () => {
         setIsAuthenticated(false)
       }
     } catch (error) {
-      console.error('Error checking auth status:', error)
+      logger.error('auth:checkStatus', 'Error checking auth status', { error: error.message })
       logout()
     } finally {
       setIsLoading(false)
@@ -71,9 +71,8 @@ export const useAuth = () => {
       if (response.success) {
         const { token, user: userData } = response.data
         
-        // ✅ LOG ESENCIAL: Token recibido
-        console.log('🎫 TOKEN RECIBIDO:', {
-          token: token?.substring(0, 50) + '...',
+        // ✅ LOG PROFESIONAL: Token recibido
+        logger.info('auth:login', 'Token recibido exitosamente', {
           tokenLength: token?.length,
           hasToken: !!token
         })

@@ -25,7 +25,7 @@ export function extractPublicIdFromUrl(url) {
   // Remover extensión si existe
   afterUpload = afterUpload.replace(/\.[^.]+$/, '')
   
-  // CORRECCIÓN: Tomar TODO el path, no solo la última parte
+  // Tomar el path completo, no solo la última parte
   // Esto es crucial para public_ids con carpetas como "photo-bioteil/paqhetfzonahkzecnutx"
   return afterUpload
 }

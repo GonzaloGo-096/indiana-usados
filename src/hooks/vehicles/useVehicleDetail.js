@@ -14,6 +14,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { vehiclesApi } from '@services/vehiclesApi'
+import { logger } from '@utils/logger'
 
 /**
  * Hook para obtener detalle de un vehículo
@@ -67,7 +68,7 @@ export const useVehicleDetail = (id, options = {}) => {
         
         // Validar estructura básica del vehículo
         if (!data.id || !data.marca || !data.modelo) {
-            console.warn('⚠️ useVehicleDetail: Datos de vehículo incompletos', data)
+            logger.warn('vehicle:detail', 'Datos de vehículo incompletos', { data })
             return null
         }
         

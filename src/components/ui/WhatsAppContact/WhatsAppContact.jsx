@@ -10,6 +10,7 @@
 
 import React from 'react'
 import { WhatsAppIconOptimized } from '@ui/icons'
+import { config } from '@config'
 import styles from './WhatsAppContact.module.css'
 
 /**
@@ -27,7 +28,7 @@ import styles from './WhatsAppContact.module.css'
 const WhatsAppContact = ({
   title = "Contacto Directo",
   subtitle = "¿Consultas?",
-  whatsNumber = "5491123456789", // TODO: Reemplazar con número real
+  whatsNumber = config.contact.whatsapp,
   className = "",
   message = "",
   buttonText = "Ir a WhatsApp",

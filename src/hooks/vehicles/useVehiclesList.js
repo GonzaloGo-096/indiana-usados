@@ -14,7 +14,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { getMainVehicles } from '@services/vehiclesApi'
 import { normalizeVehiclesPage } from '@api/vehicles.normalizer'
-import { mapListResponse } from '../../mappers/vehicleMapper'
+import { mapListResponse } from '@mappers/vehicleMapper'
 
 export const useVehiclesList = (filters = {}) => {
   // ✅ PAGE SIZE FIJO

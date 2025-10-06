@@ -78,7 +78,7 @@ export const usePreloadRoute = (options = {}) => {
         }
     }, [])
 
-    // ✅ LIMPIAR TODOS LOS TIMEOUTS
+    // ✅ LIMPIAR TIMEOUTS
     const clearAllPreloads = useCallback(() => {
         preloadTimeouts.current.forEach(timeoutId => {
             clearTimeout(timeoutId)
