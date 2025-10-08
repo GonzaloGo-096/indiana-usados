@@ -90,13 +90,6 @@ const getImagesConfig = () => {
   }
 }
 
-// ===== CONFIGURACIÓN DE MÉTRICAS =====
-const getMetricsConfig = () => {
-  return {
-    enabled: import.meta.env.VITE_IMG_METRICS === 'true'
-  }
-}
-
 // ===== CONFIGURACIÓN PRINCIPAL =====
 export const config = {
   // Entorno
@@ -116,9 +109,6 @@ export const config = {
   
   // Imágenes
   images: getImagesConfig(),
-  
-  // Métricas
-  metrics: getMetricsConfig(),
   
   // Utilidades
   isDevelopment: validateEnvironment() === 'development',

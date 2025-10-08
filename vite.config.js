@@ -3,19 +3,22 @@ import react from '@vitejs/plugin-react-swc'
 import { resolve } from 'path'
 import { visualizer } from 'rollup-plugin-visualizer'
 
-// https://vite.dev/config/
+// ✅ SIMPLE: visualizer solo cuando ANALYZE=true
+// Uso normal:    npm run build              (rápido - 5-6s)
+// Con análisis:  npm run build:analyze      (completo - 8-10s)
+
 export default defineConfig({
   plugins: [
     react(),
-    // ✅ BUNDLE ANALYZER - Solo en build de producción
-    visualizer({
+    // ✅ Solo activar con variable de entorno
+    process.env.ANALYZE && visualizer({
       filename: 'dist/stats.html',
       open: true,
       gzipSize: true,
       brotliSize: true,
-      template: 'treemap' // 'treemap' | 'sunburst' | 'network'
+      template: 'treemap'
     })
-  ],
+  ].filter(Boolean),
   
   resolve: {
     alias: {
@@ -34,13 +37,11 @@ export default defineConfig({
       '@assets': resolve(__dirname, 'src/assets'),
       '@config': resolve(__dirname, 'src/config'),
       '@test': resolve(__dirname, 'src/test'),
-      // ✅ NUEVOS ALIAS AGREGADOS
-      '@features': resolve(__dirname, 'src/features'),
+      // ✅ ALIAS ADICIONALES
       '@pages': resolve(__dirname, 'src/pages'),
       '@mappers': resolve(__dirname, 'src/mappers'),
       '@routes': resolve(__dirname, 'src/routes'),
-      '@types': resolve(__dirname, 'src/types'),
-      '@metrics': resolve(__dirname, 'src/metrics')
+      '@types': resolve(__dirname, 'src/types')
     }
   },
   
@@ -51,9 +52,10 @@ export default defineConfig({
     sourcemap: false, // Solo en desarrollo
     chunkSizeWarningLimit: 1000,
     
-    // ✅ ESBUILD: Eliminar console/debugger en producción
+    // ✅ ESBUILD: Solo eliminar debugger (más rápido)
+    // console.log útil para debugging, solo eliminar debugger
     esbuild: {
-      drop: ['console', 'debugger'],
+      drop: ['debugger'],
       legalComments: 'none',
     },
     
@@ -113,7 +115,6 @@ export default defineConfig({
       'react-router-dom',
       'axios',
       'react-hook-form',
-      'react-select',
       'rc-slider'
     ]
   },
@@ -177,13 +178,11 @@ export default defineConfig({
         '@layout': resolve(__dirname, 'src/components/layout'),
         '@constants': resolve(__dirname, 'src/constants'),
         '@styles': resolve(__dirname, 'src/styles'),
-        // ✅ NUEVOS ALIAS AGREGADOS
-        '@features': resolve(__dirname, 'src/features'),
+        // ✅ ALIAS ADICIONALES
         '@pages': resolve(__dirname, 'src/pages'),
         '@mappers': resolve(__dirname, 'src/mappers'),
         '@routes': resolve(__dirname, 'src/routes'),
-        '@types': resolve(__dirname, 'src/types'),
-        '@metrics': resolve(__dirname, 'src/metrics')
+        '@types': resolve(__dirname, 'src/types')
       }
     }
   }
