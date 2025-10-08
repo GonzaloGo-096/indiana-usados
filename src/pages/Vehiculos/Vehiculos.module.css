@@ -8,7 +8,8 @@
 .container {
   max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: var(--spacing-xl) var(--spacing-md);
+  /* ✅ MOBILE-FIRST: Padding base para móvil */
+  padding: var(--spacing-lg) var(--spacing-1);
   width: 100%;
 }
 
@@ -21,20 +22,25 @@
 /* ✅ NUEVO: Sección del título con botones */
 .titleSection {
   display: flex;
+  /* ✅ MOBILE-FIRST: Columna en móvil */
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0; /* ✅ ELIMINADO: Sin margin-bottom para pegar formulario */
-  padding: 20px 0 0 0; /* ✅ ELIMINADO: Sin padding-bottom para pegar formulario */
+  margin-bottom: 0;
+  padding: 20px 0 0 0;
 }
 
 .mainTitle {
-  font-size: 2.5rem;
-  font-weight: 400; /* ✅ CAMBIADO: De 700 (bold) a 400 (normal) */
+  /* ✅ MOBILE-FIRST: Tamaño base para móvil */
+  font-size: 2rem;
+  font-weight: 400;
   color: #333;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-family: 'Barlow Condensed', sans-serif; /* ✅ AGREGADO: Tipografía consistente */
+  font-family: 'Barlow Condensed', sans-serif;
 }
 
 /* ✅ NUEVO: Botón volver a lista principal */
@@ -69,10 +75,11 @@
 }
 
 .actionButtons {
-  display: flex;
-  gap: 12px; /* ✅ REDUCIDO: Gap más pequeño */
+  /* ✅ MOBILE-FIRST: Oculto por defecto en móvil */
+  display: none;
+  gap: 12px;
   align-items: center;
-  position: relative; /* ✅ AGREGADO: Para posicionar el divisor */
+  position: relative;
 }
 
 /* ✅ NUEVO: Línea divisora entre botones */
@@ -129,38 +136,50 @@
   margin-top: 30px; /* ✅ AGREGADO: Espacio entre formulario y lista de autos */
 }
 
-/* Título legacy (mantener por compatibilidad) */
-.title {
-  font-size: var(--font-size-4xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-neutral-800);
+/* ===== ESTILOS PARA BANNER DE DATOS MOCK ===== */
+.mockDataBanner {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
   text-align: center;
-  margin: 0;
+  color: #856404;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+.mockDataBanner strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.mockDataBanner small {
+  font-size: 0.875rem;
+}
+
+/* ===== RESPONSIVE - MOBILE FIRST ===== */
+
+/* Tablet y arriba (768px+) */
+/* ⚠️ NOTA: Usamos 769px en vez de var(--tablet-min) para evitar edge case en exactamente 768px */
+/* TODO FUTURO: Cuando todos los archivos estén migrados, usar var(--tablet-min) consistentemente */
+@media (min-width: 769px) {
   .container {
-    padding: var(--spacing-lg) var(--spacing-1);
-  }
-  
-  .titleSection {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
+    /* ✅ Desktop: Padding más generoso */
+    padding: var(--spacing-xl) var(--spacing-md);
   }
   
   .mainTitle {
-    font-size: 2rem;
+    /* ✅ Desktop: Título más grande */
+    font-size: 2.5rem;
   }
   
-  /* ✅ OCULTAR: Botones del título en mobile */
-  .actionButtons {
-    display: none;
+  .titleSection {
+    /* ✅ Desktop: Fila horizontal */
+    flex-direction: row;
+    text-align: left;
   }
   
-  /* Título legacy */
-  .title {
-    font-size: var(--font-size-3xl);
+  .titleSection .actionButtons {
+    /* ✅ Desktop: Mostrar botones (especificidad aumentada) */
+    display: flex;
   }
 } 

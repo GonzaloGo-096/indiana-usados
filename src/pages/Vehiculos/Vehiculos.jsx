@@ -85,19 +85,10 @@ const Vehiculos = () => {
 
     return (
         <div className={styles.container}>
-            {/* ✅ NUEVO: Indicador de datos mock */}
+            {/* ✅ Banner de datos mock */}
             {isUsingMockData && (
-                <div style={{
-                    backgroundColor: '#fff3cd',
-                    border: '1px solid #ffeaa7',
-                    borderRadius: '8px',
-                    padding: '12px 16px',
-                    marginBottom: '20px',
-                    textAlign: 'center',
-                    color: '#856404'
-                }}>
+                <div className={styles.mockDataBanner}>
                     <strong>📱 Modo Demostración</strong>
-                    <br />
                     <small>Mostrando datos de ejemplo. Conecta tu backend para ver datos reales.</small>
                 </div>
             )}

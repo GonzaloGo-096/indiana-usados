@@ -201,10 +201,15 @@ export const CardAuto = memo(({ auto }) => {
                                 {auto.modelo}
                             </h3>
                         </div>
-                        {auto.version && (
-                            <p className={styles['card__version']}>
-                                {auto.version}
-                            </p>
+                        {/* ✅ MEJORA: Subtítulo sutil con versión + cilindrada */}
+                        {(auto.version || auto.cilindrada) && (
+                            <div className={styles['card__subtitle']}>
+                                {auto.version && <span>{auto.version}</span>}
+                                {auto.version && auto.cilindrada && (
+                                    <span className={styles['card__separator']}>•</span>
+                                )}
+                                {auto.cilindrada && <span>{auto.cilindrada}cc</span>}
+                            </div>
                         )}
                     </div>
                     

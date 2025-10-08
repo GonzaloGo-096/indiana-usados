@@ -18,15 +18,17 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    max-width: 400px; /* ✅ NUEVO: Ancho máximo para evitar distorsión */
-    background: #fafafa; /* ✅ NUEVO: Background sutil agregado */
-    border-radius: 12px;
+    /* ✅ MEJORA: Cards más angostas (400px → 340px) */
+    max-width: 340px;
+    background: #fafafa;
+    /* ✅ MOBILE-FIRST: Estilos base para móvil */
+    border-radius: 8px;
     overflow: hidden;
     border: 1px solid #e5e7eb;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     position: relative;
-    margin: 0 auto; /* ✅ NUEVO: Centrar cuando hay pocas cards */
+    margin: 0 auto;
 }
 
 .card:hover {
@@ -39,7 +41,8 @@
     position: relative;
     overflow: hidden;
     background: #f9fafb;
-    height: 260px; /* ✅ AUMENTADO: De 220px a 260px */
+    /* ✅ MOBILE-FIRST: Altura base para móvil */
+    height: 200px;
     contain: layout style paint;
     isolation: isolate;
 }
@@ -117,14 +120,16 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 16px;
-    background: #ffffff; /* ✅ MANTENIDO: Fondo blanco para el contenido */
+    /* ✅ MOBILE-FIRST: padding base para móvil */
+    padding: 14px;
+    background: #ffffff;
 }
 
 /* ===== HEADER 60/40 ===== */
 .cardHeader {
     display: flex;
-    height: 60px;
+    /* ✅ MOBILE-FIRST: altura base para móvil */
+    height: 45px;
     border-radius: 8px;
     overflow: hidden;
     border-bottom: 1px solid #e5e7eb;
@@ -151,7 +156,8 @@
 }
 
 .card__title {
-    font-size: 22px;
+    /* ✅ MEJORA: Escala tipográfica profesional (20px → 24px) */
+    font-size: 20px;
     font-weight: 700;
     color: #111827;
     margin: 0;
@@ -182,7 +188,8 @@
 }
 
 .card__price {
-    font-size: 20px;
+    /* ✅ MEJORA: Precio más grande (16px → 18px) */
+    font-size: 18px;
     font-weight: 800;
     color: #ffffff;
     margin: 0;
@@ -190,13 +197,24 @@
     line-height: 1.2;
 }
 
-.card__version {
-    font-size: 14px;
-    color: #6b7280;
-    margin: 0;
-    margin-top: 2px; /* ✅ REDUCIDO: De 4px a 2px */
+/* ✅ MEJORA: Subtítulo sutil (Versión + Cilindrada) */
+.card__subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 3px;
+    font-size: 11px;
     font-weight: 500;
+    color: #9ca3af; /* ✅ Gris más sutil */
+    line-height: 1;
     font-family: 'Barlow Condensed', sans-serif;
+}
+
+.card__separator {
+    color: #d1d5db; /* ✅ Separador aún más sutil */
+    font-weight: 400;
+    margin: 0 2px;
 }
 
 /* ===== DETALLES - SOLO 3 DATOS OPTIMIZADOS ===== */
@@ -210,14 +228,16 @@
     justify-content: space-between;
     align-items: center;
     background: transparent;
-    padding: 6px 0; /* ✅ REDUCIDO: De 8px a 6px */
+    /* ✅ MOBILE-FIRST: padding base para móvil */
+    padding: 4px 0;
     border: none;
 }
 
 .card__data_item {
     flex: 1;
     text-align: center;
-    padding: 6px 8px; /* ✅ REDUCIDO: De 8px 12px a 6px 8px */
+    /* ✅ MOBILE-FIRST: padding base para móvil */
+    padding: 4px 6px;
     background: transparent;
     border: none;
 }
@@ -246,7 +266,8 @@
 
 .card__data_label {
     display: inline;
-    font-size: 12px;
+    /* ✅ MOBILE-FIRST: tamaño base para móvil */
+    font-size: 10px;
     color: #6b7280;
     margin: 0;
     font-weight: 600;
@@ -258,7 +279,8 @@
 
 .card__data_value {
     display: block;
-    font-size: 18px;
+    /* ✅ MEJORA: Datos más grandes (15px → 17px) */
+    font-size: 17px;
     color: #374151;
     font-weight: 700;
     font-family: 'Barlow Condensed', sans-serif;
@@ -284,9 +306,10 @@
     background: #0055A4;
     border: none;
     color: white;
-    font-size: 14px;
+    /* ✅ MOBILE-FIRST: tamaño base para móvil */
+    font-size: 11px;
     font-weight: 600;
-    padding: 6px 16px;
+    padding: 5px 10px;
     border-radius: 0;
     transition: all 0.2s ease;
     cursor: pointer;
@@ -304,15 +327,16 @@
     transform: translateY(-1px);
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: var(--breakpoint-md)) {
+/* ===== RESPONSIVE - MOBILE FIRST ===== */
+
+/* ✅ Tablet y arriba (576px+) */
+@media (min-width: var(--breakpoint-sm)) {
     .card {
         border-radius: 10px;
-        background: #fafafa; /* ✅ MANTENER: Background sutil */
     }
     
     .card__image-container {
-        height: 240px; /* ✅ AJUSTADO: Proporcionalmente menor en tablet */
+        height: 240px;
     }
     
     .card__body {
@@ -324,19 +348,19 @@
     }
     
     .card__title {
-        font-size: 20px;
+        font-size: 22px;
     }
     
     .card__price {
-        font-size: 18px;
+        font-size: 20px;
     }
     
     .card__data_container {
-        padding: 6px 0; /* ✅ AJUSTADO: Mantener consistencia con desktop */
+        padding: 6px 0;
     }
     
     .card__data_item {
-        padding: 6px 8px; /* ✅ AJUSTADO: Mantener consistencia con desktop */
+        padding: 6px 8px;
     }
     
     .card__data_label {
@@ -344,7 +368,7 @@
     }
     
     .card__data_value {
-        font-size: 16px;
+        font-size: 18px;
     }
     
     .card__button {
@@ -353,50 +377,46 @@
     }
 }
 
-@media (max-width: var(--breakpoint-sm)) {
+/* ✅ Desktop y arriba (768px+) */
+@media (min-width: var(--tablet-min)) {
     .card {
-        border-radius: 8px;
-        background: #fafafa; /* ✅ MANTENER: Background sutil */
+        border-radius: 12px;
     }
     
     .card__image-container {
-        height: 200px; /* ✅ AJUSTADO: Más pequeño en móvil */
-    }
-    
-    .card__body {
-        padding: 14px;
-    }
-    
-    .cardHeader {
-        height: 45px;
+        height: 260px;
     }
     
     .card__title {
-        font-size: 18px;
+        /* ✅ MEJORA: Escala profesional (22px → 24px) */
+        font-size: 24px;
     }
     
     .card__price {
-        font-size: 16px;
+        /* ✅ MEJORA: Precio proporcionalmente más grande */
+        font-size: 22px;
     }
     
-    .card__data_container {
-        padding: 4px 0; /* ✅ AJUSTADO: Reducido proporcionalmente */
-    }
-    
-    .card__data_item {
-        padding: 4px 6px; /* ✅ AJUSTADO: Mantener proporción */
-    }
-    
-    .card__data_label {
-        font-size: 10px;
-    }
-    
-    .card__data_value {
-        font-size: 15px;
+    .cardHeader {
+        height: 60px;
     }
     
     .card__button {
-        font-size: 11px;
-        padding: 5px 10px;
+        font-size: 14px;
+        padding: 6px 16px;
+    }
+    
+    .card__data_value {
+        /* ✅ MEJORA: Datos más grandes */
+        font-size: 20px;
+    }
+    
+    .card__data_label {
+        font-size: 12px;
+    }
+    
+    .card__subtitle {
+        /* ✅ MEJORA: Subtítulo ligeramente más grande en desktop */
+        font-size: 12px;
     }
 } 

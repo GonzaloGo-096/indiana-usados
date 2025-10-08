@@ -17,7 +17,7 @@
     padding: var(--section-padding-desktop) 0;
 }
 
-@media (max-width: var(--breakpoint-md)) {
+@media (max-width: var(--mobile-max)) {
     .container {
         padding: var(--section-padding-mobile) 0;
     }
@@ -90,7 +90,7 @@
     padding-left: 24px;
 }
 
-@media (max-width: var(--breakpoint-md)) {
+@media (max-width: var(--mobile-max)) {
     .listContainer {
         padding: 0 64px; /* ✅ OPTIMIZADO: Padding más generoso en mobile (64px) */
         margin-top: 48px; /* ✅ MANTENER: Separación del Nav */
@@ -127,33 +127,39 @@
     width: 100%;
 }
 
-/* ===== GRID DE VEHÍCULOS - ULTRA OPTIMIZADO ===== */
+/* ===== GRID DE VEHÍCULOS - PROFESIONAL ===== */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 28px;
+    /* ✅ MEJORA: auto-fill mantiene márgenes, max-width controla ancho */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 340px));
+    /* ✅ MEJORA: justify-content center para márgenes consistentes */
+    justify-content: center;
+    gap: 24px;
     min-height: 150px;
+    /* ✅ MEJORA: Padding consistente en todos los tamaños */
+    padding: 0 20px;
 }
 
-@media (max-width: var(--breakpoint-md)) {
+/* Tablet y arriba: Gap más generoso */
+@media (min-width: var(--tablet-min)) {
     .grid {
-        gap: 24px;
-    }
-}
-
-/* Tablet: 2 columnas */
-@media (min-width: var(--breakpoint-md)) {
-    .grid {
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         gap: 28px;
+        padding: 0 24px;
     }
 }
 
-/* Desktop: 3 columnas */
+/* Desktop grande: Máximo de espacio */
+@media (min-width: var(--desktop-min)) {
+    .grid {
+        gap: 30px;
+    }
+}
+
+/* Desktop XL: Espaciado máximo */
 @media (min-width: var(--breakpoint-xl)) {
     .grid {
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 28px;
+        gap: 32px;
+        padding: 0 32px;
     }
 }
 
@@ -163,7 +169,7 @@
     width: 100%;
 }
 
-@media (max-width: var(--breakpoint-md)) {
+@media (max-width: var(--mobile-max)) {
     .cardWrapper {
         min-height: 300px;
     }
@@ -304,7 +310,7 @@
 }
 
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
-@media (max-width: var(--breakpoint-md)) {
+@media (max-width: var(--mobile-max)) {
     .container {
         padding: 16px 0;
     }

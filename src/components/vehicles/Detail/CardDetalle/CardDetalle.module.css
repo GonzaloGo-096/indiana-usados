@@ -8,11 +8,12 @@
  * - Botones con iconos coloridos
  * 
  * @author Indiana Usados
- * @version 5.0.0 - Ultra optimizado
+ * @version 6.0.0 - Variables locales en scope correcto
  */
 
-/* ===== VARIABLES CSS ===== */
-:root {
+/* ===== TARJETA PRINCIPAL ===== */
+.card {
+  /* ✅ Variables locales (scope del componente, no global) */
   --card-border-radius: 16px;
   --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   --card-border: 1px solid #f3f4f6;
@@ -22,10 +23,7 @@
   --price-font-size: 24px;
   --data-font-size: 1.5rem;
   --info-font-size: 1rem;
-}
-
-/* ===== TARJETA PRINCIPAL ===== */
-.card {
+  
   background: white;
   border-radius: var(--card-border-radius);
   box-shadow: var(--card-shadow);

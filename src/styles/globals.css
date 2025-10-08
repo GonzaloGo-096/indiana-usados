@@ -13,7 +13,6 @@
 
 /* ===== IMPORTAR VARIABLES GLOBALES ===== */
 @import './variables.css';
-@import './responsive.css';
 
 /* ===== RESET BÁSICO ===== */
 * {
@@ -84,28 +83,6 @@ html {
   max-width: 1400px;
   margin: 0 auto;
 }
-
-/* ===== TRANSICIONES GLOBALES ===== */
-:root {
-  /* Font stacks */
-  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Inter', Arial, sans-serif;
-  --font-display: var(--font-sans); /* Pressio eliminado */
-  --font-condensed: 'Barlow Condensed', var(--font-sans);
-  --font-family-primary: 'Barlow Condensed', var(--font-sans);
-  --font-family: 'Barlow Condensed', var(--font-sans);
-
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s ease;
-  --transition-medium: 0.5s ease;
-  --transition-slow: 0.8s ease;
-  
-  --border-radius-sm: 4px;
-  --border-radius-md: 8px;
-  --border-radius-lg: 12px;
-  --border-radius-xl: 16px;
-}
-
-
 
 /* ===== RESPONSIVE UTILITIES ===== */
 @media (max-width: var(--breakpoint-md)) {

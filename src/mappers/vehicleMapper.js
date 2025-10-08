@@ -52,10 +52,12 @@ export const mapVehiclesPage = (backendPage, currentCursor = null) => {
         // Información básica
         marca: String(v.marca || '').trim(),
         modelo: String(v.modelo || '').trim(),
+        version: String(v.version || '').trim(),
         precio: Number(v.precio || 0),
         año: Number(v.anio || 0),
         kilometraje: Number(v.kilometraje || 0),
         caja: String(v.caja || '').trim(),
+        cilindrada: Number(v.cilindrada || 0),
         
         // Imágenes (usando extractors centralizados)
         fotoPrincipal: principal || '',
@@ -119,10 +121,12 @@ export const mapVehicle = (backendVehicle) => {
       id: backendVehicle._id || backendVehicle.id || 0,
       marca: String(backendVehicle.marca || '').trim(),
       modelo: String(backendVehicle.modelo || '').trim(),
+      version: String(backendVehicle.version || '').trim(),
       precio: Number(backendVehicle.precio || 0),
       año: Number(backendVehicle.anio || 0),
       kilometraje: Number(backendVehicle.kilometraje || 0),
       caja: String(backendVehicle.caja || '').trim(),
+      cilindrada: Number(backendVehicle.cilindrada || 0),
       fotoPrincipal: principal || '',
       fotoHover: hover || '',
       imagen: principal || '',
