@@ -172,4 +172,7 @@ export const validateConfig = () => {
   return true
 }
 
+// ===== EXPORTAR CONFIG DE REACT QUERY =====
+export { REACT_QUERY_CONFIG, REACT_QUERY_TEST_CONFIG } from './reactQuery'
+
 export default config 

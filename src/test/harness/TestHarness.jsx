@@ -7,20 +7,10 @@
 import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
+import { REACT_QUERY_TEST_CONFIG } from '@config'
 
-// 🔧 Configuración por defecto del QueryClient
-const createDefaultQueryClient = () => new QueryClient({
-  defaultOptions: {
-    queries: { 
-      retry: false,
-      staleTime: 0,
-      gcTime: 0
-    },
-    mutations: { 
-      retry: false 
-    }
-  }
-})
+// ✅ Crear QueryClient con configuración centralizada para tests
+const createDefaultQueryClient = () => new QueryClient(REACT_QUERY_TEST_CONFIG)
 
 // 🎭 Componente TestHarness principal
 export const TestHarness = ({ 
@@ -38,18 +28,16 @@ export const TestHarness = ({
   )
 }
 
-// 🎯 Hook helper para crear QueryClient personalizado
+// 🎯 Hook helper para crear QueryClient personalizado con overrides
 export const useTestQueryClient = (options = {}) => {
   return new QueryClient({
     defaultOptions: {
       queries: { 
-        retry: false,
-        staleTime: 0,
-        gcTime: 0,
+        ...REACT_QUERY_TEST_CONFIG.defaultOptions.queries,
         ...options.queries
       },
       mutations: { 
-        retry: false,
+        ...REACT_QUERY_TEST_CONFIG.defaultOptions.mutations,
         ...options.mutations
       }
     }

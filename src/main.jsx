@@ -17,7 +17,7 @@ import './styles/globals.css'
 import './styles/fonts.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { GlobalErrorBoundary } from '@shared'
-import { validateConfig } from './config'
+import { validateConfig, REACT_QUERY_CONFIG } from './config'
 import { initImageMetrics } from './metrics/imageTiming'
 
 // Validar configuración al inicio
@@ -29,17 +29,8 @@ if (!validateConfig()) {
 // Inicializar métricas de imágenes
 initImageMetrics()
 
-// Crear una nueva instancia de QueryClient
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutos
-      gcTime: 1000 * 60 * 30, // 30 minutos
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-})
+// ✅ Crear QueryClient con configuración centralizada
+const queryClient = new QueryClient(REACT_QUERY_CONFIG)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

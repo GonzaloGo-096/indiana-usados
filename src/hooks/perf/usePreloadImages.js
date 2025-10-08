@@ -1,19 +1,5 @@
-/**
- * usePreloadImages - Hook para preload inteligente de imágenes críticas
- * 
- * Funcionalidades:
- * - Detecta vehículos en viewport
- * - Preload fotoPrincipal y fotoHover
- * - Detección de puntero fino (mouse/trackpad)
- * - Cancelación de requests con AbortController
- * - Evita preload innecesario en conexiones lentas
- * - Medible y efectivo
- * 
- * @author Indiana Usados
- * @version 2.0.0
- */
-
 import { useEffect, useRef, useCallback, useState } from 'react'
+import { extractVehicleImageUrls } from '@utils/imageExtractors'
 
 /**
  * Hook para preload de imágenes críticas
@@ -66,32 +52,8 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
     }
   }, [])
 
-  // Función para generar URL de preload
-  const generatePreloadUrl = useCallback((vehicle) => {
-    if (!vehicle) return null
-
-    // Obtener fotoPrincipal
-    const fotoPrincipal = vehicle.fotoPrincipal
-    let principalUrl = null
-    
-    if (typeof fotoPrincipal === 'object' && fotoPrincipal?.url) {
-      principalUrl = fotoPrincipal.url
-    } else if (typeof fotoPrincipal === 'string') {
-      principalUrl = fotoPrincipal
-    }
-
-    // Obtener fotoHover
-    const fotoHover = vehicle.fotoHover
-    let hoverUrl = null
-    
-    if (typeof fotoHover === 'object' && fotoHover?.url) {
-      hoverUrl = fotoHover.url
-    } else if (typeof fotoHover === 'string') {
-      hoverUrl = fotoHover
-    }
-
-    return { principalUrl, hoverUrl }
-  }, [])
+  // ✅ OPTIMIZADO: Usa helper centralizado para extracción de URLs
+  // Eliminada función generatePreloadUrl (25 líneas) → Reemplazada por extractVehicleImageUrls
 
   // Función para preload de imagen con AbortController
   const preloadImage = useCallback((url) => {
@@ -120,20 +82,21 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
     img.src = url
   }, [])
 
-  // Función para preload de vehículo
+  // ✅ OPTIMIZADO: Función para preload de vehículo usando helper centralizado
   const preloadVehicle = useCallback((vehicle) => {
     if (!vehicle || !enablePreload) return
 
-    const { principalUrl, hoverUrl } = generatePreloadUrl(vehicle)
+    // Extraer URLs usando helper centralizado
+    const { principal, hover } = extractVehicleImageUrls(vehicle)
     
     // Siempre preload imagen principal
-    if (principalUrl) preloadImage(principalUrl)
+    if (principal) preloadImage(principal)
     
     // Solo preload hover en dispositivos con puntero fino
-    if (hasFinePointer && hoverUrl && hoverUrl !== principalUrl) {
-      preloadImage(hoverUrl)
+    if (hasFinePointer && hover && hover !== principal) {
+      preloadImage(hover)
     }
-  }, [generatePreloadUrl, preloadImage, enablePreload, hasFinePointer])
+  }, [preloadImage, enablePreload, hasFinePointer])
 
   // Función para limpiar preloads y cancelar requests en curso
   const clearPreloads = useCallback(() => {
@@ -202,3 +165,5 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
 }
 
 export default usePreloadImages
+
+

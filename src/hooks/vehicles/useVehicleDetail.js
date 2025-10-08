@@ -8,13 +8,14 @@
  * - Estados de carga específicos para detalle
  * 
  * @author Indiana Usados
- * @version 1.0.0 - Hook especializado para detalle
+ * @version 2.0.0 - Simplificado: usa mapper para consistencia
  */
 
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { vehiclesApi } from '@services/vehiclesApi'
 import { logger } from '@utils/logger'
+import { mapVehicle } from '@mappers'
 
 /**
  * Hook para obtener detalle de un vehículo
@@ -31,9 +32,11 @@ import { logger } from '@utils/logger'
 export const useVehicleDetail = (id, options = {}) => {
     const {
         enabled = true,
-        staleTime = 1000 * 60 * 10, // 10 minutos para detalles
-        gcTime = 1000 * 60 * 60, // 1 hora para detalles
-        retry = 3, // Más reintentos para detalles
+        // ✅ Usa defaults globales de src/config/reactQuery.js (staleTime: 5min, gcTime: 30min, retry: 1)
+        // Solo override lo específico de detalles:
+        staleTime = 1000 * 60 * 10, // Override: 10 min (detalles necesitan más cache)
+        gcTime = 1000 * 60 * 60, // Override: 1 hora (detalles más persistentes)
+        retry = 3, // Override: 3 reintentos (detalles más críticos)
         refetchOnWindowFocus = false
     } = options
 
@@ -62,21 +65,23 @@ export const useVehicleDetail = (id, options = {}) => {
         refetchOnReconnect: false
     })
 
-    // Datos formateados
+    // ✅ Datos transformados usando mapper (consistencia con lista)
     const vehicle = useMemo(() => {
         if (!data) return null
         
-        // Validar estructura básica del vehículo
-        if (!data.id || !data.marca || !data.modelo) {
+        // ✅ Usar mapper para consistencia con useVehiclesList
+        const mapped = mapVehicle(data)
+        
+        if (!mapped || !mapped.id || !mapped.marca || !mapped.modelo) {
             logger.warn('vehicle:detail', 'Datos de vehículo incompletos', { data })
             return null
         }
         
-        return data
+        return mapped
     }, [data])
 
-    // Función para limpiar cache
-    const clearCache = () => {
+    // ✅ Función para invalidar cache (nomenclatura React Query estándar)
+    const invalidate = () => {
         remove()
     }
 
@@ -91,7 +96,7 @@ export const useVehicleDetail = (id, options = {}) => {
         
         // Funciones
         refetch,
-        clearCache,
+        invalidate, // ✅ Renombrado de clearCache (mejor semántica)
         
         // Metadatos
         isValidId,

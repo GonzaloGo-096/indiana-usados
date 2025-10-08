@@ -1,16 +1,3 @@
-/**
- * useScrollPosition - Hook para preservar posición de scroll
- * 
- * Responsabilidades:
- * - Guardar posición de scroll en sessionStorage
- * - Restaurar posición al navegar
- * - Debounce optimizado
- * - Navegación con scroll preservado
- * 
- * @author Indiana Usados
- * @version 1.0.0
- */
-
 import { useEffect, useRef, useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { logger } from '@utils/logger'
@@ -19,6 +6,7 @@ export const useScrollPosition = (options = {}) => {
     const {
         key = 'default',
         debounceMs = 100,
+        restoreDelay = 100, // ✅ NUEVO: delay configurable para restauración
         enabled = true
     } = options
 
@@ -34,8 +22,8 @@ export const useScrollPosition = (options = {}) => {
         const position = window.scrollY
         const scrollData = {
             position,
-            timestamp: Date.now(),
             path: location.pathname
+            // ✅ OPTIMIZADO: timestamp eliminado (no se usaba)
         }
         
         sessionStorage.setItem(`scroll_${key}`, JSON.stringify(scrollData))
@@ -81,7 +69,7 @@ export const useScrollPosition = (options = {}) => {
         navigate(to, options)
     }, [navigate, saveScrollPosition])
 
-    // ✅ EVENT LISTENER: Scroll con debounce
+    // ✅ EVENT LISTENER: Scroll con debounce + requestAnimationFrame
     useEffect(() => {
         if (!enabled) return
 
@@ -90,8 +78,9 @@ export const useScrollPosition = (options = {}) => {
                 clearTimeout(scrollTimeout.current)
             }
             
+            // ✅ OPTIMIZADO: rAF para sincronizar con repaint
             scrollTimeout.current = setTimeout(() => {
-                saveScrollPosition()
+                requestAnimationFrame(saveScrollPosition)
             }, debounceMs)
         }
 
@@ -108,14 +97,14 @@ export const useScrollPosition = (options = {}) => {
     // ✅ RESTAURAR: Posición al montar componente
     useEffect(() => {
         if (enabled) {
-            // Pequeño delay para asegurar que el DOM esté listo
+            // ✅ CONFIGURABLE: delay para asegurar que el DOM esté listo
             const timer = setTimeout(() => {
                 restoreScrollPosition()
-            }, 100)
+            }, restoreDelay)
             
             return () => clearTimeout(timer)
         }
-    }, [enabled, restoreScrollPosition])
+    }, [enabled, restoreDelay, restoreScrollPosition])
 
     return {
         saveScrollPosition,
@@ -124,4 +113,6 @@ export const useScrollPosition = (options = {}) => {
         navigateWithScroll,
         lastPosition: lastScrollPosition.current
     }
-} 
+}
+
+

@@ -87,3 +87,15 @@ export const formatBrandModel = (marca, modelo) => {
     
     return marcaFormatted || modeloFormatted || '-'
 }
+
+/**
+ * Formatear valor genérico (mostrar "-" si está vacío)
+ * @param {*} value - Valor a formatear
+ * @returns {string} - Valor formateado o "-"
+ */
+export const formatValue = (value) => {
+    if (!value || value === '' || value === 'null' || value === 'undefined') {
+        return '-'
+    }
+    return value
+}

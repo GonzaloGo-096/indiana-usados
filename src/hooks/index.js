@@ -7,23 +7,23 @@
  * @version 2.0.0 - Modular
  */
 
-// ===== HOOKS MODULARES =====
-export { useDeviceDetection, DeviceProvider, useDevice } from './useDeviceDetection'
-export { useScrollDetection } from './useScrollDetection'
-export { useScrollPosition } from './useScrollPosition'
-export { useRangeHandlers } from './useRangeHandlers'
-export { useSelectHandlers } from './useSelectHandlers'
+// ===== HOOKS MODULARES (actualizados a rutas de dominio) =====
+export { DeviceProvider, useDevice } from './ui/useDeviceDetection'
+export { useScrollPosition } from './ui/useScrollPosition'
 
-// ===== HOOKS EXISTENTES =====
-export { useAuth } from './useAuth'
-export { useAutoLogout } from './useAutoLogout'
-export { useCarMutation } from './useCarMutation'
-export { useImageOptimization } from './useImageOptimization'
-export { usePreloadImages } from './usePreloadImages'
-export { usePreloadRoute } from './usePreloadRoute'
-export { useVehicleData } from './useVehicleData'
-export { useVehicleImage } from './useVehicleImage'
-export { useAdminMutations } from './useAdminMutations'
+// ===== REEXPORTS POR DOMINIO =====
+export * from './auth'
+export * from './ui'
+export * from './images'
+export * from './forms'
+export * from './perf'
+
+// ===== HOOKS EXISTENTES (redirigidos a rutas de dominio) =====
+export { useCarMutation } from './admin/useCarMutation'
+export { useCarouselImages } from './images/useImageOptimization'
+export { usePreloadImages } from './perf/usePreloadImages'
+export { usePreloadRoute } from './perf/usePreloadRoute'
+export { getVehicleImageUrl } from './vehicles/useVehicleImage' // ✅ Solo función (hook eliminado)
 
 // ===== HOOKS DE VEHICULOS =====
 export * from './vehicles'

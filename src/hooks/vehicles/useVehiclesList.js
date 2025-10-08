@@ -8,17 +8,16 @@
  * - Backend maneja paginación automáticamente
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Migrado a useInfiniteQuery
+ * @version 3.0.0 - Simplificado: mapper único, sin duplicación
  */
 
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { getMainVehicles } from '@services/vehiclesApi'
-import { normalizeVehiclesPage } from '@api/vehicles.normalizer'
-import { mapListResponse } from '@mappers/vehicleMapper'
+import { mapVehiclesPage } from '@mappers'
 
-export const useVehiclesList = (filters = {}) => {
-  // ✅ PAGE SIZE FIJO
-  const PAGE_SIZE = 8;
+export const useVehiclesList = (filters = {}, options = {}) => {
+  // ✅ PAGE SIZE CONFIGURABLE (default: 8 para página pública)
+  const PAGE_SIZE = options.pageSize ?? 8;
   
   // ✅ QUERY INFINITA - con paginación
   const query = useInfiniteQuery({
@@ -33,22 +32,25 @@ export const useVehiclesList = (filters = {}) => {
       return result;
     },
     initialPageParam: 1,
-    getNextPageParam: (lastRaw) => {
-      const page = normalizeVehiclesPage(lastRaw);
-      return page.hasNextPage ? page.next : undefined;
+    
+    // ✅ SIMPLIFICADO: Extrae hasNextPage directo del backend (sin normalizer)
+    getNextPageParam: (lastPage) => {
+      const hasNext = lastPage?.allPhotos?.hasNextPage
+      const next = lastPage?.allPhotos?.nextPage
+      return hasNext ? next : undefined
     },
+    
+    // ✅ SIMPLIFICADO: Usa mapper único (sin duplicación)
     select: (data) => {
-      const pages = data.pages.map(mapListResponse);
+      const pages = data.pages.map(mapVehiclesPage)
       return {
         vehicles: pages.flatMap(p => p.vehicles),
         total: pages[0]?.total ?? 0
-      };
+      }
     },
     placeholderData: (prev) => prev,
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000, // 5 minutos
-    gcTime: 30 * 60 * 1000, // 30 minutos
-    retry: 2
+    // ✅ Usa defaults globales de src/config/reactQuery.js (staleTime: 5min, gcTime: 30min, retry: 1)
+    retry: 2 // Override: 2 reintentos para listas (más tolerante que el default de 1)
   });
 
   // ✅ RETORNAR DATOS MAPEADOS

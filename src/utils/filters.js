@@ -1,71 +1,103 @@
-// ✅ FUNCIÓN ÚNICA Y SIMPLE para convertir filtros del frontend al backend
-import { logger } from '@utils/logger'
+/**
+ * filters.js - Utilidades para manejo de filtros de vehículos
+ * 
+ * Convierte filtros entre formato frontend (objetos) y backend (URLSearchParams)
+ * 
+ * @author Indiana Usados
+ * @version 2.0.0 - Limpieza: eliminado código muerto, logging simplificado, DRY con constants
+ */
 
+import { logger } from '@utils/logger'
+import { FILTER_DEFAULTS } from '@constants'
+
+/**
+ * Convierte filtros del frontend a URLSearchParams para el backend
+ * Solo incluye parámetros que no sean valores por defecto (optimización)
+ * 
+ * @param {Object} filters - Objeto de filtros del frontend
+ * @param {Array} filters.marca - Array de marcas seleccionadas
+ * @param {Array} filters.caja - Array de tipos de caja
+ * @param {Array} filters.combustible - Array de tipos de combustible
+ * @param {Array} filters.año - [min, max] rango de años
+ * @param {Array} filters.precio - [min, max] rango de precios
+ * @param {Array} filters.kilometraje - [min, max] rango de kilómetros
+ * @returns {URLSearchParams} Parámetros listos para el backend
+ */
 export const buildFiltersForBackend = (filters = {}) => {
   const params = new URLSearchParams();
   
-  // 🔍 LOG CRÍTICO: Ver qué filtros llegan (solo en desarrollo)
+  // ✅ LOG SIMPLIFICADO: Solo entrada (solo en desarrollo)
   if (import.meta.env.DEV) {
-    logger.debug('filters:build', 'RECIBE', filters);
+    logger.debug('filters:build', 'Construyendo filtros', { filters });
   }
   
-  // 1. FILTROS SIMPLES (arrays → strings)
+  // ===== FILTROS SIMPLES (arrays → strings con comas) =====
+  
   if (filters.marca && filters.marca.length > 0) {
     params.set('marca', filters.marca.join(','));
-    if (import.meta.env.DEV) {
-      logger.debug('filters:build', 'MARCA ENVIADA', filters.marca.join(','));
-    }
   }
   
   if (filters.caja && filters.caja.length > 0) {
     params.set('caja', filters.caja.join(','));
-    if (import.meta.env.DEV) {
-      logger.debug('filters:build', 'CAJA ENVIADA', filters.caja.join(','));
-    }
   }
   
   if (filters.combustible && filters.combustible.length > 0) {
     params.set('combustible', filters.combustible.join(','));
-    if (import.meta.env.DEV) {
-      logger.debug('filters:build', 'COMBUSTIBLE ENVIADO', filters.combustible.join(','));
+  }
+  
+  // ===== RANGOS (arrays → "min,max") =====
+  // Solo incluir si NO son valores por defecto (optimización de query params)
+  
+  if (filters.año && filters.año.length === 2) {
+    const [min, max] = filters.año
+    const isDefault = min === FILTER_DEFAULTS.AÑO.min && max === FILTER_DEFAULTS.AÑO.max
+    if (!isDefault) {
+      params.set('anio', `${min},${max}`)
     }
   }
   
-  // 2. RANGOS (arrays → "min,max") - SOLO SI NO SON VALORES POR DEFECTO
-  if (filters.año && filters.año.length === 2 && 
-      !(filters.año[0] === 1990 && filters.año[1] === 2024)) {
-    params.set('anio', `${filters.año[0]},${filters.año[1]}`);
-    logger.debug('filters:build', 'AÑO ENVIADO', `${filters.año[0]},${filters.año[1]}`);
+  if (filters.precio && filters.precio.length === 2) {
+    const [min, max] = filters.precio
+    const isDefault = min === FILTER_DEFAULTS.PRECIO.min && max === FILTER_DEFAULTS.PRECIO.max
+    if (!isDefault) {
+      params.set('precio', `${min},${max}`)
+    }
   }
   
-  if (filters.precio && filters.precio.length === 2 && 
-      !(filters.precio[0] === 5000000 && filters.precio[1] === 100000000)) {
-    params.set('precio', `${filters.precio[0]},${filters.precio[1]}`);
-    logger.debug('filters:build', 'PRECIO ENVIADO', `${filters.precio[0]},${filters.precio[1]}`);
+  if (filters.kilometraje && filters.kilometraje.length === 2) {
+    const [min, max] = filters.kilometraje
+    const isDefault = min === FILTER_DEFAULTS.KILOMETRAJE.min && max === FILTER_DEFAULTS.KILOMETRAJE.max
+    if (!isDefault) {
+      params.set('km', `${min},${max}`)
+    }
   }
   
-  if (filters.kilometraje && filters.kilometraje.length === 2 && 
-      !(filters.kilometraje[0] === 0 && filters.kilometraje[1] === 200000)) {
-    params.set('km', `${filters.kilometraje[0]},${filters.kilometraje[1]}`);
-    logger.debug('filters:build', 'KM ENVIADO', `${filters.kilometraje[0]},${filters.kilometraje[1]}`);
-  }
-  
+  // ✅ LOG SIMPLIFICADO: Solo salida (solo en desarrollo)
   if (import.meta.env.DEV) {
-    logger.debug('filters:build', 'PARÁMETROS FINALES', params.toString());
+    logger.debug('filters:build', 'Parámetros generados', { params: params.toString() });
   }
+  
   return params;
 };
 
-// ✅ FUNCIÓN SIMPLE para serializar a URL
+/**
+ * Serializa filtros a URLSearchParams (alias de buildFiltersForBackend)
+ * @param {Object} filters - Objeto de filtros
+ * @returns {URLSearchParams} Parámetros para URL
+ */
 export const serializeFilters = (filters = {}) => {
   return buildFiltersForBackend(filters);
 };
 
-// ✅ FUNCIÓN SIMPLE para parsear desde URL
+/**
+ * Parsea URLSearchParams a objeto de filtros del frontend
+ * @param {URLSearchParams} searchParams - Parámetros de URL
+ * @returns {Object} Objeto de filtros para el frontend
+ */
 export const parseFilters = (searchParams) => {
   const filters = {};
   
-  // Leer filtros simples
+  // Leer filtros simples (strings → arrays)
   const marca = searchParams.get('marca');
   if (marca) filters.marca = marca.split(',');
   
@@ -75,7 +107,7 @@ export const parseFilters = (searchParams) => {
   const combustible = searchParams.get('combustible');
   if (combustible) filters.combustible = combustible.split(',');
   
-  // Leer rangos
+  // Leer rangos (strings → arrays de números)
   const anio = searchParams.get('anio');
   if (anio) {
     const [min, max] = anio.split(',').map(Number);
@@ -97,19 +129,23 @@ export const parseFilters = (searchParams) => {
   return filters;
 };
 
-// ✅ FUNCIÓN SIMPLE para detectar filtros activos
+/**
+ * Detecta si hay algún filtro activo
+ * @param {Object} filters - Objeto de filtros
+ * @returns {boolean} True si hay al menos un filtro activo
+ */
 export const hasAnyFilter = (filters = {}) => {
   return Object.values(filters).some(value => 
     value && (Array.isArray(value) ? value.length > 0 : true)
   );
 };
 
-// ✅ FUNCIÓN SIMPLE para generar clave de filtros
-export const filtersKey = (filters = {}) => {
-  return JSON.stringify(filters);
-};
-
-// ✅ NUEVO: Utilidades de sorting
+/**
+ * Ordena vehículos según criterio de ordenamiento
+ * @param {Array} vehicles - Array de vehículos
+ * @param {string} sortOption - Opción de ordenamiento
+ * @returns {Array} Array ordenado (nueva copia, no muta original)
+ */
 export const sortVehicles = (vehicles = [], sortOption) => {
   if (!sortOption || !Array.isArray(vehicles) || vehicles.length === 0) {
     return vehicles;
@@ -131,7 +167,11 @@ export const sortVehicles = (vehicles = [], sortOption) => {
   });
 };
 
-// ✅ NUEVO: Validar opción de sorting
+/**
+ * Valida si una opción de sorting es válida
+ * @param {string} sortOption - Opción a validar
+ * @returns {boolean} True si es válida
+ */
 export const isValidSortOption = (sortOption) => {
   const validOptions = ['precio_desc', 'precio_asc', 'km_desc', 'km_asc'];
   return validOptions.includes(sortOption);

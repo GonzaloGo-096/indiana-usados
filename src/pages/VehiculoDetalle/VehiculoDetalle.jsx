@@ -11,7 +11,7 @@ import { useVehicleDetail } from '@hooks/vehicles'
 import { CardDetalle } from '@vehicles'
 import { ErrorState } from '@ui'
 import { DetalleSkeleton } from '@shared'
-import { useScrollPosition } from '@hooks/useScrollPosition'
+import { useScrollPosition } from '@hooks'
 import styles from './VehiculoDetalle.module.css'
 
 const VehiculoDetalle = () => {

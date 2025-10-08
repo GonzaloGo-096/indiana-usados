@@ -1,26 +1,6 @@
-/**
- * usePreloadRoute - Hook para preloading estratégico de rutas
- * 
- * Responsabilidades:
- * - Preloading de rutas probables
- * - Preloading en hover/focus
- * - Cache inteligente de rutas
- * - Performance optimizada
- * 
- * @author Indiana Usados
- * @version 1.0.0
- */
-
 import { useCallback, useRef } from 'react'
 import { logger } from '@utils/logger'
 
-/**
- * Hook para preloading estratégico de rutas
- * @param {Object} options - Opciones de configuración
- * @param {number} options.delay - Delay antes de preload (ms)
- * @param {boolean} options.enabled - Si el preloading está habilitado
- * @returns {Object} - Funciones de preloading
- */
 export const usePreloadRoute = (options = {}) => {
     const {
         delay = 200, // 200ms de delay
@@ -98,4 +78,6 @@ export const usePreloadRoute = (options = {}) => {
         clearAllPreloads,
         isRoutePreloaded
     }
-} 
+}
+
+

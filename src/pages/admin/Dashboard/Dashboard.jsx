@@ -6,11 +6,8 @@
  */
 
 import React, { useReducer, useCallback } from 'react'
-import { useAuth } from '@hooks/useAuth'
-import { useAutoLogout } from '@hooks/useAutoLogout'
-import { useVehicleData } from '@hooks/useVehicleData'
-import { getVehicleImageUrl } from '@hooks/useVehicleImage'
-import { useCarMutation } from '@hooks/useCarMutation'
+import { useAuth, useVehiclesList, getVehicleImageUrl } from '@hooks'
+import { useCarMutation } from '@hooks'
 import axiosInstance from '@api/axiosInstance'
 import vehiclesService from '@services/vehiclesApi'
 import { normalizeDetailToFormInitialData, unwrapDetail } from '@components/admin/mappers/normalizeForForm'
@@ -133,20 +130,19 @@ const Dashboard = () => {
     const { logout, isAuthenticated } = useAuth()
     const navigate = useNavigate()
     
-    // ✅ HOOK PERSONALIZADO: Carga y normalización de datos
-    const { vehicles, isLoading, error, refetch } = useVehicleData({ 
-        limit: 50, 
-        enabled: isAuthenticated 
-    })
+    // ✅ HOOK UNIFICADO: React Query con cache, retry y abort signal
+    const { vehicles, isLoading, error, refetch } = useVehiclesList(
+        {}, // sin filtros - Dashboard muestra todos los vehículos
+        { pageSize: 50 } // carga 50 vehículos para admin
+    )
     
-    // ✅ HOOK PARA MUTACIONES DE AUTOS
-    const { createCar, updateCar, deleteCar } = useCarMutation()
+    // ✅ HOOK PARA MUTACIONES DE AUTOS (versión simple)
+    const { createMutation, updateMutation, deleteMutation } = useCarMutation()
 
     // ✅ ESTADO DEL MODAL CON REDUCER SIMPLIFICADO
     const [modalState, dispatch] = useReducer(carModalReducer, initialCarModalState)
     
-    // ✅ AUTO-LOGOUT: Se activa cuando el usuario sale de la página
-    useAutoLogout(isAuthenticated)
+    // ✅ AUTO-LOGOUT: Integrado en useAuth (no necesita hook separado)
 
     // ✅ MANEJADORES DE AUTENTICACIÓN
     const handleLogout = useCallback(() => {
@@ -196,24 +192,18 @@ const Dashboard = () => {
             
             // logger.info('admin:dashboard', 'CREANDO VEHÍCULO', { formDataKeys: Object.keys(formData || {}) })
             
-            // ✅ USAR LA FUNCIÓN REAL createCar
-            const result = await createCar(formData)
+            // ✅ USAR LA MUTATION DIRECTA
+            await createMutation.mutateAsync(formData)
             
-            if (result.success) {
-                // logger.info('admin:dashboard', 'Vehículo creado exitosamente')
-                // ✅ REFRESCAR LISTA Y CERRAR MODAL
-                refetch()
-                handleCloseModal()
-            } else {
-                // logger.error('admin:dashboard', 'Error al crear vehículo', result.error)
-                dispatch(setError(`No se pudo crear el vehículo: ${result.error}`))
-            }
+            // ✅ REFRESCAR LISTA Y CERRAR MODAL
+            refetch()
+            handleCloseModal()
             
         } catch (error) {
             // logger.error('admin:dashboard', 'Error al crear vehículo', error)
-            dispatch(setError('Error inesperado al crear el vehículo'))
+            dispatch(setError(`No se pudo crear el vehículo: ${error.message}`))
         }
-    }, [refetch, handleCloseModal, dispatch])
+    }, [refetch, handleCloseModal, dispatch, createMutation])
 
     const handleUpdateVehicle = useCallback(async (formData, vehicleId) => {
         try {
@@ -221,24 +211,18 @@ const Dashboard = () => {
             
             // logger.info('admin:dashboard', 'ACTUALIZANDO VEHÍCULO', { vehicleId, formDataKeys: Object.keys(formData || {}) })
             
-            // ✅ USAR LA FUNCIÓN REAL updateCar
-            const result = await updateCar(vehicleId, formData)
+            // ✅ USAR LA MUTATION DIRECTA
+            await updateMutation.mutateAsync({ id: vehicleId, formData })
             
-            if (result.success) {
-                // logger.info('admin:dashboard', 'Vehículo actualizado exitosamente')
-                // ✅ REFRESCAR LISTA Y CERRAR MODAL
-                refetch()
-                handleCloseModal()
-            } else {
-                // logger.error('admin:dashboard', 'Error al actualizar vehículo', result.error)
-                dispatch(setError(`No se pudo actualizar el vehículo: ${result.error}`))
-            }
+            // ✅ REFRESCAR LISTA Y CERRAR MODAL
+            refetch()
+            handleCloseModal()
             
         } catch (error) {
             // logger.error('admin:dashboard', 'Error al actualizar vehículo', error)
-            dispatch(setError('Error inesperado al actualizar el vehículo'))
+            dispatch(setError(`No se pudo actualizar el vehículo: ${error.message}`))
         }
-    }, [refetch, handleCloseModal, dispatch])
+    }, [refetch, handleCloseModal, dispatch, updateMutation])
 
     // ✅ MANEJADORES DE ACCIONES ADICIONALES (PREPARADOS PARA FUTURAS MUTATIONS)
     const handlePauseVehicle = useCallback(async (vehicleId) => {
@@ -268,23 +252,17 @@ const Dashboard = () => {
             
             // logger.info('admin:dashboard', 'ELIMINANDO VEHÍCULO', { vehicleId })
             
-            // ✅ USAR LA FUNCIÓN deleteCar DEL HOOK
-            const result = await deleteCar(vehicleId)
+            // ✅ USAR LA MUTATION DIRECTA
+            await deleteMutation.mutateAsync(vehicleId)
             
-            if (result.success) {
-                // logger.info('admin:dashboard', 'Vehículo eliminado exitosamente')
-                // ✅ REFRESCAR LISTA
-                refetch()
-            } else {
-                // logger.error('admin:dashboard', 'Error al eliminar vehículo', result.error)
-                alert(`Error al eliminar: ${result.error}`)
-            }
+            // ✅ REFRESCAR LISTA
+            refetch()
             
         } catch (error) {
             // logger.error('admin:dashboard', 'Error al eliminar vehículo', error)
-            alert('Error inesperado al eliminar el vehículo')
+            alert(`Error al eliminar: ${error.message}`)
         }
-    }, [refetch])
+    }, [refetch, deleteMutation])
 
 
 

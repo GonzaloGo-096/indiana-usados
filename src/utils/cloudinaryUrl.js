@@ -4,8 +4,10 @@
  * Genera URLs optimizadas con transformaciones automáticas
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0 - Constantes de placeholder extraídas, exportado en barrel
  */
+
+// ===== CONFIGURACIÓN =====
 
 // Cloud name desde variable de entorno o fallback
 const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'duuwqmpmn'
@@ -14,9 +16,17 @@ const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'duu
 const PROGRESSIVE_JPEG_ENABLED = import.meta.env.VITE_IMG_PROGRESSIVE_JPEG === 'true'
 const BLUR_PLACEHOLDER_ENABLED = import.meta.env.VITE_IMG_PLACEHOLDER_BLUR === 'true'
 
+// ===== CACHE =====
+
 // Caché en memoria para URLs de Cloudinary (evita recomputes innecesarios)
 const urlCache = new Map()
 const URL_CACHE_MAX = 300
+
+// ===== CONSTANTES DE PLACEHOLDER =====
+
+const PLACEHOLDER_WIDTH = 24
+const PLACEHOLDER_QUALITY = 10
+const PLACEHOLDER_BLUR = 'blur:200'
 
 /**
  * Genera URL de Cloudinary con transformaciones
@@ -114,12 +124,12 @@ export function cldUrl(publicId, options = {}) {
 export function cldPlaceholderUrl(publicId, options = {}) {
   if (!publicId || !BLUR_PLACEHOLDER_ENABLED) return ''
   
-  // Opciones específicas para placeholder borroso (sin Progressive JPEG)
+  // ✅ Opciones específicas para placeholder borroso (usando constantes)
   const placeholderOptions = {
-    width: 24,
+    width: PLACEHOLDER_WIDTH,
     crop: 'limit',
-    quality: 10,
-    effects: ['blur:200'],
+    quality: PLACEHOLDER_QUALITY,
+    effects: [PLACEHOLDER_BLUR],
     ...options
   }
   

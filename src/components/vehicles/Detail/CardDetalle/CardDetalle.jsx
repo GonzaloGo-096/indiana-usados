@@ -12,9 +12,8 @@
  */
 
 import React, { memo, useMemo, useCallback } from 'react'
-import { formatValue } from '@utils/imageUtils'
-import { formatCaja, formatPrice, formatKilometraje } from '@utils/formatters'
-import { useCarouselImages } from '@hooks/useImageOptimization'
+import { formatValue, formatCaja, formatPrice, formatKilometraje } from '@utils/formatters'
+import { useCarouselImages } from '@hooks'
 import { ImageCarousel } from '@ui/ImageCarousel'
 import ContactoDirecto from '@components/vehicles/Detail/ContactoDirecto'
 import styles from './CardDetalle.module.css'

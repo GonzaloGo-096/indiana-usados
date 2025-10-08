@@ -26,7 +26,7 @@ import styles from './CardAuto.module.css'
 import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
 import CloudinaryImage from '@/components/ui/CloudinaryImage/CloudinaryImage'
 import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
-import { usePreloadImages } from '@hooks/usePreloadImages'
+import { usePreloadImages } from '@hooks'
 
 /**
  * Componente CardAuto optimizado

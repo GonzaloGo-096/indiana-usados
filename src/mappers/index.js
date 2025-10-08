@@ -1,13 +1,11 @@
 /**
- * Índice de mappers para normalización de datos
+ * Índice de mappers para transformación de datos
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 3.0.0 - Simplificado: mapper único y directo
  */
 
 export {
-  mapApiVehicleToModel,
-  mapListResponse,
-  mapDetailResponse,
-  validateVehicle
-} from './vehicleMapper.js' 
+  mapVehiclesPage,
+  mapVehicle
+} from './vehicleMapper.js'
