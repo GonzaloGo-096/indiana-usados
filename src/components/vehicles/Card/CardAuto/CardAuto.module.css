@@ -18,10 +18,8 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    /* ✅ MEJORA: Cards más angostas (400px → 340px) */
-    max-width: 340px;
+    max-width: 360px;
     background: #fafafa;
-    /* ✅ MOBILE-FIRST: Estilos base para móvil */
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid #e5e7eb;
@@ -120,16 +118,14 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    /* ✅ MOBILE-FIRST: padding base para móvil */
-    padding: 14px;
+    padding: 16px;
     background: #ffffff;
 }
 
 /* ===== HEADER 60/40 ===== */
 .cardHeader {
     display: flex;
-    /* ✅ MOBILE-FIRST: altura base para móvil */
-    height: 45px;
+    height: 48px;
     border-radius: 8px;
     overflow: hidden;
     border-bottom: 1px solid #e5e7eb;
@@ -156,8 +152,7 @@
 }
 
 .card__title {
-    /* ✅ MEJORA: Escala tipográfica profesional (20px → 24px) */
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: #111827;
     margin: 0;
@@ -188,8 +183,7 @@
 }
 
 .card__price {
-    /* ✅ MEJORA: Precio más grande (16px → 18px) */
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 800;
     color: #ffffff;
     margin: 0;
@@ -197,24 +191,23 @@
     line-height: 1.2;
 }
 
-/* ✅ MEJORA: Subtítulo sutil (Versión + Cilindrada) */
 .card__subtitle {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    margin-top: 3px;
-    font-size: 11px;
+    gap: 3px;
+    margin-top: 1px;
+    font-size: 12px;
     font-weight: 500;
-    color: #9ca3af; /* ✅ Gris más sutil */
+    color: var(--color-neutral-500);
     line-height: 1;
     font-family: 'Barlow Condensed', sans-serif;
 }
 
 .card__separator {
-    color: #d1d5db; /* ✅ Separador aún más sutil */
+    color: #d1d5db;
     font-weight: 400;
-    margin: 0 2px;
+    margin: 0;
 }
 
 /* ===== DETALLES - SOLO 3 DATOS OPTIMIZADOS ===== */
@@ -228,16 +221,14 @@
     justify-content: space-between;
     align-items: center;
     background: transparent;
-    /* ✅ MOBILE-FIRST: padding base para móvil */
-    padding: 4px 0;
+    padding: 6px 0;
     border: none;
 }
 
 .card__data_item {
     flex: 1;
     text-align: center;
-    /* ✅ MOBILE-FIRST: padding base para móvil */
-    padding: 4px 6px;
+    padding: 6px 8px;
     background: transparent;
     border: none;
 }
@@ -266,8 +257,7 @@
 
 .card__data_label {
     display: inline;
-    /* ✅ MOBILE-FIRST: tamaño base para móvil */
-    font-size: 10px;
+    font-size: 11px;
     color: #6b7280;
     margin: 0;
     font-weight: 600;
@@ -279,8 +269,7 @@
 
 .card__data_value {
     display: block;
-    /* ✅ MEJORA: Datos más grandes (15px → 17px) */
-    font-size: 17px;
+    font-size: 19px;
     color: #374151;
     font-weight: 700;
     font-family: 'Barlow Condensed', sans-serif;
@@ -306,10 +295,9 @@
     background: #0055A4;
     border: none;
     color: white;
-    /* ✅ MOBILE-FIRST: tamaño base para móvil */
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
-    padding: 5px 10px;
+    padding: 7px 12px;
     border-radius: 0;
     transition: all 0.2s ease;
     cursor: pointer;
@@ -329,94 +317,31 @@
 
 /* ===== RESPONSIVE - MOBILE FIRST ===== */
 
-/* ✅ Tablet y arriba (576px+) */
 @media (min-width: var(--breakpoint-sm)) {
-    .card {
-        border-radius: 10px;
-    }
-    
-    .card__image-container {
-        height: 240px;
-    }
-    
-    .card__body {
-        padding: 16px;
-    }
-    
-    .cardHeader {
-        height: 50px;
-    }
-    
-    .card__title {
-        font-size: 22px;
-    }
-    
-    .card__price {
-        font-size: 20px;
-    }
-    
-    .card__data_container {
-        padding: 6px 0;
-    }
-    
-    .card__data_item {
-        padding: 6px 8px;
-    }
-    
-    .card__data_label {
-        font-size: 11px;
-    }
-    
-    .card__data_value {
-        font-size: 18px;
-    }
-    
-    .card__button {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
+    .card { border-radius: 10px; }
+    .card__image-container { height: 240px; }
+    .card__body { padding: 18px; }
+    .cardHeader { height: 54px; }
+    .card__title { font-size: 24px; }
+    .card__price { font-size: 22px; }
+    .card__data_container { padding: 8px 0; }
+    .card__data_item { padding: 8px 10px; }
+    .card__data_label { font-size: 12px; }
+    .card__data_value { font-size: 20px; }
+    .card__button { font-size: 14px; padding: 8px 14px; }
 }
 
-/* ✅ Desktop y arriba (768px+) */
 @media (min-width: var(--tablet-min)) {
-    .card {
-        border-radius: 12px;
-    }
-    
-    .card__image-container {
-        height: 260px;
-    }
-    
-    .card__title {
-        /* ✅ MEJORA: Escala profesional (22px → 24px) */
-        font-size: 24px;
-    }
-    
-    .card__price {
-        /* ✅ MEJORA: Precio proporcionalmente más grande */
-        font-size: 22px;
-    }
-    
-    .cardHeader {
-        height: 60px;
-    }
-    
-    .card__button {
-        font-size: 14px;
-        padding: 6px 16px;
-    }
-    
-    .card__data_value {
-        /* ✅ MEJORA: Datos más grandes */
-        font-size: 20px;
-    }
-    
-    .card__data_label {
-        font-size: 12px;
-    }
-    
-    .card__subtitle {
-        /* ✅ MEJORA: Subtítulo ligeramente más grande en desktop */
-        font-size: 12px;
-    }
+    .card { border-radius: 12px; }
+    .card__image-container { height: 260px; }
+    .card__body { padding: 20px; }
+    .cardHeader { height: 64px; }
+    .card__title { font-size: 26px; }
+    .card__price { font-size: 24px; }
+    .card__subtitle { font-size: 14px; }
+    .card__data_container { padding: 10px 0; }
+    .card__data_item { padding: 8px 10px; }
+    .card__data_label { font-size: 13px; }
+    .card__data_value { font-size: 22px; }
+    .card__button { font-size: 15px; padding: 8px 16px; }
 } 
