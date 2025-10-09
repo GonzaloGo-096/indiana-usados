@@ -11,10 +11,11 @@
 :root {
     /* ===== VARIABLES DE FUENTES ===== */
     --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Inter', Arial, sans-serif;
-    --font-display: var(--font-sans);
     --font-condensed: 'Barlow Condensed', var(--font-sans);
-    --font-family-primary: 'Barlow Condensed', var(--font-sans);
-    --font-family: 'Barlow Condensed', var(--font-sans);
+    /* Alias para compatibilidad */
+    --font-display: var(--font-condensed);
+    --font-family-primary: var(--font-condensed);
+    --font-family: var(--font-condensed);
 
     /* ===== VARIABLES DE ESPACIADO ===== */
     --spacing-1: 0.25rem;

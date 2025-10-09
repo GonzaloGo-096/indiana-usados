@@ -159,8 +159,8 @@
 /* ===== RESPONSIVE - MOBILE FIRST ===== */
 
 /* Tablet y arriba (768px+) */
-/* ⚠️ NOTA: Usamos 769px en vez de var(--tablet-min) para evitar edge case en exactamente 768px */
-/* TODO FUTURO: Cuando todos los archivos estén migrados, usar var(--tablet-min) consistentemente */
+/* ⚠️ BREAKPOINT HARDCODED: Interdependiente con FilterFormSimple.module.css */
+/* Ambos deben usar 769px para mantener sincronización de botones y drawer */
 @media (min-width: 769px) {
   .container {
     /* ✅ Desktop: Padding más generoso */

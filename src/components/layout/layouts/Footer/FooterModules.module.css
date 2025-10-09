@@ -1,54 +1,66 @@
 /**
- * FooterModules.module.css - Estilos para módulos informativos
+ * FooterModules.module.css - Diseño mobile-first optimizado
  * 
- * Grid 3→1 responsive usando design tokens existentes
+ * Características:
+ * - Mobile-first: 1 columna → 2 columnas → 3 columnas
+ * - Variables del design system
+ * - Layout fluido y adaptativo
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Refactor mobile-first
  */
 
-/* ✅ GRID PRINCIPAL - 3 columnas → 1 columna */
+/* ===== GRID PRINCIPAL (MOBILE-FIRST) ===== */
 .modulesGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-8);
+  grid-template-columns: 1fr; /* Mobile: 1 columna */
+  gap: var(--spacing-6);
   margin-bottom: var(--spacing-8);
-  padding-top: 100px; /* Más espacio para separación cómoda de Card 1 */
+  padding-top: 0; /* ✅ SIN CARD ELEVADA: Sin padding superior */
+  /* ✅ CENTRADO: Grid items centrados */
+  justify-items: center;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* ✅ MÓDULO INDIVIDUAL */
+/* ===== MÓDULO INDIVIDUAL ===== */
 .module {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-4);
+  /* ✅ ALINEACIÓN INTERNA: Contenido alineado a la izquierda */
+  align-items: flex-start;
+  /* ✅ ANCHO: Módulos con ancho máximo consistente */
+  width: 100%;
+  max-width: 280px;
 }
 
-/* ✅ TÍTULO DE MÓDULO - Jerarquía semántica */
+/* ===== TÍTULO DE MÓDULO ===== */
 .moduleTitle {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-white);
   margin: 0;
-  text-align: left; /* ✅ ALINEAR TÍTULO A LA IZQUIERDA */
+  text-align: left;
 }
 
-/* ✅ LISTA DE ÍTEMS */
+/* ===== LISTA DE ÍTEMS ===== */
 .moduleList {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-2); /* ✅ REDUCIDO: De spacing-3 a spacing-2 para items más cerca */
-  align-items: flex-start; /* ✅ CAMBIADO: Alinear items a la izquierda */
+  gap: var(--spacing-2);
+  align-items: flex-start;
 }
 
-/* ✅ ÍTEM INDIVIDUAL */
 .moduleItem {
   margin: 0;
 }
 
-/* ✅ CONTENIDO DE ÍTEM (común para link y texto) */
+/* ===== CONTENIDO DE ÍTEM ===== */
 .itemContent,
 .itemLink {
   display: flex;
@@ -61,10 +73,10 @@
   border-radius: var(--border-radius-sm);
 }
 
-/* ✅ ENLACES - Estados interactivos */
+/* ===== ENLACES INTERACTIVOS ===== */
 .itemLink {
   cursor: pointer;
-  min-height: 44px; /* Tamaño mínimo táctil */
+  min-height: 44px; /* Touch-friendly */
   padding: var(--spacing-2) var(--spacing-1);
   margin: calc(-1 * var(--spacing-1)) 0;
 }
@@ -77,49 +89,40 @@
 }
 
 .itemLink:focus {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid var(--color-primary-500);
   outline-offset: 2px;
 }
 
-/* ✅ ÍCONOS - Tamaño consistente */
+/* ===== ÍCONOS ===== */
 .itemIcon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 20px;
   height: 20px;
-  color: #3b82f6;
+  color: var(--color-primary-500);
   flex-shrink: 0;
 }
 
-/* ✅ TEXTO DE ÍTEM */
+/* ===== TEXTO ===== */
 .itemText {
   font-size: var(--font-size-sm);
   line-height: 1.4;
 }
 
-/* ✅ RESPONSIVE - Tablet (2 columnas) */
-@media (max-width: 992px) {
+/* ===== RESPONSIVE - MOBILE FIRST ===== */
+
+/* Tablet: 640px+ - 3 columnas directo (mejor para 3 elementos) */
+@media (min-width: 640px) {
   .modulesGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-6);
-  }
-  
-  /* Módulo de redes sociales ocupa las 2 columnas */
-  .module:last-child {
-    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-6); /* Gap reducido en tablet */
   }
 }
 
-/* ✅ RESPONSIVE - Mobile (1 columna) */
-@media (max-width: 768px) {
+/* Desktop: 992px+ - 3 columnas con más espacio */
+@media (min-width: var(--desktop-min)) {
   .modulesGrid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-6);
-    padding-top: 80px; /* Más espacio también en mobile */
-  }
-  
-  .module:last-child {
-    grid-column: 1;
+    gap: var(--spacing-8); /* Gap generoso en desktop */
   }
 }

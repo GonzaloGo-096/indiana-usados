@@ -42,7 +42,7 @@ const servicesData = [
 
 const Postventa = () => {
   return (
-    <div className={styles.container}>
+    <div className={styles.pageContainer}>
       <header className={styles.header}>
         <h1 className={styles.title}>Postventa</h1>
         <h2 className={styles.subtitle}>Servicios especializados</h2>

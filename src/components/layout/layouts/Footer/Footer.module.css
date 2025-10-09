@@ -1,69 +1,78 @@
 /**
- * Footer.module.css - Estilos MODERNIZADOS para footer
+ * Footer.module.css - Diseño mobile-first optimizado
  * 
  * Características:
- * - Integrado con Card elevada
- * - Padding-top para elevación
- * - Design tokens consistentes
- * - Responsive optimizado
+ * - Mobile-first responsive design
+ * - Card elevada con efecto 50/50
+ * - Variables del design system
+ * - Separación alta para evitar interferencias
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Rediseñado según brief
+ * @version 3.0.0 - Refactor mobile-first
  */
 
-/* ✅ FOOTER PRINCIPAL - Efecto 50/50 con Card 1 + separación alta */
+/* ===== FOOTER PRINCIPAL (MOBILE-FIRST) ===== */
 .footer {
   background-color: var(--color-black);
   color: var(--color-white);
-  padding: 50px 0 var(--spacing-8) 0; /* 50px = 50% de altura aún más reducida de Card 1 (100px) */
-  margin-top: 120px; /* Separación alta para evitar interferencias con contenido */
+  padding: 4rem 0 3rem 0; /* Mobile: padding muy generoso (64px arriba, 48px abajo) */
+  margin-top: 5rem; /* Mobile: separación muy alta del contenido (80px) */
   position: relative;
 }
 
-/* ✅ CONTENEDOR - Usando design tokens */
+/* ===== CONTENEDOR ===== */
 .container {
   max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 0 var(--container-padding-mobile);
 }
 
-@media (min-width: 768px) {
-  .container {
-    padding: 0 var(--container-padding-tablet);
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    padding: 0 var(--container-padding-desktop);
-  }
-}
-
-/* ✅ LÍNEA DE COPYRIGHT */
+/* ===== COPYRIGHT ===== */
 .bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: var(--spacing-6);
+  padding-top: var(--spacing-4); /* Mobile: padding reducido */
   text-align: center;
-  margin-top: var(--spacing-8);
+  margin-top: var(--spacing-6);
 }
 
 .copyright {
   color: var(--color-neutral-400);
   margin: 0;
   font-size: var(--font-size-sm);
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: var(--font-condensed);
   opacity: 0.8;
 }
 
-/* ✅ RESPONSIVE - Mobile ajustes */
-@media (max-width: 768px) {
+/* ===== RESPONSIVE - MOBILE FIRST ===== */
+
+/* Tablet: 640px+ - Mismo breakpoint que ServiceCard */
+@media (min-width: 640px) {
   .footer {
-    padding: 50px 0 var(--spacing-6) 0; /* 50% de Card 1 con menos altura también en mobile */
-    margin-top: 100px; /* Separación alta también en mobile */
+    padding: 5rem 0 3.5rem 0; /* Tablet: padding extra generoso */
+    margin-top: 6rem; /* Tablet: separación muy alta */
+  }
+  
+  .container {
+    padding: 0 var(--container-padding-tablet);
   }
   
   .bottom {
-    margin-top: var(--spacing-6);
-    padding-top: var(--spacing-4);
+    padding-top: var(--spacing-6);
+    margin-top: var(--spacing-8);
+  }
+}
+
+/* Desktop: 992px+ - Máximo espacio */
+@media (min-width: var(--desktop-min)) {
+  .footer {
+    padding: 6rem 0 4rem 0; /* Desktop: padding máximo */
+    margin-top: 7rem; /* Desktop: separación máxima */
+  }
+}
+
+/* Desktop: 1200px+ */
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 var(--container-padding-desktop);
   }
 }

@@ -40,6 +40,8 @@ export const ImageCarousel = ({
     autoPlayInterval = 5000
 }) => {
     const [currentIndex, setCurrentIndex] = useState(0)
+    // ✅ NUEVO: Ref para las miniaturas (auto-scroll)
+    const thumbnailRefs = useRef([])
     
     // Si no hay imágenes, usar imagen por defecto - MEMOIZADO
     const allImages = useMemo(() => {
@@ -49,6 +51,11 @@ export const ImageCarousel = ({
         // ✅ Usar imágenes directamente (sin processImages)
         return images
     }, [images])
+
+    // ✅ LIMPIEZA: Ajustar array de refs cuando cambian las imágenes
+    useEffect(() => {
+        thumbnailRefs.current = thumbnailRefs.current.slice(0, allImages.length)
+    }, [allImages.length])
 
     // Función para ir a la imagen anterior - MEMOIZADA
     const goToPrevious = useCallback(() => {
@@ -94,6 +101,31 @@ export const ImageCarousel = ({
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [goToPrevious, goToNext])
+
+    // ✅ NUEVO: Auto-scroll a la miniatura activa (solo desktop)
+    useEffect(() => {
+        // ✅ PROFESIONAL: matchMedia para detección precisa de dispositivo
+        const isDesktop = window.matchMedia('(min-width: 769px)').matches
+        if (!isDesktop) return // ⚡ PERFORMANCE: Cero overhead en mobile
+        
+        const activeThumbnail = thumbnailRefs.current[currentIndex]
+        if (!activeThumbnail) return
+        
+        // ✅ LÓGICA INTELIGENTE: Primera y última foto alineadas a los bordes
+        let scrollAlign = 'center'
+        
+        if (currentIndex === 0) {
+            scrollAlign = 'start' // Primera foto: alineada a la izquierda
+        } else if (currentIndex === allImages.length - 1) {
+            scrollAlign = 'end' // Última foto: alineada a la derecha
+        }
+        
+        activeThumbnail.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: scrollAlign
+        })
+    }, [currentIndex, allImages.length])
 
     return (
         <div className={styles.carouselContainer}>
@@ -152,6 +184,7 @@ export const ImageCarousel = ({
                         {allImages.map((image, index) => (
                             <button
                                 key={index}
+                                ref={(el) => (thumbnailRefs.current[index] = el)}
                                 className={`${styles.thumbnail} ${index === currentIndex ? styles.active : ''}`}
                                 onClick={() => goToImage(index)}
                                 aria-label={`Ver imagen ${index + 1}`}

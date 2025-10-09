@@ -13,6 +13,7 @@
 
 /* ===== IMPORTAR VARIABLES GLOBALES ===== */
 @import './variables.css';
+@import './utilities.css';
 
 /* ===== RESET BÁSICO ===== */
 * {
@@ -96,7 +97,7 @@ h1, h2, h3 {
   font-family: var(--font-display);
 }
 
-/* Utility to force display font on specific elements */
+/* Utility class para fuente display */
 .font-display {
-  font-family: var(--font-display) !important;
+  font-family: var(--font-display);
 }

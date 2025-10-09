@@ -1,8 +1,7 @@
 /**
- * Footer - Componente de pie de página MODERNIZADO
+ * Footer - Componente de pie de página simplificado
  * 
  * Características:
- * - Card elevada con texto
  * - Tres módulos informativos data-driven
  * - Grid responsive 3→1
  * - Íconos SVG optimizados
@@ -10,10 +9,9 @@
  * - Integrado con design tokens
  * 
  * @author Indiana Usados
- * @version 2.1.0 - Optimizado sin imágenes
+ * @version 3.0.0 - Simplificado sin card elevada
  */
 
-import ElevatedCard from './ElevatedCard'
 import FooterModules from './FooterModules'
 import styles from './Footer.module.css'
 
@@ -22,11 +20,8 @@ const Footer = () => {
 
   return (
     <footer className={styles.footer} id="contacto" tabIndex="-1">
-      {/* ✅ CARD 1 - Texto 50/50 (primer hijo del footer) */}
-      <ElevatedCard />
-      
       <div className={styles.container}>
-        {/* ✅ CARDS 2-4 - Módulos informativos */}
+        {/* ✅ MÓDULOS INFORMATIVOS */}
         <FooterModules />
         
         {/* ✅ LÍNEA DE COPYRIGHT */}

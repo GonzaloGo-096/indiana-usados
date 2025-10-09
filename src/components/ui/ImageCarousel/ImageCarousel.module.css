@@ -122,8 +122,8 @@
 /* ===== VISOR FIJO NETFLIX/SPOTIFY ===== */
 .thumbnailsContainer {
     width: 100%;
-    height: auto; /* ✅ CAMBIADO: Altura automática para 2 filas */
-    min-height: 140px; /* ✅ NUEVO: Altura mínima para 2 filas */
+    height: auto;
+    min-height: 140px;
     overflow: visible;
     display: flex;
     justify-content: center;
@@ -145,8 +145,8 @@
     padding: 20px;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap; /* ✅ CAMBIADO: Permitir múltiples filas */
-    height: auto; /* ✅ CAMBIADO: Altura automática para 2 filas */
+    flex-wrap: wrap; /* Desktop: múltiples filas */
+    height: auto;
     overflow: visible;
     max-width: 100%;
 }
@@ -360,5 +360,13 @@
     .positionCounter {
         font-size: 0.7rem;
         padding: 4px 8px;
+    }
+}
+
+/* ===== MOBILE: OCULTAR MINIATURAS ===== */
+@media (max-width: 768px) {
+    .thumbnailsContainer {
+        /* ✅ MOBILE: Ocultar miniaturas completamente */
+        display: none;
     }
 }
