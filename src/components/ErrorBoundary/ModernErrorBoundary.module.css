@@ -72,12 +72,12 @@
 }
 
 .retryButton {
-  background: #0055A4;
+  background: var(--color-brand-500);
   color: white;
 }
 
 .retryButton:hover {
-  background: #003d7a;
+  background: var(--color-brand-600);
   transform: translateY(-1px);
 }
 
@@ -136,7 +136,7 @@
 }
 
 .contactLink {
-  color: #0055A4;
+  color: var(--color-brand-500);
   text-decoration: none;
   font-weight: 500;
 }

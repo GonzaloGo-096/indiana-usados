@@ -15,7 +15,7 @@ import React, { memo, useMemo, useCallback } from 'react'
 import { formatValue, formatCaja, formatPrice, formatKilometraje } from '@utils/formatters'
 import { useCarouselImages } from '@hooks'
 import { ImageCarousel } from '@ui/ImageCarousel'
-import ContactoDirecto from '@components/vehicles/Detail/ContactoDirecto'
+import { WhatsAppContact } from '@ui'
 import styles from './CardDetalle.module.css'
 
 /**
@@ -171,8 +171,9 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                     </div>
                     
                     {/* Sección de contacto refactorizada */}
-                    <ContactoDirecto 
-                        whatsNumber={finalContactInfo.whatsapp}
+                    <WhatsAppContact 
+                        text="Consultar este vehículo"
+                        phone={finalContactInfo.whatsapp}
                         message={finalContactInfo.whatsappMessage}
                         className={styles.contactSection}
                     />

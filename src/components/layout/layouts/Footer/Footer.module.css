@@ -45,8 +45,8 @@
 
 /* ===== RESPONSIVE - MOBILE FIRST ===== */
 
-/* Tablet: 640px+ - Mismo breakpoint que ServiceCard */
-@media (min-width: 640px) {
+/* Tablet: desde el token del sistema */
+@media (min-width: var(--tablet-min)) {
   .footer {
     padding: 5rem 0 3.5rem 0; /* Tablet: padding extra generoso */
     margin-top: 6rem; /* Tablet: separación muy alta */
@@ -70,8 +70,8 @@
   }
 }
 
-/* Desktop: 1200px+ */
-@media (min-width: 1200px) {
+/* Desktop XL: desde el token del sistema */
+@media (min-width: var(--breakpoint-xl)) {
   .container {
     padding: 0 var(--container-padding-desktop);
   }

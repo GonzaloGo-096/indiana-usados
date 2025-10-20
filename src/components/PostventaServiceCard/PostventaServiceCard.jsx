@@ -1,8 +1,8 @@
 /**
- * ServiceCard - Componente reutilizable para tarjetas de servicios
+ * PostventaServiceCard - Componente específico para servicios de postventa
  * 
- * Layout: 30% imagen / 70% contenido
- * Responsive: Stack vertical en móviles
+ * Diseño: Card horizontal con imagen arriba, título, descripción y botón específico
+ * Layout: 3 cards en fila horizontal (desktop), stack vertical (móvil)
  * 
  * @author Indiana Usados
  * @version 1.0.0
@@ -10,7 +10,7 @@
 
 import React from 'react'
 import { WhatsAppContact } from '@ui'
-import styles from './ServiceCard.module.css'
+import styles from './PostventaServiceCard.module.css'
 
 // Importar imágenes locales
 import taller2Image from '@assets/taller-2.jpeg'
@@ -25,33 +25,31 @@ const imageMap = {
 }
 
 /**
- * Componente ServiceCard
+ * Componente PostventaServiceCard
  * @param {Object} props - Propiedades del componente
- * @param {string} props.title - Título principal del servicio
- * @param {string} props.subtitle - Subtítulo del servicio
+ * @param {string} props.title - Título del servicio
  * @param {string} props.description - Descripción del servicio
  * @param {string} props.image - Clave de la imagen (taller-2, taller-3-jpeg, taller-motor)
  * @param {string} props.alt - Texto alternativo para la imagen
- * @param {boolean} props.reverse - Si true, invierte el orden (imagen a la derecha)
+ * @param {string} props.buttonText - Texto del botón específico
  * @param {string} props.whatsappMessage - Mensaje personalizado para WhatsApp
  */
-export const ServiceCard = ({
+export const PostventaServiceCard = ({
   title,
-  subtitle,
   description,
   image,
   alt,
-  reverse = false,
+  buttonText,
   whatsappMessage = ""
 }) => {
   const imageSrc = imageMap[image] || taller2Image // Fallback a taller-2
 
   // Generar mensaje de WhatsApp personalizado
-  const defaultMessage = `¡Hola! Quiero reservar un turno para el servicio de ${title.toLowerCase()}. ¿Cuál es la disponibilidad más cercana?`
+  const defaultMessage = `¡Hola! Me interesa el servicio de ${title.toLowerCase()}. ${whatsappMessage || '¿Podrían darme más información?'}`
   const finalMessage = whatsappMessage || defaultMessage
 
   return (
-    <article className={`${styles.card} ${reverse ? styles.reverse : ''}`}>
+    <article className={styles.card}>
       <div className={styles.imageContainer}>
         <img
           src={imageSrc}
@@ -64,13 +62,11 @@ export const ServiceCard = ({
       
       <div className={styles.content}>
         <h3 className={styles.title}>{title}</h3>
-        <h4 className={styles.subtitle}>{subtitle}</h4>
         <p className={styles.description}>{description}</p>
         
-        {/* Componente de contacto WhatsApp simplificado */}
-        <div className={styles.contactSection}>
+        <div className={styles.buttonContainer}>
           <WhatsAppContact
-            text="Solicitar Turno"
+            text={buttonText}
             message={finalMessage}
           />
         </div>
@@ -79,4 +75,4 @@ export const ServiceCard = ({
   )
 }
 
-export default ServiceCard
+export default PostventaServiceCard

@@ -177,11 +177,11 @@
 
 .thumbnailControls:hover {
     opacity: 1;
-    background: #0055A4;
+    background: var(--color-brand-500);
     color: white;
     transform: translateY(-50%) scale(1.1); /* ✅ SIMPLIFICADO: Menos escala */
     box-shadow: 0 6px 20px rgba(0, 85, 164, 0.4);
-    border-color: #0055A4; /* ✅ NUEVO: Azul Francia */
+    border-color: var(--color-brand-500); /* ✅ NUEVO: Azul Francia */
 }
 
 .thumbnailControlsLeft {
@@ -226,7 +226,7 @@
 }
 
 .thumbnail:hover {
-    border-color: #0055A4; /* ✅ NUEVO: Borde azul Francia */
+    border-color: var(--color-brand-500); /* ✅ NUEVO: Borde azul Francia */
     transform: scale(1.05) translateY(-2px); /* ✅ SIMPLIFICADO: Menos escala y movimiento */
     box-shadow: 0 8px 24px rgba(0, 85, 164, 0.3); /* ✅ NUEVO: Sombra azul Francia */
     z-index: 10; /* ✅ NUEVO: Z-index alto para hover */
@@ -234,7 +234,7 @@
 
 .thumbnail.active {
     transform: scale(1.08) translateY(-3px); /* ✅ SIMPLIFICADO: Menos escala */
-    border-color: #0055A4; /* ✅ NUEVO: Borde azul Francia */
+    border-color: var(--color-brand-500); /* ✅ NUEVO: Borde azul Francia */
     box-shadow: 0 12px 32px rgba(0, 85, 164, 0.4); /* ✅ NUEVO: Sombra azul Francia */
     position: relative;
     z-index: 5; /* ✅ NUEVO: Z-index medio para activa */

@@ -25,6 +25,11 @@
     --spacing-5: 1.25rem;
     --spacing-6: 1.5rem;
 
+    /* ===== VARIABLES DE ESPACIADOS DE SECCIÓN ===== */
+    --section-pad-y: clamp(1.25rem, 4vw, 2.5rem);
+    --section-gap: clamp(1rem, 3vw, 2rem);
+    --section-padding-compact: clamp(0.875rem, 3vw, 1.75rem);
+
     /* ===== VARIABLES DE TIPOGRAFÍA ===== */
     --font-size-xs: 0.75rem;
     --font-size-sm: 0.875rem;
@@ -38,6 +43,10 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
+
+    /* ===== VARIABLES DE TIPOGRAFÍA DE TITULARES ===== */
+    --font-hero-lg: clamp(1.75rem, 6vw, 2.75rem);
+    --font-hero-xl: clamp(2rem, 7vw, 3.25rem);
 
     /* ===== VARIABLES DE COLORES ===== */
     --color-white: #ffffff;
@@ -64,6 +73,16 @@
     --color-primary-700: #1d4ed8;
     --color-primary-800: #1e40af;
     --color-primary-900: #1e3a8a;
+
+    /* ===== VARIABLES DE MARCA ===== */
+    --color-brand-500: #0055A4;
+    --color-brand-600: #003d7a;
+
+    /* ===== VARIABLES DE COLORES SEMÁNTICOS ===== */
+    --color-text-primary: var(--color-neutral-900);
+    --color-text-inverse: var(--color-white);
+    --color-surface: var(--color-white);
+    --color-border: var(--color-neutral-200);
 
     /* ===== VARIABLES DE TRANSICIONES ===== */
     --transition-fast: 0.15s ease;

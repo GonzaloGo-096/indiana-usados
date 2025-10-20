@@ -1,0 +1,195 @@
+/**
+ * HeroImageCarousel.module.css - Estilos del carrusel de imágenes
+ * 
+ * Características:
+ * - Flechas sutiles que aparecen en hover
+ * - Transiciones suaves entre imágenes
+ * - Diseño responsive
+ * - Accesibilidad completa
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.carousel {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: none;
+  outline: none;
+}
+
+.carousel:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+/* ===== CONTENEDOR DE IMÁGENES ===== */
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+/* ===== IMÁGENES ===== */
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  background-color: var(--color-neutral-50);
+  border-radius: var(--border-radius-md);
+  transition: opacity var(--transition-normal);
+}
+
+.image.active {
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.image.inactive {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* ===== FLECHAS DE NAVEGACIÓN ===== */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  
+  /* Estilo pequeño con fondo negro */
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  
+  /* Centrar icono */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Colores: flecha blanca */
+  color: var(--color-white);
+  
+  /* Transiciones */
+  transition: all var(--transition-fast);
+  
+  /* SIEMPRE VISIBLES */
+  opacity: 0.8;
+  visibility: visible;
+  
+  /* Cursor */
+  cursor: pointer;
+}
+
+.arrowLeft {
+  left: var(--spacing-3);
+}
+
+.arrowRight {
+  right: var(--spacing-3);
+}
+
+/* Flechas más visibles en hover */
+.carousel:hover .arrow {
+  opacity: 1;
+}
+
+/* Estados de las flechas */
+.arrow:hover {
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--color-white);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: var(--shadow-md);
+}
+
+.arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+/* ===== INDICADORES ELIMINADOS ===== */
+/* Los círculos blancos fueron eliminados por solicitud del usuario */
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Desktop: reducir tamaño de la foto */
+@media (min-width: var(--desktop-min)) {
+  .carousel {
+    max-width: min(36vw, 580px);
+  }
+  
+  .image {
+    max-height: clamp(220px, 28vh, 300px);
+  }
+  
+  /* Flechas un poco más grandes en desktop */
+  .arrow {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Tablet: ajuste suave entre 768px y 991px */
+@media (min-width: var(--tablet-min)) and (max-width: 991px) {
+  .carousel {
+    max-width: 80%;
+  }
+  
+  .image {
+    max-height: clamp(220px, 30vh, 300px);
+  }
+}
+
+/* Mobile: flechas pequeñas */
+@media (max-width: var(--mobile-max)) {
+  .arrow {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .arrowLeft {
+    left: var(--spacing-2);
+  }
+  
+  .arrowRight {
+    right: var(--spacing-2);
+  }
+}
+
+/* ===== ACCESIBILIDAD ===== */
+
+/* Reducir animaciones si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+  .image,
+  .arrow {
+    transition: none;
+  }
+  
+  .arrow:hover {
+    transform: translateY(-50%);
+  }
+}
+
+/* Alto contraste */
+@media (prefers-contrast: high) {
+  .arrow {
+    background: var(--color-black);
+    color: var(--color-white);
+    border: 2px solid var(--color-white);
+  }
+}

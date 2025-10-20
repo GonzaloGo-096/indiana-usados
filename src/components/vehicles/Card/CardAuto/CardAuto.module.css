@@ -292,7 +292,7 @@
 
 .card__button {
     width: 100%;
-    background: #0055A4;
+    background: var(--color-brand-500);
     border: none;
     color: white;
     font-size: 13px;
@@ -310,7 +310,7 @@
 }
 
 .card__button:hover {
-    background: #003d7a;
+    background: var(--color-brand-600);
     color: white;
     transform: translateY(-1px);
 }

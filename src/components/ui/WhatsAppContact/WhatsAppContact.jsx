@@ -1,11 +1,11 @@
 /**
- * WhatsAppContact - Componente reutilizable para contacto por WhatsApp
+ * WhatsAppContact - Botón pill verde reutilizable para WhatsApp
  * 
- * Basado en ContactoDirecto pero más flexible y reutilizable
- * Layout 70/30: izquierda (título, subtítulo, botón) / derecha (icono WhatsApp)
+ * Diseño: Botón pill verde con icono WhatsApp + texto personalizable
+ * Reutilizable en cualquier parte con diferentes textos
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Nuevo diseño pill
  */
 
 import React from 'react'
@@ -16,61 +16,36 @@ import styles from './WhatsAppContact.module.css'
 /**
  * Componente WhatsAppContact
  * @param {Object} props - Propiedades del componente
- * @param {string} props.title - Título principal (default: "Contacto Directo")
- * @param {string} props.subtitle - Subtítulo descriptivo (default: "¿Consultas?")
- * @param {string} props.whatsNumber - Número de WhatsApp formato internacional (ej: 549XXXXXXXXXX)
- * @param {string} props.className - Clases CSS adicionales para extender estilos
+ * @param {string} props.text - Texto del botón (default: "Reservá tu turno")
+ * @param {string} props.phone - Número de WhatsApp formato internacional (default: config.contact.whatsapp)
  * @param {string} props.message - Mensaje predefinido para WhatsApp (opcional)
- * @param {string} props.buttonText - Texto del botón (default: "Ir a WhatsApp")
- * @param {boolean} props.compact - Modo compacto (default: false)
- * @param {boolean} props.hideTitle - Ocultar título y subtítulo (default: false)
+ * @param {string} props.className - Clases CSS adicionales para extender estilos
  */
 const WhatsAppContact = ({
-  title = "Contacto Directo",
-  subtitle = "¿Consultas?",
-  whatsNumber = config.contact.whatsapp,
-  className = "",
+  text = "Reservá tu turno",
+  phone = config.contact.whatsapp,
   message = "",
-  buttonText = "Ir a WhatsApp",
-  compact = false,
-  hideTitle = false
+  className = ""
 }) => {
   // Construir URL de WhatsApp
-  // Formato esperado del número: 549XXXXXXXXXX (código país + área + número)
-  const whatsappUrl = `https://wa.me/${whatsNumber}${message ? `?text=${encodeURIComponent(message)}` : ''}`
+  const whatsappUrl = `https://wa.me/${phone}${message ? `?text=${encodeURIComponent(message)}` : ''}`
 
   const handleWhatsAppClick = () => {
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
   }
 
   return (
-    <div className={`${styles.container} ${compact ? styles.compact : ''} ${className}`}>
-      {/* Icono izquierdo */}
-      <div className={styles.iconContainer}>
-        <button
-          className={styles.iconButton}
-          onClick={handleWhatsAppClick}
-          aria-label="Contactar por WhatsApp"
-        >
-          <WhatsAppIconOptimized 
-            size={compact ? 32 : 40} 
-            className={styles.whatsappIcon}
-          />
-        </button>
-      </div>
-
-      {/* Contenido derecho */}
-      <div className={`${styles.content} ${hideTitle ? styles.noTitle : ''}`}>
-        {!hideTitle && <h4 className={styles.title}>{title}</h4>}
-        <button 
-          className={styles.whatsappButton}
-          onClick={handleWhatsAppClick}
-          aria-label={`Abrir WhatsApp para contactar`}
-        >
-          {buttonText}
-        </button>
-      </div>
-    </div>
+    <button 
+      className={`${styles.whatsappButton} ${className}`}
+      onClick={handleWhatsAppClick}
+      aria-label={`${text} por WhatsApp`}
+    >
+      <WhatsAppIconOptimized 
+        size={20} 
+        className={styles.whatsappIcon}
+      />
+      <span className={styles.buttonText}>{text}</span>
+    </button>
   )
 }
 
