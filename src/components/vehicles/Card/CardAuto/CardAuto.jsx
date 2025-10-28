@@ -195,22 +195,9 @@ export const CardAuto = memo(({ auto }) => {
                     <div className={styles.headerLeft}>
                         <div className={styles['card__title_container']}>
                             <h3 className={styles['card__title']}>
-                                {auto.marca}
-                            </h3>
-                            <h3 className={styles['card__title']}>
-                                {auto.modelo}
+                                {auto.marca} {auto.modelo}
                             </h3>
                         </div>
-                        {/* ✅ MEJORA: Subtítulo sutil con versión + cilindrada */}
-                        {(auto.version || auto.cilindrada) && (
-                            <div className={styles['card__subtitle']}>
-                                {auto.version && <span>{auto.version}</span>}
-                                {auto.version && auto.cilindrada && (
-                                    <span className={styles['card__separator']}>•</span>
-                                )}
-                                {auto.cilindrada && <span>{auto.cilindrada}cc</span>}
-                            </div>
-                        )}
                     </div>
                     
                     <div className={styles.headerRight}>
