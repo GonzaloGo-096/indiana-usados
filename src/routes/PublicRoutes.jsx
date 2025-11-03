@@ -11,6 +11,7 @@ import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Nav, Footer } from '@layout'
 import { LoadingSpinner } from '@ui'
+const NotFound = lazy(() => import('../pages/NotFound/NotFound'))
 
 // ✅ LAZY LOADING: Páginas cargadas bajo demanda
 const Home = lazy(() => import('../pages/Home/Home'))
@@ -39,6 +40,7 @@ const PublicRoutes = () => (
                     <Route path="/vehiculo/:id" element={<VehiculoDetalle />} />
                     <Route path="/nosotros" element={<Nosotros />} />
                     <Route path="/postventa" element={<Postventa />} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </Suspense>
         </main>

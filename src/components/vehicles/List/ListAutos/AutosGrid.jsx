@@ -136,14 +136,6 @@ const AutosGrid = memo(({
             )}
 
             {/* Alertas */}
-            {isError && (
-                <Alert 
-                    type="error"
-                    title="Error"
-                    message={error?.message || 'Error al cargar los vehículos'}
-                    onClose={onRetry}
-                />
-            )}
         </div>
     )
 })

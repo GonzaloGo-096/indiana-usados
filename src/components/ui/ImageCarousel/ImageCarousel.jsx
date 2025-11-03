@@ -7,10 +7,11 @@
  * - Navegación con flechas
  * - Indicadores de posición
  * - Lazy loading de imágenes
+ * - Preload inteligente (hover + siguiente imagen)
  * - Responsive design
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0 - Preload optimizado para fluidez
  */
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
@@ -127,6 +128,58 @@ export const ImageCarousel = ({
         })
     }, [currentIndex, allImages.length])
 
+    // ✅ PRELOAD: Precargar siguiente imagen cuando carga el detalle
+    useEffect(() => {
+        if (currentIndex !== 0 || allImages.length <= 1) return
+        
+        // Preload imagen siguiente (índice 1)
+        const nextImage = allImages[1]
+        if (!nextImage || typeof nextImage !== 'string') return
+        
+        // Crear preload link solo si no existe
+        let link = document.querySelector(`link[data-preload="carousel-next"]`)
+        if (!link) {
+            link = document.createElement('link')
+            link.rel = 'preload'
+            link.as = 'image'
+            link.setAttribute('data-preload', 'carousel-next')
+            document.head.appendChild(link)
+        }
+        link.href = nextImage
+        
+        // Cleanup: remover después de 30 segundos (ya no necesario)
+        const timeout = setTimeout(() => {
+            link?.remove()
+        }, 30000)
+        
+        return () => {
+            clearTimeout(timeout)
+            // NO remover link aquí, se limpia con timeout
+        }
+    }, [currentIndex, allImages])
+
+    // ✅ PRELOAD: Precargar imagen en hover de miniatura (solo desktop)
+    const handleThumbnailHover = useCallback((imageUrl, index) => {
+        // Solo preload si es diferente a la actual
+        if (index === currentIndex || typeof imageUrl !== 'string') return
+        
+        // Crear preload link solo si no existe
+        let link = document.querySelector(`link[data-preload="carousel-hover-${index}"]`)
+        if (!link) {
+            link = document.createElement('link')
+            link.rel = 'preload'
+            link.as = 'image'
+            link.setAttribute('data-preload', `carousel-hover-${index}`)
+            document.head.appendChild(link)
+        }
+        link.href = imageUrl
+        
+        // Cleanup: remover después de 10 segundos
+        setTimeout(() => {
+            link?.remove()
+        }, 10000)
+    }, [currentIndex])
+
     return (
         <div className={styles.carouselContainer}>
             {/* Imagen principal */}
@@ -187,6 +240,7 @@ export const ImageCarousel = ({
                                 ref={(el) => (thumbnailRefs.current[index] = el)}
                                 className={`${styles.thumbnail} ${index === currentIndex ? styles.active : ''}`}
                                 onClick={() => goToImage(index)}
+                                onMouseEnter={() => handleThumbnailHover(image, index)}
                                 aria-label={`Ver imagen ${index + 1}`}
                                 type="button"
                             >

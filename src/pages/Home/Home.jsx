@@ -10,7 +10,7 @@ import { Button } from '@ui/Button'
 import HeroImageCarousel from '@ui/HeroImageCarousel'
 import styles from './Home.module.css'
 import { heroImages } from '../../assets/home'
-import imgPostventa from '../../assets/img-postventa-principal.jpg'
+import imgPostventa from '../../assets/img-postventa-principal.webp'
 
 const Home = () => {
   return (

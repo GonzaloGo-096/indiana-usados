@@ -25,7 +25,7 @@ const VALIDATION_RULES = {
     MIN_EXTRA_PHOTOS: 5,
     TOTAL_MIN_PHOTOS: 7,
     MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
-    SUPPORTED_TYPES: ['image/jpeg', 'image/jpg', 'image/png']
+    SUPPORTED_TYPES: ['image/webp']
 }
 
 // ✅ PROPS DEL COMPONENTE
@@ -221,7 +221,7 @@ const CarFormRHF = ({
                 
                 {/* ✅ INFORMACIÓN SOBRE FORMATOS ACEPTADOS */}
                 <div className={styles.formatInfo}>
-                    <p><strong>Formatos aceptados:</strong> Solo archivos .jpg, .jpeg y .png</p>
+                    <p><strong>Formatos aceptados:</strong> Solo archivos .webp</p>
                     <p><strong>Tamaño máximo:</strong> 10MB por imagen</p>
                     {mode === MODE.CREATE ? (
                         <>
@@ -272,10 +272,21 @@ const CarFormRHF = ({
                                 <div className={styles.imageActions}>
                                     <input
                                         type="file"
-                                        accept=".jpg,.jpeg,.png"
+                                        accept=".webp"
                                         onChange={(e) => {
                                             const file = e.target.files?.[0]
                                             if (file) {
+                                                const isValidType = file.type === 'image/webp' || file.name.toLowerCase().endsWith('.webp')
+                                                const isValidSize = file.size <= VALIDATION_RULES.MAX_FILE_SIZE
+                                                if (!isValidType) {
+                                                    setError(field, { type: 'manual', message: 'Formato inválido. Solo .webp' })
+                                                    return
+                                                }
+                                                if (!isValidSize) {
+                                                    setError(field, { type: 'manual', message: 'La imagen supera 10MB' })
+                                                    return
+                                                }
+                                                clearErrors(field)
                                                 setFile(field, file)
                                             }
                                         }}
@@ -399,12 +410,26 @@ const CarFormRHF = ({
                         <label className={styles.multipleInputLabel}>
                             <input
                                 type="file"
-                                accept=".jpg,.jpeg,.png"
+                                accept=".webp"
                                 multiple
                                 onChange={(e) => {
                                     const files = e.target.files
                                     if (files && files.length > 0) {
-                                        setMultipleExtras(files)
+                                        const validFiles = Array.from(files).filter((f) => 
+                                            (f.type === 'image/webp' || f.name.toLowerCase().endsWith('.webp')) &&
+                                            f.size <= VALIDATION_RULES.MAX_FILE_SIZE
+                                        )
+                                        if (validFiles.length !== files.length) {
+                                            setError('fotosExtra', { type: 'manual', message: 'Algunas fotos fueron descartadas (no .webp o >10MB)' })
+                                        } else {
+                                            clearErrors('fotosExtra')
+                                        }
+                                        const fileList = {
+                                            length: validFiles.length,
+                                            item: (i) => validFiles[i]
+                                        }
+                                        // setMultipleExtras espera FileList o Array: le pasamos Array directamente
+                                        setMultipleExtras(validFiles)
                                     }
                                 }}
                                 className={styles.multipleFileInput}
@@ -449,7 +474,7 @@ const CarFormRHF = ({
                 {/* ✅ ERROR DE FOTOS EXTRAS */}
                 {errors.fotosExtra && (
                     <div className={styles.fieldError}>
-                        {errors.fotosExtra}
+                        {errors.fotosExtra.message || errors.fotosExtra}
                     </div>
                 )}
             </div>

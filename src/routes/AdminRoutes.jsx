@@ -10,6 +10,7 @@
 import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { LoadingSpinner } from '@ui'
+const NotFound = lazy(() => import('../pages/NotFound/NotFound'))
 import { RequireAuth } from '@components/auth/RequireAuth'
 
 // ✅ LAZY LOADING: Páginas de admin cargadas bajo demanda
@@ -38,6 +39,7 @@ const AdminRoutes = () => (
                         <Dashboard />
                     </RequireAuth>
                 } />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </Suspense>
     </div>

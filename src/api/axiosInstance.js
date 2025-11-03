@@ -13,6 +13,7 @@
 
 import axios from 'axios'
 import { config } from '@config'
+import { AUTH_CONFIG } from '@config/auth'
 import { logger } from '@utils/logger'
 
 // ✅ CONFIGURACIÓN SIMPLIFICADA USANDO CONFIG CENTRALIZADO
@@ -47,7 +48,7 @@ const authAxiosInstance = axios.create({
 authAxiosInstance.interceptors.request.use(
     (config) => {
         // Agregar token automáticamente si existe
-        const token = localStorage.getItem('auth_token')
+        const token = localStorage.getItem(AUTH_CONFIG.storage.tokenKey)
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
         }
@@ -66,12 +67,12 @@ authAxiosInstance.interceptors.response.use(
     (error) => {
         // Si el token expiró, limpiar localStorage
         if (error.response?.status === 401) {
-            localStorage.removeItem('auth_token')
-            localStorage.removeItem('auth_user')
-            // Redirigir al login si es necesario
-            if (window.location.pathname !== '/admin/login') {
-                window.location.href = '/admin/login'
-            }
+            localStorage.removeItem(AUTH_CONFIG.storage.tokenKey)
+            localStorage.removeItem(AUTH_CONFIG.storage.userKey)
+            // Emitir evento global para que la UI decida navegar
+            try {
+                window.dispatchEvent(new CustomEvent('auth:unauthorized'))
+            } catch (_) { /* no-op */ }
         }
         return Promise.reject(error)
     }

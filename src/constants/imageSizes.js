@@ -31,8 +31,8 @@ export const IMAGE_WIDTHS = {
   // Cards: 2 tamaños (base + retina 2x) - suficiente para la mayoría de casos
   card: [400, 800],
   
-  // Carrusel: 4 tamaños para cubrir mobile, tablet, desktop y retina
-  carousel: [400, 800, 1280, 1920],
+  // Carrusel: 2 tamaños optimizados (800w mobile/tablet, 1280w desktop/retina)
+  carousel: [800, 1280],
   
   // Miniaturas: 2 tamaños (base + retina 2x)
   thumbnail: [100, 200],

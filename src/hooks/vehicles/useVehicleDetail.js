@@ -37,7 +37,8 @@ export const useVehicleDetail = (id, options = {}) => {
         staleTime = 1000 * 60 * 10, // Override: 10 min (detalles necesitan más cache)
         gcTime = 1000 * 60 * 60, // Override: 1 hora (detalles más persistentes)
         retry = 3, // Override: 3 reintentos (detalles más críticos)
-        refetchOnWindowFocus = false
+        refetchOnWindowFocus = false,
+        placeholderData = undefined
     } = options
 
     // Validar ID
@@ -62,7 +63,8 @@ export const useVehicleDetail = (id, options = {}) => {
         retry,
         refetchOnWindowFocus,
         refetchOnMount: false,
-        refetchOnReconnect: false
+        refetchOnReconnect: false,
+        placeholderData
     })
 
     // ✅ Datos transformados usando mapper (consistencia con lista)
@@ -88,6 +90,8 @@ export const useVehicleDetail = (id, options = {}) => {
     return {
         // Datos
         vehicle,
+        // Alias para compatibilidad con páginas que esperan `auto`
+        auto: vehicle,
         
         // Estados
         isLoading: isLoading || !isValidId,

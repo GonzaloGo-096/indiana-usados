@@ -23,7 +23,6 @@ export { useCarMutation } from './admin/useCarMutation'
 export { useCarouselImages } from './images/useImageOptimization'
 export { usePreloadImages } from './perf/usePreloadImages'
 export { usePreloadRoute } from './perf/usePreloadRoute'
-export { getVehicleImageUrl } from './vehicles/useVehicleImage' // ✅ Solo función (hook eliminado)
 
 // ===== HOOKS DE VEHICULOS =====
 export * from './vehicles'

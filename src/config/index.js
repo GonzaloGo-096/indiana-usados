@@ -62,14 +62,7 @@ const getFeaturesConfig = () => {
   }
 }
 
-// ===== CONFIGURACIÓN DE AUTH =====
-const getAuthConfig = () => {
-  return {
-    enabled: import.meta.env.VITE_AUTH_ENABLED !== 'false',
-    storageKey: import.meta.env.VITE_AUTH_STORAGE_KEY || 'indiana_auth_token',
-    userStorageKey: import.meta.env.VITE_USER_STORAGE_KEY || 'indiana_user_data'
-  }
-}
+// (Eliminado) Configuración de auth duplicada: usar AUTH_CONFIG como fuente de verdad
 
 // ===== CONFIGURACIÓN DE CONTACTO =====
 const getContactConfig = () => {
@@ -101,8 +94,7 @@ export const config = {
   // Features
   features: getFeaturesConfig(),
   
-  // Autenticación
-  auth: getAuthConfig(),
+  // Autenticación: delegada a AUTH_CONFIG (ver src/config/auth.js)
   
   // Contacto
   contact: getContactConfig(),

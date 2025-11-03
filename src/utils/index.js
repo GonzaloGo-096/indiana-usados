@@ -2,7 +2,7 @@
  * utils/index.js - Exportaciones centralizadas de utilidades
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Limpieza: eliminado rangeValidation (código muerto)
+ * @version 3.0.0 - Limpieza: eliminado imageNormalizer.js (código muerto, reemplazado por imageNormalizerOptimized.js)
  */
 
 export * from './formatters'

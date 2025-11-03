@@ -1,29 +1,63 @@
 /**
- * imageExtractors.js - Funciones utilitarias para extracción de URLs de imágenes
+ * imageExtractors.js - CAPA 1: Extracción simple de URLs de imágenes
+ * 
+ * 🏗️ ARQUITECTURA DEL SISTEMA:
+ * ┌─────────────────────────────────────────────────────────┐
+ * │ CAPA 1: imageExtractors.js (ESTE ARCHIVO)             │
+ * │ → Extracción rápida: URLs como strings                 │
+ * │ → Performance: ~2-3 operaciones/vehículo               │
+ * │ → Uso: Listados, detalle, thumbnails, preload         │
+ * └─────────────────────────────────────────────────────────┘
+ *                          ↓ Usa cuando necesita objetos
+ * ┌─────────────────────────────────────────────────────────┐
+ * │ CAPA 2: imageNormalizerOptimized.js                   │
+ * │ → Normalización completa: {url, public_id, original_name}│
+ * │ → Uso: Formularios admin, carruseles con public_id    │
+ * └─────────────────────────────────────────────────────────┘
+ *                          ↓ Usa para procesamiento avanzado
+ * ┌─────────────────────────────────────────────────────────┐
+ * │ CAPA 3: imageUtils.js                                  │
+ * │ → Procesamiento avanzado para carruseles                │
+ * │ → Uso: getCarouselImages()                             │
+ * └─────────────────────────────────────────────────────────┘
  * 
  * ✅ PROPÓSITO: Extracción simple de URLs (retorna strings)
+ * - Performance crítico para listados (8+ vehículos)
+ * - Funciones ligeras y rápidas
+ * - Sin procesamiento pesado, solo extracción directa
  * 
- * Centraliza la lógica de extracción de URLs de imágenes de vehículos
- * para evitar duplicación y mantener consistencia.
+ * 📋 RESPONSABILIDADES:
+ * - Extraer URLs de campos de imagen (objetos o strings)
+ * - Extraer fotoPrincipal y fotoHover de un vehículo
+ * - Extraer todas las URLs (con opción de incluir fotosExtra)
+ * - Fallback a imagen por defecto cuando no hay imagen
  * 
- * 📋 CASOS DE USO:
- * - Cuando solo necesitas URLs (strings)
- * - Preload de imágenes (usePreloadImages)
- * - Mapeo de datos (vehicleMapper)
- * - Thumbnails y previews simples
+ * 🔄 FLUJO DE USO:
+ * Backend → vehicleMapper.js → imageExtractors.js → Componentes
+ *   - getAllPhotos → mapVehiclesPage() → extractVehicleImageUrls()
+ *   - getOnePhoto → mapVehicle() → extractAllImageUrls()
  * 
- * ⚠️ LIMITACIÓN CONOCIDA:
- * - Solo busca en fotoPrincipal, fotoHover, fotosExtra (singular)
- * - Retorna solo URLs (strings), NO objetos con public_id
- * - Para búsqueda exhaustiva con objetos → usar getCarouselImages() de imageUtils.js
+ * 📍 USO POR PÁGINA:
+ * - /vehiculos (Listado): extractVehicleImageUrls() + extractAllImageUrls()
+ * - /vehiculos/:id (Detalle): extractVehicleImageUrls() + extractAllImageUrls()
+ * - /admin/dashboard: extractFirstImageUrl() (thumbnails)
+ * - usePreloadImages: extractAllImageUrls() (preload)
  * 
- * 🔄 RELACIÓN CON OTROS ARCHIVOS:
- * - imageUtils.js → USA estas funciones + añade lógica legacy (mostrar:true/false)
- * - cloudinaryUrl.js → USA public_id para generar URLs optimizadas
- * - extractPublicId.js → Extrae public_id de URLs de Cloudinary
+ * ⚠️ LIMITACIÓN:
+ * - Solo busca en: fotoPrincipal, fotoHover, fotosExtra (campos del backend)
+ * - Retorna: strings (URLs), NO objetos con public_id
+ * - Para objetos completos: usar imageNormalizerOptimized.js
+ * 
+ * 🔗 DEPENDENCIAS:
+ * - @assets/defaultCarImage → Fallback cuando no hay imagen
+ * 
+ * 🔗 USADO POR:
+ * - vehicleMapper.js → mapVehiclesPage() y mapVehicle()
+ * - Dashboard.jsx → extractFirstImageUrl() para thumbnails
+ * - usePreloadImages → extractAllImageUrls() para preload
  * 
  * @author Indiana Usados
- * @version 1.1.0 - Fix: fallback usa import de @assets
+ * @version 2.1.0 - Documentación mejorada: orden arquitectónico y flujos
  */
 
 import { defaultCarImage } from '@assets'
@@ -90,6 +124,20 @@ export const extractVehicleImageUrls = (vehicle) => {
 /**
  * Extrae TODAS las URLs de imágenes de un vehículo
  * Incluye: fotoPrincipal, fotoHover, fotosExtra
+ * 
+ * ✅ PROPÓSITO: Extracción rápida de URLs como strings para casos simples
+ * - Performance: ~2-3 operaciones por vehículo vs ~15-20 del normalizador
+ * - Uso en listados: Solo necesita URLs simples, no objetos completos
+ * - Uso en detalle: Solo busca en fotoPrincipal, fotoHover, fotosExtra (campos reales del backend)
+ * 
+ * 🔄 CUÁNDO USAR:
+ * - Listados de vehículos (mapVehiclesPage) → extractAllImageUrls(vehicle, { includeExtras: false })
+ * - Detalle de vehículo (mapVehicle) → extractAllImageUrls(vehicle, { includeExtras: true })
+ * - Preload de imágenes → Solo necesita URLs strings
+ * 
+ * ⚠️ CUÁNDO NO USAR:
+ * - Si necesitas objetos completos { url, public_id, original_name } → Usar imageNormalizerOptimized.js
+ * - Si necesitas buscar en campos legacy (imagen, fotosExtras, etc.) → Usar imageNormalizerOptimized.js
  * 
  * @param {Object} vehicle - Objeto vehículo del backend
  * @param {Object} options - Opciones de extracción

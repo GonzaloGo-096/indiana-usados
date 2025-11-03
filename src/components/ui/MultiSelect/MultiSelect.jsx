@@ -10,7 +10,7 @@
  * @version 3.1.0 - OPTIMIZADO
  */
 
-import React, { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useEffect, useMemo, useId } from 'react'
 import styles from './MultiSelect.module.css'
 
 const MultiSelect = React.memo(({
@@ -27,6 +27,7 @@ const MultiSelect = React.memo(({
   'aria-describedby': ariaDescribedBy
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const labelId = useId()
   const dropdownRef = useRef(null)
 
   // Validación simple y eficiente
@@ -93,7 +94,7 @@ const MultiSelect = React.memo(({
   return (
     <div className={`${styles.multiSelect} ${className}`}>
       {label && (
-        <label className={styles.label}>
+        <label className={styles.label} id={labelId}>
           {label}
           {required && <span className={styles.required}> *</span>}
         </label>
@@ -132,6 +133,7 @@ const MultiSelect = React.memo(({
             className={styles.dropdown}
             role="listbox"
             aria-multiselectable="true"
+            aria-labelledby={labelId}
           >
             <div className={styles.options}>
               {validOptions.length > 0 ? (

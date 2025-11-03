@@ -11,7 +11,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AUTH_CONFIG } from '@config/auth'
-import { vehiclesService } from '@services/vehiclesApi'
+import vehiclesAdminService from '@services/admin/vehiclesAdminService'
 import { logger } from '@utils/logger'
 
 // ✅ HELPER: Obtener token de autorización
@@ -70,7 +70,7 @@ const prepareFormDataSimple = (imageFiles, dataFields) => {
     return formData
 }
 
-// ✅ HELPER: Manejo de errores unificado
+// ✅ HELPER: Manejo de errores unificado (no lanzar desde onError)
 const handleMutationError = (error, operation) => {
     logger.error('cars:mutation', `Error al ${operation}`, { 
         message: error.message, 
@@ -103,7 +103,7 @@ const handleMutationError = (error, operation) => {
         errorMessage = error.message
     }
     
-    throw new Error(errorMessage)
+    return errorMessage
 }
 
 export const useCarMutation = () => {
@@ -121,7 +121,7 @@ export const useCarMutation = () => {
             const { imageFiles, dataFields } = processFormDataSimple(formData)
             const processedFormData = prepareFormDataSimple(imageFiles, dataFields)
             
-            const response = await vehiclesService.createVehicle(processedFormData)
+            const response = await vehiclesAdminService.createVehicle(processedFormData)
             return response.data
         },
         onSuccess: (data) => {
@@ -129,7 +129,8 @@ export const useCarMutation = () => {
             queryClient.invalidateQueries({ queryKey: ['vehicles'] })
         },
         onError: (error) => {
-            handleMutationError(error, 'crear')
+            const msg = handleMutationError(error, 'crear')
+            logger.warn('cars:mutation', `onError create: ${msg}`)
         }
     })
     
@@ -145,7 +146,7 @@ export const useCarMutation = () => {
             const { imageFiles, dataFields } = processFormDataSimple(formData)
             const processedFormData = prepareFormDataSimple(imageFiles, dataFields)
             
-            const response = await vehiclesService.updateVehicle(id, processedFormData)
+            const response = await vehiclesAdminService.updateVehicle(id, processedFormData)
             return response.data
         },
         onSuccess: (data, variables) => {
@@ -154,7 +155,8 @@ export const useCarMutation = () => {
             queryClient.invalidateQueries({ queryKey: ['vehicle', variables.id] })
         },
         onError: (error) => {
-            handleMutationError(error, 'actualizar')
+            const msg = handleMutationError(error, 'actualizar')
+            logger.warn('cars:mutation', `onError update: ${msg}`)
         }
     })
     
@@ -166,7 +168,7 @@ export const useCarMutation = () => {
                 throw new Error('❌ No se encontró token de autorización')
             }
             
-            const response = await vehiclesService.deleteVehicle(id)
+            const response = await vehiclesAdminService.deleteVehicle(id)
             return response.data
         },
         onSuccess: (data, id) => {
@@ -175,7 +177,8 @@ export const useCarMutation = () => {
             queryClient.removeQueries({ queryKey: ['vehicle', id] })
         },
         onError: (error) => {
-            handleMutationError(error, 'eliminar')
+            const msg = handleMutationError(error, 'eliminar')
+            logger.warn('cars:mutation', `onError delete: ${msg}`)
         }
     })
     

@@ -165,32 +165,8 @@ export const useAuth = () => {
     }
   }, [isTokenExpired])
 
-  // ✅ NUEVO: Auto-logout integrado (reemplaza useAutoLogout)
-  useEffect(() => {
-    if (!isAuthenticated) return
-
-    const handlePageHide = () => {
-      logger.info('auth:autoLogout', 'Cambio de página detectado, cerrando sesión')
-      authService.clearLocalStorage()
-      navigate(AUTH_CONFIG.routes.login)
-    }
-
-    const handleBeforeUnload = (event) => {
-      // Opcional: Confirmar antes de cerrar
-      const message = '¿Estás seguro de que quieres cerrar la sesión?'
-      event.returnValue = message
-      return message
-    }
-
-    // Event listeners
-    window.addEventListener('pagehide', handlePageHide)
-    window.addEventListener('beforeunload', handleBeforeUnload)
-
-    return () => {
-      window.removeEventListener('pagehide', handlePageHide)
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-    }
-  }, [isAuthenticated, navigate])
+  // (Desactivado) Auto-logout por pagehide/beforeunload: puede afectar UX
+  // Si se requiere en el futuro, reactivar detrás de un flag de configuración
 
   // ✅ MEJORADO: Verificar autenticación al cargar
   useEffect(() => {

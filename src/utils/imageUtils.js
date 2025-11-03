@@ -1,39 +1,66 @@
 /**
- * imageUtils.js - Utilidades para manejo de imágenes
+ * imageUtils.js - CAPA 3: Procesamiento avanzado de imágenes
  * 
- * ✅ PROPÓSITO: Procesamiento avanzado para carruseles (retorna objetos con public_id)
+ * 🏗️ ARQUITECTURA DEL SISTEMA:
+ * ┌─────────────────────────────────────────────────────────┐
+ * │ CAPA 1: imageExtractors.js                             │
+ * │ → Extracción rápida: URLs como strings                 │
+ * └─────────────────────────────────────────────────────────┘
+ *                          ↓ Usa cuando necesita objetos
+ * ┌─────────────────────────────────────────────────────────┐
+ * │ CAPA 2: imageNormalizerOptimized.js                   │
+ * │ → Normalización completa: {url, public_id, original_name}│
+ * └─────────────────────────────────────────────────────────┘
+ *                          ↓ Usa para procesamiento avanzado
+ * ┌─────────────────────────────────────────────────────────┐
+ * │ CAPA 3: imageUtils.js (ESTE ARCHIVO)                   │
+ * │ → Procesamiento avanzado: carruseles, validación        │
+ * │ → USA normalizador (CAPA 2) como base                  │
+ * └─────────────────────────────────────────────────────────┘
  * 
- * Centraliza la lógica de procesamiento de imágenes para carruseles
- * y validación de estructuras de imagen.
+ * ✅ PROPÓSITO: Procesamiento avanzado para casos complejos
+ * - Carruseles que necesitan objetos completos (public_id para Cloudinary)
+ * - Validación de estructuras de imagen
+ * - Manejo de casos edge (fallbacks, arrays vacíos)
  * 
- * 📋 CASOS DE USO:
- * - Carruseles de imágenes (ImageCarousel component)
- * - Necesitas objetos completos (con public_id para Cloudinary)
- * - Búsqueda exhaustiva en múltiples propiedades
- * - Soporte para formato legacy (mostrar:true/false)
+ * 📋 RESPONSABILIDADES:
+ * - Obtener imágenes para carrusel con normalización completa
+ * - Validar estructuras de imagen (isValidImage)
+ * - Manejar fallbacks cuando no hay imágenes
+ * - Combinar fotoPrincipal, fotoHover y fotosExtra
  * 
- * ⚠️ NOTA TÉCNICA:
- * - USA extractAllImageUrls() de imageExtractors como base
- * - AÑADE búsqueda adicional en: fotosExtras (plural), gallery, imagenes, etc.
- * - AÑADE soporte para objetos legacy con campo 'mostrar'
- * - RETORNA objetos (no solo URLs) para mantener public_id
+ * 🔄 FLUJO DE USO:
+ * Vehículo → getCarouselImages(vehicle)
+ *   ├─ normalizeVehicleImages(vehicle) [CAPA 2]
+ *   ├─ Combinar fotoPrincipal + fotoHover + fotosExtra
+ *   ├─ Filtrar imágenes inválidas
+ *   └─ Retorna: Array<{url, public_id, original_name}>
  * 
- * 🔄 RELACIÓN CON imageExtractors.js:
- * - imageExtractors: Casos simples → Retorna URLs (strings)
- * - imageUtils: Casos complejos → Retorna objetos (con public_id)
- * - Duplicación parcial justificada por necesidades diferentes
+ * 📍 USO POR COMPONENTE:
+ * - ImageCarousel (actualmente no usado directamente - recibe strings del mapper)
+ * - useCarouselImages hook → getCarouselImages() (potencial uso futuro)
  * 
- * 📌 TODO FUTURO (no urgente):
- * - Crear extractAllImageObjects() en imageExtractors para eliminar duplicación
- * - Requiere refactor de getCarouselImages() y testing exhaustivo
+ * ⚠️ NOTA IMPORTANTE:
+ * - Actualmente ImageCarousel recibe strings directamente del mapper
+ * - Este archivo está disponible para casos que necesiten objetos completos
+ * - Si ImageCarousel necesita public_id para optimizaciones Cloudinary, usar esta función
+ * 
+ * 🔗 DEPENDENCIAS:
+ * - @utils/imageNormalizerOptimized → normalizeVehicleImages, normalizeImageField
+ * - @assets/defaultCarImage → fallback cuando no hay imágenes
+ * - @utils/logger → logging de errores
+ * 
+ * 🔗 USADO POR:
+ * - useCarouselImages hook → getCarouselImages() (potencial)
+ * - Casos futuros que necesiten objetos completos para carruseles
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Limpieza: eliminado código muerto (255 líneas)
+ * @version 4.1.0 - Documentación mejorada: orden arquitectónico y flujos
  */
 
 import { defaultCarImage } from '@assets'
 import { logger } from '@utils/logger'
-import { extractAllImageUrls } from './imageExtractors'
+import { normalizeVehicleImages, normalizeImageField } from './imageNormalizerOptimized'
 
 /**
  * Obtener todas las imágenes para carrusel
@@ -49,71 +76,41 @@ export const getCarouselImages = (auto) => {
     }
     
     try {
-        // ✅ PASO 1: Extraer URLs básicas usando helper centralizado
-        const basicUrls = extractAllImageUrls(auto, { includeExtras: true, filterDuplicates: false })
+        // ✅ OPTIMIZADO: Normalización específica (solo busca en campos que el backend usa)
+        const normalizedImages = normalizeVehicleImages(auto)
         
-        // ✅ PASO 2: Buscar imágenes estructuradas con campos especiales (formato legacy con mostrar:true/false)
-        const structuredImages = Object.values(auto)
-            .filter(img => isValidImage(img))
-            .map(img => img); // Mantener objeto completo (puede tener public_id)
+        // ✅ Combinar imágenes normalizadas (fotoPrincipal, fotoHover, fotosExtra)
+        const allImages = []
         
-        // ✅ PASO 3: Buscar en propiedades de array (fotosExtras, gallery, imagenes, etc.)
-        const arrayProperties = ['fotosExtras', 'fotosExtra', 'gallery', 'imagenes', 'imágenes', 'photos', 'images']
-        const fromArrays = []
+        // Agregar principales normalizadas
+        if (normalizedImages.fotoPrincipal) {
+            allImages.push(normalizedImages.fotoPrincipal)
+        }
+        if (normalizedImages.fotoHover) {
+            allImages.push(normalizedImages.fotoHover)
+        }
         
-        arrayProperties.forEach(prop => {
-            const value = auto[prop]
-            if (Array.isArray(value)) {
-                value.forEach(img => {
-                    if (typeof img === 'string' && img.trim() !== '') {
-                        fromArrays.push(img.trim())
-                    } else if (typeof img === 'object' && (img.public_id || img.url)) {
-                        fromArrays.push(img) // Mantener objeto completo
-                    }
-                })
-            }
+        // Agregar extras normalizadas
+        allImages.push(...normalizedImages.fotosExtra)
+        
+        // ✅ Filtrar valores inválidos
+        const validImages = allImages.filter(img => {
+            if (!img || typeof img !== 'object') return false
+            return img.url && img.url.trim() !== '' && img.url !== 'undefined'
         })
         
-        // ✅ PASO 4: Combinar todas las fuentes
-        const allImages = [...basicUrls, ...structuredImages, ...fromArrays]
-        
-        // ✅ PASO 5: Eliminar duplicados (comparar por URL o public_id)
-        const uniqueImages = []
-        const seenIds = new Set()
-        
-        allImages.forEach(img => {
-            if (!img) return
-            
-            const identifier = typeof img === 'string' 
-                ? img 
-                : (img.public_id || img.url)
-            
-            if (identifier && !seenIds.has(identifier)) {
-                seenIds.add(identifier)
-                uniqueImages.push(img)
-            }
-        })
-        
-        // ✅ PASO 6: Filtrar valores inválidos
-        const validImages = uniqueImages.filter(img => {
-            if (typeof img === 'string') {
-                return img.trim() !== '' && img !== 'undefined'
-            }
-            if (typeof img === 'object') {
-                return (img.public_id || img.url) && img.url !== 'undefined'
-            }
-            return false
-        })
-        
-        // ✅ PASO 7: Retornar imágenes o fallback
+        // ✅ Retornar imágenes normalizadas o fallback
         if (validImages.length > 0) {
             return validImages
         }
         
-        return auto.imagen ? [auto.imagen] : [defaultCarImage]
+        // Fallback a imagen simple si existe
+        const fallbackImg = normalizeImageField(auto.imagen)
+        return fallbackImg ? [fallbackImg] : [defaultCarImage]
     } catch (error) {
         logger.warn('images:utils', 'Error al procesar imágenes del carrusel', { message: error.message })
-        return auto.imagen ? [auto.imagen] : [defaultCarImage]
+        const fallbackImg = normalizeImageField(auto?.imagen)
+        return fallbackImg ? [fallbackImg] : [defaultCarImage]
     }
 }
 

@@ -134,19 +134,7 @@ const LazyFilterFormSimple = React.forwardRef(({
         overflow: 'visible',
         position: 'relative'
       }}>
-        {/* Overlay invisible para detectar clicks fuera - SOLO EN DESKTOP */}
-        <div 
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 5,
-            background: 'transparent'
-          }}
-          onClick={handleHideFilters}
-        />
+        {/* Click fuera se maneja dentro del propio formulario */}
         
         <div style={{ position: 'relative', zIndex: 10 }}>
           <style>{`

@@ -15,7 +15,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './styles/globals.css'
 import './styles/fonts.css'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider, QueryCache, MutationCache } from '@tanstack/react-query'
 import { GlobalErrorBoundary } from '@shared'
 import { validateConfig, REACT_QUERY_CONFIG } from './config'
 
@@ -25,8 +25,26 @@ if (!validateConfig()) {
   console.error('❌ Error en configuración de la aplicación')
 }
 
-// ✅ Crear QueryClient con configuración centralizada
-const queryClient = new QueryClient(REACT_QUERY_CONFIG)
+// ✅ Crear QueryClient con configuración centralizada y handlers globales
+const queryClient = new QueryClient({
+  ...REACT_QUERY_CONFIG,
+  queryCache: new QueryCache({
+    onError: (error) => {
+      const status = error?.response?.status
+      if (status === 401) {
+        try { window.dispatchEvent(new CustomEvent('auth:unauthorized')) } catch (_) { /* no-op */ }
+      }
+    }
+  }),
+  mutationCache: new MutationCache({
+    onError: (error) => {
+      const status = error?.response?.status
+      if (status === 401) {
+        try { window.dispatchEvent(new CustomEvent('auth:unauthorized')) } catch (_) { /* no-op */ }
+      }
+    }
+  })
+})
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

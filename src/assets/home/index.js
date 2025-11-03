@@ -7,32 +7,31 @@
  * @version 1.1.0 - Same image repeated for testing
  */
 
-// Imagen principal (repetida para testing del carrusel)
-import fotoprincipal1x from './fotoprincipal.jpg'
-import fotoprincipal2x from './fotoprincipal@2x.jpg'
+// Imagen principal en formato WebP (repetida hasta tener variantes)
+import fotoprincipalWebp from '../foto-principal.webp'
 
 // Configuración de imágenes para el carrusel
 // TEMPORAL: Repetir la misma imagen hasta tener otras
 export const heroImages = [
   {
-    src: fotoprincipal1x,
-    srcSet: `${fotoprincipal1x} 1x, ${fotoprincipal2x} 2x`,
+    src: fotoprincipalWebp,
+    srcSet: `${fotoprincipalWebp} 1x, ${fotoprincipalWebp} 2x`,
     alt: "Promoción destacada: Vehículo usado de calidad en Indiana Usados",
     sizes: "(min-width: 768px) 50vw, 100vw"
   },
   {
-    src: fotoprincipal1x,
-    srcSet: `${fotoprincipal1x} 1x, ${fotoprincipal2x} 2x`,
+    src: fotoprincipalWebp,
+    srcSet: `${fotoprincipalWebp} 1x, ${fotoprincipalWebp} 2x`,
     alt: "Promoción destacada: Vehículo usado de calidad en Indiana Usados",
     sizes: "(min-width: 768px) 50vw, 100vw"
   },
   {
-    src: fotoprincipal1x,
-    srcSet: `${fotoprincipal1x} 1x, ${fotoprincipal2x} 2x`,
+    src: fotoprincipalWebp,
+    srcSet: `${fotoprincipalWebp} 1x, ${fotoprincipalWebp} 2x`,
     alt: "Promoción destacada: Vehículo usado de calidad en Indiana Usados",
     sizes: "(min-width: 768px) 50vw, 100vw"
   }
 ]
 
 // Export individual para flexibilidad
-export { fotoprincipal1x, fotoprincipal2x }
+export { fotoprincipalWebp }

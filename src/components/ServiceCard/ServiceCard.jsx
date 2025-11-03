@@ -13,9 +13,9 @@ import { WhatsAppContact } from '@ui'
 import styles from './ServiceCard.module.css'
 
 // Importar imágenes locales
-import taller2Image from '@assets/taller-2.jpeg'
-import taller3Image from '@assets/taller-3-jpeg.jpeg'
-import tallerMotorImage from '@assets/taller-motor.jpg'
+import taller2Image from '@assets/taller-2.webp'
+import taller3Image from '@assets/taller-3-jpeg.webp'
+import tallerMotorImage from '@assets/taller-motor.webp'
 
 // Mapeo de imágenes locales
 const imageMap = {

@@ -1,15 +1,73 @@
 /**
- * vehicleMapper.js - Transformación de datos de vehículos
+ * vehicleMapper.js - Mapper: Transformación de datos backend → frontend
  * 
- * Transforma respuestas del backend a modelo frontend consistente
+ * 🏗️ ARQUITECTURA DEL SISTEMA:
+ * ┌─────────────────────────────────────────────────────────┐
+ * │ Backend API                                             │
+ * │ → getAllPhotos (lista) / getOnePhoto (detalle)         │
+ * └────────────────────┬──────────────────────────────────┘
+ *                      │
+ *                      ▼
+ * ┌─────────────────────────────────────────────────────────┐
+ * │ vehicleMapper.js (ESTE ARCHIVO)                        │
+ * │ → Transforma datos backend a formato frontend         │
+ * │ → USA imageExtractors.js (CAPA 1) para performance     │
+ * └────────────────────┬──────────────────────────────────┘
+ *                      │
+ *                      ▼
+ * ┌─────────────────────────────────────────────────────────┐
+ * │ Componentes Frontend                                    │
+ * │ → CardAuto, CardDetalle, ImageCarousel, Dashboard      │
+ * └─────────────────────────────────────────────────────────┘
  * 
- * ✅ REFACTORIZADO v5.0.0: Simplificación radical
- * - Eliminado normalizeVehiclesPage duplicado
- * - Todo en una función simple y directa
- * - Sin archivos intermedios innecesarios
+ * ✅ PROPÓSITO: Transformación de datos con optimización de performance
+ * - Usa extractors (CAPA 1) para velocidad: ~2-3 ops/vehículo
+ * - Passthrough completo: conserva todos los campos del backend
+ * - Consistencia: mismo formato entre lista y detalle
+ * 
+ * 📋 RESPONSABILIDADES:
+ * - Transformar página de vehículos (mapVehiclesPage)
+ * - Transformar vehículo individual (mapVehicle)
+ * - Extraer URLs de imágenes usando extractors (performance)
+ * - Mantener compatibilidad con componentes existentes
+ * 
+ * 🔄 FLUJO DE USO:
+ * 
+ * LISTADO (/vehiculos):
+ * Backend.getAllPhotos() → mapVehiclesPage()
+ *   ├─ extractVehicleImageUrls() → {principal, hover}
+ *   ├─ extractAllImageUrls(v, {includeExtras: false})
+ *   └─ Retorna: vehículos con fotoPrincipal, fotoHover (strings)
+ *   ↓
+ * AutosGrid → CardAuto → usa strings directamente
+ * 
+ * DETALLE (/vehiculos/:id):
+ * Backend.getOnePhoto(id) → mapVehicle()
+ *   ├─ extractVehicleImageUrls() → {principal, hover}
+ *   ├─ extractAllImageUrls(v, {includeExtras: true})
+ *   └─ Retorna: vehículo con fotoPrincipal, fotoHover, imágenes[] (strings)
+ *   ↓
+ * CardDetalle → ImageCarousel → usa strings directamente
+ * 
+ * 📍 DIFERENCIAS ENTRE LISTA Y DETALLE:
+ * - Lista: includeExtras: false (backend no envía fotosExtra en getAllPhotos)
+ * - Detalle: includeExtras: true (backend envía fotosExtra en getOnePhoto)
+ * 
+ * ⚠️ CUÁNDO NO USAR:
+ * - Si necesitas objetos con public_id → usar imageNormalizerOptimized.js directamente
+ * - Si necesitas normalizar para formularios → usar normalizeForForm.js
+ * 
+ * 🔗 DEPENDENCIAS:
+ * - @utils/imageExtractors → extractVehicleImageUrls, extractAllImageUrls
+ * - @utils/logger → logging de errores
+ * 
+ * 🔗 USADO POR:
+ * - useVehiclesList → mapVehiclesPage() (lista pública)
+ * - useVehicleDetail → mapVehicle() (detalle público)
+ * - Dashboard.jsx → useVehiclesList() → mapVehiclesPage() (lista admin)
  * 
  * @author Indiana Usados
- * @version 5.0.0 - Mapper simple y directo
+ * @version 7.1.0 - Documentación mejorada: orden arquitectónico y flujos
  */
 
 import { logger } from '@utils/logger'
@@ -41,31 +99,25 @@ export const mapVehiclesPage = (backendPage, currentCursor = null) => {
     const vehicles = docs.map(v => {
       if (!v || typeof v !== 'object') return null
       
-      // Extraer imágenes usando helpers centralizados
+      // ✅ OPTIMIZADO: Lista solo tiene fotoPrincipal y fotoHover (backend no envía fotosExtra)
+      // Extracción simple y directa - solo busca donde realmente está
       const { principal, hover } = extractVehicleImageUrls(v)
-      const allImages = extractAllImageUrls(v)
+      const allImages = extractAllImageUrls(v, { includeExtras: false }) // No buscar extras en lista
       
       return {
+        // ✅ Passthrough completo de todos los campos del backend
+        ...v,
+        
         // Identificación
         id: v._id || v.id || 0,
         
-        // Información básica
-        marca: String(v.marca || '').trim(),
-        modelo: String(v.modelo || '').trim(),
-        version: String(v.version || '').trim(),
-        precio: Number(v.precio || 0),
-        año: Number(v.anio || 0),
-        kilometraje: Number(v.kilometraje || 0),
-        caja: String(v.caja || '').trim(),
-        cilindrada: Number(v.cilindrada || 0),
-        
-        // Imágenes (usando extractors centralizados)
+        // ✅ Imágenes como strings (compatibilidad con componentes existentes)
         fotoPrincipal: principal || '',
         fotoHover: hover || '',
-        imagen: principal || '',
+        imagen: principal || '',  // Alias para compatibilidad
         imágenes: allImages,
         
-        // Título compuesto
+        // Título compuesto (mantener por compatibilidad si se usa)
         title: v.marca && v.modelo 
           ? `${String(v.marca).trim()} ${String(v.modelo).trim()}` 
           : String(v.marca || v.modelo || '').trim(),
@@ -114,27 +166,23 @@ export const mapVehicle = (backendVehicle) => {
   }
   
   try {
+    // ✅ OPTIMIZADO: Detalle incluye fotoPrincipal, fotoHover y fotosExtra
+    // Extracción específica - solo busca en campos que el backend realmente usa
     const { principal, hover } = extractVehicleImageUrls(backendVehicle)
-    const allImages = extractAllImageUrls(backendVehicle)
+    const allImages = extractAllImageUrls(backendVehicle, { includeExtras: true }) // Incluir extras en detalle
     
     return {
+      // ✅ Passthrough completo: conservar todas las claves del backend
+      ...backendVehicle,
+      
+      // Identificación
       id: backendVehicle._id || backendVehicle.id || 0,
-      marca: String(backendVehicle.marca || '').trim(),
-      modelo: String(backendVehicle.modelo || '').trim(),
-      version: String(backendVehicle.version || '').trim(),
-      precio: Number(backendVehicle.precio || 0),
-      año: Number(backendVehicle.anio || 0),
-      kilometraje: Number(backendVehicle.kilometraje || 0),
-      caja: String(backendVehicle.caja || '').trim(),
-      cilindrada: Number(backendVehicle.cilindrada || 0),
+      
+      // ✅ Imágenes como strings (compatibilidad con componentes existentes)
       fotoPrincipal: principal || '',
       fotoHover: hover || '',
-      imagen: principal || '',
-      imágenes: allImages,
-      title: backendVehicle.marca && backendVehicle.modelo 
-        ? `${String(backendVehicle.marca).trim()} ${String(backendVehicle.modelo).trim()}` 
-        : String(backendVehicle.marca || backendVehicle.modelo || '').trim(),
-      ...(process.env.NODE_ENV === 'development' && { _original: backendVehicle })
+      imagen: principal || '',  // Alias para compatibilidad
+      imágenes: allImages
     }
   } catch (error) {
     logger.error('mapper:vehicle', 'Error transformando vehículo', { error: error.message })

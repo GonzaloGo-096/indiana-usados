@@ -11,9 +11,11 @@
  */
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { Navigate } from 'react-router-dom'
+import React from 'react'
 import './App.module.css'
 import { DeviceProvider } from '@hooks'
+import ScrollOnRouteChange from '@ui/ScrollOnRouteChange'
+import AuthUnauthorizedListener from '@components/auth/AuthUnauthorizedListener'
 
 // Routes
 import PublicRoutes from './routes/PublicRoutes'
@@ -30,15 +32,14 @@ function App() {
         >
             <DeviceProvider>
                 <div className="app">
+                    <AuthUnauthorizedListener />
+                    <ScrollOnRouteChange behavior="smooth" />
                     <Routes>
                         {/* Rutas públicas */}
                         <Route path="/*" element={<PublicRoutes />} />
 
                         {/* Rutas del admin */}
                         <Route path="/admin/*" element={<AdminRoutes />} />
-
-                        {/* Ruta por defecto */}
-                        <Route path="*" element={<Navigate to="/" />} />
                     </Routes>
                 </div>
             </DeviceProvider>

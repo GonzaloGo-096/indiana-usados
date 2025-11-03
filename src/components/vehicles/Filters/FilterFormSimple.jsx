@@ -16,7 +16,7 @@ import { useSearchParams } from 'react-router-dom'
 import { RangeSlider } from '@ui'
 import { MultiSelect } from '@ui'
 import { marcas, combustibles, cajas, FILTER_DEFAULTS, SORT_OPTIONS } from '@constants'
-import { parseFilters, buildFiltersForBackend } from '@utils'
+import { parseFilters } from '@utils'
 import { logger } from '@utils/logger'
 import styles from './FilterFormSimple.module.css'
 
@@ -31,8 +31,9 @@ const FilterFormSimple = React.memo(React.forwardRef(({
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showMobileActions, setShowMobileActions] = useState(false)
+  const triggerRef = useRef(null)
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
-  const [selectedSort, setSelectedSort] = useState(null)
+  const sortDropdownRef = useRef(null)
   const timeoutRef = useRef(null)
 
   // ✅ FILTROS - ESTADO SIMPLE
@@ -46,6 +47,7 @@ const FilterFormSimple = React.memo(React.forwardRef(({
   })
 
   const [searchParams, setSearchParams] = useSearchParams()
+  const selectedSort = searchParams.get('sort')
 
   // ✅ SINCRONIZACIÓN CON URL
   useEffect(() => {
@@ -58,7 +60,7 @@ const FilterFormSimple = React.memo(React.forwardRef(({
       precio: urlFilters.precio || [FILTER_DEFAULTS.PRECIO.min, FILTER_DEFAULTS.PRECIO.max],
       kilometraje: urlFilters.kilometraje || [FILTER_DEFAULTS.KILOMETRAJE.min, FILTER_DEFAULTS.KILOMETRAJE.max]
     }))
-    setSelectedSort(searchParams.get('sort'))
+    // sort se maneja en la página Vehiculos
   }, [searchParams])
 
   // ✅ DETECCIÓN DE SCROLL PARA BOTONES MÓVILES
@@ -76,6 +78,35 @@ const FilterFormSimple = React.memo(React.forwardRef(({
   const toggleDrawer = useCallback(() => setIsDrawerOpen(prev => !prev), [])
   const closeDrawer = useCallback(() => setIsDrawerOpen(false), [])
   const toggleSortDropdown = useCallback(() => setIsSortDropdownOpen(prev => !prev), [])
+  const handleSortChange = useCallback((sortOption) => {
+    setIsSortDropdownOpen(false)
+    const newParams = new URLSearchParams(searchParams)
+    if (sortOption) {
+      newParams.set('sort', sortOption)
+    } else {
+      newParams.delete('sort')
+    }
+    setSearchParams(newParams)
+  }, [searchParams, setSearchParams])
+
+  // Cerrar dropdown si cambia el sort desde la URL (evita quedarse abierto)
+  useEffect(() => {
+    if (isSortDropdownOpen) {
+      setIsSortDropdownOpen(false)
+    }
+  }, [selectedSort])
+
+  // Cerrar dropdown al hacer click fuera
+  useEffect(() => {
+    if (!isSortDropdownOpen) return
+    const handleClickOutside = (e) => {
+      if (sortDropdownRef.current && !sortDropdownRef.current.contains(e.target)) {
+        setIsSortDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isSortDropdownOpen])
 
   // ✅ HANDLERS DE FILTROS
   const handleFilterChange = useCallback((key, value) => {
@@ -91,21 +122,27 @@ const FilterFormSimple = React.memo(React.forwardRef(({
       precio: [FILTER_DEFAULTS.PRECIO.min, FILTER_DEFAULTS.PRECIO.max],
       kilometraje: [FILTER_DEFAULTS.KILOMETRAJE.min, FILTER_DEFAULTS.KILOMETRAJE.max]
     })
-    setSelectedSort(null)
     setSearchParams({})
   }, [setSearchParams])
 
-  const handleSortChange = useCallback((sortOption) => {
-    setSelectedSort(sortOption)
-    setIsSortDropdownOpen(false)
-    const newParams = new URLSearchParams(searchParams)
-    if (sortOption) {
-      newParams.set('sort', sortOption)
-    } else {
-      newParams.delete('sort')
+  // Cerrar con Escape y devolver foco al trigger
+  useEffect(() => {
+    if (!isDrawerOpen) return
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsDrawerOpen(false)
+      }
     }
-    setSearchParams(newParams)
-  }, [searchParams, setSearchParams])
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isDrawerOpen])
+
+  // Devolver foco al trigger al cerrar
+  useEffect(() => {
+    if (!isDrawerOpen && triggerRef.current) {
+      try { triggerRef.current.focus() } catch (_) {}
+    }
+  }, [isDrawerOpen])
 
   // ✅ SUBMIT
   const onSubmit = async (e) => {
@@ -113,13 +150,9 @@ const FilterFormSimple = React.memo(React.forwardRef(({
     setIsSubmitting(true)
 
     try {
+      // Cerrar inmediato para UX fluida
+      closeDrawer()
       await onApplyFilters(filters)
-      
-      // Cerrar drawer con cleanup
-      timeoutRef.current = setTimeout(() => {
-        closeDrawer()
-        timeoutRef.current = null
-      }, 100)
     } catch (error) {
       logger.error('filters:apply', 'Error applying filters', { error: error.message })
     } finally {
@@ -158,21 +191,21 @@ const FilterFormSimple = React.memo(React.forwardRef(({
     <div className={`${styles.filterContainer} ${isDrawerOpen ? styles.open : ''}`}>
       {/* Mobile Actions */}
       <div className={`${styles.mobileActionsContainer} ${showMobileActions ? styles.visible : ''}`}>
-          <button
-            className={`${styles.mobileActionButton} ${selectedSort ? styles.active : ''}`}
-            onClick={toggleSortDropdown}
-            disabled={isLoading || isSubmitting}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M3 6h18"></path><path d="M6 12h12"></path><path d="M9 18h6"></path>
-            </svg>
-            <span>Ordenar por</span>
+          <div className={styles.actionItem}>
+            <button
+              className={`${styles.mobileActionButton} ${selectedSort ? styles.active : ''}`}
+              onClick={toggleSortDropdown}
+              disabled={isLoading || isSubmitting}
+              type="button"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M3 6h18"></path><path d="M6 12h12"></path><path d="M9 18h6"></path>
+              </svg>
+              <span>Ordenar</span>
+            </button>
             {isSortDropdownOpen && (
-              <div className={styles.sortDropdown}>
-                <button
-                  onClick={() => handleSortChange(null)}
-                  className={!selectedSort ? styles.active : ''}
-                >
+              <div className={styles.sortDropdown} ref={sortDropdownRef}>
+                <button onClick={() => handleSortChange(null)} className={!selectedSort ? styles.active : ''} type="button">
                   Sin ordenamiento
                 </button>
                 {SORT_OPTIONS.map(option => (
@@ -180,26 +213,31 @@ const FilterFormSimple = React.memo(React.forwardRef(({
                     key={option.value}
                     onClick={() => handleSortChange(option.value)}
                     className={selectedSort === option.value ? styles.active : ''}
+                    type="button"
                   >
                     {option.label}
                   </button>
                 ))}
               </div>
             )}
-          </button>
-          <button
-            className={styles.mobileActionButton}
-            onClick={toggleDrawer}
-            disabled={isLoading || isSubmitting}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"></polygon>
-            </svg>
-            <span>Filtrar</span>
-            {activeFiltersCount > 0 && (
-              <span className={styles.badge}>{activeFiltersCount}</span>
-            )}
-          </button>
+          </div>
+          <div className={styles.actionItem}>
+            <button
+              ref={triggerRef}
+              className={styles.mobileActionButton}
+              onClick={toggleDrawer}
+              disabled={isLoading || isSubmitting}
+              type="button"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"></polygon>
+              </svg>
+              <span>Filtrar</span>
+              {activeFiltersCount > 0 && (
+                <span className={styles.badge}>{activeFiltersCount}</span>
+              )}
+            </button>
+          </div>
         </div>
 
       {/* Error Messages */}

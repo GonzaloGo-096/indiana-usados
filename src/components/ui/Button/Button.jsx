@@ -28,6 +28,7 @@ export const Button = ({
     size = 'medium',
     disabled = false,
     className = '',
+    type = 'button',
     ...props 
 }) => {
     const buttonClasses = [
@@ -42,6 +43,7 @@ export const Button = ({
         <button 
             className={buttonClasses}
             disabled={disabled}
+            type={type}
             {...props}
         >
             {children}

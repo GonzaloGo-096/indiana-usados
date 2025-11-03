@@ -8,7 +8,6 @@
 // ✅ INSTANCIAS DE AXIOS
 export { default as axiosInstance, authAxiosInstance } from './axiosInstance'
 
-// ✅ APIS DE SERVICIOS
-export { vehiclesApi } from '../services/vehiclesApi'
+// (Limpieza) No reexportar servicios desde @api para evitar ambigüedad
 
  

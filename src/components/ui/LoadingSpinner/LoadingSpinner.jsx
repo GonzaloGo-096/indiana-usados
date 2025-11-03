@@ -26,7 +26,12 @@ export const LoadingSpinner = ({
     fullScreen = false 
 }) => {
     return (
-        <div className={`${styles.container} ${fullScreen ? styles.fullScreen : ''}`}>
+        <div 
+            className={`${styles.container} ${fullScreen ? styles.fullScreen : ''}`}
+            role="status"
+            aria-live="polite"
+            aria-busy="true"
+        >
             <div className={`${styles.spinner} ${styles[size]}`}>
                 <div className={styles.spinnerRing}></div>
                 <div className={styles.spinnerRing}></div>

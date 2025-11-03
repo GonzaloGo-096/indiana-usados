@@ -114,6 +114,7 @@ const Nav = () => {
             <Link 
               className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`} 
               to="/"
+              aria-current={isActive('/') ? 'page' : undefined}
               onClick={closeMenu}
               onMouseEnter={handleHomePreload}
               onMouseLeave={() => cancelPreload('/')}
@@ -139,6 +140,7 @@ const Nav = () => {
                 <Link 
                   className={styles.dropdownItem}
                   to="/vehiculos"
+                  aria-current={isActive('/vehiculos') ? 'page' : undefined}
                   onClick={() => {
                     closeMenu()
                     setIsAutosDropdownOpen(false)
@@ -165,6 +167,7 @@ const Nav = () => {
             <Link 
               className={`${styles.navLink} ${isActive('/postventa') ? styles.active : ''}`} 
               to="/postventa"
+              aria-current={isActive('/postventa') ? 'page' : undefined}
               onClick={closeMenu}
               onMouseEnter={handlePostventaPreload}
               onMouseLeave={() => cancelPreload('/postventa')}

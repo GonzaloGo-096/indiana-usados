@@ -6,7 +6,7 @@
  */
 
 import React, { useEffect } from 'react'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useVehicleDetail } from '@hooks/vehicles'
 import { CardDetalle } from '@vehicles'
 import { ErrorState } from '@ui'
@@ -16,10 +16,6 @@ import styles from './VehiculoDetalle.module.css'
 
 const VehiculoDetalle = () => {
     const { id } = useParams()
-    const { state } = useLocation()
-    
-    // ✅ OBTENER DATOS DEL NAVIGATE (cache)
-    const vehicleDataFromCache = state?.vehicleData
     
     // Hook para preservar scroll
     const { navigateWithScroll } = useScrollPosition({
@@ -34,17 +30,11 @@ const VehiculoDetalle = () => {
 
     // ✅ USAR DATOS DEL CACHE SI ESTÁN DISPONIBLES
     const { 
-        auto: autoFromAPI,
-        formattedData,
+        auto,
         isLoading, 
         isError, 
         error 
-    } = useVehicleDetail(id, { 
-        enabled: !vehicleDataFromCache // Solo hacer API call si no hay datos en cache
-    })
-    
-    // ✅ PRIORIZAR DATOS DEL CACHE
-    const auto = vehicleDataFromCache || autoFromAPI
+    } = useVehicleDetail(id, { enabled: true })
     
     // ✅ DEBUG TEMPORALMENTE DESACTIVADO PARA INVESTIGAR BUCLE INFINITO
 
@@ -94,10 +84,7 @@ const VehiculoDetalle = () => {
             
             {/* Contenido principal */}
             <div className={styles.content}>
-                <CardDetalle 
-                    auto={auto}
-                    contactInfo={formattedData?.contactInfo}
-                />
+                <CardDetalle auto={auto} />
             </div>
         </div>
     )

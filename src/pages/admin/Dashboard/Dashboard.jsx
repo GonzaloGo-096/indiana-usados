@@ -6,11 +6,15 @@
  */
 
 import React, { useReducer, useCallback } from 'react'
-import { useAuth, useVehiclesList, getVehicleImageUrl } from '@hooks'
+import fallbackImage from '@assets/auto1.jpg'
+import { useAuth, useVehiclesList } from '@hooks'
 import { useCarMutation } from '@hooks'
 import axiosInstance from '@api/axiosInstance'
 import vehiclesService from '@services/vehiclesApi'
+import { toAdminListItem } from '@mappers/admin/toAdminListItem'
 import { normalizeDetailToFormInitialData, unwrapDetail } from '@components/admin/mappers/normalizeForForm'
+import { normalizeVehicleImages, toFormFormat, normalizeImageField } from '@utils/imageNormalizerOptimized'
+import { extractImageUrl, extractFirstImageUrl } from '@utils/imageExtractors'
 
 import { useNavigate } from 'react-router-dom'
 import LazyCarForm from '@components/admin/CarForm/LazyCarForm'
@@ -67,62 +71,42 @@ const pickFirst = (...candidates) => {
     return ''
 }
 
+/**
+ * Extrae URLs de imágenes para formulario admin
+ * ✅ OPTIMIZADO: Usa normalizador optimizado + extracción simple cuando corresponde
+ */
 const extractImageUrls = (vehicle) => {
     const v = vehicle || {}
     const o = v._original || {}
     
-    // Helper mínimo: obtener URL desde string u objeto { url }
-    const getUrlFromAny = (item) => {
-        if (!item) return ''
-        if (typeof item === 'string') return item
-        if (typeof item === 'object') return item.url || item.secure_url || ''
-        return ''
-    }
-
-    // Estructura limpia: pasar objetos con {url, public_id, original_name}
-    const urls = {
-        // Imágenes principales - pasar objeto completo del backend
-        fotoPrincipal: v.fotoPrincipal || o.fotoPrincipal || null,
-        fotoHover: v.fotoHover || o.fotoHover || null
+    // Combinar datos del vehículo actual con _original (datos raw)
+    const combinedVehicle = {
+        ...v,
+        fotoPrincipal: v.fotoPrincipal || o.fotoPrincipal,
+        fotoHover: v.fotoHover || o.fotoHover,
+        fotosExtra: v.fotosExtra || o.fotosExtra || []  // ✅ Solo fotosExtra (backend no usa fotosExtras)
     }
     
-    // Fuente contractual: fotosExtra(s) del backend (array)
-    const fotosExtraArray = 
-        (Array.isArray(v.fotosExtra) && v.fotosExtra) ||
-        (Array.isArray(v.fotosExtras) && v.fotosExtras) ||
-        (Array.isArray(o.fotosExtra) && o.fotosExtra) ||
-        (Array.isArray(o.fotosExtras) && o.fotosExtras) ||
-        []
-
-    // Mapear hasta 8 fotos extras desde el array; fallback a legacy fotoExtraN si existe
+    // ✅ OPTIMIZADO: Usar normalizador optimizado (solo busca donde existe)
+    const normalizedImages = normalizeVehicleImages(combinedVehicle)
+    const urls = toFormFormat(normalizedImages)
+    
+    // ✅ También buscar en campos legacy fotoExtra1-8 si existen
     for (let i = 0; i < 8; i++) {
         const fieldName = `fotoExtra${i + 1}`
-        const extraItem = fotosExtraArray[i]
-
-        if (extraItem) {
-            // ESTRUCTURA: string u objeto con {url}
-            const resolvedUrl = getUrlFromAny(extraItem)
-            urls[fieldName] = resolvedUrl
-                ? {
-                    url: resolvedUrl,
-                    public_id: extraItem.public_id || '',
-                    original_name: extraItem.original_name || ''
-                }
-                : null
-            continue
-        }
-
-        // FALLBACK LEGADO: usar v.fotoExtraN / o.fotoExtraN si existen
-        const legacy = v[fieldName] || o[fieldName] || null
-        if (legacy) {
-            const resolvedUrl = getUrlFromAny(legacy)
-            urls[fieldName] = resolvedUrl
-                ? { url: resolvedUrl, public_id: legacy.public_id || '', original_name: legacy.original_name || '' }
-                : null
-        } else {
-            urls[fieldName] = null
+        if (!urls[fieldName]) {
+            const legacy = v[fieldName] || o[fieldName]
+            if (legacy) {
+                const normalized = normalizeImageField(legacy)
+                urls[fieldName] = normalized
+            }
         }
     }
+    
+    // Agregar principales
+    urls.fotoPrincipal = normalizedImages.fotoPrincipal || null
+    urls.fotoHover = normalizedImages.fotoHover || null
+    
     return urls
 }
 
@@ -273,6 +257,10 @@ const Dashboard = () => {
 
     // ✅ MANEJADOR DE SUBMIT DEL FORMULARIO
     const handleFormSubmit = useCallback(async (formData) => {
+        // Limpiar error previo del modal antes de reintentar
+        if (modalState.error) {
+            dispatch(clearError())
+        }
         const mode = modalState.mode
         const vehicleId = modalState.initialData?._id
         
@@ -373,59 +361,74 @@ const Dashboard = () => {
                             No hay vehículos disponibles
                         </div>
                     ) : (
-                        vehicles.map((vehicle) => (
-                        <div key={vehicle.id} className={styles.vehicleItem}>
+                        vehicles.map((vehicle) => {
+                        const item = toAdminListItem(vehicle)
+                        return (
+                        <div key={item.id} className={styles.vehicleItem}>
                             <div className={styles.vehicleInfo}>
                                 <div className={styles.vehicleImage}>
+                                    {/* Importar fallback para build robusto */}
                                     <img 
-                                            src={getVehicleImageUrl(vehicle)}
-                                        alt={`${vehicle.marca} ${vehicle.modelo}`}
+                                        src={item.firstImageUrl}
+                                        alt={`${item.marca} ${item.modelo}`}
                                         loading="lazy"
-                                            onError={(e) => {
-                                                e.target.src = '/src/assets/auto1.jpg'
-                                            }}
+                                        onError={(e) => {
+                                            try {
+                                                // fallback importado para evitar rutas relativas a src/
+                                                // se resuelve vía import estático
+                                                // Nota: import diferido al top para tree-shaking correcto
+                                                // pero aquí lo establecemos en runtime si falla
+                                                e.target.src = fallbackImage
+                                            } catch (_) {
+                                                // noop
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.vehicleDetails}>
-                                    <h3>{vehicle.marca} {vehicle.modelo}</h3>
-                                    <p>Año: {vehicle.año} | Km: {vehicle.kms?.toLocaleString()}</p>
-                                    <p>Precio: ${vehicle.precio?.toLocaleString()}</p>
+                                    <h3>{item.marca} {item.modelo}</h3>
+                                    <p>Año: {item.anio} | Km: {Number(item.kilometraje || 0).toLocaleString()}</p>
+                                    <p>Precio: ${Number(item.precio || 0).toLocaleString()}</p>
                                 </div>
                             </div>
                             
                                                          <div className={styles.vehicleActions}>
                                  <button 
-                                         onClick={() => handleOpenEditForm(vehicle)} 
+                                        onClick={() => handleOpenEditForm(item._original)} 
                                      className={styles.editButton}
                                  >
                                      Editar
                                  </button>
                                  <button 
-                                         onClick={() => handlePauseVehicle(vehicle.id)} 
+                                        onClick={() => handlePauseVehicle(item.id)} 
                                      className={styles.pauseButton}
                                  >
                                      Pausar
                                  </button>
                                  <button 
-                                         onClick={() => handleDeleteVehicle(vehicle.id)} 
+                                        onClick={() => handleDeleteVehicle(item.id)} 
                                      className={styles.deleteButton}
                                  >
                                      Eliminar
                                  </button>
                              </div>
                         </div>
-                        ))
+                        )})
                     )}
                 </div>
             </div>
 
                         {/* ✅ MODAL DE GESTIÓN DE AUTOS */}
             {modalState.isOpen && (
-                <div className={styles.modalOverlay} onClick={handleCloseModal}>
+                <div 
+                    className={styles.modalOverlay} 
+                    onClick={modalState.loading ? undefined : handleCloseModal}
+                >
                     <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                         {/* ✅ BOTÓN DE CERRAR EN EL BORDE */}
                         <button 
                             onClick={handleCloseModal}
+                            disabled={modalState.loading}
                             className={styles.modalCloseButton}
                             aria-label="Cerrar modal"
                         >

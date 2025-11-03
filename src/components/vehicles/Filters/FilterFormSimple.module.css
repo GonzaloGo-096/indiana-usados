@@ -237,8 +237,8 @@
 .sortDropdown {
   position: absolute;
   top: 100%;
-  left: 0;
-  right: 0;
+  left: 8px;
+  right: 8px;
   background: rgba(18, 18, 18, 0.95);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -248,6 +248,8 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   z-index: 1300;
   animation: fadeInDown 0.2s ease-out;
+  max-height: 240px;
+  overflow: auto;
 }
 
 .sortDropdown button {
@@ -388,6 +390,17 @@
     touch-action: manipulation;
   }
 
+  .mobileActionsContainer > *:first-child { border-right: 1px solid rgba(255, 255, 255, 0.3); }
+
+  .actionItem {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+  }
+
   .mobileActionsContainer.visible { transform: translateY(0); }
 
   .mobileActionButton {
@@ -413,7 +426,7 @@
   .mobileActionButton span { text-align: center; display: flex; align-items: center; justify-content: center; }
   .mobileActionButton svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .mobileActionButton.active { background: rgba(255, 255, 255, 0.08); }
-  .mobileActionButton:first-child { border-right: 1px solid rgba(255, 255, 255, 0.3); }
+  /* border ahora aplicado al contenedor para uniformidad */
   .mobileActionButton:hover { background: rgba(255, 255, 255, 0.03); }
   .mobileActionButton:active { background: rgba(255, 255, 255, 0.05); }
   .mobileActionButton:disabled { opacity: 0.6; cursor: not-allowed; }

@@ -11,7 +11,7 @@
  * @version 5.1.0 - Performance optimizada
  */
 
-import React, { memo, useMemo, useCallback, useState, useEffect } from 'react'
+import React, { memo, useMemo, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
     formatPrice, 
@@ -20,7 +20,6 @@ import {
     formatCaja,
     formatBrandModel
 } from '@utils/formatters'
-import axiosInstance from '@api/axiosInstance'
 import { logger } from '@utils/logger'
 import styles from './CardAuto.module.css'
 import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
@@ -75,45 +74,13 @@ export const CardAuto = memo(({ auto }) => {
 
 
     // ✅ FUNCIÓN SIMPLE PARA "VER MÁS"
-    const handleVerMas = useCallback(async () => {
-        try {
-            const vehicleId = auto.id || auto._id
-            
-            if (!vehicleId) {
-                logger.error('ui:card-auto', 'ID del vehículo no válido')
-                return
-            }
-            
-            // ✅ DEBUG: Solo para vehículos sin imagen
-            
-            // ✅ HACER GET AL ENDPOINT
-            const response = await axiosInstance.get(`/photos/getonephoto/${vehicleId}`)
-            
-            // ✅ DEBUG: Solo para vehículos sin imagen
-            
-            // ✅ EXTRAER DATOS DE LA ESTRUCTURA CORRECTA
-            let vehicleData = response.data
-            
-                         // ✅ SI LA RESPUESTA TIENE ESTRUCTURA {error: null, getOnePhoto: {...}}
-             if (response.data && response.data.getOnePhoto) {
-                 vehicleData = response.data.getOnePhoto
-                 // ✅ DEBUG: Solo para vehículos sin imagen
-             }
-            
-            // ✅ NAVEGAR CON LOS DATOS COMPLETOS
-            navigate(`/vehiculo/${vehicleId}`, { 
-                state: { vehicleData: vehicleData }
-            })
-            
-        } catch (error) {
-            const vehicleId = auto.id || auto._id
-            logger.error('ui:card-auto', 'Error al obtener detalle de vehículo', { id: vehicleId, message: error.message })
-            
-            // ✅ FALLBACK: Navegar con datos básicos
-            navigate(`/vehiculo/${vehicleId}`, { 
-                state: { vehicleData: auto }
-            })
+    const handleVerMas = useCallback(() => {
+        const vehicleId = auto.id || auto._id
+        if (!vehicleId) {
+            logger.error('ui:card-auto', 'ID del vehículo no válido')
+            return
         }
+        navigate(`/vehiculo/${vehicleId}`)
     }, [auto, navigate])
     
     // ✅ VALIDAR DATOS DEL VEHÍCULO

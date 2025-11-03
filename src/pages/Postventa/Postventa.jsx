@@ -10,7 +10,7 @@
 
 import PostventaServiceCard from '@components/PostventaServiceCard'
 import styles from './Postventa.module.css'
-import imgPostventa from '../../assets/img-postventa-principal.jpg'
+import imgPostventa from '../../assets/img-postventa-principal.webp'
 
 // Datos de los servicios actualizados según referencia
 const servicesData = [
