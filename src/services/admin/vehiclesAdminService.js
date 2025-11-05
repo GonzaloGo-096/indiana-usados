@@ -1,22 +1,14 @@
 /**
  * vehiclesAdminService.js - Servicio exclusivo para operaciones de Admin (Dashboard)
- * - Usa authAxiosInstance
+ * - Usa authAxiosInstance para todas las operaciones
  * - Endpoints de creación/actualización/eliminación
- * - getVehicleByIdForEdit para cargar detalle seguro en el form
+ * - NOTA: GET detalle usa vehiclesService (público) por diseño
  */
 
 import { authAxiosInstance } from '@api/axiosInstance'
-import axiosInstance from '@api/axiosInstance'
 import { logger } from '@utils/logger'
 
 const vehiclesAdminService = {
-  async getVehicleByIdForEdit(id) {
-    if (!id && id !== 0) throw new Error('ID de vehículo inválido')
-    // Si el endpoint público alcanza, usar axiosInstance; si se requiere auth, cambiar a authAxiosInstance
-    const res = await axiosInstance.get(`/photos/getonephoto/${id}`)
-    return res?.data?.getOnePhoto ?? res?.data
-  },
-
   async createVehicle(formData) {
     const response = await authAxiosInstance.post('/photos/create', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },

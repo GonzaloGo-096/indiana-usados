@@ -8,7 +8,7 @@
  * @version 2.1.0 - Simplificado y optimizado
  */
 
-import axiosInstance, { authAxiosInstance } from '@api/axiosInstance'
+import axiosInstance from '@api/axiosInstance'
 import { buildFiltersForBackend } from '@utils/filters'
 import { logger } from '@utils/logger'
 
@@ -47,65 +47,6 @@ export const vehiclesService = {
     return data
   },
   
-  /**
-   * Crear vehículo (admin)
-   */
-  async createVehicle(formData) {
-    const response = await authAxiosInstance.post('/photos/create', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      timeout: 30000 // ✅ 30 segundos para subir múltiples imágenes
-    })
-    return response.data
-  },
-  
-  /**
-   * Actualizar vehículo (admin)
-   */
-  async updateVehicle(id, formData) {
-    try {
-      logger.debug('vehicles:update', 'Actualizando vehículo', { id, endpoint: '/photos/updatephoto/' })
-      
-      // ✅ LOGGING DETALLADO DEL FORMDATA
-      const fileCount = Array.from(formData.entries()).filter(([key, value]) => value instanceof File).length
-      logger.debug('vehicles:update', 'FormData contiene archivos', { fileCount })
-      
-      const response = await authAxiosInstance.put(`/photos/updatephoto/${id}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        timeout: 60000 // ✅ 60 segundos para actualizar con múltiples imágenes
-      })
-      logger.info('vehicles:update', 'Vehículo actualizado exitosamente', { status: response.status })
-      return response.data
-    } catch (error) {
-      const status = error.response?.status || 'Sin respuesta'
-      const isTimeout = error.code === 'ECONNABORTED' || error.message?.includes('timeout')
-      
-      logger.error('vehicles:update', 'Error al actualizar vehículo', {
-        status,
-        message: error.message,
-        isTimeout,
-        code: error.code
-      })
-      throw error
-    }
-  },
-  
-  /**
-   * Eliminar vehículo (admin)
-   */
-  async deleteVehicle(id) {
-    const response = await authAxiosInstance.delete(`/photos/deletephoto/${id}`)
-    return response.data
-  }
-}
-
-// ✅ MANTENER COMPATIBILIDAD
-export const getMainVehicles = vehiclesService.getVehicles
-export const getVehicleById = vehiclesService.getVehicleById
-export const vehiclesApi = {
-  getMainVehicles,
-  getVehicles: getMainVehicles,
-  getVehicleById,
-  ...vehiclesService
 }
 
 export default vehiclesService

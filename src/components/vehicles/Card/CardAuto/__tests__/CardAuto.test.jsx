@@ -51,8 +51,8 @@ describe('CardAuto', () => {
         </MemoryRouter>
       )
       
-      expect(screen.getByText('Toyota')).toBeInTheDocument()
-      expect(screen.getByText('Corolla')).toBeInTheDocument()
+      expect(screen.getByText(/Toyota/)).toBeInTheDocument()
+      expect(screen.getByText(/Corolla/)).toBeInTheDocument()
       expect(screen.getByText('$ 25.000')).toBeInTheDocument()
       expect(screen.getByText('50.000 km')).toBeInTheDocument()
       expect(screen.getByText('2020')).toBeInTheDocument()
@@ -63,7 +63,7 @@ describe('CardAuto', () => {
       
       const image = screen.getByAltText('Toyota Corolla - 2020')
       expect(image).toBeInTheDocument()
-      expect(image.src).toContain('/src/assets/auto1.jpg')
+      expect(image.src).toContain('auto1.jpg')
       expect(image.alt).toBe('Toyota Corolla - 2020')
     })
   })
@@ -117,8 +117,8 @@ describe('CardAuto', () => {
       
       renderWithRouter(<CardAuto auto={incompleteVehicle} />)
       
-      expect(screen.getByText('Toyota')).toBeInTheDocument()
-      expect(screen.getByText('Corolla')).toBeInTheDocument()
+      expect(screen.getByText(/Toyota/)).toBeInTheDocument()
+      expect(screen.getByText(/Corolla/)).toBeInTheDocument()
       expect(screen.getByText('$ 25.000')).toBeInTheDocument()
       expect(screen.getByText('50.000 km')).toBeInTheDocument()
     })

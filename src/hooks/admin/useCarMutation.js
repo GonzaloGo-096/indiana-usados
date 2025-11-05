@@ -25,51 +25,6 @@ const getAuthToken = () => {
     }
 }
 
-// ✅ HELPER: Procesar FormData de forma simple (sin validaciones pesadas)
-const processFormDataSimple = (formData) => {
-    const imageFiles = {}
-    const dataFields = {}
-    
-    for (let [key, value] of formData.entries()) {
-        if (value instanceof File) {
-            if (imageFiles[key]) {
-                imageFiles[key].push(value)
-            } else {
-                imageFiles[key] = [value]
-            }
-        } else {
-            dataFields[key] = value
-        }
-    }
-    
-    return { imageFiles, dataFields }
-}
-
-// ✅ HELPER: Preparar FormData de forma simple
-const prepareFormDataSimple = (imageFiles, dataFields) => {
-    const formData = new FormData()
-    
-    // Agregar campos de datos
-    Object.entries(dataFields).forEach(([key, value]) => {
-        formData.append(key, value)
-    })
-    
-    // Agregar archivos directamente (sin procesamiento complejo)
-    Object.entries(imageFiles).forEach(([fieldName, fileList]) => {
-        if (fileList && fileList.length > 0) {
-            if (fieldName === 'fotosExtra') {
-                fileList.forEach(file => {
-                    formData.append(fieldName, file)
-                })
-            } else {
-                formData.append(fieldName, fileList[0])
-            }
-        }
-    })
-    
-    return formData
-}
-
 // ✅ HELPER: Manejo de errores unificado (no lanzar desde onError)
 const handleMutationError = (error, operation) => {
     logger.error('cars:mutation', `Error al ${operation}`, { 
@@ -109,19 +64,25 @@ const handleMutationError = (error, operation) => {
 export const useCarMutation = () => {
     const queryClient = useQueryClient()
     
-    // ✅ MUTATION: Crear vehículo
+    // ✅ MUTATION: Crear vehículo (envía FormData tal cual)
     const createMutation = useMutation({
         mutationFn: async (formData) => {
             const token = getAuthToken()
             if (!token) {
                 throw new Error('❌ No se encontró token de autorización')
             }
-            
-            // ✅ OPTIMIZADO: Procesamiento simple sin validaciones pesadas
-            const { imageFiles, dataFields } = processFormDataSimple(formData)
-            const processedFormData = prepareFormDataSimple(imageFiles, dataFields)
-            
-            const response = await vehiclesAdminService.createVehicle(processedFormData)
+            if (!(formData instanceof FormData)) {
+                throw new Error('Payload inválido: se esperaba FormData')
+            }
+            // Log de depuración en desarrollo
+            if (import.meta?.env?.MODE !== 'production') {
+                let fileCount = 0
+                for (const [, value] of formData.entries()) {
+                    if (value instanceof File) fileCount++
+                }
+                logger.debug('cars:mutation', 'create: enviando FormData', { fieldsApprox: [...formData.keys()].length, fileCount })
+            }
+            const response = await vehiclesAdminService.createVehicle(formData)
             return response.data
         },
         onSuccess: (data) => {
@@ -134,19 +95,24 @@ export const useCarMutation = () => {
         }
     })
     
-    // ✅ MUTATION: Actualizar vehículo
+    // ✅ MUTATION: Actualizar vehículo (envía FormData tal cual)
     const updateMutation = useMutation({
         mutationFn: async ({ id, formData }) => {
             const token = getAuthToken()
             if (!token) {
                 throw new Error('❌ No se encontró token de autorización')
             }
-            
-            // ✅ OPTIMIZADO: Procesamiento simple sin validaciones pesadas
-            const { imageFiles, dataFields } = processFormDataSimple(formData)
-            const processedFormData = prepareFormDataSimple(imageFiles, dataFields)
-            
-            const response = await vehiclesAdminService.updateVehicle(id, processedFormData)
+            if (!(formData instanceof FormData)) {
+                throw new Error('Payload inválido: se esperaba FormData')
+            }
+            if (import.meta?.env?.MODE !== 'production') {
+                let fileCount = 0
+                for (const [, value] of formData.entries()) {
+                    if (value instanceof File) fileCount++
+                }
+                logger.debug('cars:mutation', 'update: enviando FormData', { id, fieldsApprox: [...formData.keys()].length, fileCount })
+            }
+            const response = await vehiclesAdminService.updateVehicle(id, formData)
             return response.data
         },
         onSuccess: (data, variables) => {
@@ -160,14 +126,13 @@ export const useCarMutation = () => {
         }
     })
     
-    // ✅ MUTATION: Eliminar vehículo
+    // ✅ MUTATION: Eliminar vehículo (sin cambios)
     const deleteMutation = useMutation({
         mutationFn: async (id) => {
             const token = getAuthToken()
             if (!token) {
                 throw new Error('❌ No se encontró token de autorización')
             }
-            
             const response = await vehiclesAdminService.deleteVehicle(id)
             return response.data
         },

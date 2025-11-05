@@ -7,6 +7,7 @@
 
 import React, { useReducer, useCallback, useMemo } from 'react'
 import { logger } from '@utils/logger'
+import { FORM_RULES } from '@constants/forms'
 
 // ✅ CAMPOS DE IMAGEN (estructura actualizada)
 export const IMAGE_FIELDS = {
@@ -332,12 +333,12 @@ export const useImageReducer = (mode, initialData = {}) => {
 
             logger.debug('image:validateImages', 'Modo CREATE - Contando fotos extras', { fotosExtraCount })
 
-            if (fotosExtraCount < 5) {
+            if (fotosExtraCount < FORM_RULES.MIN_EXTRA_PHOTOS) {
                 errors.fotosExtra = 'Se requieren mínimo 5 fotos extras (total mínimo: 7 fotos)'
                 logger.warn('image:validateImages', 'Error: Se requieren mínimo 5 fotos extras')
             }
             
-            if (fotosExtraCount > 8) {
+            if (fotosExtraCount > FORM_RULES.MAX_EXTRA_PHOTOS) {
                 errors.fotosExtra = 'Máximo 8 fotos extras permitidas'
             }
         } else {

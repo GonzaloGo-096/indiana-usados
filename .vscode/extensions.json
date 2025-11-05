@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "vitest.explorer",
+    "firsttris.vscode-jest-runner",
+    "orta.vscode-jest",
+    "ms-playwright.playwright",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}
+

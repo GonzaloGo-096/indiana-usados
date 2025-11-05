@@ -7,11 +7,10 @@
  * - Navegación con flechas
  * - Indicadores de posición
  * - Lazy loading de imágenes
- * - Preload inteligente (hover + siguiente imagen)
  * - Responsive design
  * 
  * @author Indiana Usados
- * @version 1.1.0 - Preload optimizado para fluidez
+ * @version 1.0.0
  */
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
@@ -24,13 +23,6 @@ import styles from './ImageCarousel.module.css'
 
 /**
  * Componente ImageCarousel
- * @param {Object} props - Propiedades del componente
- * @param {Array} props.images - Array de URLs de imágenes
- * @param {string} props.altText - Texto alternativo para las imágenes
- * @param {boolean} props.showArrows - Si mostrar flechas de navegación
- * @param {boolean} props.showIndicators - Si mostrar indicadores de posición
- * @param {boolean} props.autoPlay - Si reproducir automáticamente
- * @param {number} props.autoPlayInterval - Intervalo en ms para autoPlay
  */
 export const ImageCarousel = ({ 
     images = [],
@@ -41,161 +33,154 @@ export const ImageCarousel = ({
     autoPlayInterval = 5000
 }) => {
     const [currentIndex, setCurrentIndex] = useState(0)
-    // ✅ NUEVO: Ref para las miniaturas (auto-scroll)
     const thumbnailRefs = useRef([])
-    
-    // Si no hay imágenes, usar imagen por defecto - MEMOIZADO
+
+    // Si no hay imágenes, usar imagen por defecto
     const allImages = useMemo(() => {
-        if (!images || images.length === 0) {
-            return [defaultCarImage]
-        }
-        // ✅ Usar imágenes directamente (sin processImages)
+        if (!images || images.length === 0) return [defaultCarImage]
         return images
     }, [images])
 
-    // ✅ LIMPIEZA: Ajustar array de refs cuando cambian las imágenes
     useEffect(() => {
         thumbnailRefs.current = thumbnailRefs.current.slice(0, allImages.length)
     }, [allImages.length])
 
-    // Función para ir a la imagen anterior - MEMOIZADA
+    // ===== Navegación =====
     const goToPrevious = useCallback(() => {
-        setCurrentIndex((prevIndex) => 
-            prevIndex === 0 ? allImages.length - 1 : prevIndex - 1
-        )
+        setCurrentIndex((prevIndex) => prevIndex === 0 ? allImages.length - 1 : prevIndex - 1)
     }, [allImages.length])
 
-    // Función para ir a la imagen siguiente - MEMOIZADA
     const goToNext = useCallback(() => {
-        setCurrentIndex((prevIndex) => 
-            prevIndex === allImages.length - 1 ? 0 : prevIndex + 1
-        )
+        setCurrentIndex((prevIndex) => prevIndex === allImages.length - 1 ? 0 : prevIndex + 1)
     }, [allImages.length])
 
-    // Función para ir a una imagen específica - MEMOIZADA
     const goToImage = useCallback((index) => {
         setCurrentIndex(index)
     }, [])
 
-
-
-    // AutoPlay effect - OPTIMIZADO
+    // AutoPlay
     useEffect(() => {
         if (!autoPlay || allImages.length <= 1) return
-
         const interval = setInterval(goToNext, autoPlayInterval)
         return () => clearInterval(interval)
     }, [autoPlay, autoPlayInterval, goToNext, allImages.length])
 
-    // Navegación con teclado - OPTIMIZADO
+    // Teclado
     useEffect(() => {
         const handleKeyDown = (event) => {
-            if (event.key === 'ArrowLeft') {
-                event.preventDefault()
-                goToPrevious()
-            } else if (event.key === 'ArrowRight') {
-                event.preventDefault()
-                goToNext()
-            }
+            if (event.key === 'ArrowLeft') { event.preventDefault(); goToPrevious() }
+            else if (event.key === 'ArrowRight') { event.preventDefault(); goToNext() }
         }
-
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [goToPrevious, goToNext])
 
-    // ✅ NUEVO: Auto-scroll a la miniatura activa (solo desktop)
+    // Auto-scroll miniatura activa (solo desktop)
     useEffect(() => {
-        // ✅ PROFESIONAL: matchMedia para detección precisa de dispositivo
         const isDesktop = window.matchMedia('(min-width: 769px)').matches
-        if (!isDesktop) return // ⚡ PERFORMANCE: Cero overhead en mobile
-        
+        if (!isDesktop) return
         const activeThumbnail = thumbnailRefs.current[currentIndex]
         if (!activeThumbnail) return
-        
-        // ✅ LÓGICA INTELIGENTE: Primera y última foto alineadas a los bordes
         let scrollAlign = 'center'
-        
-        if (currentIndex === 0) {
-            scrollAlign = 'start' // Primera foto: alineada a la izquierda
-        } else if (currentIndex === allImages.length - 1) {
-            scrollAlign = 'end' // Última foto: alineada a la derecha
-        }
-        
-        activeThumbnail.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: scrollAlign
-        })
+        if (currentIndex === 0) scrollAlign = 'start'
+        else if (currentIndex === allImages.length - 1) scrollAlign = 'end'
+        activeThumbnail.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: scrollAlign })
     }, [currentIndex, allImages.length])
 
-    // ✅ PRELOAD: Precargar siguiente imagen cuando carga el detalle
-    useEffect(() => {
-        if (currentIndex !== 0 || allImages.length <= 1) return
-        
-        // Preload imagen siguiente (índice 1)
-        const nextImage = allImages[1]
-        if (!nextImage || typeof nextImage !== 'string') return
-        
-        // Crear preload link solo si no existe
-        let link = document.querySelector(`link[data-preload="carousel-next"]`)
-        if (!link) {
-            link = document.createElement('link')
-            link.rel = 'preload'
-            link.as = 'image'
-            link.setAttribute('data-preload', 'carousel-next')
-            document.head.appendChild(link)
-        }
-        link.href = nextImage
-        
-        // Cleanup: remover después de 30 segundos (ya no necesario)
-        const timeout = setTimeout(() => {
-            link?.remove()
-        }, 30000)
-        
-        return () => {
-            clearTimeout(timeout)
-            // NO remover link aquí, se limpia con timeout
-        }
-    }, [currentIndex, allImages])
+    // ===== SOLUCIÓN A MEJORADA: Crossfade sin gaps =====
+    const [displayIndex, setDisplayIndex] = useState(0)
+    const [overlayIndex, setOverlayIndex] = useState(null)
+    const [isFading, setIsFading] = useState(false)
 
-    // ✅ PRELOAD: Precargar imagen en hover de miniatura (solo desktop)
-    const handleThumbnailHover = useCallback((imageUrl, index) => {
-        // Solo preload si es diferente a la actual
-        if (index === currentIndex || typeof imageUrl !== 'string') return
+    // Cuando cambia currentIndex, preparar overlay e iniciar fade inmediatamente
+    useEffect(() => {
+        if (currentIndex === displayIndex) return
+        setOverlayIndex(currentIndex)
+        // Iniciar fade inmediatamente (mostrará placeholder borroso mientras carga)
+        setIsFading(true)
+    }, [currentIndex, displayIndex])
+
+    // Handler cuando overlay carga: completar el fade
+    const handleOverlayLoad = useCallback(() => {
+        // En mobile, usar setTimeout directamente para evitar problemas de timing
+        const isMobile = window.matchMedia('(max-width: 768px)').matches
         
-        // Crear preload link solo si no existe
-        let link = document.querySelector(`link[data-preload="carousel-hover-${index}"]`)
-        if (!link) {
-            link = document.createElement('link')
-            link.rel = 'preload'
-            link.as = 'image'
-            link.setAttribute('data-preload', `carousel-hover-${index}`)
-            document.head.appendChild(link)
+        if (isMobile) {
+            // Mobile: timing más largo para dispositivos más lentos
+            setTimeout(() => {
+                if (overlayIndex !== null) {
+                    setDisplayIndex(overlayIndex)
+                    // Delay más largo en mobile para asegurar render completo
+                    setTimeout(() => {
+                        setOverlayIndex(null)
+                        setIsFading(false)
+                    }, 100)
+                }
+            }, 200)
+        } else {
+            // Desktop: usar requestAnimationFrame para mejor sincronización
+            setTimeout(() => {
+                if (overlayIndex !== null) {
+                    setDisplayIndex(overlayIndex)
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                setOverlayIndex(null)
+                                setIsFading(false)
+                            })
+                        })
+                    })
+                }
+            }, 200)
         }
-        link.href = imageUrl
-        
-        // Cleanup: remover después de 10 segundos
-        setTimeout(() => {
-            link?.remove()
-        }, 10000)
-    }, [currentIndex])
+    }, [overlayIndex])
 
     return (
         <div className={styles.carouselContainer}>
             {/* Imagen principal */}
             <div className={styles.mainImageContainer}>
+                {/* Capa base: imagen display (fade-out cuando overlay está haciendo fade-in) */}
                 <CloudinaryImage
-                    image={allImages[currentIndex]}
-                    alt={`${altText} ${currentIndex + 1} de ${allImages.length}`}
+                    image={allImages[displayIndex]}
+                    alt={`${altText} ${displayIndex + 1} de ${allImages.length}`}
                     variant="fluid"
                     widths={IMAGE_WIDTHS.carousel}
                     sizes={IMAGE_SIZES.carousel}
-                    loading={currentIndex === 0 ? 'eager' : 'lazy'}
-                    fetchpriority={currentIndex === 0 ? 'high' : 'auto'}
+                    loading={displayIndex === 0 ? 'eager' : 'lazy'}
+                    fetchpriority={displayIndex === 0 ? 'high' : 'auto'}
                     qualityMode="auto"
                     className={styles.mainImage}
+                    style={{ 
+                        position: 'relative', 
+                        zIndex: 1, 
+                        opacity: overlayIndex !== null && isFading ? 0 : 1, 
+                        transition: overlayIndex !== null && isFading ? 'opacity 200ms ease-out' : 'none' 
+                    }}
                 />
-                
+
+                {/* Capa overlay: nueva imagen (fade-in cuando está lista) */}
+                {overlayIndex !== null && (
+                    <CloudinaryImage
+                        image={allImages[overlayIndex]}
+                        alt={`${altText} ${overlayIndex + 1} de ${allImages.length}`}
+                        variant="fluid"
+                        widths={IMAGE_WIDTHS.carousel}
+                        sizes={IMAGE_SIZES.carousel}
+                        loading="eager"
+                        fetchpriority="high"
+                        qualityMode="auto"
+                        className={styles.mainImage}
+                        style={{
+                            position: 'absolute',
+                            inset: 0,
+                            zIndex: 2,
+                            opacity: isFading ? 1 : 0,
+                            transition: 'opacity 200ms ease-out'
+                        }}
+                        onLoad={handleOverlayLoad}
+                    />
+                )}
+
                 {/* Flechas de navegación */}
                 {showArrows && allImages.length > 1 && (
                     <>
@@ -218,16 +203,14 @@ export const ImageCarousel = ({
                     </>
                 )}
 
-                {/* ✅ NUEVO: Contador de posición elegante */}
+                {/* Indicadores */}
                 {showIndicators && allImages.length > 1 && (
                     <div className={styles.indicators}>
                         <div className={styles.positionCounter}>
-                            {currentIndex + 1} / {allImages.length}
+                            {displayIndex + 1} / {allImages.length}
                         </div>
                     </div>
                 )}
-                
-
             </div>
 
             {/* Miniaturas */}
@@ -238,9 +221,8 @@ export const ImageCarousel = ({
                             <button
                                 key={index}
                                 ref={(el) => (thumbnailRefs.current[index] = el)}
-                                className={`${styles.thumbnail} ${index === currentIndex ? styles.active : ''}`}
+                                className={`${styles.thumbnail} ${index === displayIndex ? styles.active : ''}`}
                                 onClick={() => goToImage(index)}
-                                onMouseEnter={() => handleThumbnailHover(image, index)}
                                 aria-label={`Ver imagen ${index + 1}`}
                                 type="button"
                             >
@@ -258,8 +240,6 @@ export const ImageCarousel = ({
                     </div>
                 </div>
             )}
-            
-
         </div>
     )
 } 

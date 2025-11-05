@@ -10,6 +10,8 @@ import { logger } from '@utils/logger'
 import { useForm } from 'react-hook-form'
 import { useImageReducer, IMAGE_FIELDS } from '@components/admin/hooks/useImageReducer'
 import styles from './CarFormRHF.module.css'
+import { FORM_RULES } from '@constants/forms'
+import { isValidWebp, isUnderMaxSize, filterValidFiles } from '@utils/files'
 
 // ✅ CONSTANTES
 const MODE = {
@@ -20,13 +22,7 @@ const MODE = {
 // ✅ CAMPOS NUMÉRICOS (para coerción automática)
 const NUMERIC_FIELDS = ['precio', 'cilindrada', 'anio', 'kilometraje']
 
-// ✅ VALIDACIONES
-const VALIDATION_RULES = {
-    MIN_EXTRA_PHOTOS: 5,
-    TOTAL_MIN_PHOTOS: 7,
-    MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
-    SUPPORTED_TYPES: ['image/webp']
-}
+// ✅ VALIDACIONES centralizadas en FORM_RULES
 
 // ✅ PROPS DEL COMPONENTE
 const CarFormRHF = ({ 
@@ -276,8 +272,8 @@ const CarFormRHF = ({
                                         onChange={(e) => {
                                             const file = e.target.files?.[0]
                                             if (file) {
-                                                const isValidType = file.type === 'image/webp' || file.name.toLowerCase().endsWith('.webp')
-                                                const isValidSize = file.size <= VALIDATION_RULES.MAX_FILE_SIZE
+                                                const isValidType = isValidWebp(file)
+                                                const isValidSize = isUnderMaxSize(file, FORM_RULES.MAX_FILE_SIZE)
                                                 if (!isValidType) {
                                                     setError(field, { type: 'manual', message: 'Formato inválido. Solo .webp' })
                                                     return
@@ -415,20 +411,15 @@ const CarFormRHF = ({
                                 onChange={(e) => {
                                     const files = e.target.files
                                     if (files && files.length > 0) {
-                                        const validFiles = Array.from(files).filter((f) => 
-                                            (f.type === 'image/webp' || f.name.toLowerCase().endsWith('.webp')) &&
-                                            f.size <= VALIDATION_RULES.MAX_FILE_SIZE
-                                        )
+                                        const validFiles = filterValidFiles(files, {
+                                            maxBytes: FORM_RULES.MAX_FILE_SIZE,
+                                            acceptWebpOnly: true
+                                        })
                                         if (validFiles.length !== files.length) {
                                             setError('fotosExtra', { type: 'manual', message: 'Algunas fotos fueron descartadas (no .webp o >10MB)' })
                                         } else {
                                             clearErrors('fotosExtra')
                                         }
-                                        const fileList = {
-                                            length: validFiles.length,
-                                            item: (i) => validFiles[i]
-                                        }
-                                        // setMultipleExtras espera FileList o Array: le pasamos Array directamente
                                         setMultipleExtras(validFiles)
                                     }
                                 }}

@@ -12,7 +12,7 @@
  */
 
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { getMainVehicles } from '@services/vehiclesApi'
+import vehiclesService from '@services/vehiclesApi'
 import { mapVehiclesPage } from '@mappers'
 
 export const useVehiclesList = (filters = {}, options = {}) => {
@@ -23,7 +23,7 @@ export const useVehiclesList = (filters = {}, options = {}) => {
   const query = useInfiniteQuery({
     queryKey: ['vehicles', JSON.stringify({ filters, limit: PAGE_SIZE })],
     queryFn: async ({ pageParam, signal }) => {
-      const result = await getMainVehicles({
+      const result = await vehiclesService.getVehicles({
         filters, 
         limit: PAGE_SIZE,
         cursor: pageParam,

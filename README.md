@@ -2,6 +2,12 @@
 
 > **Aplicación web moderna para gestión de vehículos usados**
 
+## 📊 Estado del Proyecto
+
+![Tests](https://github.com/GonzaloGo-096/indiana-usados/workflows/Tests%20Unitarios/badge.svg)
+![Coverage](https://img.shields.io/badge/coverage-39%25-yellow)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+
 ## 🎯 Descripción
 
 Indiana Usados es una plataforma web desarrollada con React que permite a los usuarios explorar, filtrar y visualizar vehículos usados de manera intuitiva y eficiente.

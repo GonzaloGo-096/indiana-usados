@@ -11,18 +11,10 @@
 import React from 'react'
 import { WhatsAppContact } from '@ui'
 import styles from './ServiceCard.module.css'
+import { serviceImagesMap } from '../PostventaServiceCard/imagesMap'
 
-// Importar imágenes locales
-import taller2Image from '@assets/taller-2.webp'
-import taller3Image from '@assets/taller-3-jpeg.webp'
-import tallerMotorImage from '@assets/taller-motor.webp'
-
-// Mapeo de imágenes locales
-const imageMap = {
-  'taller-2': taller2Image,
-  'taller-3-jpeg': taller3Image,
-  'taller-motor': tallerMotorImage
-}
+// Fallback a taller-2 si no se encuentra la imagen
+const fallbackImage = serviceImagesMap['taller-2']
 
 /**
  * Componente ServiceCard
@@ -44,7 +36,7 @@ export const ServiceCard = ({
   reverse = false,
   whatsappMessage = ""
 }) => {
-  const imageSrc = imageMap[image] || taller2Image // Fallback a taller-2
+  const imageSrc = serviceImagesMap[image] || fallbackImage // Fallback a taller-2
 
   // Generar mensaje de WhatsApp personalizado
   const defaultMessage = `¡Hola! Quiero reservar un turno para el servicio de ${title.toLowerCase()}. ¿Cuál es la disponibilidad más cercana?`

@@ -152,7 +152,14 @@ export default defineConfig({
     ],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'html', 'lcov'],
+      // ✅ Umbrales mínimos de cobertura: falla el build si no se cumplen
+      thresholds: {
+        statements: 30,
+        branches: 25,
+        functions: 30,
+        lines: 30
+      },
       exclude: [
         'node_modules/',
         'src/test/',

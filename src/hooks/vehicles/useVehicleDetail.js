@@ -13,7 +13,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { vehiclesApi } from '@services/vehiclesApi'
+import vehiclesService from '@services/vehiclesApi'
 import { logger } from '@utils/logger'
 import { mapVehicle } from '@mappers'
 
@@ -41,9 +41,9 @@ export const useVehicleDetail = (id, options = {}) => {
         placeholderData = undefined
     } = options
 
-    // Validar ID
+    // Validar ID - siempre retornar boolean
     const isValidId = useMemo(() => {
-        return id && (typeof id === 'string' || typeof id === 'number') && id !== ''
+        return !!(id && (typeof id === 'string' || typeof id === 'number') && id !== '')
     }, [id])
 
     // Query para detalle
@@ -56,8 +56,8 @@ export const useVehicleDetail = (id, options = {}) => {
         remove
     } = useQuery({
         queryKey: ['vehicle-detail', id],
-        queryFn: () => vehiclesApi.getVehicleById(id),
-        enabled: enabled && isValidId,
+        queryFn: () => vehiclesService.getVehicleById(id),
+        enabled: !!(enabled && isValidId),
         staleTime,
         gcTime,
         retry,

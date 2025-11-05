@@ -1,10 +1,12 @@
 /**
  * Vehicle Factory - Genera datos de prueba consistentes para tests
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0 - Agregado factory para datos del backend
  */
 
-// 🚗 Factory para vehículos individuales
+import { vi } from 'vitest'
+
+// 🚗 Factory para vehículos individuales (formato frontend)
 export const createVehicle = (overrides = {}) => ({
   id: 1,
   marca: 'Toyota',
@@ -25,6 +27,36 @@ export const createVehicle = (overrides = {}) => ({
   ...overrides
 })
 
+// 🏭 Factory para vehículos del backend (formato real del backend)
+export const createBackendVehicle = (overrides = {}) => ({
+  _id: 1,
+  marca: 'Toyota',
+  modelo: 'Corolla',
+  año: 2020,
+  precio: 25000,
+  kms: 50000,
+  caja: 'Automática',
+  combustible: 'Gasolina',
+  fotoPrincipal: { url: 'https://cloudinary.com/toyota-principal.jpg' },
+  fotoHover: { url: 'https://cloudinary.com/toyota-hover.jpg' },
+  fotosExtra: [
+    { url: 'https://cloudinary.com/toyota-extra1.jpg' },
+    { url: 'https://cloudinary.com/toyota-extra2.jpg' }
+  ],
+  ...overrides
+})
+
+// 📄 Factory para respuesta paginada del backend
+export const createBackendPageResponse = (overrides = {}) => ({
+  allPhotos: {
+    docs: [createBackendVehicle()],
+    totalDocs: 100,
+    hasNextPage: true,
+    nextPage: 2
+  },
+  ...overrides
+})
+
 // 📋 Factory para lista de vehículos
 export const createVehicleList = (count = 5, overrides = {}) => {
   return Array.from({ length: count }, (_, index) => 
@@ -37,7 +69,7 @@ export const createVehicleList = (count = 5, overrides = {}) => {
   )
 }
 
-// 📄 Factory para respuesta paginada
+// 📄 Factory para respuesta paginada (formato frontend)
 export const createPaginatedResponse = (vehicles = [], overrides = {}) => ({
   data: vehicles,
   pagination: {
