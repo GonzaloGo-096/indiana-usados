@@ -649,3 +649,4 @@ Solución: 5 cambios de línea (30 min)
 *Documento creado: 4 de noviembre de 2025*  
 *Úsalo como guía cada vez que un test falle*
 
+

@@ -492,3 +492,4 @@ Seguir el plan de acción propuesto para alcanzar el objetivo de coverage del 70
 **Auditoría realizada por:** Sistema Automatizado  
 **Fecha:** 5 de noviembre de 2025
 
+

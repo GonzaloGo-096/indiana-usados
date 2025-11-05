@@ -431,3 +431,4 @@ export const getVehicleImageUrl = extractFirstImageUrl
 **Estado:** ✅ **SOLIDO** - Solo requiere limpieza y mejor documentación
 
 
+

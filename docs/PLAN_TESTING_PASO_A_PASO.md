@@ -1936,3 +1936,4 @@ Primera acción: Ejecuta `npm run test` y luego corrige los 3 tests fallando.
 *Documento creado: 4 de noviembre de 2025*  
 *Actualizar después de cada etapa completada*
 
+

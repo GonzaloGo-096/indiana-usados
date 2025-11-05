@@ -13,12 +13,16 @@
 
 // ===== CARD COMPONENTS =====
 export { CardAuto } from './Card/CardAuto/CardAuto'
+export { CardAutoCompact } from './Card/CardAutoCompact/CardAutoCompact'
 
 // ===== LIST COMPONENTS =====
 export { default as AutosGrid } from './List/ListAutos/AutosGrid'
 
 // ===== DETAIL COMPONENTS =====
 export { CardDetalle } from './Detail/CardDetalle/CardDetalle'
+
+// ===== FEATURED COMPONENTS =====
+export { default as FeaturedVehicles } from './FeaturedVehicles'
 
 // ===== FILTER COMPONENTS =====
 // FilterFormSimplified se importa dinámicamente en LazyFilterForm 

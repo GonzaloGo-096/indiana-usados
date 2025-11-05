@@ -270,8 +270,9 @@
 
 /* ===== RESPONSIVE DESIGN - MOBILE FIRST ===== */
 
-/* Tablet: 769px - 1023px - Layout vertical pero con mejor espaciado */
-@media (min-width: 769px) and (max-width: 1023px) {
+/* Tablet: 769px - 991px - Layout vertical pero con mejor espaciado */
+/* ✅ Usa breakpoints del sistema: --tablet-min (768px) y --desktop-min (992px) */
+@media (min-width: 769px) and (max-width: 991px) {
   .card {
     max-width: 100%; /* ✅ Mantener ancho completo */
     padding: var(--spacing-4);
@@ -295,8 +296,8 @@
   }
 }
 
-/* Desktop: 1024px+ - Layout 2 columnas (solo cuando hay espacio suficiente) */
-@media (min-width: 1024px) {
+/* Desktop: 992px+ - Layout 2 columnas (usa --desktop-min del design system) */
+@media (min-width: 992px) {
   .card {
     /* ✅ DESKTOP: Padding externo reducido para compensar aumento interno */
     padding: var(--spacing-4);

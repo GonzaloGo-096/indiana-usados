@@ -430,3 +430,4 @@ Backend → useVehiclesList → mapVehiclesPage
 **Estado:** ✅ **LISTO PARA PRODUCCIÓN** (después de limpieza menor)
 
 
+

@@ -8,6 +8,7 @@
 import { Link } from 'react-router-dom'
 import { Button } from '@ui/Button'
 import HeroImageCarousel from '@ui/HeroImageCarousel'
+import { FeaturedVehicles } from '@vehicles'
 import styles from './Home.module.css'
 import { heroImages } from '../../assets/home'
 import imgPostventa from '../../assets/img-postventa-principal.webp'
@@ -27,12 +28,9 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Sección B: Features (placeholder) */}
+      {/* Sección B: Featured Vehicles */}
       <section className={styles.features}>
-        <div className="container">
-          <h2>Características destacadas</h2>
-          <p>Contenido de características próximamente...</p>
-        </div>
+        <FeaturedVehicles />
       </section>
 
       {/* Sección C: Banner Postventa */}

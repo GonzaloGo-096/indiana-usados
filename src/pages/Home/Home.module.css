@@ -36,10 +36,10 @@
   /* Los estilos específicos del carrusel están en HeroImageCarousel.module.css */
 }
 
-/* ===== FEATURES SECTION (PLACEHOLDER) ===== */
+/* ===== FEATURES SECTION (FEATURED VEHICLES) ===== */
 .features {
   padding: var(--section-padding-compact) 0;
-  background: var(--color-neutral-50);
+  background: var(--color-white);
   text-align: center;
 }
 

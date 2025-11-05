@@ -1,0 +1,181 @@
+/**
+ * FeaturedVehicles.module.css - Estilos para preview de vehículos en Home
+ * 
+ * Características:
+ * - Desktop: 3 cards alineadas con márgenes equilibrados
+ * - Mobile: Scroll horizontal con 1 card completa + 2 asomando
+ * - Botón "Ver todos" centrado y destacado
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== SECCIÓN PRINCIPAL ===== */
+.featuredSection {
+  padding: var(--section-padding-compact) 0;
+  background: var(--color-white);
+  width: 100%;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-8);
+  color: var(--color-neutral-500);
+}
+
+/* ===== TÍTULO "NUESTROS USADOS" ===== */
+.sectionTitle {
+  text-align: left; /* ✅ Alineación izquierda */
+  margin-bottom: var(--spacing-6);
+  padding: var(--spacing-4) 0;
+}
+
+.title {
+  /* ✅ Estilo con background azul y bordes redondeados */
+  font-size: 1.25rem; /* ✅ Más chico */
+  font-weight: 600;
+  color: var(--color-text-inverse); /* ✅ Texto blanco */
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Barlow Condensed', sans-serif;
+  background: var(--color-brand-600); /* ✅ Background azul igual que botones */
+  padding: 0.5rem 1.25rem; /* ✅ Menos padding */
+  border-radius: var(--border-radius-lg); /* ✅ Bordes redondeados */
+  display: inline-block; /* ✅ Para que el background solo cubra el texto */
+}
+
+/* ✅ Responsive para título */
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.5rem; /* ✅ Más chico */
+    padding: 0.625rem 1.75rem; /* ✅ Menos padding */
+  }
+}
+
+@media (min-width: 992px) {
+  .title {
+    font-size: 1.75rem; /* ✅ Más chico */
+    padding: 0.75rem 2rem; /* ✅ Menos padding */
+  }
+}
+
+/* ===== CONTENEDOR DE CARDS ===== */
+.cardsContainer {
+  display: flex;
+  gap: var(--spacing-6); /* ✅ Espaciado equilibrado */
+  justify-content: center;
+  align-items: stretch;
+  padding: var(--spacing-4) 0;
+  /* ✅ DESKTOP: Sin scroll, solo grid */
+  overflow-x: visible;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox: Ocultar scrollbar */
+  -ms-overflow-style: none; /* IE/Edge: Ocultar scrollbar */
+  -webkit-overflow-scrolling: touch; /* Mobile: Scroll suave */
+  max-width: 100%;
+}
+
+/* ✅ MOBILE: Scroll horizontal con card centrada y cards asomando a los lados */
+@media (max-width: 991px) {
+  .cardsContainer {
+    gap: var(--spacing-4);
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    /* ✅ Centrar primera card: padding igual a ambos lados */
+    padding-left: calc((100vw - 320px) / 2);
+    padding-right: calc((100vw - 320px) / 2);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  /* ✅ Ocultar scrollbar en Webkit */
+  .cardsContainer::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* ✅ Cada card tiene snap point y ancho fijo */
+  .cardsContainer > * {
+    scroll-snap-align: center; /* ✅ Snap al centro de cada card */
+    flex-shrink: 0;
+    width: 320px; /* ✅ Ancho fijo para card completa */
+    max-width: 320px;
+  }
+  
+  /* ✅ Primera card: scroll inicial centrado */
+  .cardsContainer > *:first-child {
+    scroll-margin-left: calc((100vw - 320px) / 2);
+  }
+  
+  /* ✅ Última card: scroll final centrado */
+  .cardsContainer > *:last-child {
+    scroll-margin-right: calc((100vw - 320px) / 2);
+  }
+}
+
+/* ✅ DESKTOP: 3 cards alineadas centradas */
+@media (min-width: 992px) {
+  .cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-6);
+    max-width: 1200px; /* ✅ Máximo ancho para mantener proporción */
+    margin: 0 auto; /* ✅ Centrar */
+    padding-left: var(--spacing-4);
+    padding-right: var(--spacing-4);
+    overflow-x: visible; /* ✅ Sin scroll en desktop */
+  }
+  
+  .cardsContainer > * {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto; /* ✅ Centrar cada card */
+  }
+}
+
+/* ===== CONTENEDOR DE BOTÓN ===== */
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-6) 0 var(--spacing-4) 0;
+  margin-top: var(--spacing-4);
+}
+
+.verTodosButton {
+  /* ✅ Estilo igual al botón de postventa para uniformidad pero levemente más grande */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 2.25rem; /* ✅ Levemente más chico */
+  background: var(--color-brand-600); /* ✅ Mismo color que postventa */
+  color: var(--color-text-inverse);
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg); /* ✅ Redondeo solo abajo */
+  text-decoration: none;
+  text-transform: none;
+  font-family: var(--font-display); /* ✅ Misma fuente que postventa */
+  font-weight: 600;
+  font-size: clamp(0.9375rem, 1.7vw, 1.0625rem); /* ✅ Levemente más chico */
+  line-height: 1;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  border: none;
+  cursor: pointer;
+  min-width: 180px; /* ✅ Ancho mínimo levemente más chico */
+}
+
+.verTodosButton:hover {
+  background: var(--color-brand-500); /* ✅ Mismo hover que postventa */
+  transform: translateY(-1px);
+}
+
+.verTodosButton:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+

@@ -341,3 +341,4 @@ open coverage/index.html  # Ver reporte HTML visual
 *Documento generado: 4 de noviembre de 2025, 19:38*  
 *Próxima actualización: Después de ETAPA 2 (11 nov 2025)*
 
+
