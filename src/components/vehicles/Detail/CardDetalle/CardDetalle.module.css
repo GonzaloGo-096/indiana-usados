@@ -27,8 +27,8 @@
 .cardContent {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-4);
-  padding: var(--spacing-4);
+  gap: var(--spacing-6); /* ✅ Aumentado de spacing-4 para más separación */
+  padding: var(--spacing-6); /* ✅ Aumentado de spacing-4 para más espacio interno */
 }
 
 /* ===== SECCIÓN DE IMAGEN ===== */
@@ -37,8 +37,12 @@
   border-radius: var(--border-radius-lg);
   overflow: hidden;
   background: var(--color-neutral-50);
-  min-height: 250px;
+  /* ✅ ADAPTATIVO: Se adapta al contenido sin altura mínima fija */
   order: -1; /* Imagen primero en mobile */
+  /* ✅ EFECTO COMPRESIÓN: Padding interno para más separación */
+  padding: var(--spacing-4);
+  /* ✅ ADAPTATIVO: Altura según contenido */
+  height: fit-content;
 }
 
 /* ===== SECCIÓN DE DETALLES ===== */
@@ -46,19 +50,24 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
-  min-height: 100%;
+  /* ✅ ADAPTATIVO: Se adapta al contenido sin altura mínima fija */
   order: 1;
+  /* ✅ EFECTO COMPRESIÓN: Padding interno para más separación */
+  padding: var(--spacing-4);
+  /* ✅ ADAPTATIVO: Altura según contenido */
+  height: fit-content;
 }
 
-/* ===== HEADER 60/40 ===== */
+/* ===== HEADER 60/40 - ESTILO IDÉNTICO A CARDAUTO ===== */
 .cardHeader {
   display: flex;
-  height: 45px;
-  border-radius: var(--border-radius-md);
+  height: 48px;
+  border-radius: 8px;
   overflow: hidden;
-  border-bottom: 1px solid var(--color-neutral-200);
-  background: transparent;
-  margin-bottom: 0;
+  border: 0.5px solid #6b7280;
+  background: #ffffff;
+  margin: 8px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .headerLeft {
@@ -68,27 +77,29 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: var(--spacing-2) var(--spacing-3);
+  padding: 8px 12px;
+  background: transparent;
 }
 
 .card__title_container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-2);
-  margin-bottom: 2px;
+  gap: 8px;
+  margin-bottom: 1px;
+  width: 100%;
 }
 
 .card__title {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
-  color: var(--color-neutral-900);
+  color: #111827;
   margin: 0;
   line-height: 1.3;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: var(--font-condensed);
+  font-family: 'Barlow Condensed', sans-serif;
 }
 
 .headerRight {
@@ -101,21 +112,21 @@
 .priceContainer {
   width: 100%;
   height: 100%;
-  background: var(--color-neutral-900);
+  background: #111827;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 3px 4px;
-  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
-  box-shadow: var(--shadow-sm);
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card__price {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 800;
-  color: var(--color-white);
+  color: #ffffff;
   margin: 0;
-  font-family: var(--font-condensed);
+  font-family: 'Barlow Condensed', sans-serif;
   line-height: 1.2;
 }
 
@@ -127,47 +138,71 @@
   font-family: var(--font-condensed);
 }
 
-/* ===== DATOS PRINCIPALES ===== */
+/* ===== DATOS PRINCIPALES - ESTILO IDÉNTICO A CARDAUTO ===== */
 .card__details {
-  display: flex;
-  padding: var(--spacing-1) 0;
-  border-bottom: 1px solid var(--color-neutral-200);
+  flex: 1;
   margin: 0;
-  margin-top: var(--spacing-2);
 }
 
 .card__data_container {
   display: flex;
-  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  padding: 6px 0;
+  border: none;
 }
 
 .card__data_item {
   flex: 1;
   text-align: center;
-  padding: var(--spacing-2);
+  padding: 6px 8px;
   background: transparent;
   border: none;
 }
 
 .card__data_item_border {
-  border-inline: 1px solid var(--color-neutral-200);
+  border-inline: 1px solid #e5e7eb;
+}
+
+/* ===== ICONOS DE DATOS - ESTILO IDÉNTICO A CARDAUTO ===== */
+.card__data_icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  color: #6b7280;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+  vertical-align: middle;
+}
+
+.card__data_item:hover .card__data_icon {
+  opacity: 1;
+  color: #374151;
+  transform: scale(1.05);
 }
 
 .card__data_label {
-  font-size: 0.625rem;
+  display: inline;
+  font-size: 11px;
+  color: #6b7280;
+  margin: 0;
   font-weight: 600;
-  color: var(--color-neutral-400);
-  letter-spacing: 0.05em;
-  margin-bottom: var(--spacing-1);
-  display: block;
+  letter-spacing: 0.5px;
+  font-family: 'Barlow Condensed', sans-serif;
+  vertical-align: middle;
+  line-height: 1;
 }
 
 .card__data_value {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--color-neutral-900);
-  margin: 0;
   display: block;
+  font-size: 19px;
+  color: #374151;
+  font-weight: 700;
+  font-family: 'Barlow Condensed', sans-serif;
+  margin-top: 4px;
+  line-height: 1.2;
 }
 
 /* ===== INFORMACIÓN ADICIONAL ===== */
@@ -208,22 +243,6 @@
   line-height: 1.3;
 }
 
-/* ✅ Estilos específicos para el campo Detalle */
-.infoItemDetalle {
-  grid-column: 1 / -1;
-  text-align: center;
-  margin-top: var(--spacing-2);
-  padding: var(--spacing-4) var(--spacing-4);
-  background: var(--color-neutral-50);
-  border-radius: var(--border-radius-md);
-}
-
-.infoValueDetalle {
-  text-align: center;
-  font-style: italic;
-  color: var(--color-neutral-600);
-}
-
 /* ===== SECCIÓN DE CONTACTO ===== */
 .contactSection {
   padding-top: var(--spacing-4);
@@ -234,14 +253,53 @@
   width: 100%;
 }
 
+/* ✅ Botón WhatsApp más pequeño HORIZONTALMENTE - Especificidad adecuada sin !important */
+.whatsappButtonSmall {
+  padding-top: 0.75rem; /* ✅ Mantener: Padding vertical original */
+  padding-bottom: 0.75rem; /* ✅ Mantener: Padding vertical original */
+  padding-left: 0.75rem; /* ✅ Aumentado: De 0.5rem a 0.75rem (12px) - Horizontal */
+  padding-right: 0.75rem; /* ✅ Aumentado: De 0.5rem a 0.75rem (12px) - Horizontal */
+  font-size: 0.8125rem; /* ✅ Reducido: Texto más pequeño para ocupar menos espacio horizontal */
+  gap: 0.25rem; /* ✅ Reducido: Menos espacio entre icono y texto */
+}
+
+.whatsappButtonSmall .whatsappIcon {
+  width: 16px;
+  height: 16px;
+}
+
 /* ===== RESPONSIVE DESIGN - MOBILE FIRST ===== */
 
-/* Desktop: 769px+ - Layout 2 columnas */
-/* ⚠️ CRÍTICO: Usar 769px (no 768px) para evitar conflictos */
-@media (min-width: 769px) {
+/* Tablet: 769px - 1023px - Layout vertical pero con mejor espaciado */
+@media (min-width: 769px) and (max-width: 1023px) {
   .card {
-    /* ✅ DESKTOP: Padding externo para dar "aire" a la tarjeta */
-    padding: var(--spacing-6);
+    max-width: 100%; /* ✅ Mantener ancho completo */
+    padding: var(--spacing-4);
+  }
+  
+  .cardContent {
+    display: flex; /* ✅ Flex vertical en tablet */
+    flex-direction: column;
+    gap: var(--spacing-6); /* ✅ Gap intermedio */
+    padding: var(--spacing-6); /* ✅ Padding intermedio */
+  }
+  
+  .imageSection {
+    order: -1; /* ✅ Imagen arriba */
+    padding: var(--spacing-4);
+  }
+  
+  .detailsSection {
+    order: 1;
+    padding: var(--spacing-4);
+  }
+}
+
+/* Desktop: 1024px+ - Layout 2 columnas (solo cuando hay espacio suficiente) */
+@media (min-width: 1024px) {
+  .card {
+    /* ✅ DESKTOP: Padding externo reducido para compensar aumento interno */
+    padding: var(--spacing-4);
   }
   
   .cardContent {
@@ -249,19 +307,25 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-8);
     padding: var(--spacing-8);
+    /* ✅ ADAPTATIVO: Alinea contenido arriba y se adapta a altura natural */
+    align-items: start;
   }
   
   .imageSection {
-    min-height: 400px;
+    /* ✅ ADAPTATIVO: Sin altura mínima, se adapta al contenido */
     order: 0; /* Orden normal en desktop */
+    /* ✅ DESKTOP: Padding más grande para efecto compresión */
+    padding: var(--spacing-6);
   }
   
   .detailsSection {
     order: 0;
+    /* ✅ DESKTOP: Padding más grande para efecto compresión */
+    padding: var(--spacing-6);
   }
   
   .cardHeader {
-    height: 60px;
+    height: 64px;
   }
   
   .card__title {
@@ -270,6 +334,22 @@
   
   .card__price {
     font-size: 24px;
+  }
+  
+  .card__data_container {
+    padding: 8px 0;
+  }
+  
+  .card__data_item {
+    padding: 8px 10px;
+  }
+  
+  .card__data_label {
+    font-size: 12px;
+  }
+  
+  .card__data_value {
+    font-size: 20px;
   }
   
   .card__version {
@@ -305,5 +385,18 @@
   
   .infoValue {
     font-size: 1rem;
+  }
+  
+  .whatsappButtonSmall {
+    padding-top: 0.75rem; /* ✅ Mantener: Padding vertical original */
+    padding-bottom: 0.75rem; /* ✅ Mantener: Padding vertical original */
+    padding-left: 0.625rem; /* ✅ Desktop: Padding horizontal aumentado (10px) */
+    padding-right: 0.625rem; /* ✅ Desktop: Padding horizontal aumentado (10px) */
+    font-size: 0.75rem; /* ✅ Desktop: Texto más pequeño para ocupar menos espacio horizontal */
+  }
+  
+  .whatsappButtonSmall .whatsappIcon {
+    width: 15px; /* ✅ Desktop: Icono ligeramente más pequeño */
+    height: 15px;
   }
 }

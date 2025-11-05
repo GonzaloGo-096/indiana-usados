@@ -34,6 +34,9 @@ export const ImageCarousel = ({
 }) => {
     const [currentIndex, setCurrentIndex] = useState(0)
     const thumbnailRefs = useRef([])
+    const thumbnailsContainerRef = useRef(null) // ✅ Ref para el contenedor de miniaturas
+    const [canScrollLeft, setCanScrollLeft] = useState(false) // ✅ Estado: puede scrollear izquierda
+    const [canScrollRight, setCanScrollRight] = useState(false) // ✅ Estado: puede scrollear derecha (inicialmente false, se calculará)
 
     // Si no hay imágenes, usar imagen por defecto
     const allImages = useMemo(() => {
@@ -41,9 +44,40 @@ export const ImageCarousel = ({
         return images
     }, [images])
 
+    // ✅ Función para verificar si puede scrollear
+    const checkScrollability = useCallback(() => {
+        if (!thumbnailsContainerRef.current) return
+        
+        const container = thumbnailsContainerRef.current
+        const canScrollLeftNow = container.scrollLeft > 0
+        const canScrollRightNow = container.scrollLeft < (container.scrollWidth - container.clientWidth - 1) // -1 para evitar problemas de redondeo
+        
+        setCanScrollLeft(canScrollLeftNow)
+        setCanScrollRight(canScrollRightNow)
+    }, [])
+
+    // ✅ Efecto: Verificar scrollability al cambiar imágenes o montar
     useEffect(() => {
-        thumbnailRefs.current = thumbnailRefs.current.slice(0, allImages.length)
-    }, [allImages.length])
+        checkScrollability()
+        // Verificar después de que las imágenes se carguen
+        const timer = setTimeout(checkScrollability, 100)
+        return () => clearTimeout(timer)
+    }, [allImages.length, checkScrollability])
+
+    // ✅ Listener de scroll para actualizar estado
+    useEffect(() => {
+        const container = thumbnailsContainerRef.current
+        if (!container) return
+
+        container.addEventListener('scroll', checkScrollability)
+        // También verificar cuando cambia el tamaño de la ventana
+        window.addEventListener('resize', checkScrollability)
+        
+        return () => {
+            container.removeEventListener('scroll', checkScrollability)
+            window.removeEventListener('resize', checkScrollability)
+        }
+    }, [checkScrollability])
 
     // ===== Navegación =====
     const goToPrevious = useCallback(() => {
@@ -57,6 +91,29 @@ export const ImageCarousel = ({
     const goToImage = useCallback((index) => {
         setCurrentIndex(index)
     }, [])
+
+    // ✅ Funciones para scroll horizontal de miniaturas
+    const scrollThumbnailsLeft = useCallback(() => {
+        if (!thumbnailsContainerRef.current) return
+        const scrollAmount = 200 // Pixels a scrollear
+        thumbnailsContainerRef.current.scrollBy({
+            left: -scrollAmount,
+            behavior: 'smooth'
+        })
+        // Actualizar estado después del scroll
+        setTimeout(checkScrollability, 300)
+    }, [checkScrollability])
+
+    const scrollThumbnailsRight = useCallback(() => {
+        if (!thumbnailsContainerRef.current) return
+        const scrollAmount = 200 // Pixels a scrollear
+        thumbnailsContainerRef.current.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        })
+        // Actualizar estado después del scroll
+        setTimeout(checkScrollability, 300)
+    }, [checkScrollability])
 
     // AutoPlay
     useEffect(() => {
@@ -216,7 +273,22 @@ export const ImageCarousel = ({
             {/* Miniaturas */}
             {allImages.length > 1 && (
                 <div className={styles.thumbnailsContainer}>
-                    <div className={styles.thumbnails}>
+                    {/* ✅ Flecha izquierda - Solo si puede scrollear a la izquierda */}
+                    {canScrollLeft && (
+                        <button 
+                            className={styles.thumbnailArrowLeft}
+                            onClick={scrollThumbnailsLeft}
+                            aria-label="Desplazar miniaturas izquierda"
+                            type="button"
+                        >
+                            <ChevronLeftIcon />
+                        </button>
+                    )}
+                    
+                    <div 
+                        ref={thumbnailsContainerRef}
+                        className={styles.thumbnails}
+                    >
                         {allImages.map((image, index) => (
                             <button
                                 key={index}
@@ -238,6 +310,18 @@ export const ImageCarousel = ({
                             </button>
                         ))}
                     </div>
+                    
+                    {/* ✅ Flecha derecha - Solo si puede scrollear a la derecha */}
+                    {canScrollRight && (
+                        <button 
+                            className={styles.thumbnailArrowRight}
+                            onClick={scrollThumbnailsRight}
+                            aria-label="Desplazar miniaturas derecha"
+                            type="button"
+                        >
+                            <ChevronRightIcon />
+                        </button>
+                    )}
                 </div>
             )}
         </div>

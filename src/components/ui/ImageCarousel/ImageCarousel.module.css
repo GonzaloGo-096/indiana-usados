@@ -115,36 +115,96 @@
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
 }
 
-/* ===== VISOR FIJO NETFLIX/SPOTIFY ===== */
+/* ===== VISOR FIJO NETFLIX/SPOTIFY - UNA SOLA LÍNEA ===== */
 .thumbnailsContainer {
     width: 100%;
     height: auto;
-    min-height: 140px;
-    overflow: visible;
+    min-height: 80px;
+    overflow: hidden; /* ✅ Cambiado: Ocultar overflow para fade */
     display: flex;
     justify-content: center;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-radius: 12px;
-    padding: 0;
-    margin-top: 30px;
+    align-items: center;
+    background: transparent; /* ✅ Removido: Sin fondo degradado */
+    border-radius: 0; /* ✅ Removido: Sin bordes redondeados */
+    padding: 12px 0; /* ✅ Reducido: Padding vertical mínimo */
+    margin-top: 16px; /* ✅ Reducido: Menos separación */
     opacity: 1;
     visibility: visible;
     z-index: 5;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border: none; /* ✅ Removido: Sin borde */
+    box-shadow: none; /* ✅ Removido: Sin sombra */
+    gap: 8px; /* ✅ Espacio entre flechas y contenido */
 }
 
 .thumbnails {
     display: flex;
-    gap: 8px;
-    padding: 20px;
-    justify-content: center;
+    gap: 8px; /* ✅ Reducido: Menos espacio entre miniaturas */
+    padding: 8px 0; /* ✅ Sin padding-bottom extra */
+    justify-content: flex-start; /* ✅ Cambiado: Alinear a la izquierda */
     align-items: center;
-    flex-wrap: wrap; /* Desktop: múltiples filas */
+    flex-wrap: nowrap; /* ✅ CRÍTICO: Una sola línea */
     height: auto;
-    overflow: visible;
+    overflow-x: auto; /* ✅ CRÍTICO: Scroll horizontal */
+    overflow-y: hidden;
     max-width: 100%;
+    flex: 1; /* ✅ Ocupar espacio disponible */
+    scroll-behavior: smooth; /* ✅ Scroll suave */
+    scrollbar-width: none; /* ✅ Firefox: Ocultar scrollbar */
+    -ms-overflow-style: none; /* ✅ IE/Edge: Ocultar scrollbar */
+    /* ✅ Webkit: Ocultar scrollbar completamente */
+    -webkit-overflow-scrolling: touch; /* ✅ Mobile: Scroll suave */
+    /* ✅ Gradientes fade en bordes (opcional, se puede remover) */
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+}
+
+/* ✅ Ocultar scrollbar en Webkit */
+.thumbnails::-webkit-scrollbar {
+    display: none; /* ✅ CRÍTICO: Ocultar scrollbar completamente */
+}
+
+/* ✅ Flechas sutiles para navegación de miniaturas - MÁS CHICAS */
+.thumbnailArrowLeft,
+.thumbnailArrowRight {
+    flex-shrink: 0;
+    width: 26px; /* ✅ Reducido: De 32px a 26px */
+    height: 26px; /* ✅ Reducido: De 32px a 26px */
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 10;
+    color: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+}
+
+.thumbnailArrowLeft:hover,
+.thumbnailArrowRight:hover {
+    background: rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, 0.9);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 1;
+}
+
+.thumbnailArrowLeft {
+    left: 0;
+}
+
+.thumbnailArrowRight {
+    right: 0;
+}
+
+.thumbnailArrowLeft svg,
+.thumbnailArrowRight svg {
+    width: 14px; /* ✅ Reducido: De 18px a 14px */
+    height: 14px; /* ✅ Reducido: De 18px a 14px */
 }
 
 /* ===== CONTROLES NETFLIX/SPOTIFY ===== */
@@ -204,49 +264,49 @@
     color: #666;
 }
 
-/* ===== MINIATURAS NETFLIX/SPOTIFY ===== */
+/* ===== MINIATURAS NETFLIX/SPOTIFY - UNA SOLA LÍNEA ===== */
 .thumbnail {
-    flex-shrink: 0;
-    width: 80px;
-    height: 56px;
-    border-radius: 6px;
+    flex-shrink: 0; /* ✅ CRÍTICO: No encoger */
+    width: 70px; /* ✅ Reducido: Más compacto */
+    height: 50px; /* ✅ Reducido: Mantener proporción */
+    border-radius: 4px; /* ✅ Reducido: Bordes más sutiles */
     overflow: hidden;
-    border: 2px solid transparent;
+    border: 2px solid transparent; /* ✅ Inicialmente transparente */
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    background: transparent; /* ✅ REMOVIDO: Sin fondo negro */
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ✅ Más rápido */
+    background: rgba(255, 255, 255, 0.1); /* ✅ Fondo sutil */
     position: relative;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* ✅ Sombra más sutil */
     will-change: transform;
     z-index: 1;
 }
 
 .thumbnail:hover {
-    border-color: var(--color-brand-500); /* ✅ NUEVO: Borde azul Francia */
-    transform: scale(1.05) translateY(-2px); /* ✅ SIMPLIFICADO: Menos escala y movimiento */
-    box-shadow: 0 8px 24px rgba(0, 85, 164, 0.3); /* ✅ NUEVO: Sombra azul Francia */
-    z-index: 10; /* ✅ NUEVO: Z-index alto para hover */
+    border-color: rgba(255, 255, 255, 0.5); /* ✅ Borde blanco sutil en hover */
+    transform: translateY(-2px); /* ✅ Solo elevación, sin escala */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* ✅ Sombra más fuerte */
+    z-index: 10;
 }
 
 .thumbnail.active {
-    transform: scale(1.08) translateY(-3px); /* ✅ SIMPLIFICADO: Menos escala */
-    border-color: var(--color-brand-500); /* ✅ NUEVO: Borde azul Francia */
-    box-shadow: 0 12px 32px rgba(0, 85, 164, 0.4); /* ✅ NUEVO: Sombra azul Francia */
+    border-color: #ffffff; /* ✅ Borde blanco sólido para activa */
+    transform: translateY(-3px); /* ✅ Más elevación */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* ✅ Sombra más prominente */
     position: relative;
-    z-index: 5; /* ✅ NUEVO: Z-index medio para activa */
+    z-index: 5;
 }
 
 .thumbnail.active::after {
     content: '';
     position: absolute;
-    bottom: -6px; /* ✅ AJUSTADO: Menos separación */
+    bottom: -8px; /* ✅ Debajo de la miniatura */
     left: 50%;
     transform: translateX(-50%);
-    width: 24px; /* ✅ REDUCIDO: Más pequeño */
-    height: 3px; /* ✅ REDUCIDO: Más delgado */
-    background: #ffffff; /* ✅ CORREGIDO: Blanco sólido */
-    border-radius: 2px;
-    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.3); /* ✅ CORREGIDO: Sombra blanca */
+    width: 40px; /* ✅ Línea más larga */
+    height: 2px; /* ✅ Línea más delgada */
+    background: #ffffff; /* ✅ Blanco sólido */
+    border-radius: 1px;
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
 }
 
 .thumbnailImage {
@@ -254,115 +314,118 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    border-radius: 4px; /* ✅ REDUCIDO: Bordes menos pronunciados */
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ✅ Más rápido */
+    border-radius: 2px; /* ✅ Reducido: Bordes menos pronunciados */
     will-change: transform;
     display: block;
 }
 
 .thumbnail:hover .thumbnailImage {
-    transform: scale(1.02); /* ✅ SIMPLIFICADO: Muy sutil para que no se vea inconsistente */
-    filter: brightness(1.05); /* ✅ SIMPLIFICADO: Solo brillo sutil */
+    transform: scale(1.05); /* ✅ Escala sutil */
+    filter: brightness(1.1); /* ✅ Brillo más notable */
 }
 
 .thumbnail.active .thumbnailImage {
-    filter: brightness(1.08); /* ✅ SIMPLIFICADO: Brillo muy sutil */
+    filter: brightness(1.15); /* ✅ Brillo más fuerte para activa */
 }
 
-/* ===== RESPONSIVE DESIGN NETFLIX ===== */
+/* ===== RESPONSIVE DESIGN NETFLIX - UNA SOLA LÍNEA ===== */
 @media (max-width: 1024px) {
     .thumbnailsContainer {
-        height: auto; /* ✅ CAMBIADO: Altura automática para 2 filas */
-        min-height: 120px; /* ✅ NUEVO: Altura mínima ajustada para tablet */
-        margin-top: 25px;
+        min-height: 70px; /* ✅ Reducido: Más compacto */
+        margin-top: 12px;
+        padding: 10px 0;
+        gap: 6px; /* ✅ Reducido: Menos espacio */
     }
     
     .thumbnails {
-        gap: 6px; /* ✅ REDUCIDO: Menos espacio en tablet */
+        gap: 6px; /* ✅ Reducido: Menos espacio */
+        padding: 6px 0;
     }
     
     .thumbnail {
-        width: 70px; /* ✅ REDUCIDO: Más pequeñas en tablet */
-        height: 49px; /* ✅ REDUCIDO: Más pequeñas en tablet */
+        width: 60px; /* ✅ Reducido: Más pequeñas */
+        height: 43px; /* ✅ Mantener proporción */
     }
     
-    .thumbnailControls {
-        width: 28px;
-        height: 28px;
+    .thumbnailArrowLeft,
+    .thumbnailArrowRight {
+        width: 22px; /* ✅ Reducido: De 28px a 22px */
+        height: 22px; /* ✅ Reducido: De 28px a 22px */
     }
     
-    .positionCounter {
-        font-size: 0.8rem;
-        padding: 6px 12px;
+    .thumbnailArrowLeft svg,
+    .thumbnailArrowRight svg {
+        width: 12px; /* ✅ Reducido: De 16px a 12px */
+        height: 12px; /* ✅ Reducido: De 16px a 12px */
     }
 }
 
 @media (max-width: 768px) {
     .thumbnailsContainer {
-        height: 75px; /* ✅ REDUCIDO SUTILMENTE: De 90px a 75px */
-        margin-top: 20px; /* ✅ AJUSTADO: Menos separación en mobile */
+        min-height: 65px; /* ✅ Reducido: Más compacto */
+        margin-top: 12px;
+        padding: 8px 0;
+        gap: 6px;
+        /* ✅ MOBILE: Mostrar miniaturas */
+        display: flex;
     }
     
     .thumbnails {
-        gap: 12px;
-        padding: 12px;
+        gap: 6px;
+        padding: 6px 0;
     }
     
     .thumbnail {
-        width: 70px;
-        height: 49px;
+        width: 55px; /* ✅ Reducido: Más pequeñas en mobile */
+        height: 40px; /* ✅ Mantener proporción */
     }
     
-    .thumbnailControls {
-        width: 26px;
-        height: 26px;
+    .thumbnailArrowLeft,
+    .thumbnailArrowRight {
+        width: 20px; /* ✅ Reducido: De 26px a 20px */
+        height: 20px; /* ✅ Reducido: De 26px a 20px */
     }
     
-    .positionCounter {
-        font-size: 0.75rem;
-        padding: 5px 10px;
+    .thumbnailArrowLeft svg,
+    .thumbnailArrowRight svg {
+        width: 11px; /* ✅ Reducido: De 14px a 11px */
+        height: 11px; /* ✅ Reducido: De 14px a 11px */
     }
 }
 
 @media (max-width: 480px) {
-    .mainImageContainer {
-        height: 300px;
-    }
-    
-    .arrow {
-        width: 32px;
-        height: 32px;
-    }
-    
     .thumbnailsContainer {
-        height: 70px; /* ✅ REDUCIDO SUTILMENTE: De 80px a 70px */
-        margin-top: 15px; /* ✅ AJUSTADO: Menos separación en mobile pequeño */
+        min-height: 60px; /* ✅ Reducido: Más compacto */
+        margin-top: 10px;
+        padding: 6px 0;
+        gap: 4px; /* ✅ Reducido: Menos espacio */
     }
     
     .thumbnails {
-        padding: 10px;
+        padding: 4px 0;
+        gap: 5px; /* ✅ Reducido: Menos espacio */
     }
     
     .thumbnail {
-        width: 60px;
-        height: 42px;
+        width: 50px; /* ✅ Reducido: Más pequeñas */
+        height: 36px; /* ✅ Mantener proporción */
     }
     
-    .thumbnailControls {
-        width: 24px;
-        height: 24px;
+    .thumbnail.active::after {
+        width: 30px; /* ✅ Reducido: Línea más corta en mobile */
+        bottom: -6px;
     }
     
-    .positionCounter {
-        font-size: 0.7rem;
-        padding: 4px 8px;
+    .thumbnailArrowLeft,
+    .thumbnailArrowRight {
+        width: 18px; /* ✅ Reducido: De 24px a 18px */
+        height: 18px; /* ✅ Reducido: De 24px a 18px */
     }
-}
-
-/* ===== MOBILE: OCULTAR MINIATURAS ===== */
-@media (max-width: 768px) {
-    .thumbnailsContainer {
-        /* ✅ MOBILE: Ocultar miniaturas completamente */
-        display: none;
+    
+    .thumbnailArrowLeft svg,
+    .thumbnailArrowRight svg {
+        width: 10px; /* ✅ Reducido: De 12px a 10px */
+        height: 10px; /* ✅ Reducido: De 12px a 10px */
     }
 }

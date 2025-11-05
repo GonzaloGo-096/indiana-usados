@@ -16,6 +16,7 @@ import { formatValue, formatCaja, formatPrice, formatKilometraje } from '@utils/
 import { useCarouselImages } from '@hooks'
 import { ImageCarousel } from '@ui/ImageCarousel'
 import { WhatsAppContact } from '@ui'
+import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
 import styles from './CardDetalle.module.css'
 
 /**
@@ -49,8 +50,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
             frenos: auto.frenos || '',
             turbo: auto.turbo || '',
             llantas: auto.llantas || '',
-            HP: auto.HP || '',
-            detalle: auto.detalle || '' // ✅ AGREGADO: campo detalle del backend
+            HP: auto.HP || ''
         }
     }, [auto])
     
@@ -75,11 +75,11 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
 
     // ✅ USAR FORMATTERS CENTRALIZADOS (eliminadas funciones duplicadas)
 
-    // Datos principales memoizados
+    // Datos principales memoizados con iconos
     const mainData = useMemo(() => [
-        { label: 'Año', value: vehicleData.año },
-        { label: 'Km', value: formatKilometraje(vehicleData.kms) },
-        { label: 'Caja', value: vehicleData.caja }
+        { label: 'Año', value: vehicleData.año, icon: CalendarIcon },
+        { label: 'Km', value: formatKilometraje(vehicleData.kms), icon: RouteIcon },
+        { label: 'Caja', value: vehicleData.caja, icon: GearboxIcon }
     ], [vehicleData.año, vehicleData.kms, vehicleData.caja])
 
     // Información adicional memoizada
@@ -95,8 +95,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
         { label: 'Frenos', value: vehicleData.frenos },
         { label: 'Turbo', value: vehicleData.turbo },
         { label: 'Llantas', value: vehicleData.llantas },
-        { label: 'HP', value: vehicleData.HP },
-        { label: 'Detalle', value: vehicleData.detalle } // ✅ AGREGADO: campo detalle
+        { label: 'HP', value: vehicleData.HP }
     ], [vehicleData])
 
     return (
@@ -120,18 +119,9 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                         <div className={styles.headerLeft}>
                             <div className={styles.card__title_container}>
                                 <h3 className={styles.card__title}>
-                                    {vehicleData.marca}
-                                </h3>
-                                <h3 className={styles.card__title}>
-                                    {vehicleData.modelo}
+                                    {vehicleData.marca} {vehicleData.modelo}
                                 </h3>
                             </div>
-                            {vehicleData.version && (
-                                <p className={styles.card__version}>
-                                    {vehicleData.version}
-                                    {vehicleData.cilindrada && ` ${vehicleData.cilindrada}`}
-                                </p>
-                            )}
                         </div>
                         
                         <div className={styles.headerRight}>
@@ -146,37 +136,45 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                     {/* Datos principales */}
                     <div className={styles.card__details}>
                         <div className={styles.card__data_container}>
-                            {mainData.map((item, index) => (
-                                <div 
-                                    key={item.label}
-                                    className={`${styles.card__data_item} ${
-                                        index === 1 ? styles.card__data_item_border : ''
-                                    }`}
-                                >
-                                    <span className={styles.card__data_label}>{item.label}</span>
-                                    <span className={styles.card__data_value}>{item.value}</span>
-                                </div>
-                            ))}
+                            {mainData.map((item, index) => {
+                                const IconComponent = item.icon
+                                return (
+                                    <div 
+                                        key={item.label}
+                                        className={`${styles.card__data_item} ${
+                                            index === 1 ? styles.card__data_item_border : ''
+                                        }`}
+                                    >
+                                        <div className={styles.card__data_icon}>
+                                            <IconComponent size={16} color="currentColor" />
+                                        </div>
+                                        <span className={styles.card__data_label}>{item.label}</span>
+                                        <span className={styles.card__data_value}>{item.value}</span>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
                     
                     {/* Información adicional */}
                     <div className={styles.infoContainer}>
                         {additionalInfo.map((item) => (
-                            <div key={item.label} className={`${styles.infoItem} ${item.label === 'Detalle' ? styles.infoItemDetalle : ''}`}>
+                            <div key={item.label} className={styles.infoItem}>
                                 <span className={styles.infoKey}>{item.label}</span>
-                                <span className={`${styles.infoValue} ${item.label === 'Detalle' ? styles.infoValueDetalle : ''}`}>{item.value}</span>
+                                <span className={styles.infoValue}>{item.value}</span>
                             </div>
                         ))}
                     </div>
                     
                     {/* Sección de contacto refactorizada */}
-                    <WhatsAppContact 
-                        text="Consultar este vehículo"
-                        phone={finalContactInfo.whatsapp}
-                        message={finalContactInfo.whatsappMessage}
-                        className={styles.contactSection}
-                    />
+                    <div className={styles.contactSection}>
+                        <WhatsAppContact 
+                            text="Consultar este vehículo"
+                            phone={finalContactInfo.whatsapp}
+                            message={finalContactInfo.whatsappMessage}
+                            className={styles.whatsappButtonSmall}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
