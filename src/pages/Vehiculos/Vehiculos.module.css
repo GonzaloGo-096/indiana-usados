@@ -9,7 +9,7 @@
   max-width: var(--container-max-width);
   margin: 0 auto;
   /* ✅ MOBILE-FIRST: Padding base para móvil */
-  padding: var(--spacing-lg) var(--spacing-1);
+  padding: 6px 24px;
   width: 100%;
 }
 
@@ -29,7 +29,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0;
-  padding: 20px 0 0 0;
+  padding: 5px 0 0 0;
 }
 
 .mainTitle {
@@ -77,12 +77,12 @@
 .actionButtons {
   /* ✅ MOBILE-FIRST: Oculto por defecto en móvil */
   display: none;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
   position: relative;
-  border: 1px solid var(--color-brand-500);
+  border: 3px solid var(--color-brand-500);
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 2px 5px;
   background: rgba(255, 255, 255, 0.8);
 }
 
@@ -170,7 +170,7 @@
 @media (min-width: 769px) {
   .container {
     /* ✅ Desktop: Padding más generoso */
-    padding: var(--spacing-xl) var(--spacing-md);
+    padding: 6px 24px;
   }
   
   .mainTitle {

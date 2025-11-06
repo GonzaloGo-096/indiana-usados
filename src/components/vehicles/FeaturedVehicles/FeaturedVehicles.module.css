@@ -42,7 +42,7 @@
   letter-spacing: 1px;
   font-family: 'Barlow Condensed', sans-serif;
   background: var(--color-brand-600); /* ✅ Background azul igual que botones */
-  padding: 0.5rem 1.25rem; /* ✅ Menos padding */
+  padding: 6px 24px; /* ✅ Padding reducido */
   border-radius: var(--border-radius-lg); /* ✅ Bordes redondeados */
   display: inline-block; /* ✅ Para que el background solo cubra el texto */
 }
@@ -51,14 +51,14 @@
 @media (min-width: 768px) {
   .title {
     font-size: 1.5rem; /* ✅ Más chico */
-    padding: 0.625rem 1.75rem; /* ✅ Menos padding */
+    padding: 6px 24px; /* ✅ Padding reducido */
   }
 }
 
 @media (min-width: 992px) {
   .title {
     font-size: 1.75rem; /* ✅ Más chico */
-    padding: 0.75rem 2rem; /* ✅ Menos padding */
+    padding: 6px 24px; /* ✅ Padding reducido */
   }
 }
 

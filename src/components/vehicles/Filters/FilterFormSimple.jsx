@@ -20,7 +20,8 @@ import { parseFilters } from '@utils'
 import { logger } from '@utils/logger'
 import styles from './FilterFormSimple.module.css'
 
-const FilterFormSimple = React.memo(React.forwardRef(({
+// ✅ COMPONENTE CON forwardRef
+const FilterFormSimpleComponent = React.forwardRef(({
   onApplyFilters,
   isLoading = false,
   isError = false,
@@ -358,7 +359,12 @@ const FilterFormSimple = React.memo(React.forwardRef(({
       </div>
     </div>
   )
-}))
+})
 
+FilterFormSimpleComponent.displayName = 'FilterFormSimple'
+
+// ✅ ENVOLVER CON memo PARA OPTIMIZACIÓN Y COMPATIBILIDAD CON LAZY LOADING
+const FilterFormSimple = React.memo(FilterFormSimpleComponent)
 FilterFormSimple.displayName = 'FilterFormSimple'
+
 export default FilterFormSimple

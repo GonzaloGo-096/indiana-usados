@@ -38,11 +38,12 @@
 
 /* ===== TÍTULO DE MÓDULO ===== */
 .moduleTitle {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
+  font-size: clamp(1rem, 2.4vw, 1.125rem);
+  font-weight: 700;
   color: var(--color-white);
   margin: 0;
   text-align: left;
+  letter-spacing: 0.3px;
 }
 
 /* ===== LISTA DE ÍTEMS ===== */
@@ -68,8 +69,8 @@
   gap: var(--spacing-3);
   color: var(--color-neutral-200);
   text-decoration: none;
-  transition: all var(--transition-fast);
-  padding: var(--spacing-1) 0;
+  transition: color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+  padding: 6px 0; /* tipografía respira sin cajas */
   border-radius: var(--border-radius-sm);
 }
 
@@ -84,8 +85,8 @@
 .itemLink:hover,
 .itemLink:focus {
   color: var(--color-white);
-  background-color: rgba(255, 255, 255, 0.05);
-  transform: translateX(4px);
+  background-color: rgba(255, 255, 255, 0.04); /* sutil */
+  transform: translateX(2px);
 }
 
 .itemLink:focus {
@@ -98,16 +99,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  color: var(--color-primary-500);
+  width: 18px;
+  height: 18px;
+  color: var(--color-brand-500);
   flex-shrink: 0;
+  opacity: 0.9; /* sutil */
 }
 
 /* ===== TEXTO ===== */
 .itemText {
   font-size: var(--font-size-sm);
-  line-height: 1.4;
+  line-height: 1.5;
+  color: var(--color-neutral-100);
 }
 
 /* ===== RESPONSIVE - MOBILE FIRST ===== */
@@ -118,11 +121,23 @@
     grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-6); /* Gap reducido en tablet */
   }
+  /* Divisores sutiles entre columnas (no en mobile) */
+  .module {
+    padding-right: var(--spacing-6);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .module:last-child {
+    border-right: none;
+    padding-right: 0;
+  }
 }
 
 /* Desktop: 992px+ - 3 columnas con más espacio */
 @media (min-width: var(--desktop-min)) {
   .modulesGrid {
-    gap: var(--spacing-8); /* Gap generoso en desktop */
+    gap: var(--spacing-10); /* un poco más de respiración */
+  }
+  .module {
+    max-width: 360px; /* columnas equilibradas visualmente */
   }
 }
