@@ -17,16 +17,7 @@ import styles from './Login.module.css'
 const Login = () => {
     const navigate = useNavigate()
     const { login, isAuthenticated, isLoading, error, clearError } = useAuth()
-    const [isSubmitting, setIsSubmitting] = React.useState(false) // ✅ ESTADO SIMPLIFICADO
-    
-    // ✅ DEBUG TEMPORAL: Ver estado del hook
-    logger.debug('auth:login', 'LOGIN DEBUG', {
-        isAuthenticated,
-        isLoading,
-        error,
-        hasToken: !!localStorage.getItem('auth_token'),
-        hasUser: !!localStorage.getItem('auth_user')
-    })
+    const [isSubmitting, setIsSubmitting] = React.useState(false)
 
     // Si ya está autenticado, redirigir
     React.useEffect(() => {

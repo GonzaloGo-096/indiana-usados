@@ -1,4 +1,5 @@
 import { AUTH_CONFIG } from '@config/auth'
+import { config } from '@config'
 import { authAxiosInstance } from '@api/axiosInstance'
 import { logger } from '@utils/logger'
 
@@ -36,8 +37,8 @@ export const authService = {
       // ✅ LOG PROFESIONAL: Intentando login
       logger.debug('auth:login', 'Iniciando proceso de login', {
         endpoint: AUTH_CONFIG.api.endpoints.login,
-        baseURL: AUTH_CONFIG.api.baseURL,
-        timeout: AUTH_CONFIG.api.timeout,
+        baseURL: config.api.baseURL,
+        timeout: config.api.timeout,
         username: credentials.username
       })
 
@@ -81,7 +82,7 @@ export const authService = {
       if (error.code === 'ECONNABORTED') {
         return {
           success: false,
-          message: `Timeout: El backend no respondió en ${AUTH_CONFIG.api.timeout}ms. Verifica que esté ejecutándose en ${AUTH_CONFIG.api.baseURL}`
+          message: `Timeout: El backend no respondió en ${config.api.timeout}ms. Verifica que esté ejecutándose en ${config.api.baseURL}`
         }
       }
 
@@ -89,7 +90,7 @@ export const authService = {
       if (!error.response) {
         return {
           success: false,
-          message: `Error de conexión: No se pudo conectar con ${AUTH_CONFIG.api.baseURL}. Verifica que el backend esté ejecutándose.`
+          message: `Error de conexión: No se pudo conectar con ${config.api.baseURL}. Verifica que el backend esté ejecutándose.`
         }
       }
 

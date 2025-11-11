@@ -123,7 +123,7 @@ export const mapVehiclesPage = (backendPage, currentCursor = null) => {
           : String(v.marca || v.modelo || '').trim(),
         
         // ✅ Raw data solo en desarrollo (debugging)
-        ...(process.env.NODE_ENV === 'development' && { _original: v })
+        ...(import.meta.env.DEV && { _original: v })
       }
     }).filter(Boolean)
     

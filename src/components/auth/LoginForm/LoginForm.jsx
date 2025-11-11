@@ -2,13 +2,16 @@
  * LoginForm - Formulario de inicio de sesión
  * 
  * Migrado a React Hook Form para mantener consistencia con el resto del proyecto
+ * Validación con Zod para mayor seguridad y robustez
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 3.0.0 - Validación con Zod
  */
 
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { loginSchema } from '@schemas/loginSchema'
 import styles from './LoginForm.module.css'
 
 const LoginForm = ({ onSubmit, isSubmitting, errors: externalErrors }) => {
@@ -19,6 +22,7 @@ const LoginForm = ({ onSubmit, isSubmitting, errors: externalErrors }) => {
         setError,
         clearErrors
     } = useForm({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
             username: '', // ✅ CAMPOS VACÍOS
             password: ''  // ✅ CAMPOS VACÍOS
@@ -46,9 +50,7 @@ const LoginForm = ({ onSubmit, isSubmitting, errors: externalErrors }) => {
                 <label className={styles.label}>Usuario</label>
                 <input
                     type="text"
-                    {...register('username', { // ✅ INTERNO: username
-                        required: 'El usuario es requerido'
-                    })}
+                    {...register('username')} // ✅ Validación con Zod (no necesita validación inline)
                     className={styles.input}
                     disabled={isSubmitting}
                     placeholder="Ingresa tu usuario" // ✅ PLACEHOLDER GENÉRICO
@@ -62,9 +64,7 @@ const LoginForm = ({ onSubmit, isSubmitting, errors: externalErrors }) => {
                 <label className={styles.label}>Contraseña</label>
                 <input
                     type="password"
-                    {...register('password', { // ✅ INTERNO: password
-                        required: 'La contraseña es requerida'
-                    })}
+                    {...register('password')} // ✅ Validación con Zod (no necesita validación inline)
                     className={styles.input}
                     disabled={isSubmitting}
                     placeholder="Ingresa tu contraseña" // ✅ PLACEHOLDER GENÉRICO

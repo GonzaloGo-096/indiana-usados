@@ -9,8 +9,8 @@ import { extractVehicleImageUrls } from '@utils/imageExtractors'
  */
 export const usePreloadImages = (vehicles = [], options = {}) => {
   const {
-    preloadDistance = 200, // px antes de entrar en viewport
-    maxPreload = 6, // máximo de imágenes a preload
+    preloadDistance = 400, // ✅ AUMENTADO: 400px por defecto (antes 200px)
+    maxPreload = 8, // ✅ AUMENTADO: 8 imágenes por defecto (antes 6)
     enablePreload = true
   } = options
 
@@ -143,7 +143,7 @@ export const usePreloadImages = (vehicles = [], options = {}) => {
       },
       {
         rootMargin: `${adjustedPreloadDistance}px`,
-        threshold: [0, 0.25, 0.5, 0.75, 1] // Múltiples thresholds para mejor control
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1] // ✅ MEJORADO: Más thresholds para mejor control
       }
     )
 

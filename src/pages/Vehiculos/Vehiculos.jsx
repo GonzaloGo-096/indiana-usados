@@ -12,6 +12,7 @@ import { useVehiclesList } from '@hooks'
 import { AutosGrid } from '@vehicles'
 import LazyFilterFormSimple from '@vehicles/Filters/LazyFilterFormSimple'
 import SortDropdown from '@vehicles/Filters/SortDropdown'
+import { VehiclesListSEOHead } from '@components/SEO'
 import styles from './Vehiculos.module.css'
 
 const Vehiculos = () => {
@@ -84,7 +85,9 @@ const Vehiculos = () => {
     const handleCloseSortDropdown = () => setIsSortDropdownOpen(false)
 
     return (
-        <div className={styles.container}>
+        <>
+            <VehiclesListSEOHead vehicleCount={total} />
+            <div className={styles.container}>
             {/* ✅ Banner de datos mock */}
             {isUsingMockData && (
                 <div className={styles.mockDataBanner}>
@@ -171,7 +174,8 @@ const Vehiculos = () => {
                     </button>
                 </div>
             )}
-        </div>
+            </div>
+        </>
     )
 }
 

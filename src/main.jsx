@@ -5,9 +5,10 @@
  * - React Query
  * - Design Tokens
  * - Estilos globales
+ * - Prefetch de rutas críticas
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0 - Prefetch de rutas críticas agregado
  */
 
 import React from 'react'
@@ -23,6 +24,17 @@ import { validateConfig, REACT_QUERY_CONFIG } from './config'
 if (!validateConfig()) {
   // Error crítico - usar console.error como fallback ya que logger podría no estar disponible
   console.error('❌ Error en configuración de la aplicación')
+}
+
+// ✅ Prefetch de ruta crítica (/vehiculos) cuando el navegador esté idle
+if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+  requestIdleCallback(() => {
+    // Prefetch del chunk de la ruta /vehiculos (segunda ruta más visitada)
+    // Usar el mismo import que PublicRoutes.jsx para asegurar que se carga el mismo chunk
+    import('./pages/Vehiculos').catch(() => {
+      // Silenciar errores de prefetch (no crítico)
+    })
+  }, { timeout: 2000 })
 }
 
 // ✅ Crear QueryClient con configuración centralizada y handlers globales

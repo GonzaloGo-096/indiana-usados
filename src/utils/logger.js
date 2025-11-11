@@ -21,7 +21,7 @@ const LEVELS = {
 }
 
 // Detectar ambiente y nivel de debug
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = import.meta.env.DEV
 const isDebugOnDemand = typeof localStorage !== 'undefined' && localStorage.debug === '1'
 
 // Nivel base por ambiente

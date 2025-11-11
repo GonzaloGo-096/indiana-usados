@@ -12,6 +12,7 @@ import { CardDetalle } from '@vehicles'
 import { ErrorState } from '@ui'
 import { DetalleSkeleton } from '@shared'
 import { useScrollPosition } from '@hooks'
+import { VehicleSEOHead, SEOHead } from '@components/SEO'
 import styles from './VehiculoDetalle.module.css'
 
 const VehiculoDetalle = () => {
@@ -35,8 +36,6 @@ const VehiculoDetalle = () => {
         isError, 
         error 
     } = useVehicleDetail(id, { enabled: true })
-    
-    // ✅ DEBUG TEMPORALMENTE DESACTIVADO PARA INVESTIGAR BUCLE INFINITO
 
     // Función para volver preservando scroll
     const handleBack = () => {
@@ -49,31 +48,43 @@ const VehiculoDetalle = () => {
     // Estado de error
     if (isError) {
         return (
-            <ErrorState
-                title="Error al cargar el vehículo"
-                message={error?.message || 'No se pudo cargar la información del vehículo'}
-                actionText="Volver a la lista de vehículos"
-                actionLink="/vehiculos"
-                variant="error"
-            />
+            <>
+                <SEOHead
+                    title="Error al cargar el vehículo"
+                    description="No se pudo cargar la información del vehículo solicitado."
+                    noindex={true}
+                />
+                <ErrorState
+                    title="Error al cargar el vehículo"
+                    message={error?.message || 'No se pudo cargar la información del vehículo'}
+                    actionText="Volver a la lista de vehículos"
+                    actionLink="/vehiculos"
+                    variant="error"
+                />
+            </>
         )
     }
 
     // Vehículo no encontrado
     if (!auto) {
         return (
-            <ErrorState
-                title="Vehículo no encontrado"
-                message="El vehículo que buscas no existe o ha sido removido."
-                actionText="Volver a la lista de vehículos"
-                actionLink="/vehiculos"
-                variant="notFound"
-            />
+            <>
+                <VehicleSEOHead vehicle={null} />
+                <ErrorState
+                    title="Vehículo no encontrado"
+                    message="El vehículo que buscas no existe o ha sido removido."
+                    actionText="Volver a la lista de vehículos"
+                    actionLink="/vehiculos"
+                    variant="notFound"
+                />
+            </>
         )
     }
 
     return (
-        <div className={styles.container}>
+        <>
+            <VehicleSEOHead vehicle={auto} />
+            <div className={styles.container}>
             {/* Botón de volver con preservación de scroll */}
             <div className={styles.backButton}>
                 <button onClick={handleBack} className={styles.backLink}>
@@ -86,7 +97,8 @@ const VehiculoDetalle = () => {
             <div className={styles.content}>
                 <CardDetalle auto={auto} />
             </div>
-        </div>
+            </div>
+        </>
     )
 }
 

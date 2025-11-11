@@ -1,0 +1,86 @@
+# robots.txt para Indiana Usados
+# 
+# Este archivo indica a los motores de búsqueda qué páginas pueden rastrear
+# y cuáles deben ignorar.
+#
+# IMPORTANTE: Las reglas se procesan en orden. Disallow primero, luego Allow.
+#
+# @author Indiana Usados
+# @version 2.0.0 - Mejorado con reglas más específicas
+
+# ===== CONFIGURACIÓN GENERAL =====
+# Permitir todos los bots en páginas públicas
+User-agent: *
+
+# ===== BLOQUEAR PRIMERO (más específico) =====
+# Rutas privadas y admin
+Disallow: /admin/
+Disallow: /admin/login
+
+# API (si existe en frontend)
+Disallow: /api/
+
+# Archivos técnicos y de desarrollo (no deben estar en producción, pero por seguridad)
+Disallow: /dist/
+Disallow: /node_modules/
+Disallow: /coverage/
+Disallow: /test-results/
+Disallow: /playwright-report/
+Disallow: /src/
+Disallow: /.env
+Disallow: /.env.*
+Disallow: /.git/
+Disallow: /package*.json
+Disallow: /vite.config.js
+Disallow: /vercel.json
+Disallow: /eslint.config.js
+Disallow: /playwright.config.ts
+Disallow: /tsconfig.json
+
+# Archivos de configuración y datos
+Disallow: /*.json$
+Disallow: /*.config.js$
+Disallow: /*.config.ts$
+Disallow: /*.map$
+
+# Archivos de fuente TypeScript/JavaScript (si se exponen)
+Disallow: /*.ts$
+Disallow: /*.tsx$
+
+# Rutas de error con parámetros (no indexar)
+Disallow: /*?*error*
+Disallow: /*?*404*
+
+# ===== PERMITIR DESPUÉS (más general) =====
+# Páginas públicas principales
+Allow: /
+Allow: /vehiculos
+Allow: /vehiculo/
+Allow: /nosotros
+Allow: /postventa
+
+# ===== CONFIGURACIÓN ESPECÍFICA POR BOT =====
+# Crawl-delay solo para bots que lo respetan (opcional)
+# Google ignora Crawl-delay, pero otros bots lo respetan
+User-agent: AhrefsBot
+Crawl-delay: 2
+
+User-agent: SemrushBot
+Crawl-delay: 2
+
+User-agent: MJ12bot
+Crawl-delay: 2
+
+# Permitir todos los demás bots sin delay
+User-agent: *
+
+# ===== SITEMAP =====
+# Ubicación del sitemap (se genera dinámicamente)
+Sitemap: https://indianausados.com/sitemap.xml
+
+# ===== NOTAS =====
+# - Las rutas /vehiculo/:id son dinámicas y se incluyen en el sitemap
+# - El sitemap se genera automáticamente con todas las páginas públicas
+# - Las páginas 404 (NotFound) no se incluyen en el sitemap
+# - Los archivos bloqueados no deberían estar en producción, pero se bloquean por seguridad
+

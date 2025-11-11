@@ -38,9 +38,9 @@ export const CardAuto = memo(({ auto }) => {
     // ✅ EFECTO HOVER DEFINITIVO: Dos imágenes con fade
     const [isHovering, setIsHovering] = useState(false)
     
-    // ✅ PRELOAD DE IMÁGENES CRÍTICAS
+    // ✅ PRELOAD DE IMÁGENES CRÍTICAS - Mejorado para cache borrado
     const { preloadVehicle, getStats } = usePreloadImages([auto], {
-        preloadDistance: 300,
+        preloadDistance: 400,
         maxPreload: 2,
         enablePreload: true
     })
@@ -64,14 +64,6 @@ export const CardAuto = memo(({ auto }) => {
     //         preloadVehicle(auto)
     //     }
     // }, [auto, preloadVehicle])
-    
-    // ✅ DEBUG LIMPIO: Verificar que el campo caja llegue correctamente
-    if (!window._cardAutoDebugCount) {
-      window._cardAutoDebugCount = 0
-    }
-    
-    
-
 
     // ✅ FUNCIÓN SIMPLE PARA "VER MÁS"
     const handleVerMas = useCallback(() => {
@@ -126,7 +118,7 @@ export const CardAuto = memo(({ auto }) => {
                     widths={IMAGE_WIDTHS.card}
                     sizes={IMAGE_SIZES.card}
                     loading="lazy"
-                    fetchpriority="low"
+                    fetchpriority="auto"
                     qualityMode="eco"
                     className={`${styles['card__image']} ${styles['card__image_primary']}`}
                 />

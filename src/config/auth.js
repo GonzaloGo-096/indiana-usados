@@ -1,20 +1,19 @@
 /**
  * Configuración de autenticación para backend Node.js REAL
  * 
+ * Nota: baseURL y timeout se obtienen de config.api (config/index.js)
+ * para mantener una única fuente de verdad.
+ * 
  * @author Indiana Usados
- * @version 3.0.0 - Migrado a backend real
+ * @version 4.0.0 - baseURL y timeout unificados con config.api
  */
 
 export const AUTH_CONFIG = {
-  // Configuración de API
+  // Configuración de API (solo endpoints, baseURL y timeout vienen de config.api)
   api: {
-    // URL del backend REAL
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001',
     endpoints: {
       login: '/user/loginuser'
-    },
-    // Timeout para requests (en ms)
-    timeout: 10000
+    }
   },
   
   // Configuración de localStorage

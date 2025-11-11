@@ -9,6 +9,7 @@
  */
 
 import PostventaServiceCard from '@components/PostventaServiceCard'
+import { SEOHead } from '@components/SEO'
 import styles from './Postventa.module.css'
 import imgPostventa from '../../assets/img-postventa-principal.webp'
 
@@ -45,7 +46,15 @@ const servicesData = [
 
 const Postventa = () => {
   return (
-    <div className={styles.pageContainer}>
+    <>
+      <SEOHead
+        title="Servicios Postventa"
+        description="Servicios postventa profesionales: service, chapa y pintura, repuestos originales. Técnicos certificados y garantía en todos nuestros servicios."
+        keywords="service autos usados, mantenimiento vehículos, chapa y pintura autos, repuestos originales"
+        url="/postventa"
+        type="website"
+      />
+      <div className={styles.pageContainer}>
       {/* Hero Section */}
       <section className={styles.hero} aria-labelledby="postventa-hero-title">
         <div className="container">
@@ -84,7 +93,8 @@ const Postventa = () => {
           ))}
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }
 

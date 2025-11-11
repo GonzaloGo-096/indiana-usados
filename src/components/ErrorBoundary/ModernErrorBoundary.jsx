@@ -72,7 +72,7 @@ function ErrorFallback({ error, resetErrorBoundary, variant = 'default' }) {
         </div>
 
         {/* Detalles técnicos (solo desarrollo) */}
-        {process.env.NODE_ENV === 'development' && error && (
+        {import.meta.env.DEV && error && (
           <details className={styles.errorDetails}>
             <summary>Detalles técnicos (desarrollo)</summary>
             <pre className={styles.errorStack}>

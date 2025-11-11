@@ -9,13 +9,22 @@ import { Link } from 'react-router-dom'
 import { Button } from '@ui/Button'
 import HeroImageCarousel from '@ui/HeroImageCarousel'
 import { FeaturedVehicles } from '@vehicles'
+import { SEOHead } from '@components/SEO'
 import styles from './Home.module.css'
 import { heroImages } from '../../assets/home'
 import imgPostventa from '../../assets/img-postventa-principal.webp'
 
 const Home = () => {
   return (
-    <div className={styles.home}>
+    <>
+      <SEOHead
+        title="Indiana Usados - Autos Usados con Garantía en Argentina"
+        description="Indiana Usados es una concesionaria de autos usados en Argentina. Amplia selección de vehículos usados con garantía, financiamiento y servicio postventa profesional."
+        keywords="autos usados, concesionaria, vehículos usados, autos usados Argentina, comprar auto usado, garantía autos usados"
+        url="/"
+        type="website"
+      />
+      <div className={styles.home}>
       {/* Sección A: Hero */}
       <section className={styles.hero}>
         <div className="container">
@@ -55,7 +64,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }
 

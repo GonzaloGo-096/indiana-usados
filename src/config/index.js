@@ -157,4 +157,7 @@ export const validateConfig = () => {
 // ===== EXPORTAR CONFIG DE REACT QUERY =====
 export { REACT_QUERY_CONFIG, REACT_QUERY_TEST_CONFIG } from './reactQuery'
 
+// ===== EXPORTAR CONFIG SEO =====
+export { SEO_CONFIG } from './seo'
+
 export default config 

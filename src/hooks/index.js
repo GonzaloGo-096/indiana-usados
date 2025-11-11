@@ -29,3 +29,6 @@ export * from './vehicles'
 
 // ===== HOOKS DE FILTROS =====
 // ✅ LIMPIADO: useFilterReducer obsoleto eliminado
+
+// ===== HOOKS DE SEO =====
+export * from './seo/useSEO'

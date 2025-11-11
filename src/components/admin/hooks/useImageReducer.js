@@ -155,25 +155,14 @@ const imageReducer = (state, action) => {
             // ✅ REEMPLAZAR ARCHIVOS DESDE INPUT MÚLTIPLE
             const { files } = action.payload
             
-            logger.debug('image:setMultipleExtras', 'Files recibidos', {
-                count: files?.length || 0,
-                isArray: Array.isArray(files),
-                firstFile: files?.[0]?.name || 'No hay archivos'
-            })
-            
             return {
                 ...state,
-                fotosExtra: files || [] // ✅ Ya es Array, usar directamente
+                fotosExtra: files || []
             }
             
         case IMAGE_ACTIONS.REMOVE_EXISTING_EXTRA:
             // ✅ MARCAR FOTO EXISTENTE COMO ELIMINADA
             const { index } = action.payload
-            logger.debug('image:removeExistingExtra', 'Marcando foto para eliminar', {
-                index,
-                currentState: state.existingExtras?.[index]
-            })
-            
             const existingExtras = [...state.existingExtras]
             
             if (existingExtras[index]) {
@@ -181,10 +170,6 @@ const imageReducer = (state, action) => {
                     ...existingExtras[index],
                     remove: true
                 }
-                logger.debug('image:removeExistingExtra', 'Foto marcada para eliminar', {
-                    index,
-                    photo: existingExtras[index]
-                })
             } else {
                 logger.warn('image:removeExistingExtra', 'No se encontró foto en índice', { index })
             }
@@ -197,11 +182,6 @@ const imageReducer = (state, action) => {
         case IMAGE_ACTIONS.RESTORE_EXISTING_EXTRA:
             // ✅ RESTAURAR FOTO EXISTENTE MARCADA COMO ELIMINADA
             const { index: restoreIndex } = action.payload
-            logger.debug('image:restoreExistingExtra', 'Restaurando foto', {
-                index: restoreIndex,
-                currentState: state.existingExtras?.[restoreIndex]
-            })
-            
             const existingExtrasToRestore = [...state.existingExtras]
             
             if (existingExtrasToRestore[restoreIndex]) {
@@ -209,10 +189,6 @@ const imageReducer = (state, action) => {
                     ...existingExtrasToRestore[restoreIndex],
                     remove: false
                 }
-                logger.debug('image:restoreExistingExtra', 'Foto restaurada', {
-                    index: restoreIndex,
-                    photo: existingExtrasToRestore[restoreIndex]
-                })
             } else {
                 logger.warn('image:restoreExistingExtra', 'No se encontró foto en índice', { index: restoreIndex })
             }
@@ -277,49 +253,24 @@ export const useImageReducer = (mode, initialData = {}) => {
 
     // ✅ NUEVOS MANEJADORES PARA FOTOS EXTRAS
     const setMultipleExtras = useCallback((files) => {
-        logger.debug('image:setMultipleExtras', 'Función llamada', {
-            filesCount: files?.length || 0,
-            currentFotosExtra: imageState.fotosExtra?.length || 0,
-            filesType: typeof files,
-            isFileList: files instanceof FileList
-        })
-        
         // ✅ CONVERTIR FileList a Array ANTES del dispatch
         const filesArray = Array.from(files || [])
-        logger.debug('image:setMultipleExtras', 'Convertido a Array', { count: filesArray.length })
-        
         dispatch({ type: IMAGE_ACTIONS.SET_MULTIPLE_EXTRAS, payload: { files: filesArray } })
-        logger.debug('image:setMultipleExtras', 'Dispatch ejecutado')
-    }, [imageState.fotosExtra])
+    }, [])
 
     const removeExistingExtra = useCallback((index) => {
-        logger.debug('image:removeExistingExtra', 'Marcando foto para eliminar', {
-            index,
-            currentState: imageState.existingExtras?.[index]
-        })
         dispatch({ type: IMAGE_ACTIONS.REMOVE_EXISTING_EXTRA, payload: { index } })
-    }, [imageState.existingExtras])
+    }, [])
 
     const restoreExistingExtra = useCallback((index) => {
-        logger.debug('image:restoreExistingExtra', 'Restaurando foto', {
-            index,
-            currentState: imageState.existingExtras?.[index]
-        })
         dispatch({ type: IMAGE_ACTIONS.RESTORE_EXISTING_EXTRA, payload: { index } })
-    }, [imageState.existingExtras])
+    }, [])
 
     // ✅ VALIDACIÓN DE IMÁGENES
     const validateImages = useCallback((mode) => {
         const errors = {}
 
-        logger.debug('image:validateImages', 'Iniciando validación', {
-            mode,
-            newExtrasCount: imageState.newExtras?.length || 0
-        })
-
         if (mode === 'create') {
-            logger.debug('image:validateImages', 'Modo CREATE - Validando cantidad de fotos')
-            
             // ✅ VALIDAR IMÁGENES PRINCIPALES
             IMAGE_FIELDS.principales.forEach(field => {
                 const { file } = imageState[field] || {}
@@ -330,8 +281,6 @@ export const useImageReducer = (mode, initialData = {}) => {
 
             // ✅ VALIDAR FOTOS EXTRAS - Contar archivos nuevos del input múltiple
             const fotosExtraCount = imageState.fotosExtra?.length || 0
-
-            logger.debug('image:validateImages', 'Modo CREATE - Contando fotos extras', { fotosExtraCount })
 
             if (fotosExtraCount < FORM_RULES.MIN_EXTRA_PHOTOS) {
                 errors.fotosExtra = 'Se requieren mínimo 5 fotos extras (total mínimo: 7 fotos)'
@@ -457,17 +406,7 @@ export const useImageReducer = (mode, initialData = {}) => {
             }
         }
         
-        const preview = existingUrl || null
-        if (!preview && key.startsWith('fotoExtra')) {
-            // 🔍 Diagnóstico: por qué no hay preview para extras
-            logger.debug('image:getPreviewFor', 'Sin preview disponible', {
-                key,
-                existingUrl,
-                hasFile: !!file,
-                remove
-            })
-        }
-        return preview
+        return existingUrl || null
     }, [imageState])
 
     // ✅ LIMPIAR OBJETOS URL CREADOS

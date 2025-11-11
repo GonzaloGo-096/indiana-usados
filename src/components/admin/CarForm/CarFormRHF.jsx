@@ -50,16 +50,6 @@ const CarFormRHF = ({
         restoreExistingExtra    // Para restaurar foto existente
     } = useImageReducer(mode, initialData)
 
-    // ✅ DEBUG: Verificar estado inicial
-    logger.debug('carform:init', 'Estado inicial del imageState', {
-        mode,
-        hasFotosExtra: !!imageState.fotosExtra,
-        fotosExtraLength: imageState.fotosExtra?.length || 0,
-        hasExistingExtras: !!imageState.existingExtras,
-        existingExtrasLength: imageState.existingExtras?.length || 0,
-        allKeys: Object.keys(imageState)
-    })
-
     const {
         register,
         handleSubmit,
