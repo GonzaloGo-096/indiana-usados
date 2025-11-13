@@ -4,17 +4,20 @@
  * ✅ IMPLEMENTADO: Lazy loading para mejor performance
  * 
  * @author Indiana Usados
- * @version 2.0.0 - CODE SPLITTING IMPLEMENTADO
+ * @version 2.1.0 - FCP Optimization: Home import non-lazy
  */
 
 import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Nav, Footer } from '@layout'
 import { LoadingSpinner } from '@ui'
-const NotFound = lazy(() => import('../pages/NotFound/NotFound'))
 
-// ✅ LAZY LOADING: Páginas cargadas bajo demanda
-const Home = lazy(() => import('../pages/Home/Home'))
+// PERF: FCP Optimization - Home import non-lazy to prevent initial white screen
+// Home es la página principal y debe renderizarse inmediatamente para mejorar FCP/LCP
+import Home from '../pages/Home/Home'
+
+// ✅ LAZY LOADING: Páginas cargadas bajo demanda (excepto Home)
+const NotFound = lazy(() => import('../pages/NotFound/NotFound'))
 const Vehiculos = lazy(() => import('../pages/Vehiculos'))
 const VehiculoDetalle = lazy(() => import('../pages/VehiculoDetalle'))
 const Nosotros = lazy(() => import('../pages/Nosotros'))

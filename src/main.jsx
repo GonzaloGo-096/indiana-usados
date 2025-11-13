@@ -9,6 +9,7 @@
  * 
  * @author Indiana Usados
  * @version 1.1.0 - Prefetch de rutas críticas agregado
+ * @version 1.2.0 - FCP/LCP Phase 3: Runtime diagnostics agregado
  */
 
 import React from 'react'
@@ -19,6 +20,34 @@ import './styles/fonts.css'
 import { QueryClient, QueryClientProvider, QueryCache, MutationCache } from '@tanstack/react-query'
 import { GlobalErrorBoundary } from '@shared'
 import { validateConfig, REACT_QUERY_CONFIG } from './config'
+
+// FCP/LCP Phase 3: Runtime diagnostics - Medir tiempos de ejecución
+console.time('App bootstrap')
+
+// FCP/LCP Phase 3: Performance API - Medir first-paint y first-contentful-paint
+if (typeof window !== 'undefined' && window.performance) {
+  window.addEventListener('load', () => {
+    const paints = performance.getEntriesByType('paint')
+    paints.forEach(p => {
+      console.log(`[Performance API] ${p.name}: ${p.startTime.toFixed(2)} ms`)
+    })
+  })
+
+  // FCP/LCP Phase 3: PerformanceObserver para LCP (Largest Contentful Paint)
+  if ('PerformanceObserver' in window) {
+    try {
+      const observer = new PerformanceObserver((list) => {
+        const entries = list.getEntries()
+        const lastEntry = entries[entries.length - 1]
+        console.log(`[PerformanceObserver] LCP: ${lastEntry.startTime.toFixed(2)} ms`)
+        console.log(`[PerformanceObserver] LCP element:`, lastEntry.element || lastEntry)
+      })
+      observer.observe({ entryTypes: ['largest-contentful-paint'] })
+    } catch (e) {
+      console.warn('[PerformanceObserver] LCP observer no disponible:', e.message)
+    }
+  }
+}
 
 // Validar configuración al inicio
 if (!validateConfig()) {
@@ -67,3 +96,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </GlobalErrorBoundary>
   </React.StrictMode>,
 )
+
+// FCP/LCP Phase 3: Runtime diagnostics - Finalizar medición de App bootstrap
+console.timeEnd('App bootstrap')

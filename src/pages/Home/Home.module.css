@@ -1,14 +1,10 @@
 /**
  * Home.module.css - Diseño profesional mobile-first
  * 
- * Características:
- * - Mobile-first responsive design
- * - Variables semánticas del design system
- * - Progressive enhancement
- * - Performance optimizada
+ * LCP Phase 1: Estilos mantenidos, compatible con HeroImage
  * 
  * @author Indiana Usados
- * @version 3.1.0 - Hero carousel integration
+ * @version 4.0.0 - LCP Phase 1: Hero image optimizada
  */
 
 /* ===== HOME CONTAINER ===== */
@@ -30,10 +26,10 @@
   align-items: center;
 }
 
-/* El componente HeroImageCarousel maneja sus propios estilos */
+/* LCP Phase 1: El componente HeroImage maneja sus propios estilos */
 /* Solo mantenemos el contenedor para centrado */
 .heroImageContainer {
-  /* Los estilos específicos del carrusel están en HeroImageCarousel.module.css */
+  /* Los estilos específicos del hero están en HeroImage.module.css */
 }
 
 /* ===== FEATURES SECTION (FEATURED VEHICLES) ===== */

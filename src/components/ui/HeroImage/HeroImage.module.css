@@ -1,0 +1,55 @@
+/**
+ * HeroImage.module.css - Estilos optimizados para LCP
+ * 
+ * LCP Phase 1: Estilos mínimos, sin transiciones complejas
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0 - LCP Phase 1
+ */
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.heroImageContainer {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: none;
+}
+
+/* ===== IMAGEN HERO ===== */
+.heroImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  background-color: var(--color-neutral-50);
+  border-radius: var(--border-radius-md);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Desktop: reducir tamaño de la foto */
+@media (min-width: var(--desktop-min)) {
+  .heroImageContainer {
+    max-width: min(36vw, 580px);
+  }
+  
+  .heroImage {
+    max-height: clamp(220px, 28vh, 300px);
+  }
+}
+
+/* Tablet: ajuste suave entre 768px y 991px */
+@media (min-width: var(--tablet-min)) and (max-width: 991px) {
+  .heroImageContainer {
+    max-width: 80%;
+  }
+  
+  .heroImage {
+    max-height: clamp(220px, 30vh, 300px);
+  }
+}
+
+
+

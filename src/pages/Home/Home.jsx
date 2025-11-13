@@ -1,20 +1,42 @@
 /**
  * Home - Página principal
  * 
+ * LCP Phase 1: Hero image fija (sin carrusel)
+ * 
  * @author Indiana Usados
- * @version 3.0.0 - Hero carousel implementation
+ * @version 4.0.0 - LCP Phase 1: Hero image optimizada
+ * @version 4.1.0 - FCP/LCP Phase 3: Runtime diagnostics agregado
  */
 
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '@ui/Button'
-import HeroImageCarousel from '@ui/HeroImageCarousel'
+import HeroImage from '@ui/HeroImage' // LCP Phase 1: Nuevo componente simple
 import { FeaturedVehicles } from '@vehicles'
 import { SEOHead } from '@components/SEO'
 import styles from './Home.module.css'
-import { heroImages } from '../../assets/home'
+import { heroImage } from '../../assets/home' // LCP Phase 1: Objeto único, no array
 import imgPostventa from '../../assets/img-postventa-principal.webp'
 
+// FCP/LCP Phase 3: Runtime diagnostics - Iniciar medición cuando el módulo se carga
+// Esto captura el momento en que React empieza a procesar el componente
+if (typeof window !== 'undefined') {
+  if (!window.__ReactRenderTimerStarted) {
+    window.__ReactRenderTimerStarted = true
+    console.time('React render')
+  }
+}
+
 const Home = () => {
+  // FCP/LCP Phase 3: Runtime diagnostics - Finalizar medición cuando Home está montado
+  useEffect(() => {
+    console.timeEnd('React render')
+    // Limpiar flag para permitir mediciones futuras si es necesario
+    if (typeof window !== 'undefined') {
+      window.__ReactRenderTimerStarted = false
+    }
+  }, [])
+
   return (
     <>
       <SEOHead
@@ -25,13 +47,14 @@ const Home = () => {
         type="website"
       />
       <div className={styles.home}>
-      {/* Sección A: Hero */}
+      {/* Sección A: Hero - LCP Phase 1: Imagen fija optimizada */}
       <section className={styles.hero}>
         <div className="container">
-          <HeroImageCarousel 
-            images={heroImages}
-            autoplay={true}
-            interval={8000}
+          <HeroImage 
+            src={heroImage.src}
+            srcSet={heroImage.srcSet}
+            sizes={heroImage.sizes}
+            alt={heroImage.alt}
             className={styles.heroImageContainer}
           />
         </div>
