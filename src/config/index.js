@@ -8,8 +8,10 @@
  * - Configuración por entorno
  * 
  * @author Indiana Usados
- * @version 1.0.0 - Configuración simplificada
+ * @version 1.1.0 - Logger importado directamente
  */
+
+import { logger } from '@utils/logger'
 
 // ===== VALIDACIÓN DE ENTORNO =====
 const validateEnvironment = () => {
@@ -17,10 +19,7 @@ const validateEnvironment = () => {
   const validEnvironments = ['development', 'staging', 'production']
   
   if (!validEnvironments.includes(environment)) {
-    // Usar logger en lugar de console.warn
-    if (typeof window !== 'undefined' && window.logger) {
-      window.logger.warn('config:env', `Entorno inválido: ${environment}. Usando 'development'`)
-    }
+    logger.warn('config:env', `Entorno inválido: ${environment}. Usando 'development'`)
     return 'development'
   }
   
@@ -29,8 +28,6 @@ const validateEnvironment = () => {
 
 // ===== CONFIGURACIÓN DE API =====
 const getApiConfig = () => {
-  const environment = validateEnvironment()
-  
   // Configuración base
   const baseConfig = {
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 15000, // ✅ 15 segundos por defecto
@@ -62,7 +59,7 @@ const getFeaturesConfig = () => {
   }
 }
 
-// (Eliminado) Configuración de auth duplicada: usar AUTH_CONFIG como fuente de verdad
+// Autenticación: delegada a AUTH_CONFIG (ver src/config/auth.js)
 
 // ===== CONFIGURACIÓN DE CONTACTO =====
 const getContactConfig = () => {
@@ -110,18 +107,14 @@ export const config = {
 
 // ===== LOGGING DE CONFIGURACIÓN (solo en desarrollo) =====
 if (config.isDevelopment && config.features.debug) {
-  // Usar logger en lugar de console.log
-  if (typeof window !== 'undefined' && window.logger) {
-    window.logger.info('config:loaded', 'CONFIGURACIÓN CARGADA', {
-      environment: config.environment,
-      api: {
-        baseURL: config.api.baseURL,
-        timeout: config.api.timeout
-      },
-      features: config.features,
-      auth: config.auth
-    })
-  }
+  logger.info('config:loaded', 'CONFIGURACIÓN CARGADA', {
+    environment: config.environment,
+    api: {
+      baseURL: config.api.baseURL,
+      timeout: config.api.timeout
+    },
+    features: config.features
+  })
 }
 
 // ===== VALIDACIÓN DE CONFIGURACIÓN =====
@@ -144,10 +137,7 @@ export const validateConfig = () => {
   }
   
   if (errors.length > 0) {
-    // Usar logger en lugar de console.error
-    if (typeof window !== 'undefined' && window.logger) {
-      window.logger.error('config:validation', 'ERRORES DE CONFIGURACIÓN', { errors })
-    }
+    logger.error('config:validation', 'ERRORES DE CONFIGURACIÓN', { errors })
     return false
   }
   

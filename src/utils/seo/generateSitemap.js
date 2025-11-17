@@ -16,12 +16,29 @@
  * 2. Como endpoint: Crear ruta en backend que llame a esta función
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Mejorado con validaciones y normalización
+ * @version 2.1.0 - Logger con detección de ambiente (browser/Node.js)
  */
 
-// Importar configuración SEO centralizada
-// Nota: En Node.js (serverless functions) necesitamos usar process.env directamente
-// pero mantenemos la misma estructura de configuración
+// Helper para logging compatible con browser y Node.js
+// Nota: Este archivo puede ejecutarse en Node.js (serverless), donde el logger del browser
+// no está disponible. Usamos logger cuando está disponible, console.error como fallback
+const logError = (message, error) => {
+  const errorDetails = error instanceof Error 
+    ? { message: error.message, stack: error.stack }
+    : error
+  
+  // Intentar usar logger si está disponible (browser)
+  // Primero verificar logger global (si fue asignado en main.jsx)
+  if (typeof window !== 'undefined' && window.logger && typeof window.logger.error === 'function') {
+    window.logger.error('sitemap', message, errorDetails)
+    return
+  }
+  
+  // Fallback para Node.js o cuando logger no está disponible
+  // Usar formato consistente con logger para mantener uniformidad
+  const timestamp = new Date().toISOString()
+  console.error(`[${timestamp}] ERROR [sitemap] ${message}:`, errorDetails)
+}
 
 /**
  * Obtiene configuración del sitemap (compatible con Node.js y browser)
@@ -312,7 +329,7 @@ const fetchAllVehicles = async (fetchVehicles, options = {}) => {
       }
     }
   } catch (error) {
-    console.error('Error obteniendo vehículos para sitemap:', error)
+    logError('Error obteniendo vehículos para sitemap', error)
     // Retornar lo que se haya obtenido hasta ahora
   }
   
@@ -333,7 +350,7 @@ export const generateSitemapFromAPI = async (fetchVehicles, options = {}) => {
     
     return generateSitemap(allVehicles, options)
   } catch (error) {
-    console.error('Error generando sitemap desde API:', error)
+    logError('Error generando sitemap desde API', error)
     // Retornar sitemap solo con páginas estáticas en caso de error
     return generateSitemap([], options)
   }

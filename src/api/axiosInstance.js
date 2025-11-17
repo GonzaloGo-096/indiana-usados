@@ -32,9 +32,7 @@ const axiosInstance = axios.create({
     headers: config.api.headers
 })
 
-// detailAxiosInstance eliminado (no usado)
-
-// ✅ NUEVA: Instancia específica para autenticación
+// ✅ Instancia específica para autenticación
 const authAxiosInstance = axios.create({
     baseURL: getBaseURL(),
     timeout: getTimeout(),

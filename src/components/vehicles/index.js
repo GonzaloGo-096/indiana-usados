@@ -22,7 +22,4 @@ export { default as AutosGrid } from './List/ListAutos/AutosGrid'
 export { CardDetalle } from './Detail/CardDetalle/CardDetalle'
 
 // ===== FEATURED COMPONENTS =====
-export { default as FeaturedVehicles } from './FeaturedVehicles'
-
-// ===== FILTER COMPONENTS =====
-// FilterFormSimplified se importa dinámicamente en LazyFilterForm 
+export { default as FeaturedVehicles } from './FeaturedVehicles' 

@@ -2,10 +2,9 @@
  * Filters - Exportaciones centralizadas para el sistema de filtros
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Sistema simplificado
+ * @version 2.1.0 - Sistema unificado: LazyFilterFormSimple eliminado
  */
 
-// Sistema de filtros simplificado
-export { default as LazyFilterFormSimple } from './LazyFilterFormSimple'
+// Sistema de filtros unificado
 export { default as FilterFormSimple } from './FilterFormSimple'
 export { default as SortDropdown } from './SortDropdown'

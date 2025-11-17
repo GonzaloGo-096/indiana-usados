@@ -10,8 +10,4 @@
 
 // ===== CONSTANTES DE FILTROS =====
 export * from './filterOptions'
-export * from './forms'
-
-// breakpoints eliminado (no usado)
-
-// cssVariables eliminado (no usado) 
+export * from './forms' 

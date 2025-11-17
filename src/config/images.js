@@ -36,11 +36,8 @@ export const IMAGES = {
     defaultCarImage: getOptimizedImage('defaultCarImage')
 }
 
-// ⚠️ FUNCIONES LEGACY ELIMINADAS:
-// - getCarouselImages() → Usar utils/imageUtils.js
-// - getResponsiveImage() → Usar cloudinaryUrl.js (cldSrcset)
-// - getRandomCarouselImage() → No se usaba
-// - pickStable() → No se usaba
-// Fecha: 2024
+// Nota: Funciones legacy migradas:
+// - getCarouselImages() → utils/imageUtils.js
+// - getResponsiveImage() → utils/cloudinaryUrl.js (cldSrcset)
 
 export default IMAGES 

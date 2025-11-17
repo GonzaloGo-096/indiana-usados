@@ -1,5 +1,7 @@
 /**
- * FilterFormSimple - Formulario de filtros ultra simplificado
+ * FilterFormSimple - Formulario de filtros unificado
+ * 
+ * Maneja tanto mobile (drawer) como desktop (visibilidad)
  * 
  * Principios:
  * - Sin over-engineering
@@ -8,7 +10,7 @@
  * - Performance optimizada
  * 
  * @author Indiana Usados
- * @version 1.0.0 - Ultra simplificado
+ * @version 2.0.0 - Unificado: elimina necesidad de LazyFilterFormSimple
  */
 
 import React, { useState, useEffect, useCallback, useRef } from 'react'
@@ -18,6 +20,7 @@ import { MultiSelect } from '@ui'
 import { marcas, combustibles, cajas, FILTER_DEFAULTS, SORT_OPTIONS } from '@constants'
 import { parseFilters } from '@utils'
 import { logger } from '@utils/logger'
+import { useDevice } from '@hooks'
 import styles from './FilterFormSimple.module.css'
 
 // ✅ COMPONENTE CON forwardRef
@@ -28,7 +31,12 @@ const FilterFormSimpleComponent = React.forwardRef(({
   error = null,
   onRetry = null,
 }, ref) => {
+  const { isMobile } = useDevice()
+  
   // ✅ ESTADOS SIMPLES
+  // Estado para visibilidad en desktop
+  const [isVisibleDesktop, setIsVisibleDesktop] = useState(false)
+  // Estado para drawer en mobile
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showMobileActions, setShowMobileActions] = useState(false)
@@ -49,6 +57,17 @@ const FilterFormSimpleComponent = React.forwardRef(({
 
   const [searchParams, setSearchParams] = useSearchParams()
   const selectedSort = searchParams.get('sort')
+
+  // ✅ SINCRONIZACIÓN DE ESTADOS AL CAMBIAR DISPOSITIVO
+  useEffect(() => {
+    if (isMobile) {
+      // En mobile, cerrar visibilidad desktop
+      setIsVisibleDesktop(false)
+    } else {
+      // En desktop, cerrar drawer mobile
+      setIsDrawerOpen(false)
+    }
+  }, [isMobile])
 
   // ✅ SINCRONIZACIÓN CON URL
   useEffect(() => {
@@ -75,7 +94,24 @@ const FilterFormSimpleComponent = React.forwardRef(({
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // ✅ HANDLERS SIMPLES
+  // ✅ HANDLERS UNIFICADOS (funcionan en ambos contextos)
+  const toggleVisibility = useCallback(() => {
+    if (isMobile) {
+      setIsDrawerOpen(prev => !prev)
+    } else {
+      setIsVisibleDesktop(prev => !prev)
+    }
+  }, [isMobile])
+
+  const closeVisibility = useCallback(() => {
+    if (isMobile) {
+      setIsDrawerOpen(false)
+    } else {
+      setIsVisibleDesktop(false)
+    }
+  }, [isMobile])
+
+  // ✅ HANDLERS SIMPLES (mantener para compatibilidad)
   const toggleDrawer = useCallback(() => setIsDrawerOpen(prev => !prev), [])
   const closeDrawer = useCallback(() => setIsDrawerOpen(false), [])
   const toggleSortDropdown = useCallback(() => setIsSortDropdownOpen(prev => !prev), [])
@@ -151,8 +187,8 @@ const FilterFormSimpleComponent = React.forwardRef(({
     setIsSubmitting(true)
 
     try {
-      // Cerrar inmediato para UX fluida
-      closeDrawer()
+      // Cerrar según dispositivo (desktop o mobile)
+      closeVisibility()
       await onApplyFilters(filters)
     } catch (error) {
       logger.error('filters:apply', 'Error applying filters', { error: error.message })
@@ -171,12 +207,19 @@ const FilterFormSimpleComponent = React.forwardRef(({
     }
   }, [])
 
-  // ✅ REF INTERFACE
+  // ✅ REF INTERFACE UNIFICADA (compatibilidad con ambos sistemas)
   React.useImperativeHandle(ref, () => ({
+    // Métodos originales (para mobile - compatibilidad)
     toggleDrawer,
     closeDrawer,
-    isDrawerOpen
-  }), [toggleDrawer, closeDrawer, isDrawerOpen])
+    isDrawerOpen: isMobile ? isDrawerOpen : isVisibleDesktop,
+    
+    // Métodos de LazyFilterFormSimple (para desktop - compatibilidad)
+    toggleFilters: toggleVisibility,
+    showFilters: () => setIsVisibleDesktop(true),
+    hideFilters: () => setIsVisibleDesktop(false),
+    isFiltersVisible: isMobile ? isDrawerOpen : isVisibleDesktop,
+  }), [isMobile, isDrawerOpen, isVisibleDesktop, toggleDrawer, closeDrawer, toggleVisibility])
 
   // ✅ CONTEO DE FILTROS ACTIVOS
   const activeFiltersCount = [
@@ -188,7 +231,8 @@ const FilterFormSimpleComponent = React.forwardRef(({
     filters.kilometraje[0] !== FILTER_DEFAULTS.KILOMETRAJE.min || filters.kilometraje[1] !== FILTER_DEFAULTS.KILOMETRAJE.max
   ].filter(Boolean).length
 
-  return (
+  // ✅ CONTENIDO DEL FORMULARIO (reutilizable)
+  const formContent = (
     <div className={`${styles.filterContainer} ${isDrawerOpen ? styles.open : ''}`}>
       {/* Mobile Actions */}
       <div className={`${styles.mobileActionsContainer} ${showMobileActions ? styles.visible : ''}`}>
@@ -359,11 +403,46 @@ const FilterFormSimpleComponent = React.forwardRef(({
       </div>
     </div>
   )
+
+  // ✅ EN DESKTOP: No mostrar nada hasta que se active
+  if (!isMobile && !isVisibleDesktop) {
+    return null
+  }
+
+  // ✅ EN DESKTOP: Wrapper con animación slideDown
+  if (!isMobile && isVisibleDesktop) {
+    return (
+      <div style={{
+        animation: 'slideDown 0.3s ease-out',
+        marginTop: '0',
+        marginBottom: '20px',
+      }}>
+        <style>{`
+          @keyframes slideDown {
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+              max-height: 0;
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+              max-height: 1000px;
+            }
+          }
+        `}</style>
+        {formContent}
+      </div>
+    )
+  }
+
+  // ✅ EN MOBILE: Renderizar directamente (comportamiento original)
+  return formContent
 })
 
 FilterFormSimpleComponent.displayName = 'FilterFormSimple'
 
-// ✅ ENVOLVER CON memo PARA OPTIMIZACIÓN Y COMPATIBILIDAD CON LAZY LOADING
+// ✅ ENVOLVER CON memo PARA OPTIMIZACIÓN
 const FilterFormSimple = React.memo(FilterFormSimpleComponent)
 FilterFormSimple.displayName = 'FilterFormSimple'
 

@@ -8,8 +8,7 @@
  * - Prefetch de rutas críticas
  * 
  * @author Indiana Usados
- * @version 1.1.0 - Prefetch de rutas críticas agregado
- * @version 1.2.0 - FCP/LCP Phase 3: Runtime diagnostics agregado
+ * @version 1.3.0 - Logger integrado para métricas de performance
  */
 
 import React from 'react'
@@ -20,6 +19,12 @@ import './styles/fonts.css'
 import { QueryClient, QueryClientProvider, QueryCache, MutationCache } from '@tanstack/react-query'
 import { GlobalErrorBoundary } from '@shared'
 import { validateConfig, REACT_QUERY_CONFIG } from './config'
+import { logger } from '@utils/logger'
+
+// Hacer logger disponible globalmente para scripts que lo necesiten (ej: generateSitemap)
+if (typeof window !== 'undefined') {
+  window.logger = logger
+}
 
 // FCP/LCP Phase 3: Runtime diagnostics - Medir tiempos de ejecución
 console.time('App bootstrap')
@@ -29,7 +34,7 @@ if (typeof window !== 'undefined' && window.performance) {
   window.addEventListener('load', () => {
     const paints = performance.getEntriesByType('paint')
     paints.forEach(p => {
-      console.log(`[Performance API] ${p.name}: ${p.startTime.toFixed(2)} ms`)
+      logger.debug('perf:paint', `${p.name}: ${p.startTime.toFixed(2)} ms`)
     })
   })
 
@@ -39,20 +44,20 @@ if (typeof window !== 'undefined' && window.performance) {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries()
         const lastEntry = entries[entries.length - 1]
-        console.log(`[PerformanceObserver] LCP: ${lastEntry.startTime.toFixed(2)} ms`)
-        console.log(`[PerformanceObserver] LCP element:`, lastEntry.element || lastEntry)
+        logger.debug('perf:lcp', `LCP: ${lastEntry.startTime.toFixed(2)} ms`, {
+          element: lastEntry.element || lastEntry
+        })
       })
       observer.observe({ entryTypes: ['largest-contentful-paint'] })
     } catch (e) {
-      console.warn('[PerformanceObserver] LCP observer no disponible:', e.message)
+      logger.warn('perf:observer', 'LCP observer no disponible', { error: e.message })
     }
   }
 }
 
 // Validar configuración al inicio
 if (!validateConfig()) {
-  // Error crítico - usar console.error como fallback ya que logger podría no estar disponible
-  console.error('❌ Error en configuración de la aplicación')
+  logger.error('app:config', 'Error en configuración de la aplicación')
 }
 
 // ✅ Prefetch de ruta crítica (/vehiculos) cuando el navegador esté idle

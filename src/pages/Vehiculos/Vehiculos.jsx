@@ -10,7 +10,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { parseFilters, serializeFilters, hasAnyFilter, sortVehicles } from '@utils'
 import { useVehiclesList } from '@hooks'
 import { AutosGrid } from '@vehicles'
-import LazyFilterFormSimple from '@vehicles/Filters/LazyFilterFormSimple'
+import FilterFormSimple from '@vehicles/Filters/FilterFormSimple'
 import SortDropdown from '@vehicles/Filters/SortDropdown'
 import { VehiclesListSEOHead } from '@components/SEO'
 import styles from './Vehiculos.module.css'
@@ -139,7 +139,7 @@ const Vehiculos = () => {
             </div>
 
             {/* ✅ NUEVO: Formulario de filtros debajo del título */}
-        <LazyFilterFormSimple
+        <FilterFormSimple
           ref={filterFormRef}
           onApplyFilters={onApply}
           isLoading={isLoading}
