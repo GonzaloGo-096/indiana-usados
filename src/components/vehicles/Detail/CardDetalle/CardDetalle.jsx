@@ -82,20 +82,20 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
         { label: 'Caja', value: vehicleData.caja, icon: GearboxIcon }
     ], [vehicleData.año, vehicleData.kms, vehicleData.caja])
 
-    // Información adicional memoizada
+    // Información adicional memoizada con formatValue para mostrar "-" si vacío
     const additionalInfo = useMemo(() => [
-        { label: 'Tracción', value: vehicleData.traccion },
-        { label: 'Combustible', value: vehicleData.combustible },
-        { label: 'Versión', value: vehicleData.version },
-        { label: 'Cilindrada', value: vehicleData.cilindrada },
-        { label: 'Segmento', value: vehicleData.categoria },
-        { label: 'Tapizado', value: vehicleData.tapizado },
-        { label: 'Color', value: vehicleData.color },
-        { label: 'Categoría', value: vehicleData.categoriaVehiculo },
-        { label: 'Frenos', value: vehicleData.frenos },
-        { label: 'Turbo', value: vehicleData.turbo },
-        { label: 'Llantas', value: vehicleData.llantas },
-        { label: 'HP', value: vehicleData.HP }
+        { label: 'Tracción', value: formatValue(vehicleData.traccion) },
+        { label: 'Combustible', value: formatValue(vehicleData.combustible) },
+        { label: 'Versión', value: formatValue(vehicleData.version) },
+        { label: 'Cilindrada', value: formatValue(vehicleData.cilindrada) },
+        { label: 'Segmento', value: formatValue(vehicleData.categoria) },
+        { label: 'Tapizado', value: formatValue(vehicleData.tapizado) },
+        { label: 'Color', value: formatValue(vehicleData.color) },
+        { label: 'Categoría', value: formatValue(vehicleData.categoriaVehiculo) },
+        { label: 'Frenos', value: formatValue(vehicleData.frenos) },
+        { label: 'Turbo', value: formatValue(vehicleData.turbo) },
+        { label: 'Llantas', value: formatValue(vehicleData.llantas) },
+        { label: 'HP', value: formatValue(vehicleData.HP) }
     ], [vehicleData])
 
     return (

@@ -99,3 +99,53 @@ export const formatValue = (value) => {
     }
     return value
 }
+
+/**
+ * Normaliza cilindrada a formato X.X
+ * Maneja números, strings, valores legacy desde backend
+ * 
+ * @param {number|string} value - Valor de cilindrada
+ * @returns {string} - Valor normalizado en formato X.X o string vacío
+ * 
+ * @example
+ * normalizeCilindrada(2)       // "2.0"
+ * normalizeCilindrada("2")     // "2.0"
+ * normalizeCilindrada(2.5)     // "2.5"
+ * normalizeCilindrada("2.5")   // "2.5"
+ * normalizeCilindrada(2.099)   // "2.1"
+ * normalizeCilindrada("")      // ""
+ * normalizeCilindrada(null)    // ""
+ */
+export const normalizeCilindrada = (value) => {
+    // Valores nulos o vacíos
+    if (!value && value !== 0) return ''
+    
+    // Parsear como número
+    const num = parseFloat(value)
+    
+    // Si no es un número válido, retornar vacío
+    if (isNaN(num)) {
+        logger?.warn?.('normalizeCilindrada: valor no numérico:', value)
+        return ''
+    }
+    
+    // Formatear a 1 decimal (2 → "2.0", 2.5 → "2.5")
+    return num.toFixed(1)
+}
+
+/**
+ * Formatea cilindrada para visualización con sufijo "L"
+ * 
+ * @param {string|number} value - Valor de cilindrada
+ * @returns {string} - Valor formateado con unidad
+ * 
+ * @example
+ * formatCilindradaDisplay("2.0") // "2.0 L"
+ * formatCilindradaDisplay(2.5)   // "2.5 L"
+ * formatCilindradaDisplay("")    // ""
+ */
+export const formatCilindradaDisplay = (value) => {
+    if (!value) return ''
+    const normalized = normalizeCilindrada(value)
+    return normalized ? `${normalized} L` : ''
+}

@@ -11,7 +11,7 @@
  */
 
 import { useMemo } from 'react'
-import { getCarouselImages } from '@utils/imageUtils'
+import { getCarouselImages } from '@utils/imageNormalizerOptimized'
 
 /**
  * Hook para obtener imágenes del carrusel

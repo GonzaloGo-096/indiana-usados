@@ -12,6 +12,7 @@ import { useImageReducer, IMAGE_FIELDS } from '@components/admin/hooks/useImageR
 import styles from './CarFormRHF.module.css'
 import { FORM_RULES } from '@constants/forms'
 import { isValidWebp, isUnderMaxSize, filterValidFiles } from '@utils/files'
+import { normalizeCilindrada } from '@utils/formatters'
 
 // ✅ CONSTANTES
 const MODE = {
@@ -20,7 +21,8 @@ const MODE = {
 }
 
 // ✅ CAMPOS NUMÉRICOS (para coerción automática)
-const NUMERIC_FIELDS = ['precio', 'cilindrada', 'anio', 'kilometraje']
+// Nota: cilindrada NO está aquí porque se maneja con formato decimal especial
+const NUMERIC_FIELDS = ['precio', 'anio', 'kilometraje']
 
 // ✅ VALIDACIONES centralizadas en FORM_RULES
 
@@ -97,16 +99,42 @@ const CarFormRHF = ({
         }
     }, [initialData, mode, reset, initImageState])
 
+    // ✅ HANDLER PARA AUTO-COMPLETAR CILINDRADA
+    const handleCilindradaBlur = useCallback((e) => {
+        let value = e.target.value.trim()
+        if (!value) return
+        
+        // Si no tiene punto, agregar .0
+        if (!value.includes('.')) {
+            value = `${value}.0`
+            setValue('cilindrada', value)
+            return
+        }
+        
+        // Si termina en punto, agregar 0
+        if (value.endsWith('.')) {
+            value = `${value}0`
+            setValue('cilindrada', value)
+            return
+        }
+        
+        // Si tiene más de un decimal, truncar
+        if (value.includes('.')) {
+            const [integer, decimal] = value.split('.')
+            if (decimal && decimal.length > 1) {
+                value = `${integer}.${decimal[0]}`
+                setValue('cilindrada', value)
+            }
+        }
+    }, [setValue])
+
     // ✅ VALIDAR FORMULARIO COMPLETO
     const validateForm = useCallback((data) => {
         const errors = {}
         
-        // ✅ VALIDAR CAMPOS REQUERIDOS
+        // ✅ VALIDAR CAMPOS REQUERIDOS (solo 5 campos críticos)
         const requiredFields = [
-            'marca', 'modelo', 'version', 'precio', 'caja', 'segmento',
-            'cilindrada', 'color', 'anio', 'combustible', 'transmision',
-            'kilometraje', 'traccion', 'tapizado', 'categoriaVehiculo',
-            'frenos', 'turbo', 'llantas', 'HP', 'detalle'
+            'marca', 'modelo', 'precio', 'caja', 'kilometraje'
         ]
         
         requiredFields.forEach(field => {
@@ -135,9 +163,15 @@ const CarFormRHF = ({
         // ✅ AGREGAR CAMPOS DE DATOS PRIMITIVOS
         Object.entries(data).forEach(([key, value]) => {
             if (NUMERIC_FIELDS.includes(key)) {
-                // ✅ COERCIÓN NUMÉRICA
+                // ✅ COERCIÓN NUMÉRICA para enteros
                 const numValue = Number(value).toString()
                 formData.append(key, numValue)
+            } else if (key === 'cilindrada') {
+                // ✅ CILINDRADA: Convertir string X.X → number para backend
+                const numValue = parseFloat(value)
+                if (!isNaN(numValue)) {
+                    formData.append(key, numValue)
+                }
             } else {
                 formData.append(key, value)
             }
@@ -280,28 +314,10 @@ const CarFormRHF = ({
                                         id={`${field}-input`}
                                     />
                                     <label htmlFor={`${field}-input`} className={styles.fileButton}>
-                                        {file ? 'Cambiar' : 'Seleccionar'}
+                                        {file || existingUrl ? 'Reemplazar' : 'Seleccionar'}
                                     </label>
                                     
-                                    {existingUrl && !file && (
-                                        <button
-                                            type="button"
-                                            onClick={() => removeImage(field)}
-                                            className={styles.removeButton}
-                                        >
-                                            Eliminar
-                                        </button>
-                                    )}
-                                    
-                                    {remove && (
-                                        <button
-                                            type="button"
-                                            onClick={() => restoreImage(field)}
-                                            className={styles.restoreButton}
-                                        >
-                                            Restaurar
-                                        </button>
-                                    )}
+                                    {/* ✅ NUEVO: No mostrar botón eliminar - solo permitir sobrescribir */}
                                 </div>
                                 
                                 {/* ✅ ERROR ESPECÍFICO DEL CAMPO */}
@@ -488,10 +504,10 @@ const CarFormRHF = ({
 
                     {/* ✅ VERSIÓN Y PRECIO */}
                     <div className={styles.formGroup}>
-                        <label>Versión *</label>
+                        <label>Versión</label>
                         <input
                             type="text"
-                            {...register('version', { required: 'Versión es requerida' })}
+                            {...register('version')}
                             className={styles.input}
                         />
                         {errors.version && <span className={styles.error}>{errors.version.message}</span>}
@@ -520,10 +536,10 @@ const CarFormRHF = ({
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label>Segmento *</label>
+                        <label>Segmento</label>
                         <input
                             type="text"
-                            {...register('segmento', { required: 'Segmento es requerido' })}
+                            {...register('segmento')}
                             className={styles.input}
                         />
                         {errors.segmento && <span className={styles.error}>{errors.segmento.message}</span>}
@@ -531,21 +547,35 @@ const CarFormRHF = ({
 
                     {/* ✅ CILINDRADA Y COLOR */}
                     <div className={styles.formGroup}>
-                        <label>Cilindrada *</label>
+                        <label>Cilindrada (L)</label>
                         <input
-                            type="number"
-                            {...register('cilindrada', { required: 'Cilindrada es requerida' })}
+                            type="text"
+                            inputMode="decimal"
+                            placeholder="2.0"
+                            onBlur={handleCilindradaBlur}
+                            {...register('cilindrada', { 
+                                pattern: {
+                                    value: /^[0-9]\.[0-9]$/,
+                                    message: 'Formato debe ser X.X (ejemplo: 2.0, 3.5)'
+                                },
+                                validate: {
+                                    validRange: (value) => {
+                                        if (!value) return true  // Opcional
+                                        const num = parseFloat(value)
+                                        return (num >= 0.5 && num <= 9.9) || 'Debe estar entre 0.5 y 9.9 litros'
+                                    }
+                                }
+                            })}
                             className={styles.input}
-                            placeholder="0"
                         />
                         {errors.cilindrada && <span className={styles.error}>{errors.cilindrada.message}</span>}
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label>Color *</label>
+                        <label>Color</label>
                         <input
                             type="text"
-                            {...register('color', { required: 'Color es requerido' })}
+                            {...register('color')}
                             className={styles.input}
                         />
                         {errors.color && <span className={styles.error}>{errors.color.message}</span>}
@@ -553,10 +583,10 @@ const CarFormRHF = ({
 
                     {/* ✅ AÑO Y COMBUSTIBLE */}
                     <div className={styles.formGroup}>
-                        <label>Año *</label>
+                        <label>Año</label>
                         <input
                             type="number"
-                            {...register('anio', { required: 'Año es requerido' })}
+                            {...register('anio')}
                             className={styles.input}
                             placeholder="2024"
                         />
@@ -564,10 +594,10 @@ const CarFormRHF = ({
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label>Combustible *</label>
+                        <label>Combustible</label>
                         <input
                             type="text"
-                            {...register('combustible', { required: 'Combustible es requerido' })}
+                            {...register('combustible')}
                             className={styles.input}
                         />
                         {errors.combustible && <span className={styles.error}>{errors.combustible.message}</span>}
@@ -575,10 +605,10 @@ const CarFormRHF = ({
 
                     {/* ✅ TRANSMISIÓN Y KILOMETRAJE */}
                     <div className={styles.formGroup}>
-                        <label>Transmisión *</label>
+                        <label>Transmisión</label>
                         <input
                             type="text"
-                            {...register('transmision', { required: 'Transmisión es requerida' })}
+                            {...register('transmision')}
                             className={styles.input}
                         />
                         {errors.transmision && <span className={styles.error}>{errors.transmision.message}</span>}
@@ -597,20 +627,20 @@ const CarFormRHF = ({
 
                     {/* ✅ TRACCIÓN Y TAPIZADO */}
                     <div className={styles.formGroup}>
-                        <label>Tracción *</label>
+                        <label>Tracción</label>
                         <input
                             type="text"
-                            {...register('traccion', { required: 'Tracción es requerida' })}
+                            {...register('traccion')}
                             className={styles.input}
                         />
                         {errors.traccion && <span className={styles.error}>{errors.traccion.message}</span>}
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label>Tapizado *</label>
+                        <label>Tapizado</label>
                         <input
                             type="text"
-                            {...register('tapizado', { required: 'Tapizado es requerido' })}
+                            {...register('tapizado')}
                             className={styles.input}
                         />
                         {errors.tapizado && <span className={styles.error}>{errors.tapizado.message}</span>}
@@ -618,20 +648,20 @@ const CarFormRHF = ({
 
                     {/* ✅ CATEGORÍA Y FRENOS */}
                     <div className={styles.formGroup}>
-                        <label>Categoría Vehículo *</label>
+                        <label>Categoría Vehículo</label>
                         <input
                             type="text"
-                            {...register('categoriaVehiculo', { required: 'Categoría es requerida' })}
+                            {...register('categoriaVehiculo')}
                             className={styles.input}
                         />
                         {errors.categoriaVehiculo && <span className={styles.error}>{errors.categoriaVehiculo.message}</span>}
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label>Frenos *</label>
+                        <label>Frenos</label>
                         <input
                             type="text"
-                            {...register('frenos', { required: 'Frenos es requerido' })}
+                            {...register('frenos')}
                             className={styles.input}
                         />
                         {errors.frenos && <span className={styles.error}>{errors.frenos.message}</span>}
@@ -639,44 +669,46 @@ const CarFormRHF = ({
 
                     {/* ✅ TURBO Y LLANTAS */}
                     <div className={styles.formGroup}>
-                        <label>Turbo *</label>
+                        <label>Turbo</label>
                         <input
                             type="text"
-                            {...register('turbo', { required: 'Turbo es requerido' })}
+                            {...register('turbo')}
                             className={styles.input}
+                            placeholder="Opcional"
                         />
                         {errors.turbo && <span className={styles.error}>{errors.turbo.message}</span>}
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label>Llantas *</label>
+                        <label>Llantas</label>
                         <input
                             type="text"
-                            {...register('llantas', { required: 'Llantas es requerido' })}
+                            {...register('llantas')}
                             className={styles.input}
+                            placeholder="Opcional"
                         />
                         {errors.llantas && <span className={styles.error}>{errors.llantas.message}</span>}
                     </div>
 
                     {/* ✅ HP Y DETALLE */}
                     <div className={styles.formGroup}>
-                        <label>HP *</label>
+                        <label>HP</label>
                         <input
                             type="number"
-                            {...register('HP', { required: 'HP es requerido' })}
+                            {...register('HP')}
                             className={styles.input}
-                            placeholder="0"
+                            placeholder="0 (Opcional)"
                         />
                         {errors.HP && <span className={styles.error}>{errors.HP.message}</span>}
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label>Detalle *</label>
+                        <label>Detalle</label>
                         <textarea
-                            {...register('detalle', { required: 'Detalle es requerido' })}
+                            {...register('detalle')}
                             className={styles.textarea}
                             rows="4"
-                            placeholder="Descripción detallada del vehículo..."
+                            placeholder="Descripción detallada del vehículo... (Opcional)"
                         />
                         {errors.detalle && <span className={styles.error}>{errors.detalle.message}</span>}
                     </div>

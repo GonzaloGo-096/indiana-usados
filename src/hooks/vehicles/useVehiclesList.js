@@ -7,8 +7,21 @@
  * - Cache invalidation al aplicar filtros
  * - Backend maneja paginación automáticamente
  * 
+ * Responsabilidades:
+ * - Configuración de paginación (PAGE_SIZE, opciones)
+ * - Lógica de query infinita (useInfiniteQuery)
+ * - Lógica de filtros (serialización en queryKey)
+ * - Lógica de mapeo (mapVehiclesPage + flatMap)
+ * - Retorno de estado (datos, loading, error, funciones)
+ * 
+ * Nota sobre Testing:
+ * - Este hook tiene múltiples responsabilidades por diseño
+ * - Se recomienda testing de integración en lugar de unitario
+ * - Testing unitario requeriría mocks complejos de React Query
+ * - Testing de integración valida el flujo completo
+ * 
  * @author Indiana Usados
- * @version 3.0.0 - Simplificado: mapper único, sin duplicación
+ * @version 3.1.0 - Documentación mejorada: responsabilidades y testing
  */
 
 import { useInfiniteQuery } from '@tanstack/react-query'

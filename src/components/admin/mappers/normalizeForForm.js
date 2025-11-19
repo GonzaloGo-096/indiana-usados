@@ -7,6 +7,7 @@
  */
 
 import { normalizeVehicleImages, toFormFormat } from '@utils/imageNormalizerOptimized'
+import { normalizeCilindrada } from '@utils/formatters'
 
 /**
  * Extrae el objeto detalle desde posibles envoltorios de respuesta
@@ -58,7 +59,7 @@ export const normalizeDetailToFormInitialData = (rawDetail) => {
         precio: d.precio ?? d.price ?? '',
         caja: d.caja || '',
         segmento: d.segmento || d.categoria || d.categoriaVehiculo || '',
-        cilindrada: d.cilindrada ?? '',
+        cilindrada: normalizeCilindrada(d.cilindrada),
         color: d.color || '',
         anio: d.anio ?? d.año ?? d.year ?? '',
         combustible: d.combustible || d.fuel || '',

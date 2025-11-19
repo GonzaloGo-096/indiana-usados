@@ -291,7 +291,19 @@ export const useImageReducer = (mode, initialData = {}) => {
                 errors.fotosExtra = 'Máximo 8 fotos extras permitidas'
             }
         } else {
-            // ✅ EDIT: Validación opcional - usuario puede editar solo texto sin tocar imágenes
+            // ✅ EDIT: Validar que mantenga al menos 1 foto principal
+            const hasFotoPrincipal = 
+                (imageState.fotoPrincipal?.existingUrl && !imageState.fotoPrincipal?.remove) ||
+                imageState.fotoPrincipal?.file
+            
+            const hasFotoHover = 
+                (imageState.fotoHover?.existingUrl && !imageState.fotoHover?.remove) ||
+                imageState.fotoHover?.file
+            
+            if (!hasFotoPrincipal && !hasFotoHover) {
+                errors.fotos = 'Debe mantener al menos 1 foto principal o reemplazarla'
+                logger.warn('image:validateImages', 'Error: Vehículo sin fotos principales')
+            }
         }
 
         return errors
@@ -411,6 +423,7 @@ export const useImageReducer = (mode, initialData = {}) => {
 
     // ✅ LIMPIAR OBJETOS URL CREADOS
     const cleanupObjectUrls = useCallback(() => {
+        // Limpiar fotos principales
         ALL_IMAGE_FIELDS.forEach(key => {
             const { file } = imageState[key] || {}
             if (file) {
@@ -421,6 +434,18 @@ export const useImageReducer = (mode, initialData = {}) => {
                 }
             }
         })
+        
+        // ✅ NUEVO: Limpiar fotos extras (fix memory leak)
+        if (imageState.fotosExtra && imageState.fotosExtra.length > 0) {
+            imageState.fotosExtra.forEach(file => {
+                try {
+                    const url = URL.createObjectURL(file)
+                    URL.revokeObjectURL(url)
+                } catch (_) {
+                    // Ignorar errores de limpieza
+                }
+            })
+        }
     }, [imageState])
 
 

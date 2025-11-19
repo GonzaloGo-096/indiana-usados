@@ -213,3 +213,4 @@ console.log('  4. Si imagen hero es grande, comprimirla')
 
 
 
+

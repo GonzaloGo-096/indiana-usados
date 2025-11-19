@@ -37,7 +37,7 @@ export const IMAGES = {
 }
 
 // Nota: Funciones legacy migradas:
-// - getCarouselImages() → utils/imageUtils.js
+// - getCarouselImages() → utils/imageNormalizerOptimized.js
 // - getResponsiveImage() → utils/cloudinaryUrl.js (cldSrcset)
 
 export default IMAGES 

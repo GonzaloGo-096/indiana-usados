@@ -13,12 +13,7 @@
  * │ CAPA 2: imageNormalizerOptimized.js                   │
  * │ → Normalización completa: {url, public_id, original_name}│
  * │ → Uso: Formularios admin, carruseles con public_id    │
- * └─────────────────────────────────────────────────────────┘
- *                          ↓ Usa para procesamiento avanzado
- * ┌─────────────────────────────────────────────────────────┐
- * │ CAPA 3: imageUtils.js                                  │
- * │ → Procesamiento avanzado para carruseles                │
- * │ → Uso: getCarouselImages()                             │
+ * │ → Procesamiento avanzado: getCarouselImages()         │
  * └─────────────────────────────────────────────────────────┘
  * 
  * ✅ PROPÓSITO: Extracción simple de URLs (retorna strings)

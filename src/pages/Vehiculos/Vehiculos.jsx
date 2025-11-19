@@ -1,8 +1,37 @@
 /**
- * Vehiculos - Página principal de vehículos con sistema de filtros unificado
+ * Vehiculos - Página principal de vehículos
+ * 
+ * Responsabilidades:
+ * - Orquestación de URL state (filtros y sorting sincronizados con URL)
+ * - Coordinación entre FilterFormSimple, AutosGrid y SortDropdown
+ * - Manejo de sorting local (ordenamiento en frontend)
+ * - Detección de datos mock para desarrollo
+ * - Layout y renderizado de la página completa
+ * 
+ * Arquitectura:
+ * - Esta página orquesta múltiples responsabilidades por diseño
+ * - Es normal que una página conecte URL, estado local y componentes hijos
+ * - La complejidad real es baja-media (182 líneas, bien organizada)
+ * - La lógica pesada (fetch, paginación, cache) está delegada a useVehiclesList hook
+ * - URL es la fuente de verdad para filtros (single source of truth)
+ * 
+ * Flujo de datos:
+ * - URL → parseFilters → useVehiclesList → Backend → Página → UI
+ * - Usuario → Filtros → URL → Re-fetch → Actualizar UI
+ * - Usuario → Sorting → Estado local → Re-ordenar → Actualizar UI
+ * 
+ * Nota sobre Testing:
+ * - Testing se recomienda a nivel de integración
+ * - Validar flujo completo: URL → filtros → fetch → display → sorting
+ * - Testing unitario de handlers individuales tiene valor limitado
+ * - Simular cambios de URL y verificar comportamiento de componentes hijos
+ * 
+ * Nota sobre Documentación:
+ * - Ver docs/GUIA_DIDACTICA_PAGINA_VEHICULOS.md para explicación detallada
+ * - La guía explica paso a paso cómo funciona cada parte
  * 
  * @author Indiana Usados
- * @version 3.2.0 - Título "Nuestros Usados" restaurado
+ * @version 3.3.0 - Documentación mejorada: responsabilidades, arquitectura y flujos
  */
 
 import React, { useEffect, useState, useRef, useMemo } from 'react'
