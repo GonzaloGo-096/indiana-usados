@@ -2,12 +2,13 @@
  * utils/index.js - Exportaciones centralizadas de utilidades
  * 
  * @author Indiana Usados
- * @version 3.1.0 - Limpieza: eliminado imageUtils.js (consolidado en imageNormalizerOptimized.js)
+ * @version 4.0.0 - Sistema de imágenes WebP estáticas: imageManifest.js
  */
 
 export * from './formatters'
 export * from './imageExtractors'
 export * from './imageNormalizerOptimized'
+export * from './imageManifest'
 export * from './filters'
 export * from './logger'
 export * from './preload'

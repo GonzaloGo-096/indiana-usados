@@ -993,9 +993,9 @@ setMultipleExtras([file1, file2, file3, file4, file5])
   fotosExtra: [file1, file2, file3, file4, file5]
 }
 
-// Validación
-if (fotosExtra.length < 5) {
-  error = 'Se requieren mínimo 5 fotos extras'
+// Validación (fotos extras son opcionales)
+if (fotosExtra.length > 8) {
+  error = 'Máximo 8 fotos extras permitidas'
 }
 ```
 
@@ -1033,7 +1033,7 @@ fotosExtra.forEach(file => {
 })
 
 // Backend agrega estas fotos a las existentes
-// Total: 5 existentes + 2 nuevas = 7 fotos
+// Ejemplo: 5 existentes + 2 nuevas = 7 fotos (sin límite mínimo)
 ```
 
 **4. Modo EDIT - Eliminar Fotos Existentes**
@@ -1303,12 +1303,7 @@ validateImages('create') {
     errors.fotoHover = 'La foto hover es requerida'
   }
   
-  // Mínimo 5 fotos extras
-  if (imageState.fotosExtra.length < 5) {
-    errors.fotosExtra = 'Se requieren mínimo 5 fotos extras (total: 7 fotos)'
-  }
-  
-  // Máximo 8 fotos extras
+  // Fotos extras son opcionales, solo validar máximo
   if (imageState.fotosExtra.length > 8) {
     errors.fotosExtra = 'Máximo 8 fotos extras permitidas'
   }

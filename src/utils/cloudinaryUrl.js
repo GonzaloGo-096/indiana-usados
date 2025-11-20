@@ -1,11 +1,23 @@
 /**
- * cloudinaryUrl.js - Utilidades para generar URLs de Cloudinary
+ * cloudinaryUrl.js - Sistema híbrido de imágenes (WebP estáticas + Cloudinary fallback)
  * 
- * Genera URLs optimizadas con transformaciones automáticas
+ * MIGRACIÓN: Cloudinary on-demand → WebP estáticas locales
+ * - Prioridad 1: Servir WebP estáticas (1400px, q~75) desde /public/images/
+ * - Prioridad 2: Fallback a Cloudinary (legacy/imágenes no migradas)
+ * 
+ * ARQUITECTURA:
+ * imageManifest.js → cloudinaryUrl.js → CloudinaryImage → Componentes
  * 
  * @author Indiana Usados
- * @version 1.1.0 - Constantes de placeholder extraídas, exportado en barrel
+ * @version 2.0.0 - Sistema híbrido: WebP estáticas + Cloudinary fallback
  */
+
+import { 
+  getStaticImageUrl, 
+  parseCloudinaryPublicId, 
+  generateStaticSrcset,
+  hasStaticImages 
+} from './imageManifest'
 
 // ===== CONFIGURACIÓN =====
 
@@ -29,15 +41,36 @@ const PLACEHOLDER_QUALITY = 10
 const PLACEHOLDER_BLUR = 'blur:200'
 
 /**
- * Genera URL de Cloudinary con transformaciones
- * @param {string} publicId - Public ID de la imagen
- * @param {Object} options - Opciones de transformación
+ * Genera URL de imagen (WebP estática o Cloudinary fallback)
+ * 
+ * FLUJO:
+ * 1. Parsear publicId para extraer vehicleId + imageType
+ * 2. Intentar obtener WebP estática desde manifest
+ * 3. Si existe → retornar ruta estática (/images/vehicles/...)
+ * 4. Si NO existe → fallback a Cloudinary (comportamiento original)
+ * 
+ * @param {string} publicId - Public ID de la imagen o vehicle_id
+ * @param {Object} options - Opciones de transformación (legacy, para fallback)
  * @param {string} options.qualityMode - Modo de calidad: 'auto' (máxima) o 'eco' (80%)
- * @returns {string} - URL completa de Cloudinary
+ * @returns {string} - URL estática o URL de Cloudinary
  */
 export function cldUrl(publicId, options = {}) {
   if (!publicId) return ''
   
+  // ===== PRIORIDAD 1: WEBP ESTÁTICAS =====
+  // Intentar servir desde manifest (imágenes ya optimizadas)
+  const { vehicleId, imageType } = parseCloudinaryPublicId(publicId)
+  
+  if (vehicleId && hasStaticImages(vehicleId)) {
+    const staticUrl = getStaticImageUrl(vehicleId, imageType || 'principal')
+    if (staticUrl) {
+      // ✅ ÉXITO: Retornar WebP estática (1400px, q~75)
+      return staticUrl
+    }
+  }
+  
+  // ===== PRIORIDAD 2: CLOUDINARY FALLBACK =====
+  // Legacy: imágenes no migradas aún
   const {
     width,
     height,
@@ -163,14 +196,35 @@ export function cldPlaceholderUrl(publicId, options = {}) {
 
 /**
  * Genera srcset para responsive images
+ * 
+ * FLUJO:
+ * 1. Intentar generar srcset estático desde manifest
+ * 2. Si existe → retornar srcset de WebP estáticas
+ * 3. Si NO existe → fallback a Cloudinary (comportamiento original)
+ * 
  * @param {string} publicId - Public ID de la imagen
- * @param {Array} widths - Array de anchos para srcset
+ * @param {Array} widths - Array de anchos para srcset (legacy, para fallback)
  * @param {Object} baseOptions - Opciones base para todas las variantes
  * @returns {string} - String srcset completo
  */
 export function cldSrcset(publicId, widths = [], baseOptions = {}) {
   if (!publicId || !widths.length) return ''
   
+  // ===== PRIORIDAD 1: SRCSET ESTÁTICO =====
+  // Intentar servir desde manifest
+  const { vehicleId, imageType } = parseCloudinaryPublicId(publicId)
+  
+  if (vehicleId && hasStaticImages(vehicleId)) {
+    const staticUrl = getStaticImageUrl(vehicleId, imageType || 'principal')
+    if (staticUrl) {
+      // ✅ ÉXITO: Generar srcset estático
+      // Como solo tenemos 1400px, retornar ese tamaño
+      return generateStaticSrcset(staticUrl)
+    }
+  }
+  
+  // ===== PRIORIDAD 2: CLOUDINARY FALLBACK =====
+  // Legacy: generar srcset con transformaciones dinámicas
   return widths
     .map(width => `${cldUrl(publicId, { ...baseOptions, width })} ${width}w`)
     .join(', ')

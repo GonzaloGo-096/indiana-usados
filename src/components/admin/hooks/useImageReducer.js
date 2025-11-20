@@ -271,7 +271,7 @@ export const useImageReducer = (mode, initialData = {}) => {
         const errors = {}
 
         if (mode === 'create') {
-            // ✅ VALIDAR IMÁGENES PRINCIPALES
+            // ✅ VALIDAR IMÁGENES PRINCIPALES (OBLIGATORIAS)
             IMAGE_FIELDS.principales.forEach(field => {
                 const { file } = imageState[field] || {}
                 if (!file) {
@@ -279,16 +279,15 @@ export const useImageReducer = (mode, initialData = {}) => {
                 }
             })
 
-            // ✅ VALIDAR FOTOS EXTRAS - Contar archivos nuevos del input múltiple
+            // ✅ VALIDAR FOTOS EXTRAS (OPCIONALES) - Solo validar máximo
             const fotosExtraCount = imageState.fotosExtra?.length || 0
-
-            if (fotosExtraCount < FORM_RULES.MIN_EXTRA_PHOTOS) {
-                errors.fotosExtra = 'Se requieren mínimo 5 fotos extras (total mínimo: 7 fotos)'
-                logger.warn('image:validateImages', 'Error: Se requieren mínimo 5 fotos extras')
-            }
             
             if (fotosExtraCount > FORM_RULES.MAX_EXTRA_PHOTOS) {
-                errors.fotosExtra = 'Máximo 8 fotos extras permitidas'
+                errors.fotosExtra = `Máximo ${FORM_RULES.MAX_EXTRA_PHOTOS} fotos extras permitidas`
+                logger.warn('image:validateImages', 'Error: Se excedió el máximo de fotos extras', {
+                    count: fotosExtraCount,
+                    max: FORM_RULES.MAX_EXTRA_PHOTOS
+                })
             }
         } else {
             // ✅ EDIT: Validar que mantenga al menos 1 foto principal

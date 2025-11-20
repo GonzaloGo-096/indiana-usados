@@ -1,19 +1,21 @@
 /**
  * imageSizes.js - Constantes para tamaños de imágenes responsive
  * 
- * Define tamaños y anchos para diferentes contextos de uso
+ * MIGRACIÓN: Sistema de imágenes WebP estáticas (1400px base)
+ * - Imágenes pre-optimizadas: 1400px, quality ~75, WebP
+ * - Un solo tamaño base → browser escala según viewport
+ * - Reduce requests, simplifica generación, mejora cache
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - WebP estáticas: 1400px base, mobile-first
  */
 
 // Tamaños responsive para diferentes contextos
-// OPTIMIZADO: Valores basados en mediciones reales de grids típicos
-// Cards: 360px (mobile), 350px (tablet), 300px (desktop-s), 330px (desktop-l)
+// ACTUALIZADO: Mobile-first, basado en imágenes estáticas 1400px
 export const IMAGE_SIZES = {
-  // Cards de vehículos (tamaños exactos basados en grid real)
-  // Mobile: 400px, Tablet: 400px, Desktop: 350px
-  card: '(max-width: 576px) 400px, (max-width: 768px) 400px, (max-width: 992px) 350px, 350px',
+  // Cards de vehículos (optimizado para mobile-first)
+  // Mobile: 100vw, Tablet: 50vw, Desktop: 350px
+  card: '(max-width: 576px) 100vw, (max-width: 768px) 50vw, (max-width: 992px) 33vw, 350px',
   
   // Carrusel principal (siempre full width)
   carousel: '100vw',
@@ -25,18 +27,28 @@ export const IMAGE_SIZES = {
   hero: '100vw'
 }
 
-// Anchos para generar srcset
-// OPTIMIZADO: Solo los tamaños necesarios para reducir ancho de banda
+// Anchos para srcset
+// ACTUALIZADO: Un solo tamaño (1400px) para simplificar
+// El browser descarga una vez y escala según viewport
 export const IMAGE_WIDTHS = {
-  // Cards: 2 tamaños (base + retina 2x) - suficiente para la mayoría de casos
+  // Cards: 1400px base (suficiente para retina display)
+  card: [1400],
+  
+  // Carrusel: 1400px base
+  carousel: [1400],
+  
+  // Miniaturas: 1400px base (se escala automáticamente)
+  thumbnail: [1400],
+  
+  // Hero: 1400px base
+  hero: [1400]
+}
+
+// ===== LEGACY: Mantener para compatibilidad =====
+// Estos valores se usan solo si hay fallback a Cloudinary
+export const LEGACY_IMAGE_WIDTHS = {
   card: [400, 800],
-  
-  // Carrusel: 4 tamaños para cubrir mobile, tablet, desktop y retina
   carousel: [400, 800, 1280, 1920],
-  
-  // Miniaturas: 2 tamaños (base + retina 2x)
   thumbnail: [100, 200],
-  
-  // Hero: 3 tamaños grandes para impacto visual
   hero: [800, 1280, 1920]
 }

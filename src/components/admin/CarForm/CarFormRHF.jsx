@@ -245,8 +245,8 @@ const CarFormRHF = ({
                     <p><strong>Tamaño máximo:</strong> 10MB por imagen</p>
                     {mode === MODE.CREATE ? (
                         <>
-                            <p><strong>Las 2 imágenes principales son obligatorias</strong></p>
-                            <p><strong>Total mínimo requerido:</strong> 7 fotos (2 principales + 5 extras)</p>
+                            <p><strong>Requerido:</strong> Las 2 imágenes principales son obligatorias</p>
+                            <p><strong>Fotos extras:</strong> Opcionales (puedes agregar después)</p>
                         </>
                     ) : (
                         <>
@@ -340,8 +340,8 @@ const CarFormRHF = ({
                 <div className={styles.formatInfo}>
                     {mode === MODE.CREATE ? (
                         <>
-                            <p><strong>Mínimo requerido:</strong> 5 fotos extras</p>
-                            <p><strong>Máximo:</strong> 8 fotos extras</p>
+                            <p><strong>Opcional:</strong> Las fotos extras no son obligatorias</p>
+                            <p><strong>Máximo:</strong> Puedes subir hasta 8 fotos extras</p>
                             <p><strong>Input múltiple:</strong> Selecciona varios archivos de una vez</p>
                         </>
                     ) : (

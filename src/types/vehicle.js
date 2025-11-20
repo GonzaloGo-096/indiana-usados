@@ -81,9 +81,9 @@
  * @property {string} [llantas] - Tipo de llantas
  * @property {string} [HP] - Caballos de fuerza
  * @property {string} [detalle] - Detalles adicionales
- * @property {ImageField} fotoPrincipal - Campo de imagen principal
- * @property {ImageField} fotoHover - Campo de imagen hover
- * @property {ImageField[]} fotosExtras - Array de campos de imágenes extras
+ * @property {ImageField} fotoPrincipal - Campo de imagen principal (requerido)
+ * @property {ImageField} fotoHover - Campo de imagen hover (requerido)
+ * @property {ImageField[]} [fotosExtras] - Array de imágenes extras (opcional, máx 8)
  */
 
 /**
@@ -184,6 +184,7 @@
 export const VEHICLE_TYPES = {
   IMAGE_FIELDS: ['fotoPrincipal', 'fotoHover', 'fotosExtras'],
   REQUIRED_FIELDS: ['marca', 'modelo', 'anio', 'precio'],
+  REQUIRED_IMAGE_FIELDS: ['fotoPrincipal', 'fotoHover'], // Solo principales son requeridas
   NUMERIC_FIELDS: ['anio', 'precio', 'cilindrada', 'kilometraje'],
   TEXT_FIELDS: ['marca', 'modelo', 'version', 'caja', 'segmento', 'color', 'combustible', 'transmision', 'traccion', 'tapizado', 'categoriaVehiculo', 'frenos', 'turbo', 'llantas', 'HP', 'detalle']
 };

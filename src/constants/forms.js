@@ -1,8 +1,9 @@
 // Form validation constants for admin forms
 export const FORM_RULES = {
-	MIN_EXTRA_PHOTOS: 5,
+	// Fotos extras son opcionales, solo se valida el máximo
 	MAX_EXTRA_PHOTOS: 8,
-	TOTAL_MIN_PHOTOS: 7,
+	// Solo se requieren las 2 fotos principales (fotoPrincipal + fotoHover)
+	TOTAL_MIN_PHOTOS: 2,
 	MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
 	SUPPORTED_TYPES: ['image/webp']
 }
