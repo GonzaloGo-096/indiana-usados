@@ -30,9 +30,17 @@ const getBaseLevel = () => {
   return isDev ? LEVELS.DEBUG : LEVELS.WARN
 }
 
-// Scrubber básico de PII
-const scrubSensitiveData = (obj) => {
+// Scrubber básico de PII con protección contra referencias circulares
+const scrubSensitiveData = (obj, seen = new WeakSet(), depth = 0) => {
+  // Límite de profundidad para evitar recursión excesiva
+  const MAX_DEPTH = 5
+  
+  if (depth > MAX_DEPTH) return '[MAX_DEPTH]'
   if (typeof obj !== 'object' || obj === null) return obj
+  
+  // Detectar referencias circulares
+  if (seen.has(obj)) return '[CIRCULAR]'
+  seen.add(obj)
   
   const scrubbed = Array.isArray(obj) ? [...obj] : { ...obj }
   
@@ -61,8 +69,8 @@ const scrubSensitiveData = (obj) => {
   for (const key in scrubbed) {
     if (sensitiveFields.some(field => key.toLowerCase().includes(field.toLowerCase()))) {
       scrubbed[key] = '[REDACTED]'
-    } else if (typeof scrubbed[key] === 'object') {
-      scrubbed[key] = scrubSensitiveData(scrubbed[key])
+    } else if (typeof scrubbed[key] === 'object' && scrubbed[key] !== null) {
+      scrubbed[key] = scrubSensitiveData(scrubbed[key], seen, depth + 1)
     } else {
       scrubbed[key] = scrubValue(scrubbed[key])
     }

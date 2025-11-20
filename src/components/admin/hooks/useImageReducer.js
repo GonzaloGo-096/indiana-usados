@@ -308,11 +308,11 @@ export const useImageReducer = (mode, initialData = {}) => {
         return errors
     }, [imageState])
 
-    // ✅ CONSTRUIR FORMDATA PARA IMÁGENES (nueva estructura manteniendo compatibilidad backend)
+    // ✅ CONSTRUIR FORMDATA PARA IMÁGENES (estructura simplificada según backend actualizado)
     const buildImageFormData = useCallback((formData) => {
         logger.debug('image:buildImageFormData', 'Construyendo FormData')
         
-        // ✅ PRINCIPALES - Overwrite automático por backend
+        // ✅ PRINCIPALES - Obligatorias para crear, opcionales para editar
         IMAGE_FIELDS.principales.forEach(key => {
             const { file, remove, publicId, existingUrl } = imageState[key] || {}
             if (file) {
@@ -325,12 +325,9 @@ export const useImageReducer = (mode, initialData = {}) => {
             } else {
                 logger.debug('image:buildImageFormData', 'Mantener imagen existente', { field: key })
             }
-            
-            // Nota: Backend hace overwrite con mismo public_id, no genera zombies
-            // Ver docs/MEJORAS_FUTURAS.md - Sección "Eliminación de Imágenes"
         })
         
-        // ✅ FOTOS EXTRAS - Nueva lógica pero mismo output
+        // ✅ FOTOS EXTRAS - Solo enviar si hay archivos nuevos
         const extraFiles = []
         
         // 1. Agregar archivos nuevos del input múltiple
@@ -341,7 +338,19 @@ export const useImageReducer = (mode, initialData = {}) => {
             })
         }
         
-        // 2. Recopilar públic_ids de fotos existentes marcadas para eliminar
+        // 2. Enviar fotosExtra solo si hay archivos (backend no requiere campo vacío)
+        if (extraFiles.length > 0) {
+            extraFiles.forEach(file => {
+                formData.append('fotosExtra', file)
+            })
+            logger.debug('image:buildImageFormData', 'Enviando fotos extras al backend', {
+                count: extraFiles.length
+            })
+        } else {
+            logger.debug('image:buildImageFormData', 'Sin fotos extras - campo no incluido en FormData')
+        }
+        
+        // 3. Enviar IDs de fotos a eliminar (solo en modo edit)
         const publicIdsToDelete = []
         if (imageState.existingExtras) {
             imageState.existingExtras.forEach((existingPhoto, index) => {
@@ -349,55 +358,19 @@ export const useImageReducer = (mode, initialData = {}) => {
                     publicIdsToDelete.push(existingPhoto.publicId)
                     logger.debug('image:buildImageFormData', 'Foto existente marcada para eliminar', {
                         index,
-                        publicId: existingPhoto.publicId,
-                        url: existingPhoto.url 
+                        publicId: existingPhoto.publicId
                     })
                 }
             })
         }
         
-        // 3. STRATEGY B: Estructura JSON completa en un solo campo
-        const fotosState = {
-            fotosNuevas: extraFiles.length > 0 ? extraFiles.map(file => ({
-                name: file.name,
-                size: file.size,
-                type: file.type,
-                // No podemos enviar el archivo directo en JSON, pero el backend puede usar esto para validación
-                sent: true
-            })) : [],
-            eliminadas: publicIdsToDelete,
-            timestamp: new Date().toISOString(),
-            hasChanges: extraFiles.length > 0 || publicIdsToDelete.length > 0
-        }
-        
-        // ✅ STRATEGY B: Enviar estado completo como JSON
-        formData.append('fotosState', JSON.stringify(fotosState))
-        logger.debug('image:buildImageFormData', 'STRATEGY B: Enviando estructura completa', { fotosState })
-        
-        // ✅ SOLUCIÓN DEFINITIVA: Siempre enviar algo a fotosExtra
-        if (extraFiles.length > 0) {
-            extraFiles.forEach(file => {
-                formData.append('fotosExtra', file)
-            })
-            logger.debug('image:buildImageFormData', 'Enviando archivos nuevos al backend', {
-                count: extraFiles.length
-            })
-        } else {
-            // ✅ CRITICAL: El backend necesita este campo para procesar correctamente
-            // Enviar placeholder JSON que el backend puede ignorar pero reconoce el campo
-            formData.append('fotosExtraState', JSON.stringify({ preserve: true }))
-            logger.debug('image:buildImageFormData', 'Enviando flag para preservar fotos (backend compatibility)')
-        }
-        
-        // ✅ MANTENER COMPATIBILIDAD: También enviar eliminadas si existen
+        // Enviar IDs a eliminar solo si hay alguno (solo en modo edit)
         if (publicIdsToDelete.length > 0) {
-            formData.append('eliminadas', JSON.stringify(publicIdsToDelete))
-            logger.debug('image:buildImageFormData', 'Enviando fotos eliminadas al backend', {
-                publicIdsToDelete
+            formData.append('fotosExtraToDelete', JSON.stringify(publicIdsToDelete))
+            logger.debug('image:buildImageFormData', 'Enviando IDs de fotos a eliminar', {
+                count: publicIdsToDelete.length,
+                ids: publicIdsToDelete
             })
-        } else {
-            formData.append('eliminadas', JSON.stringify([]))
-            logger.debug('image:buildImageFormData', 'Enviando array vacío de eliminadas')
         }
         
         return formData

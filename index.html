@@ -9,16 +9,18 @@
     <link rel="dns-prefetch" href="https://res.cloudinary.com" />
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
     
-    <!-- LCP Phase 1: Preload de imagen hero crítica -->
+    <!-- LCP Phase 1: Preload de imagen hero crítica (COMENTADO - causaba warnings en /admin) -->
     <!-- Nota: En desarrollo, Vite resuelve /src/assets/foto-principal.webp -->
     <!-- En producción, Vite generará la URL con hash: /assets/images/foto-principal-[hash].webp -->
     <!-- FCP/LCP Phase 3: crossorigin removido - la imagen es local (módulo de Vite), no requiere CORS -->
+    <!-- 
     <link 
       rel="preload" 
       href="/src/assets/foto-principal.webp" 
       as="image" 
       fetchpriority="high"
     />
+    -->
     
     <!-- Preload de fuente crítica: Barlow Condensed Bold (usada en títulos) -->
     <link 

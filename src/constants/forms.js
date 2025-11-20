@@ -3,7 +3,7 @@ export const FORM_RULES = {
 	// Fotos extras son opcionales, solo se valida el máximo
 	MAX_EXTRA_PHOTOS: 8,
 	// Solo se requieren las 2 fotos principales (fotoPrincipal + fotoHover)
-	TOTAL_MIN_PHOTOS: 2,
-	MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
+	REQUIRED_PHOTOS: 2,
+	MAX_FILE_SIZE: 3 * 1024 * 1024, // 3MB - Optimizado para WebP (antes 10MB)
 	SUPPORTED_TYPES: ['image/webp']
 }

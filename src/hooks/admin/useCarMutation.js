@@ -77,10 +77,20 @@ export const useCarMutation = () => {
             // Log de depuración en desarrollo
             if (import.meta?.env?.MODE !== 'production') {
                 let fileCount = 0
-                for (const [, value] of formData.entries()) {
-                    if (value instanceof File) fileCount++
+                const fields = {}
+                for (const [key, value] of formData.entries()) {
+                    if (value instanceof File) {
+                        fileCount++
+                        fields[key] = `[File: ${value.name}, ${(value.size/1024).toFixed(1)}KB]`
+                    } else {
+                        fields[key] = value
+                    }
                 }
-                logger.debug('cars:mutation', 'create: enviando FormData', { fieldsApprox: [...formData.keys()].length, fileCount })
+                logger.debug('cars:mutation', 'create: enviando FormData', { 
+                    totalFields: Object.keys(fields).length, 
+                    fileCount,
+                    fields 
+                })
             }
             const response = await vehiclesAdminService.createVehicle(formData)
             return response.data

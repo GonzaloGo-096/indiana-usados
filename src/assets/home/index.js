@@ -27,9 +27,9 @@ export const heroImage = {
   src: fotoprincipalWebp,
   srcSet: generateSrcSet(fotoprincipalWebp),
   alt: "Promoción destacada: Vehículo usado de calidad en Indiana Usados",
-  // LCP Phase 1: sizes ajustado al tamaño real del contenedor
-  // Mobile: 100vw, Tablet: 80vw, Desktop: min(36vw, 580px)
-  sizes: "(max-width: 767px) 100vw, (max-width: 991px) 80vw, min(36vw, 580px)"
+  // sizes ajustado: 100% del viewport hasta max-width 1200px
+  // Mobile, Tablet, Desktop: todos usan el mismo tamaño (100vw hasta 1200px)
+  sizes: "(max-width: 1200px) 100vw, 1200px"
 }
 
 // Export individual para flexibilidad

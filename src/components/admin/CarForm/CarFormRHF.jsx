@@ -132,9 +132,9 @@ const CarFormRHF = ({
     const validateForm = useCallback((data) => {
         const errors = {}
         
-        // ✅ VALIDAR CAMPOS REQUERIDOS (solo 5 campos críticos)
+        // ✅ VALIDAR CAMPOS REQUERIDOS (6 campos críticos + 2 fotos)
         const requiredFields = [
-            'marca', 'modelo', 'precio', 'caja', 'kilometraje'
+            'marca', 'modelo', 'precio', 'anio', 'caja', 'kilometraje'
         ]
         
         requiredFields.forEach(field => {
@@ -235,26 +235,12 @@ const CarFormRHF = ({
                 <p>Complete los campos requeridos</p>
             </div>
 
-            {/* ✅ SECCIÓN DE IMÁGENES PRINCIPALES - ESTILO MODERNIZADO */}
-            <div className={styles.imageSection}>
-                <h3>Imágenes Principales</h3>
-                
-                {/* ✅ INFORMACIÓN SOBRE FORMATOS ACEPTADOS */}
-                <div className={styles.formatInfo}>
-                    <p><strong>Formatos aceptados:</strong> Solo archivos .webp</p>
-                    <p><strong>Tamaño máximo:</strong> 10MB por imagen</p>
-                    {mode === MODE.CREATE ? (
-                        <>
-                            <p><strong>Requerido:</strong> Las 2 imágenes principales son obligatorias</p>
-                            <p><strong>Fotos extras:</strong> Opcionales (puedes agregar después)</p>
-                        </>
-                    ) : (
-                        <>
-                            <p><strong>Imágenes existentes:</strong> Puedes reemplazarlas o mantenerlas</p>
-                            <p><strong>Opcional:</strong> Los cambios de imágenes son opcionales</p>
-                        </>
-                    )}
-                </div>
+            {/* ✅ SECCIÓN DE IMÁGENES PRINCIPALES */}
+            <div className={styles.requiredFieldsSection}>
+                <h4 className={styles.subsectionTitle}>
+                    <span className={styles.requiredBadge}>Fotos Obligatorias</span>
+                    <span className={styles.subsectionHint}>Formato WebP · Máx {FORM_RULES.MAX_FILE_SIZE / 1024 / 1024}MB c/u</span>
+                </h4>
                 
                 {/* ✅ GRID DE IMÁGENES PRINCIPALES */}
                 <div className={styles.principalImagesGrid}>
@@ -332,26 +318,12 @@ const CarFormRHF = ({
                 </div>
             </div>
 
-            {/* ✅ SECCIÓN DE FOTOS EXTRAS - NUEVA ESTRUCTURA */}
-            <div className={styles.imageSection}>
-                <h3>Fotos Extras</h3>
-                
-                {/* ✅ INFORMACIÓN SOBRE FOTOS EXTRAS */}
-                <div className={styles.formatInfo}>
-                    {mode === MODE.CREATE ? (
-                        <>
-                            <p><strong>Opcional:</strong> Las fotos extras no son obligatorias</p>
-                            <p><strong>Máximo:</strong> Puedes subir hasta 8 fotos extras</p>
-                            <p><strong>Input múltiple:</strong> Selecciona varios archivos de una vez</p>
-                        </>
-                    ) : (
-                        <>
-                            <p><strong>Fotos existentes:</strong> Puedes eliminar las que ya no necesites</p>
-                            <p><strong>Agregar nuevas:</strong> Usa el input múltiple para subir hasta 8 fotos nuevas</p>
-                            <p><strong>Opcional:</strong> Los cambios de fotos son opcionales</p>
-                        </>
-                    )}
-                </div>
+            {/* ✅ SECCIÓN DE FOTOS EXTRAS */}
+            <div className={styles.optionalFieldsSection}>
+                <h4 className={styles.subsectionTitle}>
+                    <span className={styles.optionalBadge}>Fotos Opcionales</span>
+                    <span className={styles.subsectionHint}>Hasta {FORM_RULES.MAX_EXTRA_PHOTOS} fotos · WebP · Máx {FORM_RULES.MAX_FILE_SIZE / 1024 / 1024}MB c/u</span>
+                </h4>
                 
                 {/* ✅ FOTOS EXISTENTES (Solo en modo EDIT) */}
                 {mode === MODE.EDIT && imageState.existingExtras && imageState.existingExtras.length > 0 && (
@@ -480,237 +452,239 @@ const CarFormRHF = ({
             <div className={styles.dataSection}>
                 <h3>Datos del Vehículo</h3>
                 
-                <div className={styles.formGrid}>
-                    {/* ✅ MARCA Y MODELO */}
-                    <div className={styles.formGroup}>
-                        <label>Marca *</label>
-                        <input
-                            type="text"
-                            {...register('marca', { required: 'Marca es requerida' })}
-                            className={styles.input}
-                        />
-                        {errors.marca && <span className={styles.error}>{errors.marca.message}</span>}
-                    </div>
+                {/* ✅ SUBSECCIÓN: DATOS OBLIGATORIOS */}
+                <div className={styles.requiredFieldsSection}>
+                    <h4 className={styles.subsectionTitle}>
+                        <span className={styles.requiredBadge}>Obligatorios</span>
+                        <span className={styles.subsectionHint}>Completa todos estos campos para continuar</span>
+                    </h4>
+                    
+                    <div className={styles.formGrid}>
+                        {/* ===== CAMPOS OBLIGATORIOS ===== */}
+                        <div className={styles.formGroup}>
+                            <label>Marca *</label>
+                            <input
+                                type="text"
+                                {...register('marca', { required: 'Marca es requerida' })}
+                                className={styles.input}
+                            />
+                            {errors.marca && <span className={styles.error}>{errors.marca.message}</span>}
+                        </div>
 
-                    <div className={styles.formGroup}>
-                        <label>Modelo *</label>
-                        <input
-                            type="text"
-                            {...register('modelo', { required: 'Modelo es requerido' })}
-                            className={styles.input}
-                        />
-                        {errors.modelo && <span className={styles.error}>{errors.modelo.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Modelo *</label>
+                            <input
+                                type="text"
+                                {...register('modelo', { required: 'Modelo es requerido' })}
+                                className={styles.input}
+                            />
+                            {errors.modelo && <span className={styles.error}>{errors.modelo.message}</span>}
+                        </div>
 
-                    {/* ✅ VERSIÓN Y PRECIO */}
-                    <div className={styles.formGroup}>
-                        <label>Versión</label>
-                        <input
-                            type="text"
-                            {...register('version')}
-                            className={styles.input}
-                        />
-                        {errors.version && <span className={styles.error}>{errors.version.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Año *</label>
+                            <input
+                                type="number"
+                                {...register('anio', { required: 'Año es requerido' })}
+                                className={styles.input}
+                            />
+                            {errors.anio && <span className={styles.error}>{errors.anio.message}</span>}
+                        </div>
 
-                    <div className={styles.formGroup}>
-                        <label>Precio *</label>
-                        <input
-                            type="number"
-                            {...register('precio', { required: 'Precio es requerido' })}
-                            className={styles.input}
-                            placeholder="0"
-                        />
-                        {errors.precio && <span className={styles.error}>{errors.precio.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Precio *</label>
+                            <input
+                                type="number"
+                                {...register('precio', { required: 'Precio es requerido' })}
+                                className={styles.input}
+                            />
+                            {errors.precio && <span className={styles.error}>{errors.precio.message}</span>}
+                        </div>
 
-                    {/* ✅ CAJA Y SEGMENTO */}
-                    <div className={styles.formGroup}>
-                        <label>Caja *</label>
-                        <input
-                            type="text"
-                            {...register('caja', { required: 'Caja es requerida' })}
-                            className={styles.input}
-                        />
-                        {errors.caja && <span className={styles.error}>{errors.caja.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Kilometraje *</label>
+                            <input
+                                type="number"
+                                {...register('kilometraje', { required: 'Kilometraje es requerido' })}
+                                className={styles.input}
+                            />
+                            {errors.kilometraje && <span className={styles.error}>{errors.kilometraje.message}</span>}
+                        </div>
 
-                    <div className={styles.formGroup}>
-                        <label>Segmento</label>
-                        <input
-                            type="text"
-                            {...register('segmento')}
-                            className={styles.input}
-                        />
-                        {errors.segmento && <span className={styles.error}>{errors.segmento.message}</span>}
+                        <div className={styles.formGroup}>
+                            <label>Caja *</label>
+                            <input
+                                type="text"
+                                {...register('caja', { required: 'Caja es requerida' })}
+                                className={styles.input}
+                            />
+                            {errors.caja && <span className={styles.error}>{errors.caja.message}</span>}
+                        </div>
                     </div>
+                </div>
 
-                    {/* ✅ CILINDRADA Y COLOR */}
-                    <div className={styles.formGroup}>
-                        <label>Cilindrada (L)</label>
-                        <input
-                            type="text"
-                            inputMode="decimal"
-                            placeholder="2.0"
-                            onBlur={handleCilindradaBlur}
-                            {...register('cilindrada', { 
-                                pattern: {
-                                    value: /^[0-9]\.[0-9]$/,
-                                    message: 'Formato debe ser X.X (ejemplo: 2.0, 3.5)'
-                                },
-                                validate: {
-                                    validRange: (value) => {
-                                        if (!value) return true  // Opcional
-                                        const num = parseFloat(value)
-                                        return (num >= 0.5 && num <= 9.9) || 'Debe estar entre 0.5 y 9.9 litros'
+                {/* ✅ SUBSECCIÓN: DATOS OPCIONALES */}
+                <div className={styles.optionalFieldsSection}>
+                    <h4 className={styles.subsectionTitle}>
+                        <span className={styles.optionalBadge}>Opcionales</span>
+                        <span className={styles.subsectionHint}>Completa para mejorar la información del vehículo</span>
+                    </h4>
+                    
+                    <div className={styles.formGrid}>
+                        {/* ===== CAMPOS OPCIONALES ===== */}
+                        <div className={styles.formGroup}>
+                            <label>Versión</label>
+                            <input
+                                type="text"
+                                {...register('version')}
+                                className={styles.input}
+                            />
+                            {errors.version && <span className={styles.error}>{errors.version.message}</span>}
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>Color</label>
+                            <input
+                                type="text"
+                                {...register('color')}
+                                className={styles.input}
+                            />
+                            {errors.color && <span className={styles.error}>{errors.color.message}</span>}
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>Combustible</label>
+                            <input
+                                type="text"
+                                {...register('combustible')}
+                                className={styles.input}
+                            />
+                            {errors.combustible && <span className={styles.error}>{errors.combustible.message}</span>}
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>Segmento</label>
+                            <input
+                                type="text"
+                                {...register('segmento')}
+                                className={styles.input}
+                            />
+                            {errors.segmento && <span className={styles.error}>{errors.segmento.message}</span>}
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>Cilindrada (L)</label>
+                            <input
+                                type="text"
+                                inputMode="decimal"
+                                onBlur={handleCilindradaBlur}
+                                {...register('cilindrada', { 
+                                    pattern: {
+                                        value: /^[0-9]\.[0-9]$/,
+                                        message: 'Formato debe ser X.X (ejemplo: 2.0, 3.5)'
+                                    },
+                                    validate: {
+                                        validRange: (value) => {
+                                            if (!value) return true  // Opcional
+                                            const num = parseFloat(value)
+                                            return (num >= 0.5 && num <= 9.9) || 'Debe estar entre 0.5 y 9.9 litros'
+                                        }
                                     }
-                                }
-                            })}
-                            className={styles.input}
-                        />
-                        {errors.cilindrada && <span className={styles.error}>{errors.cilindrada.message}</span>}
-                    </div>
+                                })}
+                                className={styles.input}
+                            />
+                            {errors.cilindrada && <span className={styles.error}>{errors.cilindrada.message}</span>}
+                        </div>
 
-                    <div className={styles.formGroup}>
-                        <label>Color</label>
-                        <input
-                            type="text"
-                            {...register('color')}
-                            className={styles.input}
-                        />
-                        {errors.color && <span className={styles.error}>{errors.color.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Transmisión</label>
+                            <input
+                                type="text"
+                                {...register('transmision')}
+                                className={styles.input}
+                            />
+                            {errors.transmision && <span className={styles.error}>{errors.transmision.message}</span>}
+                        </div>
 
-                    {/* ✅ AÑO Y COMBUSTIBLE */}
-                    <div className={styles.formGroup}>
-                        <label>Año</label>
-                        <input
-                            type="number"
-                            {...register('anio')}
-                            className={styles.input}
-                            placeholder="2024"
-                        />
-                        {errors.anio && <span className={styles.error}>{errors.anio.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Tracción</label>
+                            <input
+                                type="text"
+                                {...register('traccion')}
+                                className={styles.input}
+                            />
+                            {errors.traccion && <span className={styles.error}>{errors.traccion.message}</span>}
+                        </div>
 
-                    <div className={styles.formGroup}>
-                        <label>Combustible</label>
-                        <input
-                            type="text"
-                            {...register('combustible')}
-                            className={styles.input}
-                        />
-                        {errors.combustible && <span className={styles.error}>{errors.combustible.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Tapizado</label>
+                            <input
+                                type="text"
+                                {...register('tapizado')}
+                                className={styles.input}
+                            />
+                            {errors.tapizado && <span className={styles.error}>{errors.tapizado.message}</span>}
+                        </div>
 
-                    {/* ✅ TRANSMISIÓN Y KILOMETRAJE */}
-                    <div className={styles.formGroup}>
-                        <label>Transmisión</label>
-                        <input
-                            type="text"
-                            {...register('transmision')}
-                            className={styles.input}
-                        />
-                        {errors.transmision && <span className={styles.error}>{errors.transmision.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Categoría Vehículo</label>
+                            <input
+                                type="text"
+                                {...register('categoriaVehiculo')}
+                                className={styles.input}
+                            />
+                            {errors.categoriaVehiculo && <span className={styles.error}>{errors.categoriaVehiculo.message}</span>}
+                        </div>
 
-                    <div className={styles.formGroup}>
-                        <label>Kilometraje *</label>
-                        <input
-                            type="number"
-                            {...register('kilometraje', { required: 'Kilometraje es requerido' })}
-                            className={styles.input}
-                            placeholder="0"
-                        />
-                        {errors.kilometraje && <span className={styles.error}>{errors.kilometraje.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Frenos</label>
+                            <input
+                                type="text"
+                                {...register('frenos')}
+                                className={styles.input}
+                            />
+                            {errors.frenos && <span className={styles.error}>{errors.frenos.message}</span>}
+                        </div>
 
-                    {/* ✅ TRACCIÓN Y TAPIZADO */}
-                    <div className={styles.formGroup}>
-                        <label>Tracción</label>
-                        <input
-                            type="text"
-                            {...register('traccion')}
-                            className={styles.input}
-                        />
-                        {errors.traccion && <span className={styles.error}>{errors.traccion.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Turbo</label>
+                            <input
+                                type="text"
+                                {...register('turbo')}
+                                className={styles.input}
+                            />
+                            {errors.turbo && <span className={styles.error}>{errors.turbo.message}</span>}
+                        </div>
 
-                    <div className={styles.formGroup}>
-                        <label>Tapizado</label>
-                        <input
-                            type="text"
-                            {...register('tapizado')}
-                            className={styles.input}
-                        />
-                        {errors.tapizado && <span className={styles.error}>{errors.tapizado.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>Llantas</label>
+                            <input
+                                type="text"
+                                {...register('llantas')}
+                                className={styles.input}
+                            />
+                            {errors.llantas && <span className={styles.error}>{errors.llantas.message}</span>}
+                        </div>
 
-                    {/* ✅ CATEGORÍA Y FRENOS */}
-                    <div className={styles.formGroup}>
-                        <label>Categoría Vehículo</label>
-                        <input
-                            type="text"
-                            {...register('categoriaVehiculo')}
-                            className={styles.input}
-                        />
-                        {errors.categoriaVehiculo && <span className={styles.error}>{errors.categoriaVehiculo.message}</span>}
-                    </div>
+                        <div className={styles.formGroup}>
+                            <label>HP</label>
+                            <input
+                                type="number"
+                                {...register('HP')}
+                                className={styles.input}
+                            />
+                            {errors.HP && <span className={styles.error}>{errors.HP.message}</span>}
+                        </div>
 
-                    <div className={styles.formGroup}>
-                        <label>Frenos</label>
-                        <input
-                            type="text"
-                            {...register('frenos')}
-                            className={styles.input}
-                        />
-                        {errors.frenos && <span className={styles.error}>{errors.frenos.message}</span>}
-                    </div>
-
-                    {/* ✅ TURBO Y LLANTAS */}
-                    <div className={styles.formGroup}>
-                        <label>Turbo</label>
-                        <input
-                            type="text"
-                            {...register('turbo')}
-                            className={styles.input}
-                            placeholder="Opcional"
-                        />
-                        {errors.turbo && <span className={styles.error}>{errors.turbo.message}</span>}
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label>Llantas</label>
-                        <input
-                            type="text"
-                            {...register('llantas')}
-                            className={styles.input}
-                            placeholder="Opcional"
-                        />
-                        {errors.llantas && <span className={styles.error}>{errors.llantas.message}</span>}
-                    </div>
-
-                    {/* ✅ HP Y DETALLE */}
-                    <div className={styles.formGroup}>
-                        <label>HP</label>
-                        <input
-                            type="number"
-                            {...register('HP')}
-                            className={styles.input}
-                            placeholder="0 (Opcional)"
-                        />
-                        {errors.HP && <span className={styles.error}>{errors.HP.message}</span>}
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label>Detalle</label>
-                        <textarea
-                            {...register('detalle')}
-                            className={styles.textarea}
-                            rows="4"
-                            placeholder="Descripción detallada del vehículo... (Opcional)"
-                        />
-                        {errors.detalle && <span className={styles.error}>{errors.detalle.message}</span>}
+                        <div className={styles.formGroup}>
+                            <label>Detalle</label>
+                            <textarea
+                                {...register('detalle')}
+                                className={styles.textarea}
+                                rows="4"
+                            />
+                            {errors.detalle && <span className={styles.error}>{errors.detalle.message}</span>}
+                        </div>
                     </div>
                 </div>
             </div>

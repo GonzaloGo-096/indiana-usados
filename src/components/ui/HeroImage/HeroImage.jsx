@@ -32,8 +32,8 @@ const HeroImage = memo(({
         loading="eager"
         fetchpriority="high"
         decoding="async"
-        width="1920"
-        height="1080"
+        width="1200"
+        height="400"
       />
     </div>
   )
@@ -42,6 +42,7 @@ const HeroImage = memo(({
 HeroImage.displayName = 'HeroImage'
 
 export default HeroImage
+
 
 
 

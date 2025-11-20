@@ -2,10 +2,12 @@
  * Home - Página principal
  * 
  * LCP Phase 1: Hero image fija (sin carrusel)
+ * Hero Image: Tamaños ajustados para igualar Postventa
  * 
  * @author Indiana Usados
  * @version 4.0.0 - LCP Phase 1: Hero image optimizada
  * @version 4.1.0 - FCP/LCP Phase 3: Runtime diagnostics agregado
+ * @version 4.2.0 - Hero image redimensionada (tamaños = Postventa)
  */
 
 import { useEffect } from 'react'

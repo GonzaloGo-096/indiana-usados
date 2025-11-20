@@ -2,19 +2,21 @@
  * HeroImage.module.css - Estilos optimizados para LCP
  * 
  * LCP Phase 1: Estilos mínimos, sin transiciones complejas
+ * Tamaños ajustados para igualar imagen principal de Postventa
  * 
  * @author Indiana Usados
- * @version 1.0.0 - LCP Phase 1
+ * @version 1.1.0 - Tamaños ajustados según Postventa
  */
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .heroImageContainer {
   position: relative;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--border-radius-lg);
   overflow: hidden;
-  box-shadow: none;
+  box-shadow: var(--shadow-lg);
 }
 
 /* ===== IMAGEN HERO ===== */
@@ -22,34 +24,37 @@
   display: block;
   width: 100%;
   height: auto;
-  object-fit: cover;
   background-color: var(--color-neutral-50);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--border-radius-lg);
+  /* 🎯 MOBILE: Ver imagen completa sin recortes */
+  object-fit: contain;
+  object-position: center center;
+  min-height: 250px;
+  max-height: 400px;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
 
-/* Desktop: reducir tamaño de la foto */
-@media (min-width: var(--desktop-min)) {
-  .heroImageContainer {
-    max-width: min(36vw, 580px);
-  }
-  
+/* Tablet: 768px - 991px */
+@media (min-width: var(--tablet-min)) and (max-width: 991px) {
   .heroImage {
-    max-height: clamp(220px, 28vh, 300px);
+    /* 🎯 TABLET: Recorte profesional */
+    object-fit: cover;
+    min-height: 350px;
+    max-height: none;
   }
 }
 
-/* Tablet: ajuste suave entre 768px y 991px */
-@media (min-width: var(--tablet-min)) and (max-width: 991px) {
-  .heroImageContainer {
-    max-width: 80%;
-  }
-  
+/* Desktop: ≥ 992px */
+@media (min-width: var(--desktop-min)) {
   .heroImage {
-    max-height: clamp(220px, 30vh, 300px);
+    /* 🎯 DESKTOP: Recorte profesional */
+    object-fit: cover;
+    min-height: 400px;
+    max-height: none;
   }
 }
+
 
 
 

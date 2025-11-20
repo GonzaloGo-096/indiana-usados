@@ -17,18 +17,18 @@
  * @description Vehículo completo del sistema
  * @property {string} id - Identificador único
  * @property {string} [_id] - Compatibilidad con MongoDB
- * @property {string} marca - Marca del vehículo
- * @property {string} modelo - Modelo del vehículo
+ * @property {string} marca - Marca del vehículo (requerido en creación)
+ * @property {string} modelo - Modelo del vehículo (requerido en creación)
+ * @property {number} precio - Precio del vehículo (requerido en creación)
+ * @property {number} anio - Año del vehículo (requerido en creación)
+ * @property {string} caja - Tipo de caja (requerido en creación)
+ * @property {number} kilometraje - Kilometraje del vehículo (requerido en creación)
  * @property {string} [version] - Versión del vehículo
- * @property {number} anio - Año del vehículo
- * @property {number} precio - Precio del vehículo
- * @property {string} [caja] - Tipo de caja
  * @property {string} [segmento] - Segmento del vehículo
  * @property {number} [cilindrada] - Cilindrada del motor
  * @property {string} [color] - Color del vehículo
  * @property {string} [combustible] - Tipo de combustible
  * @property {string} [transmision] - Tipo de transmisión
- * @property {number} [kilometraje] - Kilometraje del vehículo
  * @property {string} [traccion] - Tipo de tracción
  * @property {string} [tapizado] - Tipo de tapizado
  * @property {string} [categoriaVehiculo] - Categoría del vehículo
@@ -61,18 +61,18 @@
 /**
  * @typedef {Object} CreateVehicleRequest
  * @description Datos para crear un nuevo vehículo
- * @property {string} marca - Marca del vehículo
- * @property {string} modelo - Modelo del vehículo
+ * @property {string} marca - Marca del vehículo (requerido)
+ * @property {string} modelo - Modelo del vehículo (requerido)
+ * @property {number} precio - Precio del vehículo (requerido)
+ * @property {number} anio - Año del vehículo (requerido)
+ * @property {string} caja - Tipo de caja (requerido)
+ * @property {number} kilometraje - Kilometraje del vehículo (requerido)
  * @property {string} [version] - Versión del vehículo
- * @property {number} anio - Año del vehículo
- * @property {number} precio - Precio del vehículo
- * @property {string} [caja] - Tipo de caja
  * @property {string} [segmento] - Segmento del vehículo
  * @property {number} [cilindrada] - Cilindrada del motor
  * @property {string} [color] - Color del vehículo
  * @property {string} [combustible] - Tipo de combustible
  * @property {string} [transmision] - Tipo de transmisión
- * @property {number} [kilometraje] - Kilometraje del vehículo
  * @property {string} [traccion] - Tipo de tracción
  * @property {string} [tapizado] - Tipo de tapizado
  * @property {string} [categoriaVehiculo] - Categoría del vehículo
@@ -183,7 +183,7 @@
 // ✅ EXPORTAR TIPOS PARA USO EN OTROS ARCHIVOS
 export const VEHICLE_TYPES = {
   IMAGE_FIELDS: ['fotoPrincipal', 'fotoHover', 'fotosExtras'],
-  REQUIRED_FIELDS: ['marca', 'modelo', 'anio', 'precio'],
+  REQUIRED_FIELDS: ['marca', 'modelo', 'precio', 'anio', 'caja', 'kilometraje'], // 6 campos + 2 fotos obligatorias
   REQUIRED_IMAGE_FIELDS: ['fotoPrincipal', 'fotoHover'], // Solo principales son requeridas
   NUMERIC_FIELDS: ['anio', 'precio', 'cilindrada', 'kilometraje'],
   TEXT_FIELDS: ['marca', 'modelo', 'version', 'caja', 'segmento', 'color', 'combustible', 'transmision', 'traccion', 'tapizado', 'categoriaVehiculo', 'frenos', 'turbo', 'llantas', 'HP', 'detalle']
