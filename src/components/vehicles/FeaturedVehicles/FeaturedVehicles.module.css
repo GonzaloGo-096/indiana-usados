@@ -12,7 +12,7 @@
 
 /* ===== SECCIÓN PRINCIPAL ===== */
 .featuredSection {
-  padding: var(--section-padding-compact) 0;
+  padding: var(--spacing-3) 0; /* 🔥 COMPRIMIDO: Reducido de section-padding-compact */
   background: var(--color-white);
   width: 100%;
 }
@@ -28,8 +28,8 @@
 /* ===== TÍTULO "NUESTROS USADOS" ===== */
 .sectionTitle {
   text-align: left; /* ✅ Alineación izquierda */
-  margin-bottom: var(--spacing-6);
-  padding: var(--spacing-4) 0;
+  margin-bottom: var(--spacing-2); /* 🔥 COMPRIMIDO: Reducido de spacing-6 */
+  padding: var(--spacing-1) 0; /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
 }
 
 .title {
@@ -65,10 +65,10 @@
 /* ===== CONTENEDOR DE CARDS ===== */
 .cardsContainer {
   display: flex;
-  gap: var(--spacing-6); /* ✅ Espaciado equilibrado */
+  gap: var(--spacing-3); /* 🔥 COMPRIMIDO: Reducido de spacing-6 */
   justify-content: center;
   align-items: stretch;
-  padding: var(--spacing-4) 0;
+  padding: var(--spacing-2) 0; /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
   /* ✅ DESKTOP: Sin scroll, solo grid */
   overflow-x: visible;
   overflow-y: hidden;
@@ -82,7 +82,7 @@
 /* ✅ MOBILE: Scroll horizontal con card centrada y cards asomando a los lados */
 @media (max-width: 991px) {
   .cardsContainer {
-    gap: var(--spacing-4);
+    gap: var(--spacing-2); /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
     justify-content: flex-start;
     overflow-x: auto;
     overflow-y: hidden;
@@ -124,11 +124,11 @@
   .cardsContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-6);
+    gap: var(--spacing-3); /* 🔥 COMPRIMIDO: Reducido de spacing-6 */
     max-width: 1200px; /* ✅ Máximo ancho para mantener proporción */
     margin: 0 auto; /* ✅ Centrar */
-    padding-left: var(--spacing-4);
-    padding-right: var(--spacing-4);
+    padding-left: var(--spacing-2); /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
+    padding-right: var(--spacing-2); /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
     overflow-x: visible; /* ✅ Sin scroll en desktop */
   }
   
@@ -144,8 +144,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--spacing-6) 0 var(--spacing-4) 0;
-  margin-top: var(--spacing-4);
+  padding: var(--spacing-2) 0 var(--spacing-2) 0; /* 🔥 COMPRIMIDO: Reducido de spacing-6/4 */
+  margin-top: var(--spacing-2); /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
 }
 
 .verTodosButton {

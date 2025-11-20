@@ -132,18 +132,6 @@ export const ImageCarousel = ({
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [goToPrevious, goToNext])
 
-    // Auto-scroll miniatura activa (solo desktop)
-    useEffect(() => {
-        const isDesktop = window.matchMedia('(min-width: 769px)').matches
-        if (!isDesktop) return
-        const activeThumbnail = thumbnailRefs.current[currentIndex]
-        if (!activeThumbnail) return
-        let scrollAlign = 'center'
-        if (currentIndex === 0) scrollAlign = 'start'
-        else if (currentIndex === allImages.length - 1) scrollAlign = 'end'
-        activeThumbnail.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: scrollAlign })
-    }, [currentIndex, allImages.length])
-
     // ===== SOLUCIÓN A MEJORADA: Crossfade sin gaps =====
     const [displayIndex, setDisplayIndex] = useState(0)
     const [overlayIndex, setOverlayIndex] = useState(null)
