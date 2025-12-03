@@ -74,26 +74,38 @@ export const useCarMutation = () => {
             if (!(formData instanceof FormData)) {
                 throw new Error('Payload inválido: se esperaba FormData')
             }
-            // Log de depuración en desarrollo
-            if (import.meta?.env?.MODE !== 'production') {
-                let fileCount = 0
-                const fields = {}
-                for (const [key, value] of formData.entries()) {
-                    if (value instanceof File) {
-                        fileCount++
-                        fields[key] = `[File: ${value.name}, ${(value.size/1024).toFixed(1)}KB]`
-                    } else {
-                        fields[key] = value
-                    }
+            // Log de depuración SIEMPRE para diagnóstico
+            let fileCount = 0
+            const fields = {}
+            for (const [key, value] of formData.entries()) {
+                if (value instanceof File) {
+                    fileCount++
+                    fields[key] = `[File: ${value.name}, ${(value.size/1024).toFixed(1)}KB, type: ${value.type}]`
+                } else {
+                    fields[key] = value
                 }
-                logger.debug('cars:mutation', 'create: enviando FormData', { 
-                    totalFields: Object.keys(fields).length, 
-                    fileCount,
-                    fields 
-                })
             }
-            const response = await vehiclesAdminService.createVehicle(formData)
-            return response.data
+            console.log('🚗 CREATE VEHICLE - FormData:', { 
+                totalFields: Object.keys(fields).length, 
+                fileCount,
+                fields,
+                hasToken: !!token
+            })
+            
+            try {
+                const response = await vehiclesAdminService.createVehicle(formData)
+                console.log('✅ CREATE VEHICLE - Response:', response)
+                return response.data
+            } catch (err) {
+                // Log detallado del error del backend
+                console.error('❌ CREATE VEHICLE - Error completo:', {
+                    status: err.response?.status,
+                    statusText: err.response?.statusText,
+                    data: err.response?.data,
+                    message: err.message
+                })
+                throw err
+            }
         },
         onSuccess: (data) => {
             logger.info('cars:mutation', 'Vehículo creado exitosamente')

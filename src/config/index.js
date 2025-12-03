@@ -15,11 +15,13 @@ import { logger } from '@utils/logger'
 
 // ===== VALIDACIÓN DE ENTORNO =====
 const validateEnvironment = () => {
-  const environment = import.meta.env.VITE_ENVIRONMENT || 'development'
+  const rawEnvironment = import.meta.env.VITE_ENVIRONMENT || 'development'
+  // Normalizar a minúsculas para evitar errores de case-sensitivity
+  const environment = rawEnvironment.toLowerCase().trim()
   const validEnvironments = ['development', 'staging', 'production']
   
   if (!validEnvironments.includes(environment)) {
-    logger.warn('config:env', `Entorno inválido: ${environment}. Usando 'development'`)
+    logger.warn('config:env', `Entorno inválido: ${rawEnvironment}. Usando 'development'`)
     return 'development'
   }
   
