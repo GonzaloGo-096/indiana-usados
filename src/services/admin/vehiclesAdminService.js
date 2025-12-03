@@ -12,7 +12,7 @@ const vehiclesAdminService = {
   async createVehicle(formData) {
     const response = await authAxiosInstance.post('/photos/create', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
-      timeout: 30000
+      timeout: 120000 // 2 minutos para subida de fotos
     })
     return response.data
   },
@@ -22,7 +22,7 @@ const vehiclesAdminService = {
       logger.debug('admin:vehicles', 'updateVehicle', { id })
       const response = await authAxiosInstance.put(`/photos/updatephoto/${id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
-        timeout: 60000
+        timeout: 180000 // 3 minutos para actualización con fotos
       })
       return response.data
     } catch (error) {
