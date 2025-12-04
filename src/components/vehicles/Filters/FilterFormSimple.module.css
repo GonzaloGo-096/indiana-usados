@@ -158,7 +158,14 @@
   border-radius: 0.375rem;
   border: none;
   position: relative;
+  /* ✅ Z-index más bajo que los dropdowns para que los dropdowns se muestren por encima */
+  z-index: 1;
 }
+
+/* ✅ Orden inverso de z-index para que el primer select tenga prioridad sobre los de abajo */
+.selectsSection .formGroup:nth-child(1) { z-index: 30; }
+.selectsSection .formGroup:nth-child(2) { z-index: 20; }
+.selectsSection .formGroup:nth-child(3) { z-index: 10; }
 
 .formGroup {
   display: flex;
@@ -170,7 +177,6 @@
   max-width: none;
   padding: 0 0.25rem;
   overflow: visible;
-  z-index: 15;
   position: relative;
 }
 
@@ -337,7 +343,13 @@
 
   .rangesSection,
   .selectsSection { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem; }
-  .formGroup { width: 100%; max-width: none; padding: 0; margin-bottom: 1rem; }
+  
+  /* ✅ En mobile: orden inverso de z-index para que el primer select tenga prioridad */
+  .selectsSection .formGroup:nth-child(1) { z-index: 30; }
+  .selectsSection .formGroup:nth-child(2) { z-index: 20; }
+  .selectsSection .formGroup:nth-child(3) { z-index: 10; }
+  
+  .formGroup { width: 100%; max-width: none; padding: 0; margin-bottom: 1rem; position: relative; }
   .formGroup > div { width: 100%; max-width: none; padding: 0; }
   .titleActions { display: flex; gap: 0.5rem; align-items: center; }
   

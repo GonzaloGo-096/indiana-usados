@@ -83,11 +83,12 @@ const RangeSlider = React.memo(({
     setActiveThumb(thumb)
   }, [])
 
-  const handleMouseMove = useCallback((e) => {
-    if (!isDragging || !sliderRef.current) return
+  // Función compartida para calcular nuevo valor desde posición X
+  const updateValueFromPosition = useCallback((clientX) => {
+    if (!sliderRef.current) return
 
     const rect = sliderRef.current.getBoundingClientRect()
-    const percentage = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100))
+    const percentage = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100))
     const newValue = getValueFromPercentage(percentage)
 
     const [minVal, maxVal] = localValue
@@ -99,14 +100,42 @@ const RangeSlider = React.memo(({
       const newMax = Math.min(max, Math.max(minVal + step, newValue))
       handleChange([minVal, newMax])
     }
-  }, [isDragging, activeThumb, localValue, min, max, step, handleChange])
+  }, [activeThumb, localValue, min, max, step, handleChange])
+
+  const handleMouseMove = useCallback((e) => {
+    if (!isDragging) return
+    updateValueFromPosition(e.clientX)
+  }, [isDragging, updateValueFromPosition])
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false)
     setActiveThumb(null)
   }, [])
 
-  // Event listeners globales
+  // ✅ TOUCH EVENTS para mobile
+  const handleTouchStart = useCallback((thumb) => (e) => {
+    e.preventDefault() // Evita scroll del contenedor
+    e.stopPropagation()
+    setIsDragging(true)
+    setActiveThumb(thumb)
+  }, [])
+
+  const handleTouchMove = useCallback((e) => {
+    if (!isDragging) return
+    e.preventDefault()
+    const touch = e.touches[0]
+    if (touch) {
+      updateValueFromPosition(touch.clientX)
+    }
+  }, [isDragging, updateValueFromPosition])
+
+  const handleTouchEnd = useCallback((e) => {
+    e.preventDefault()
+    setIsDragging(false)
+    setActiveThumb(null)
+  }, [])
+
+  // Event listeners globales - Mouse
   useEffect(() => {
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove)
@@ -117,6 +146,20 @@ const RangeSlider = React.memo(({
       }
     }
   }, [isDragging, handleMouseMove, handleMouseUp])
+
+  // Event listeners globales - Touch
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('touchmove', handleTouchMove, { passive: false })
+      document.addEventListener('touchend', handleTouchEnd)
+      document.addEventListener('touchcancel', handleTouchEnd)
+      return () => {
+        document.removeEventListener('touchmove', handleTouchMove)
+        document.removeEventListener('touchend', handleTouchEnd)
+        document.removeEventListener('touchcancel', handleTouchEnd)
+      }
+    }
+  }, [isDragging, handleTouchMove, handleTouchEnd])
 
   return (
     <div className={`${styles.rangeSlider} ${className}`}>
@@ -149,6 +192,7 @@ const RangeSlider = React.memo(({
             className={`${styles.thumb} ${styles.thumbMin} ${activeThumb === 'min' ? styles.active : ''}`}
             style={{ left: `${minPercentage}%` }}
             onMouseDown={() => handleMouseDown('min')}
+            onTouchStart={handleTouchStart('min')}
           >
             <div className={styles.tooltip}>
               {formatValue(localValue[0])}
@@ -160,6 +204,7 @@ const RangeSlider = React.memo(({
             className={`${styles.thumb} ${styles.thumbMax} ${activeThumb === 'max' ? styles.active : ''}`}
             style={{ left: `${maxPercentage}%` }}
             onMouseDown={() => handleMouseDown('max')}
+            onTouchStart={handleTouchStart('max')}
           >
             <div className={styles.tooltip}>
               {formatValue(localValue[1])}

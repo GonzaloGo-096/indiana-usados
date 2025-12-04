@@ -32,6 +32,7 @@
   border-radius: 3px;
   cursor: pointer;
   user-select: none;
+  touch-action: none; /* ✅ Evita que el navegador capture gestos de scroll */
 }
 
 .range {
@@ -54,6 +55,9 @@
   cursor: grab;
   transition: all 0.2s ease;
   z-index: 2;
+  touch-action: none; /* ✅ Evita que el navegador capture gestos de scroll */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .thumb:hover {
