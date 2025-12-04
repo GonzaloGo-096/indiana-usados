@@ -69,6 +69,33 @@ const FilterFormSimpleComponent = React.forwardRef(({
     }
   }, [isMobile])
 
+  // ✅ BLOQUEAR SCROLL DEL BODY CUANDO EL DRAWER ESTÁ ABIERTO
+  useEffect(() => {
+    if (!isDrawerOpen) return
+    
+    // Guardar posición actual del scroll
+    const scrollY = window.scrollY
+    const body = document.body
+    
+    // Aplicar estilos para bloquear scroll (compatible con iOS)
+    body.style.position = 'fixed'
+    body.style.top = `-${scrollY}px`
+    body.style.left = '0'
+    body.style.right = '0'
+    body.style.overflow = 'hidden'
+    
+    // Cleanup: restaurar scroll al cerrar
+    return () => {
+      body.style.position = ''
+      body.style.top = ''
+      body.style.left = ''
+      body.style.right = ''
+      body.style.overflow = ''
+      // Restaurar posición del scroll
+      window.scrollTo(0, scrollY)
+    }
+  }, [isDrawerOpen])
+
   // ✅ SINCRONIZACIÓN CON URL
   useEffect(() => {
     const urlFilters = parseFilters(searchParams)
@@ -303,7 +330,7 @@ const FilterFormSimpleComponent = React.forwardRef(({
       )}
       
       <div className={styles.formWrapper}>
-        <form onSubmit={onSubmit} className={styles.form}>
+        <form id="filterForm" onSubmit={onSubmit} className={styles.form}>
           <div className={styles.formTitle}>
             <h3>Filtros de Búsqueda</h3>
             <div className={styles.titleActions}>
@@ -390,13 +417,13 @@ const FilterFormSimpleComponent = React.forwardRef(({
             </div>
           </div>
 
-          {/* Mobile Buttons */}
+          {/* Botones */}
           <div className={styles.mobileButtons}>
-            <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
-              {isSubmitting ? 'Aplicando...' : 'Aplicar Filtros'}
-            </button>
             <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
-              Limpiar Filtros
+              Limpiar
+            </button>
+            <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
+              Aplicar
             </button>
           </div>
         </form>

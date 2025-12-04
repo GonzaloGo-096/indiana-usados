@@ -141,12 +141,12 @@
   }
   
   .track {
-    height: 8px;
+    height: 5px;
   }
   
   .thumb {
-    width: 24px;
-    height: 24px;
+    width: 14px;
+    height: 14px;
   }
   
   .values {
@@ -162,12 +162,12 @@
 /* Touch optimizations */
 @media (hover: none) and (pointer: coarse) {
   .thumb {
-    width: 28px;
-    height: 28px;
+    width: 16px;
+    height: 16px;
   }
   
   .track {
-    height: 10px;
+    height: 6px;
   }
   
   .tooltip {

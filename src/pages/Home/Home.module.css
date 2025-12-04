@@ -60,8 +60,16 @@
 .postventaImage {
   display: block;
   width: 100%;
-  height: auto;
+  height: 280px; /* Mobile: altura fija para más impacto visual */
   object-fit: cover;
+}
+
+/* Tablet y Desktop: altura automática */
+@media (min-width: 768px) {
+  .postventaImage {
+    height: auto;
+    min-height: 320px;
+  }
 }
 
 .postventaContent {
