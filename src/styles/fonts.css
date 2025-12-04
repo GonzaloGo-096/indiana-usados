@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/fuentes indiana/barlowcondensed-semibold-webfont.woff2') format('woff2');
+  src: url('../assets/fonts/barlowcondensed-semibold-webfont.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: 'Barlow Condensed';
-  src: url('../assets/fuentes/fuentes indiana/barlowcondensed-bold-webfont.woff2') format('woff2');
+  src: url('../assets/fonts/barlowcondensed-bold-webfont.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

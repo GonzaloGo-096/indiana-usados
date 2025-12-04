@@ -11,7 +11,7 @@
 import PostventaServiceCard from '@components/PostventaServiceCard'
 import { SEOHead } from '@components/SEO'
 import styles from './Postventa.module.css'
-import imgPostventa from '../../assets/img-postventa-principal.webp'
+import imgPostventa from '../../assets/postventa/hero-postventa.webp'
 
 // Datos de los servicios actualizados según referencia
 const servicesData = [

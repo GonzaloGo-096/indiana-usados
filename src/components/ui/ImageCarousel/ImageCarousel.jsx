@@ -15,7 +15,7 @@
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx'
-import defaultCarImage from '@assets/auto1.jpg'
+import defaultCarImage from '@assets/vehicles/fallback-vehicle.jpg'
 import CloudinaryImage from '@/components/ui/CloudinaryImage/CloudinaryImage'
 import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
 

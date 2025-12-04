@@ -1,36 +1,22 @@
 /**
- * Hero Images - Imágenes para el Hero
- * 
- * LCP Phase 1: Imagen única fija (sin carrusel)
- * - srcSet con anchos reales (400w, 800w, 1280w, 1920w)
- * - sizes ajustado al tamaño real del contenedor
+ * Hero Images - Imágenes para el Hero de Home
  * 
  * @author Indiana Usados
- * @version 2.0.0 - LCP Phase 1: Hero image fija
+ * @version 3.0.0 - Reorganización por páginas
  */
 
-// Imagen principal en formato WebP
-import fotoprincipalWebp from '../foto-principal.webp'
+import heroHomeWebp from './hero-home.webp'
 
-// LCP Phase 1: Generar srcSet con anchos reales
-// Nota: En producción, Vite generará URLs con hash para cada variante
-// Por ahora usamos la misma imagen, pero el navegador elegirá según el ancho
 const generateSrcSet = (baseUrl) => {
-  // LCP Phase 1: Usar anchos reales en lugar de densidades
-  // En el futuro, generar variantes de tamaño reales
   const widths = [400, 800, 1280, 1920]
   return widths.map(width => `${baseUrl} ${width}w`).join(', ')
 }
 
-// LCP Phase 1: Configuración de imagen hero única
 export const heroImage = {
-  src: fotoprincipalWebp,
-  srcSet: generateSrcSet(fotoprincipalWebp),
+  src: heroHomeWebp,
+  srcSet: generateSrcSet(heroHomeWebp),
   alt: "Promoción destacada: Vehículo usado de calidad en Indiana Usados",
-  // sizes ajustado: 100% del viewport hasta max-width 1200px
-  // Mobile, Tablet, Desktop: todos usan el mismo tamaño (100vw hasta 1200px)
   sizes: "(max-width: 1200px) 100vw, 1200px"
 }
 
-// Export individual para flexibilidad
-export { fotoprincipalWebp }
+export { heroHomeWebp }

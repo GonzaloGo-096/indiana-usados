@@ -30,21 +30,21 @@
 export const criticalPreloads = [
   // Imagen hero - crítica para LCP (Largest Contentful Paint)
   {
-    href: '@assets/foto-principal.webp',
+    href: '@assets/home/hero-home.webp',
     as: 'image',
     fetchPriority: 'high',
   },
   
   // Logo - crítico para FCP (First Contentful Paint)
   {
-    href: '@assets/logo-indiana-transparent.webp',
+    href: '@assets/common/logo-transparent.webp',
     as: 'image',
     fetchPriority: 'high',
   },
   
   // Fuente crítica - Barlow Condensed Bold (usada en títulos)
   {
-    href: '@assets/fuentes/fuentes indiana/barlowcondensed-bold-webfont.woff2',
+    href: '@assets/fonts/barlowcondensed-bold-webfont.woff2',
     as: 'font',
     type: 'font/woff2',
     crossorigin: 'anonymous',

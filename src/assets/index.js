@@ -1,44 +1,33 @@
 /**
  * Assets Index - Centralización de recursos estáticos
  * 
- * Centraliza los assets de la aplicación para facilitar
- * imports y mantenimiento
+ * Estructura por páginas:
+ * - common/     → Logos y recursos compartidos
+ * - home/       → Imágenes de página Home
+ * - postventa/  → Imágenes de página Postventa
+ * - vehicles/   → Fallbacks para vehículos
+ * - fonts/      → Fuentes Barlow Condensed
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Reorganización por páginas
  */
 
-// Imágenes principales
-export { default as defaultCarImage } from './auto1.jpg'
+// ===== COMMON (Recursos compartidos) =====
+import logoNavImg from './common/logo-nav.png'
+import logoTransparentImg from './common/logo-transparent.webp'
 
-// Imágenes de vehículos - Eliminadas (fotos de prueba)
+export const logoNav = logoNavImg
+export const logoTransparent = logoTransparentImg
+export const indianaNavLogo = logoNavImg // Legacy alias
 
-// Logo
-export { default as indianaNavLogo } from './indiana-nav-logo.png'
+// ===== VEHICLES (Fallbacks) =====
+export { default as defaultCarImage } from './vehicles/fallback-vehicle.jpg'
 
-// Iconos - Movidos a componentes optimizados
+// ===== HOME (Re-exportar desde subcarpeta) =====
+export { heroImage, heroHomeWebp } from './home'
 
-// Fuentes (referencias para CSS) - Solo Next Sphere (Barlow Condensed ahora está en CSS)
-export const FONTS = {
-  // Next Sphere Family
-  nextSphere: {
-    black: './fuentes/Next Sphere Black.otf',
-    bold: './fuentes/Next Sphere Bold.otf',
-    extraBold: './fuentes/Next Sphere Extra Bold.otf',
-    extraLight: './fuentes/Next Sphere Extra Light.otf',
-    light: './fuentes/Next Sphere Light.otf',
-    medium: './fuentes/Next Sphere Medium.otf',
-    regular: './fuentes/Next Sphere Regular.otf',
-    semiBold: './fuentes/Next Sphere Semi Bold.otf',
-    thin: './fuentes/Next Sphere Thin.otf'
-  }
-}
-
-// Función para obtener imágenes por defecto (evita el problema de imports dinámicos)
-export const getDefaultImages = () => ({
-  car: './auto1.jpg',
-  vehicle: './auto1.jpg',
-  auto: './auto1.jpg'
-})
-
-// Función para obtener imágenes del carrusel - Eliminada (fotos de prueba) 
+// ===== POSTVENTA (Servicios) =====
+export { default as serviceChapa } from './postventa/service-chapa.webp'
+export { default as serviceTaller } from './postventa/service-taller.webp'
+export { default as serviceRepuestos } from './postventa/service-repuestos.webp'
+export { default as heroPostventa } from './postventa/hero-postventa.webp'

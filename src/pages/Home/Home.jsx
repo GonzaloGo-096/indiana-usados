@@ -18,7 +18,7 @@ import { FeaturedVehicles } from '@vehicles'
 import { SEOHead } from '@components/SEO'
 import styles from './Home.module.css'
 import { heroImage } from '../../assets/home' // LCP Phase 1: Objeto único, no array
-import imgPostventa from '../../assets/img-postventa-principal.webp'
+import imgPostventa from '../../assets/postventa/hero-postventa.webp'
 
 // FCP/LCP Phase 3: Runtime diagnostics - Iniciar medición cuando el módulo se carga
 // Esto captura el momento en que React empieza a procesar el componente
