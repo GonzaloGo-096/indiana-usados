@@ -17,7 +17,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { usePreloadRoute } from '@hooks'
 import styles from './Nav.module.css'
 import { shouldPreloadOnIdle, requestIdle } from '@utils'
-import logo from '@assets/common/logo-nav.png'
+import logo from '@assets/common/INDIANA-final.webp'
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)

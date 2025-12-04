@@ -37,7 +37,7 @@ export const criticalPreloads = [
   
   // Logo - crítico para FCP (First Contentful Paint)
   {
-    href: '@assets/common/logo-transparent.webp',
+    href: '@assets/common/INDIANA-final.webp',
     as: 'image',
     fetchPriority: 'high',
   },

@@ -13,11 +13,9 @@
  */
 
 // ===== COMMON (Recursos compartidos) =====
-import logoNavImg from './common/logo-nav.png'
-import logoTransparentImg from './common/logo-transparent.webp'
+import logoNavImg from './common/INDIANA-final.webp'
 
 export const logoNav = logoNavImg
-export const logoTransparent = logoTransparentImg
 export const indianaNavLogo = logoNavImg // Legacy alias
 
 // ===== VEHICLES (Fallbacks) =====
