@@ -9,8 +9,8 @@ import React, { useReducer, useCallback, useMemo, useEffect, useRef } from 'reac
 import { logger } from '@utils/logger'
 import { FORM_RULES } from '@constants/forms'
 
-// ✅ IMAGEN PREDETERMINADA - Se carga al crear autos nuevos
-import logoChicoDefault from '@assets/common/logo-chico_solid.webp'
+// ✅ IMAGEN PREDETERMINADA - Ruta pública (funciona en local y producción)
+const logoChicoDefault = '/images/logo-chico_solid.webp'
 
 // ✅ CAMPOS DE IMAGEN (estructura actualizada)
 export const IMAGE_FIELDS = {
@@ -231,12 +231,29 @@ const imageReducer = (state, action) => {
 // ✅ FUNCIÓN HELPER: Convierte URL de imagen a File object
 const fetchImageAsFile = async (imageUrl, fileName = 'logo-chico_solid.webp') => {
     try {
+        logger.debug('image:fetchImageAsFile', 'Iniciando fetch', { imageUrl })
         const response = await fetch(imageUrl)
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        
         const blob = await response.blob()
-        // Crear un File object desde el Blob
-        return new File([blob], fileName, { type: 'image/webp' })
+        const file = new File([blob], fileName, { type: 'image/webp' })
+        
+        logger.debug('image:fetchImageAsFile', 'Imagen convertida exitosamente', {
+            name: file.name,
+            size: file.size,
+            type: file.type
+        })
+        
+        return file
     } catch (error) {
-        logger.error('image:fetchImageAsFile', 'Error cargando imagen predeterminada', error)
+        logger.error('image:fetchImageAsFile', 'Error cargando imagen predeterminada', {
+            error: error.message,
+            imageUrl,
+            stack: error.stack
+        })
         return null
     }
 }
@@ -258,23 +275,33 @@ export const useImageReducer = (mode, initialData = {}) => {
 
     // ✅ CARGAR IMÁGENES PREDETERMINADAS EN MODO CREATE
     useEffect(() => {
+        // Solo cargar si es modo create y no se ha cargado antes
+        if (mode !== 'create' || defaultImagesLoaded.current) {
+            return
+        }
+        
+        defaultImagesLoaded.current = true
+        
         const loadDefaultImages = async () => {
-            if (mode === 'create' && !defaultImagesLoaded.current) {
-                defaultImagesLoaded.current = true
-                
-                logger.debug('image:loadDefaultImages', 'Cargando imagen predeterminada...')
-                const defaultFile = await fetchImageAsFile(logoChicoDefault, 'logo-chico_solid.webp')
-                
-                if (defaultFile) {
-                    dispatch({ 
-                        type: IMAGE_ACTIONS.SET_DEFAULT_IMAGES, 
-                        payload: { defaultFile } 
-                    })
-                    logger.debug('image:loadDefaultImages', 'Imagen predeterminada cargada', {
-                        name: defaultFile.name,
-                        size: defaultFile.size
-                    })
-                }
+            logger.debug('image:loadDefaultImages', 'Iniciando carga de imagen predeterminada', {
+                mode,
+                imageUrl: logoChicoDefault,
+                imageUrlType: typeof logoChicoDefault
+            })
+            
+            const defaultFile = await fetchImageAsFile(logoChicoDefault, 'logo-chico_solid.webp')
+            
+            if (defaultFile) {
+                dispatch({ 
+                    type: IMAGE_ACTIONS.SET_DEFAULT_IMAGES, 
+                    payload: { defaultFile } 
+                })
+                logger.debug('image:loadDefaultImages', '✅ Imagen predeterminada cargada y asignada', {
+                    name: defaultFile.name,
+                    size: defaultFile.size
+                })
+            } else {
+                logger.warn('image:loadDefaultImages', '⚠️ No se pudo cargar la imagen predeterminada')
             }
         }
         
@@ -285,8 +312,7 @@ export const useImageReducer = (mode, initialData = {}) => {
     const initImageState = useCallback((newMode, newInitialData = {}) => {
         if (newMode === 'create') {
             dispatch({ type: IMAGE_ACTIONS.INIT_CREATE })
-            // Resetear referencia para permitir nueva carga si cambia a create
-            defaultImagesLoaded.current = false
+            // NO resetear defaultImagesLoaded aquí - el useEffect se encarga
         } else if (newMode === 'edit') {
             dispatch({ 
                 type: IMAGE_ACTIONS.INIT_EDIT, 

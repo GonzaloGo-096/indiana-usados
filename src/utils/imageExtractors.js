@@ -78,11 +78,19 @@ export const extractImageUrl = (imageField) => {
     return trimmed === '' ? null : trimmed
   }
   
-  // Objeto con propiedad .url
-  if (typeof imageField === 'object' && imageField.url) {
-    return typeof imageField.url === 'string' 
-      ? (imageField.url.trim() || null) 
-      : null
+  // Objeto con propiedad .url o .secure_url (Cloudinary)
+  if (typeof imageField === 'object') {
+    // Prioridad 1: .url
+    if (imageField.url && typeof imageField.url === 'string') {
+      const trimmed = imageField.url.trim()
+      return trimmed === '' ? null : trimmed
+    }
+    
+    // Prioridad 2: .secure_url (Cloudinary)
+    if (imageField.secure_url && typeof imageField.secure_url === 'string') {
+      const trimmed = imageField.secure_url.trim()
+      return trimmed === '' ? null : trimmed
+    }
   }
   
   return null
