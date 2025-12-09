@@ -2,12 +2,15 @@
  * useImageReducer.js - Hook personalizado para manejar estado de imágenes
  * 
  * @author Indiana Usados
- * @version 1.0.0 - Patrón {existingUrl, file, remove} para campos de imagen
+ * @version 1.1.0 - Con imagen predeterminada para modo CREATE
  */
 
-import React, { useReducer, useCallback, useMemo } from 'react'
+import React, { useReducer, useCallback, useMemo, useEffect, useRef } from 'react'
 import { logger } from '@utils/logger'
 import { FORM_RULES } from '@constants/forms'
+
+// ✅ IMAGEN PREDETERMINADA - Se carga al crear autos nuevos
+import logoChicoDefault from '@assets/common/logo-chico_solid.webp'
 
 // ✅ CAMPOS DE IMAGEN (estructura actualizada)
 export const IMAGE_FIELDS = {
@@ -33,7 +36,9 @@ export const IMAGE_ACTIONS = {
     // ✅ NUEVAS ACCIONES PARA FOTOS EXTRAS
     SET_MULTIPLE_EXTRAS: 'SET_MULTIPLE_EXTRAS',        // Para input múltiple
     REMOVE_EXISTING_EXTRA: 'REMOVE_EXISTING_EXTRA',   // Para eliminar foto existente
-    RESTORE_EXISTING_EXTRA: 'RESTORE_EXISTING_EXTRA'  // Para restaurar foto existente
+    RESTORE_EXISTING_EXTRA: 'RESTORE_EXISTING_EXTRA', // Para restaurar foto existente
+    // ✅ ACCIÓN PARA CARGAR IMÁGENES PREDETERMINADAS
+    SET_DEFAULT_IMAGES: 'SET_DEFAULT_IMAGES'          // Para precargar logo al crear
 }
 
 // ✅ ESTADO INICIAL PARA UNA IMAGEN
@@ -201,8 +206,38 @@ const imageReducer = (state, action) => {
         case IMAGE_ACTIONS.RESET:
             return createInitialImageState()
             
+        case IMAGE_ACTIONS.SET_DEFAULT_IMAGES:
+            // ✅ CARGAR IMÁGENES PREDETERMINADAS (logo) EN MODO CREATE
+            const { defaultFile } = action.payload
+            return {
+                ...state,
+                fotoPrincipal: {
+                    ...state.fotoPrincipal,
+                    file: defaultFile,
+                    remove: false
+                },
+                fotoHover: {
+                    ...state.fotoHover,
+                    file: defaultFile,
+                    remove: false
+                }
+            }
+            
         default:
             return state
+    }
+}
+
+// ✅ FUNCIÓN HELPER: Convierte URL de imagen a File object
+const fetchImageAsFile = async (imageUrl, fileName = 'logo-chico_solid.webp') => {
+    try {
+        const response = await fetch(imageUrl)
+        const blob = await response.blob()
+        // Crear un File object desde el Blob
+        return new File([blob], fileName, { type: 'image/webp' })
+    } catch (error) {
+        logger.error('image:fetchImageAsFile', 'Error cargando imagen predeterminada', error)
+        return null
     }
 }
 
@@ -217,11 +252,41 @@ export const useImageReducer = (mode, initialData = {}) => {
         }
         return createInitialImageState()
     })
+    
+    // ✅ REFERENCIA PARA EVITAR DOBLE CARGA
+    const defaultImagesLoaded = useRef(false)
+
+    // ✅ CARGAR IMÁGENES PREDETERMINADAS EN MODO CREATE
+    useEffect(() => {
+        const loadDefaultImages = async () => {
+            if (mode === 'create' && !defaultImagesLoaded.current) {
+                defaultImagesLoaded.current = true
+                
+                logger.debug('image:loadDefaultImages', 'Cargando imagen predeterminada...')
+                const defaultFile = await fetchImageAsFile(logoChicoDefault, 'logo-chico_solid.webp')
+                
+                if (defaultFile) {
+                    dispatch({ 
+                        type: IMAGE_ACTIONS.SET_DEFAULT_IMAGES, 
+                        payload: { defaultFile } 
+                    })
+                    logger.debug('image:loadDefaultImages', 'Imagen predeterminada cargada', {
+                        name: defaultFile.name,
+                        size: defaultFile.size
+                    })
+                }
+            }
+        }
+        
+        loadDefaultImages()
+    }, [mode])
 
     // ✅ INICIALIZAR ESTADO SEGÚN MODO
     const initImageState = useCallback((newMode, newInitialData = {}) => {
         if (newMode === 'create') {
             dispatch({ type: IMAGE_ACTIONS.INIT_CREATE })
+            // Resetear referencia para permitir nueva carga si cambia a create
+            defaultImagesLoaded.current = false
         } else if (newMode === 'edit') {
             dispatch({ 
                 type: IMAGE_ACTIONS.INIT_EDIT, 
