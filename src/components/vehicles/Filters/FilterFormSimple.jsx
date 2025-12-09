@@ -349,6 +349,16 @@ const FilterFormSimpleComponent = React.forwardRef(({
             </div>
           </div>
 
+          {/* Botones - Arriba de los inputs en mobile */}
+          <div className={styles.mobileButtons}>
+            <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
+              Limpiar
+            </button>
+            <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
+              Aplicar
+            </button>
+          </div>
+
           {/* Range Sliders */}
           <div className={styles.rangesSection}>
             <div className={styles.formGroup}>
@@ -415,16 +425,6 @@ const FilterFormSimpleComponent = React.forwardRef(({
                 placeholder="Todas las cajas"
               />
             </div>
-          </div>
-
-          {/* Botones */}
-          <div className={styles.mobileButtons}>
-            <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
-              Limpiar
-            </button>
-            <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
-              Aplicar
-            </button>
           </div>
         </form>
       </div>
