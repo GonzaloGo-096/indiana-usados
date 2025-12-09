@@ -42,6 +42,8 @@ import { AutosGrid } from '@vehicles'
 import FilterFormSimple from '@vehicles/Filters/FilterFormSimple'
 import SortDropdown from '@vehicles/Filters/SortDropdown'
 import { VehiclesListSEOHead } from '@components/SEO'
+import HeroImage from '@ui/HeroImage'
+import { heroImage } from '../../assets/home'
 import styles from './Vehiculos.module.css'
 
 const Vehiculos = () => {
@@ -116,6 +118,17 @@ const Vehiculos = () => {
     return (
         <>
             <VehiclesListSEOHead vehicleCount={total} />
+            
+            {/* Hero de la página de usados */}
+            <section className={styles.heroSection}>
+                <HeroImage 
+                    src={heroImage.src}
+                    srcSet={heroImage.srcSet}
+                    sizes={heroImage.sizes}
+                    alt="Vehículos usados de calidad en Indiana Usados"
+                />
+            </section>
+
             <div className={styles.container}>
             {/* ✅ Banner de datos mock */}
             {isUsingMockData && (

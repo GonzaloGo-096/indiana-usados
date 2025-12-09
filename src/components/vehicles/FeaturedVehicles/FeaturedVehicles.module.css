@@ -27,38 +27,32 @@
 
 /* ===== TÍTULO "NUESTROS USADOS" ===== */
 .sectionTitle {
-  text-align: left; /* ✅ Alineación izquierda */
-  margin-bottom: var(--spacing-2); /* 🔥 COMPRIMIDO: Reducido de spacing-6 */
-  padding: var(--spacing-1) 0; /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
+  text-align: center; /* ✅ Centrado */
+  margin-bottom: var(--spacing-4);
+  padding: var(--spacing-2) 0;
 }
 
 .title {
-  /* ✅ Estilo con background azul y bordes redondeados */
-  font-size: 1.25rem; /* ✅ Más chico */
-  font-weight: 600;
-  color: var(--color-text-inverse); /* ✅ Texto blanco */
+  /* ✅ Solo texto, sin fondo */
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black); /* ✅ Texto negro */
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-family: 'Barlow Condensed', sans-serif;
-  background: var(--color-brand-600); /* ✅ Background azul igual que botones */
-  padding: 6px 24px; /* ✅ Padding reducido */
-  border-radius: var(--border-radius-lg); /* ✅ Bordes redondeados */
-  display: inline-block; /* ✅ Para que el background solo cubra el texto */
+  letter-spacing: 2px;
+  font-family: var(--font-display);
 }
 
 /* ✅ Responsive para título */
 @media (min-width: 768px) {
   .title {
-    font-size: 1.5rem; /* ✅ Más chico */
-    padding: 6px 24px; /* ✅ Padding reducido */
+    font-size: 1.75rem;
   }
 }
 
 @media (min-width: 992px) {
   .title {
-    font-size: 1.75rem; /* ✅ Más chico */
-    padding: 6px 24px; /* ✅ Padding reducido */
+    font-size: 2rem;
   }
 }
 

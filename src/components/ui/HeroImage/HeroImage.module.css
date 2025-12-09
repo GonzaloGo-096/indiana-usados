@@ -14,9 +14,6 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  border-radius: var(--border-radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
 }
 
 /* ===== IMAGEN HERO ===== */
@@ -24,8 +21,6 @@
   display: block;
   width: 100%;
   height: auto;
-  background-color: var(--color-neutral-50);
-  border-radius: var(--border-radius-lg);
   /* 🎯 MOBILE: Ver imagen completa sin recortes */
   object-fit: contain;
   object-position: center center;
@@ -54,9 +49,3 @@
     max-height: none;
   }
 }
-
-
-
-
-
-

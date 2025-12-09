@@ -12,25 +12,8 @@
   min-height: 100vh;
 }
 
-/* ===== HERO SECTION (MOBILE-FIRST) ===== */
-.hero {
-  /* Usar el mismo padding vertical que el resto de secciones del Home */
-  padding: var(--section-padding-compact) 0;
-  background: transparent;
-}
-
-/* Centrar y evitar que el contenedor global estire el bloque en tablet/desktop */
-.hero :global(.container) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* LCP Phase 1: El componente HeroImage maneja sus propios estilos */
-/* Solo mantenemos el contenedor para centrado */
-.heroImageContainer {
-  /* Los estilos específicos del hero están en HeroImage.module.css */
-}
+/* ===== HERO SECTION ===== */
+/* El componente Hero maneja sus propios estilos */
 
 /* ===== FEATURES SECTION (FEATURED VEHICLES) ===== */
 .features {

@@ -10,6 +10,7 @@
 // ===== COMPONENTES MODULARES =====
 export { ServiceCard } from './ServiceCard'
 export { default as PostventaServiceCard } from './PostventaServiceCard'
+export { default as Hero } from './Hero'
 
 // ===== COMPONENTES EXISTENTES =====
 export * from './ui'
