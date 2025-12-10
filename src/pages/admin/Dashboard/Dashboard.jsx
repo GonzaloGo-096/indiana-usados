@@ -6,7 +6,7 @@
  */
 
 import React, { useReducer, useCallback, useState } from 'react'
-import fallbackImage from '@assets/vehicles/fallback-vehicle.jpg'
+import { defaultCarImage as fallbackImage } from '@assets'
 import { useAuth, useVehiclesList } from '@hooks'
 import { useCarMutation } from '@hooks'
 import vehiclesService from '@services/vehiclesApi'

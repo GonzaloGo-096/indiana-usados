@@ -29,8 +29,9 @@
  */
 export const criticalPreloads = [
   // Imagen hero - crítica para LCP (Largest Contentful Paint)
+  // Usando la imagen desktop que es la que se carga en pantallas grandes
   {
-    href: '@assets/home/hero-home.webp',
+    href: '@assets/home/indiana-hero-1-desktop.webp',
     as: 'image',
     fetchPriority: 'high',
   },

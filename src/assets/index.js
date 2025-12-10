@@ -18,8 +18,12 @@ import logoNavImg from './common/INDIANA-final.webp'
 export const logoNav = logoNavImg
 export const indianaNavLogo = logoNavImg // Legacy alias
 
-// ===== VEHICLES (Fallbacks) =====
-export { default as defaultCarImage } from './vehicles/fallback-vehicle.jpg'
+// ===== VEHICLES (Fallbacks e imágenes) =====
+// TODO: Crear archivo fallback-vehicle.jpg en assets/vehicles/
+// Temporal: usando logo como fallback hasta que se cree la imagen
+export const defaultCarImage = logoNavImg // Temporal: reemplazar cuando exista fallback-vehicle.jpg
+
+export { vehiclesHeroImage } from './vehicles'
 
 // ===== HOME (Re-exportar desde subcarpeta) =====
 export { heroImage, heroHomeWebp } from './home'
