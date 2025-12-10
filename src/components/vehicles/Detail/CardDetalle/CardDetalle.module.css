@@ -283,19 +283,19 @@
   width: 100%;
 }
 
-/* ✅ Botón WhatsApp más pequeño HORIZONTALMENTE - Especificidad adecuada sin !important */
+/* ✅ Botón WhatsApp - Tamaño aumentado especialmente en desktop */
 .whatsappButtonSmall {
-  padding-top: 0.75rem; /* ✅ Mantener: Padding vertical original */
-  padding-bottom: 0.75rem; /* ✅ Mantener: Padding vertical original */
-  padding-left: 0.75rem; /* ✅ Aumentado: De 0.5rem a 0.75rem (12px) - Horizontal */
-  padding-right: 0.75rem; /* ✅ Aumentado: De 0.5rem a 0.75rem (12px) - Horizontal */
-  font-size: 0.8125rem; /* ✅ Reducido: Texto más pequeño para ocupar menos espacio horizontal */
-  gap: 0.25rem; /* ✅ Reducido: Menos espacio entre icono y texto */
+  padding-top: 0.875rem; /* ✅ Aumentado: De 0.75rem a 0.875rem (14px) */
+  padding-bottom: 0.875rem; /* ✅ Aumentado: De 0.75rem a 0.875rem (14px) */
+  padding-left: 1.25rem; /* ✅ Aumentado: De 0.75rem a 1.25rem (20px) - Horizontal */
+  padding-right: 1.25rem; /* ✅ Aumentado: De 0.75rem a 1.25rem (20px) - Horizontal */
+  font-size: 0.9375rem; /* ✅ Aumentado: De 0.8125rem a 0.9375rem (15px) */
+  gap: 0.375rem; /* ✅ Aumentado: De 0.25rem a 0.375rem - Más espacio entre icono y texto */
 }
 
 .whatsappButtonSmall .whatsappIcon {
-  width: 16px;
-  height: 16px;
+  width: 18px; /* ✅ Aumentado: De 16px a 18px */
+  height: 18px; /* ✅ Aumentado: De 16px a 18px */
 }
 
 /* ===== RESPONSIVE DESIGN - MOBILE FIRST ===== */
@@ -419,15 +419,16 @@
   }
   
   .whatsappButtonSmall {
-    padding-top: 0.75rem; /* ✅ Mantener: Padding vertical original */
-    padding-bottom: 0.75rem; /* ✅ Mantener: Padding vertical original */
-    padding-left: 0.625rem; /* ✅ Desktop: Padding horizontal aumentado (10px) */
-    padding-right: 0.625rem; /* ✅ Desktop: Padding horizontal aumentado (10px) */
-    font-size: 0.75rem; /* ✅ Desktop: Texto más pequeño para ocupar menos espacio horizontal */
+    padding-top: 1rem; /* ✅ Desktop: Padding vertical aumentado (16px) */
+    padding-bottom: 1rem; /* ✅ Desktop: Padding vertical aumentado (16px) */
+    padding-left: 2rem; /* ✅ Desktop: Padding horizontal mucho mayor (32px) */
+    padding-right: 2rem; /* ✅ Desktop: Padding horizontal mucho mayor (32px) */
+    font-size: 1.0625rem; /* ✅ Desktop: Texto más grande (17px) */
+    gap: 0.5rem; /* ✅ Desktop: Más espacio entre icono y texto */
   }
   
   .whatsappButtonSmall .whatsappIcon {
-    width: 15px; /* ✅ Desktop: Icono ligeramente más pequeño */
-    height: 15px;
+    width: 22px; /* ✅ Desktop: Icono más grande (22px) */
+    height: 22px; /* ✅ Desktop: Icono más grande (22px) */
   }
 }
