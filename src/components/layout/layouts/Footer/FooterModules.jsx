@@ -12,6 +12,7 @@
  * @version 1.0.0
  */
 
+import React from 'react'
 import { footerModules, footerIcons } from './footerConfig.jsx'
 import styles from './FooterModules.module.css'
 

@@ -16,6 +16,9 @@ import { serviceImagesMap } from './imagesMap'
 // Fallback a taller-2 si no se encuentra la imagen
 const fallbackImage = serviceImagesMap['taller-2']
 
+// Número de WhatsApp para postventa
+const POSTVENTA_WHATSAPP = "543816295959"
+
 /**
  * Componente PostventaServiceCard
  * @param {Object} props - Propiedades del componente
@@ -59,6 +62,7 @@ export const PostventaServiceCard = ({
         <div className={styles.buttonContainer}>
           <WhatsAppContact
             text={buttonText}
+            phone={POSTVENTA_WHATSAPP}
             message={finalMessage}
           />
         </div>
