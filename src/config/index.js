@@ -75,7 +75,7 @@ const getContactConfig = () => {
 const getImagesConfig = () => {
   return {
     cloudinary: {
-      cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'duuwqmpmn',
+      cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'drbeomhcu',
       progressiveJpeg: import.meta.env.VITE_IMG_PROGRESSIVE_JPEG === 'true',
       blurPlaceholder: import.meta.env.VITE_IMG_PLACEHOLDER_BLUR === 'true'
     }

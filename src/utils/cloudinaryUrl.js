@@ -18,15 +18,16 @@ import {
   generateStaticSrcset,
   hasStaticImages 
 } from './imageManifest'
+import { config } from '@config'
 
 // ===== CONFIGURACIÓN =====
 
-// Cloud name desde variable de entorno o fallback
-const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'duuwqmpmn'
+// Cloud name desde configuración centralizada (que usa import.meta.env.VITE_CLOUDINARY_CLOUD_NAME)
+const CLOUDINARY_CLOUD_NAME = config.images.cloudinary.cloudName
 
-// Feature flags para optimizaciones de imágenes
-const PROGRESSIVE_JPEG_ENABLED = import.meta.env.VITE_IMG_PROGRESSIVE_JPEG === 'true'
-const BLUR_PLACEHOLDER_ENABLED = import.meta.env.VITE_IMG_PLACEHOLDER_BLUR === 'true'
+// Feature flags para optimizaciones de imágenes (desde configuración centralizada)
+const PROGRESSIVE_JPEG_ENABLED = config.images.cloudinary.progressiveJpeg
+const BLUR_PLACEHOLDER_ENABLED = config.images.cloudinary.blurPlaceholder
 
 // ===== CACHE =====
 

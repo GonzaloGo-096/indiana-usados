@@ -115,6 +115,7 @@ export const ImageCarousel = ({
         setTimeout(checkScrollability, 300)
     }, [checkScrollability])
 
+
     // AutoPlay
     useEffect(() => {
         if (!autoPlay || allImages.length <= 1) return
@@ -132,99 +133,23 @@ export const ImageCarousel = ({
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [goToPrevious, goToNext])
 
-    // ===== SOLUCIÓN A MEJORADA: Crossfade sin gaps =====
-    const [displayIndex, setDisplayIndex] = useState(0)
-    const [overlayIndex, setOverlayIndex] = useState(null)
-    const [isFading, setIsFading] = useState(false)
-
-    // Cuando cambia currentIndex, preparar overlay e iniciar fade inmediatamente
-    useEffect(() => {
-        if (currentIndex === displayIndex) return
-        setOverlayIndex(currentIndex)
-        // Iniciar fade inmediatamente (mostrará placeholder borroso mientras carga)
-        setIsFading(true)
-    }, [currentIndex, displayIndex])
-
-    // Handler cuando overlay carga: completar el fade
-    const handleOverlayLoad = useCallback(() => {
-        // En mobile, usar setTimeout directamente para evitar problemas de timing
-        const isMobile = window.matchMedia('(max-width: 768px)').matches
-        
-        if (isMobile) {
-            // Mobile: timing más largo para dispositivos más lentos
-            setTimeout(() => {
-                if (overlayIndex !== null) {
-                    setDisplayIndex(overlayIndex)
-                    // Delay más largo en mobile para asegurar render completo
-                    setTimeout(() => {
-                        setOverlayIndex(null)
-                        setIsFading(false)
-                    }, 100)
-                }
-            }, 200)
-        } else {
-            // Desktop: usar requestAnimationFrame para mejor sincronización
-            setTimeout(() => {
-                if (overlayIndex !== null) {
-                    setDisplayIndex(overlayIndex)
-                    requestAnimationFrame(() => {
-                        requestAnimationFrame(() => {
-                            requestAnimationFrame(() => {
-                                setOverlayIndex(null)
-                                setIsFading(false)
-                            })
-                        })
-                    })
-                }
-            }, 200)
-        }
-    }, [overlayIndex])
 
     return (
         <div className={styles.carouselContainer}>
             {/* Imagen principal */}
             <div className={styles.mainImageContainer}>
-                {/* Capa base: imagen display (fade-out cuando overlay está haciendo fade-in) */}
+                {/* Una sola imagen - source of truth: currentIndex */}
                 <CloudinaryImage
-                    image={allImages[displayIndex]}
-                    alt={`${altText} ${displayIndex + 1} de ${allImages.length}`}
+                    image={allImages[currentIndex]}
+                    alt={`${altText} ${currentIndex + 1} de ${allImages.length}`}
                     variant="fluid"
                     widths={IMAGE_WIDTHS.carousel}
                     sizes={IMAGE_SIZES.carousel}
-                    loading={displayIndex === 0 ? 'eager' : 'lazy'}
-                    fetchpriority={displayIndex === 0 ? 'high' : 'auto'}
+                    loading={currentIndex === 0 ? 'eager' : 'lazy'}
+                    fetchpriority={currentIndex === 0 ? 'high' : 'auto'}
                     qualityMode="auto"
                     className={styles.mainImage}
-                    style={{ 
-                        position: 'relative', 
-                        zIndex: 1, 
-                        opacity: overlayIndex !== null && isFading ? 0 : 1, 
-                        transition: overlayIndex !== null && isFading ? 'opacity 200ms ease-out' : 'none' 
-                    }}
                 />
-
-                {/* Capa overlay: nueva imagen (fade-in cuando está lista) */}
-                {overlayIndex !== null && (
-                    <CloudinaryImage
-                        image={allImages[overlayIndex]}
-                        alt={`${altText} ${overlayIndex + 1} de ${allImages.length}`}
-                        variant="fluid"
-                        widths={IMAGE_WIDTHS.carousel}
-                        sizes={IMAGE_SIZES.carousel}
-                        loading="eager"
-                        fetchpriority="high"
-                        qualityMode="auto"
-                        className={styles.mainImage}
-                        style={{
-                            position: 'absolute',
-                            inset: 0,
-                            zIndex: 2,
-                            opacity: isFading ? 1 : 0,
-                            transition: 'opacity 200ms ease-out'
-                        }}
-                        onLoad={handleOverlayLoad}
-                    />
-                )}
 
                 {/* Flechas de navegación */}
                 {showArrows && allImages.length > 1 && (
@@ -252,7 +177,7 @@ export const ImageCarousel = ({
                 {showIndicators && allImages.length > 1 && (
                     <div className={styles.indicators}>
                         <div className={styles.positionCounter}>
-                            {displayIndex + 1} / {allImages.length}
+                            {currentIndex + 1} / {allImages.length}
                         </div>
                     </div>
                 )}
@@ -281,7 +206,7 @@ export const ImageCarousel = ({
                             <button
                                 key={index}
                                 ref={(el) => (thumbnailRefs.current[index] = el)}
-                                className={`${styles.thumbnail} ${index === displayIndex ? styles.active : ''}`}
+                                className={`${styles.thumbnail} ${index === currentIndex ? styles.active : ''}`}
                                 onClick={() => goToImage(index)}
                                 aria-label={`Ver imagen ${index + 1}`}
                                 type="button"

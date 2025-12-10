@@ -42,10 +42,10 @@ const mockVehicles = [
     marca: 'Toyota',
     modelo: 'Corolla',
     anio: 2020,
-    fotoPrincipal: 'https://res.cloudinary.com/duuwqmpmn/image/upload/v123/toyota.jpg',
+    fotoPrincipal: 'https://res.cloudinary.com/drbeomhcu/image/upload/v123/toyota.jpg',
     fotosExtras: [
-      'https://res.cloudinary.com/duuwqmpmn/image/upload/v123/toyota2.jpg',
-      'https://res.cloudinary.com/duuwqmpmn/image/upload/v123/toyota3.jpg'
+      'https://res.cloudinary.com/drbeomhcu/image/upload/v123/toyota2.jpg',
+      'https://res.cloudinary.com/drbeomhcu/image/upload/v123/toyota3.jpg'
     ],
     updatedAt: '2025-01-14T10:00:00Z'
   },
