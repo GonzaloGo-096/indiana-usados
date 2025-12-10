@@ -275,8 +275,9 @@
 
 /* ===== SECCIÓN DE CONTACTO ===== */
 .contactSection {
-  padding-top: var(--spacing-4);
-  border-top: 1px solid var(--color-neutral-200);
+  margin-top: var(--spacing-6); /* ✅ Espacio arriba */
+  padding-top: var(--spacing-8); /* ✅ Espacio grande arriba */
+  padding-bottom: var(--spacing-8); /* ✅ Mismo espacio abajo para centrado vertical */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -285,17 +286,18 @@
 
 /* ✅ Botón WhatsApp - Tamaño aumentado especialmente en desktop */
 .whatsappButtonSmall {
-  padding-top: 0.875rem; /* ✅ Aumentado: De 0.75rem a 0.875rem (14px) */
-  padding-bottom: 0.875rem; /* ✅ Aumentado: De 0.75rem a 0.875rem (14px) */
-  padding-left: 1.25rem; /* ✅ Aumentado: De 0.75rem a 1.25rem (20px) - Horizontal */
-  padding-right: 1.25rem; /* ✅ Aumentado: De 0.75rem a 1.25rem (20px) - Horizontal */
-  font-size: 0.9375rem; /* ✅ Aumentado: De 0.8125rem a 0.9375rem (15px) */
-  gap: 0.375rem; /* ✅ Aumentado: De 0.25rem a 0.375rem - Más espacio entre icono y texto */
+  margin-top: var(--spacing-3); /* ✅ Agregado: Un poco de espacio arriba */
+  padding-top: 0.875rem; /* ✅ Reducido sutilmente: Padding vertical (14px) */
+  padding-bottom: 0.875rem; /* ✅ Reducido sutilmente: Padding vertical (14px) */
+  padding-left: 1.5rem; /* ✅ Reducido sutilmente: Padding horizontal (24px) */
+  padding-right: 1.5rem; /* ✅ Reducido sutilmente: Padding horizontal (24px) */
+  font-size: 1rem; /* ✅ Reducido sutilmente: Texto (16px) */
+  gap: 0.5rem; /* ✅ Aumentado: Más espacio entre icono y texto */
 }
 
 .whatsappButtonSmall .whatsappIcon {
-  width: 18px; /* ✅ Aumentado: De 16px a 18px */
-  height: 18px; /* ✅ Aumentado: De 16px a 18px */
+  width: 19px; /* ✅ Reducido sutilmente: Icono (19px) */
+  height: 19px; /* ✅ Reducido sutilmente: Icono (19px) */
 }
 
 /* ===== RESPONSIVE DESIGN - MOBILE FIRST ===== */
@@ -419,16 +421,27 @@
   }
   
   .whatsappButtonSmall {
-    padding-top: 1rem; /* ✅ Desktop: Padding vertical aumentado (16px) */
-    padding-bottom: 1rem; /* ✅ Desktop: Padding vertical aumentado (16px) */
-    padding-left: 2rem; /* ✅ Desktop: Padding horizontal mucho mayor (32px) */
-    padding-right: 2rem; /* ✅ Desktop: Padding horizontal mucho mayor (32px) */
-    font-size: 1.0625rem; /* ✅ Desktop: Texto más grande (17px) */
-    gap: 0.5rem; /* ✅ Desktop: Más espacio entre icono y texto */
+    margin-top: var(--spacing-4); /* ✅ Desktop: Un poco más de espacio arriba */
+    padding-top: 1.125rem; /* ✅ Desktop: Reducido sutilmente: Padding vertical (18px) */
+    padding-bottom: 1.125rem; /* ✅ Desktop: Reducido sutilmente: Padding vertical (18px) */
+    padding-left: 2.25rem; /* ✅ Desktop: Reducido sutilmente: Padding horizontal (36px) */
+    padding-right: 2.25rem; /* ✅ Desktop: Reducido sutilmente: Padding horizontal (36px) */
+    font-size: 1.125rem; /* ✅ Desktop: Reducido sutilmente: Texto (18px) */
+    gap: 0.625rem; /* ✅ Desktop: Más espacio entre icono y texto */
   }
   
   .whatsappButtonSmall .whatsappIcon {
-    width: 22px; /* ✅ Desktop: Icono más grande (22px) */
-    height: 22px; /* ✅ Desktop: Icono más grande (22px) */
+    width: 23px; /* ✅ Desktop: Reducido sutilmente: Icono (23px) */
+    height: 23px; /* ✅ Desktop: Reducido sutilmente: Icono (23px) */
+  }
+  
+  .contactSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: var(--spacing-8); /* ✅ Desktop: Más espacio antes del border-top */
+    padding-top: var(--spacing-10); /* ✅ Desktop: Espacio grande arriba después del border */
+    padding-bottom: var(--spacing-10); /* ✅ Desktop: Mismo espacio abajo para centrado vertical */
   }
 }
