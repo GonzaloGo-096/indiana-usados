@@ -28,7 +28,7 @@
     height: 400px;
     border-radius: 12px;
     overflow: hidden;
-    background-color: #1a1a1a; /* Fondo oscuro para evitar flash blanco */
+    background-color: #ffffff; /* ✅ Fondo blanco para coincidir con el resto de la card */
     contain: layout style paint; /* ✅ OPTIMIZACIÓN: Contención */
 }
 
@@ -124,7 +124,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: transparent; /* ✅ Removido: Sin fondo degradado */
+    background: #ffffff; /* ✅ Fondo blanco para coincidir con el resto de la card */
     border-radius: 0; /* ✅ Removido: Sin bordes redondeados */
     padding: 12px 0; /* ✅ Reducido: Padding vertical mínimo */
     margin-top: 16px; /* ✅ Reducido: Menos separación */

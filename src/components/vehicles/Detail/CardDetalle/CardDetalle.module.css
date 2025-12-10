@@ -28,7 +28,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-6); /* ✅ Aumentado de spacing-4 para más separación */
-  padding: var(--spacing-6); /* ✅ Aumentado de spacing-4 para más espacio interno */
+  padding-top: var(--spacing-6); /* ✅ Padding vertical */
+  padding-bottom: var(--spacing-6); /* ✅ Padding vertical */
+  padding-left: var(--spacing-2); /* ✅ Mobile: Padding lateral reducido para imagen más ancha */
+  padding-right: var(--spacing-2); /* ✅ Mobile: Padding lateral reducido para imagen más ancha */
 }
 
 /* ===== SECCIÓN DE IMAGEN ===== */
@@ -36,11 +39,14 @@
   position: relative;
   border-radius: var(--border-radius-lg);
   overflow: hidden;
-  background: var(--color-neutral-50);
+  background: #ffffff; /* ✅ Fondo blanco para coincidir con el resto de la card */
   /* ✅ ADAPTATIVO: Se adapta al contenido sin altura mínima fija */
   order: -1; /* Imagen primero en mobile */
-  /* ✅ EFECTO COMPRESIÓN: Padding interno para más separación */
-  padding: var(--spacing-4);
+  /* ✅ Mobile: Padding vertical mantenido, lateral reducido para imagen más ancha */
+  padding-top: var(--spacing-4);
+  padding-bottom: var(--spacing-4);
+  padding-left: var(--spacing-1); /* ✅ Mobile: Padding lateral mínimo */
+  padding-right: var(--spacing-1); /* ✅ Mobile: Padding lateral mínimo */
   /* ✅ ADAPTATIVO: Altura según contenido */
   height: fit-content;
   /* ✅ ANIMACIÓN: Fade-in sutil de la galería */
