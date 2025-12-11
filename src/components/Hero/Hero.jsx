@@ -57,9 +57,14 @@ const Hero = () => {
         </p>
         
         <div className={styles.ctaContainer}>
-          <Link to="/0km" className={`${styles.cta} ${styles.ctaPrimary}`}>
+          <a 
+            href="https://peugeotindiana.com.ar/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={`${styles.cta} ${styles.ctaPrimary}`}
+          >
             Peugeot <span className={styles.ctaDivider}>|</span> 0 KM
-          </Link>
+          </a>
           <Link to="/vehiculos" className={`${styles.cta} ${styles.ctaSecondary}`}>
             Usados <span className={styles.ctaDivider}>|</span> Multimarca
           </Link>
