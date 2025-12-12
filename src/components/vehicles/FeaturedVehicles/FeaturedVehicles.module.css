@@ -5,132 +5,84 @@
  * - Desktop: 3 cards alineadas con márgenes equilibrados
  * - Mobile: Scroll horizontal con 1 card completa + 2 asomando
  * - Botón "Ver todos" centrado y destacado
+ * - Animación staggered al cargar datos
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Animación al cargar datos
  */
 
 /* ===== SECCIÓN PRINCIPAL ===== */
 .featuredSection {
-  padding: var(--spacing-3) 0; /* 🔥 COMPRIMIDO: Reducido de section-padding-compact */
+  padding: var(--spacing-3) 0;
   background: var(--color-white);
   width: 100%;
 }
 
+/* ===== LOADING STATE ===== */
 .loadingContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: var(--spacing-8);
   color: var(--color-neutral-500);
+  min-height: 200px;
 }
 
 /* ===== TÍTULO "NUESTROS USADOS" ===== */
 .sectionTitle {
-  text-align: center; /* ✅ Centrado */
+  text-align: center;
   margin-bottom: var(--spacing-4);
   padding: var(--spacing-2) 0;
 }
 
 .title {
-  /* ✅ Solo texto, sin fondo */
   font-size: 1.5rem;
   font-weight: var(--font-weight-bold);
-  color: var(--color-black); /* ✅ Texto negro */
+  color: var(--color-black);
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-family: var(--font-display);
+  /* Animación más notoria */
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  transition-delay: 0.2s;
 }
 
-/* ✅ Responsive para título */
-@media (min-width: 768px) {
-  .title {
-    font-size: 1.75rem;
-  }
-}
-
-@media (min-width: 992px) {
-  .title {
-    font-size: 2rem;
-  }
+.featuredSection.visible .title {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ===== CONTENEDOR DE CARDS ===== */
 .cardsContainer {
   display: flex;
-  gap: var(--spacing-3); /* 🔥 COMPRIMIDO: Reducido de spacing-6 */
+  gap: var(--spacing-3);
   justify-content: center;
   align-items: stretch;
-  padding: var(--spacing-2) 0; /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
-  /* ✅ DESKTOP: Sin scroll, solo grid */
+  padding: var(--spacing-2) 0;
   overflow-x: visible;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  scrollbar-width: none; /* Firefox: Ocultar scrollbar */
-  -ms-overflow-style: none; /* IE/Edge: Ocultar scrollbar */
-  -webkit-overflow-scrolling: touch; /* Mobile: Scroll suave */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
   max-width: 100%;
 }
 
-/* ✅ MOBILE: Scroll horizontal con card centrada y cards asomando a los lados */
-@media (max-width: 991px) {
-  .cardsContainer {
-    gap: var(--spacing-2); /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
-    justify-content: flex-start;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    /* ✅ Centrar primera card: padding igual a ambos lados */
-    padding-left: calc((100vw - 320px) / 2);
-    padding-right: calc((100vw - 320px) / 2);
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  
-  /* ✅ Ocultar scrollbar en Webkit */
-  .cardsContainer::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* ✅ Cada card tiene snap point y ancho fijo */
-  .cardsContainer > * {
-    scroll-snap-align: center; /* ✅ Snap al centro de cada card */
-    flex-shrink: 0;
-    width: 320px; /* ✅ Ancho fijo para card completa */
-    max-width: 320px;
-  }
-  
-  /* ✅ Primera card: scroll inicial centrado */
-  .cardsContainer > *:first-child {
-    scroll-margin-left: calc((100vw - 320px) / 2);
-  }
-  
-  /* ✅ Última card: scroll final centrado */
-  .cardsContainer > *:last-child {
-    scroll-margin-right: calc((100vw - 320px) / 2);
-  }
+/* ===== CARD WRAPPER (con animación) ===== */
+.cardWrapper {
+  /* Animación staggered más notoria */
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition-delay: calc(0.35s + (var(--card-index, 0) * 0.15s));
 }
 
-/* ✅ DESKTOP: 3 cards alineadas centradas */
-@media (min-width: 992px) {
-  .cardsContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-3); /* 🔥 COMPRIMIDO: Reducido de spacing-6 */
-    max-width: 1200px; /* ✅ Máximo ancho para mantener proporción */
-    margin: 0 auto; /* ✅ Centrar */
-    padding-left: var(--spacing-2); /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
-    padding-right: var(--spacing-2); /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
-    overflow-x: visible; /* ✅ Sin scroll en desktop */
-  }
-  
-  .cardsContainer > * {
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto; /* ✅ Centrar cada card */
-  }
+.featuredSection.visible .cardWrapper {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ===== CONTENEDOR DE BOTÓN ===== */
@@ -138,8 +90,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--spacing-2) 0 var(--spacing-2) 0; /* 🔥 COMPRIMIDO: Reducido de spacing-6/4 */
-  margin-top: var(--spacing-2); /* 🔥 COMPRIMIDO: Reducido de spacing-4 */
+  padding: var(--spacing-2) 0;
+  margin-top: var(--spacing-2);
+  /* Animación más notoria */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition-delay: 0.8s;
+}
+
+.featuredSection.visible .buttonContainer {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .verTodosButton {
@@ -163,7 +125,7 @@
 }
 
 .verTodosButton:hover {
-  background: var(--color-brand-500); /* ✅ Mismo hover que postventa */
+  background: var(--color-brand-500);
   transform: translateY(-1px);
 }
 
@@ -172,3 +134,65 @@
   outline-offset: 2px;
 }
 
+/* ===== RESPONSIVE - MOBILE (max 991px) ===== */
+@media (max-width: 991px) {
+  .cardsContainer {
+    gap: var(--spacing-2);
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    padding-left: calc((100vw - 320px) / 2);
+    padding-right: calc((100vw - 320px) / 2);
+  }
+  
+  .cardsContainer::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .cardWrapper {
+    scroll-snap-align: center;
+    flex-shrink: 0;
+    width: 320px;
+    max-width: 320px;
+  }
+  
+  .cardWrapper:first-child {
+    scroll-margin-left: calc((100vw - 320px) / 2);
+  }
+  
+  .cardWrapper:last-child {
+    scroll-margin-right: calc((100vw - 320px) / 2);
+  }
+}
+
+/* ===== RESPONSIVE - TABLET (768px+) ===== */
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.75rem;
+  }
+}
+
+/* ===== RESPONSIVE - DESKTOP (992px+) ===== */
+@media (min-width: 992px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-3);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: var(--spacing-2);
+    padding-right: var(--spacing-2);
+    overflow-x: visible;
+  }
+  
+  .cardWrapper {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+}

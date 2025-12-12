@@ -7,12 +7,13 @@
  * - Desktop: 3 cards alineadas
  * - Mobile: Scroll horizontal con 1 card completa + 2 asomando
  * - Botón "Ver todos" centrado
+ * - Animación staggered al cargar datos
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Animación al cargar datos
  */
 
-import React, { useMemo, useRef, useEffect } from 'react'
+import { useMemo, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useVehiclesList } from '@hooks'
 import { CardAutoCompact } from '@vehicles'
@@ -33,12 +34,15 @@ export const FeaturedVehicles = () => {
         return vehicles.slice(0, 3)
     }, [vehicles])
     
+    // ✅ Activar animación cuando datos cargan
+    const isVisible = !isLoading && featuredVehicles.length > 0
+    
     // ✅ Handler para botón "Ver todos"
     const handleVerTodos = () => {
         navigate('/vehiculos')
     }
     
-    // ✅ MOBILE: Centrar segunda card al cargar (solo en mobile y solo una vez)
+    // ✅ MOBILE: Centrar segunda card al cargar (solo scroll horizontal, sin afectar página)
     useEffect(() => {
         if (!cardsContainerRef.current || featuredVehicles.length < 3) return
         
@@ -46,28 +50,24 @@ export const FeaturedVehicles = () => {
         const isMobile = window.innerWidth < 992
         if (!isMobile) return
         
-        // ✅ Esperar a que el DOM esté listo y luego centrar la segunda card
+        // ✅ Centrar segunda card usando scrollLeft (solo afecta scroll horizontal del container)
         const centerMiddleCard = () => {
             const container = cardsContainerRef.current
             if (!container) return
             
-            // ✅ Obtener la segunda card (índice 1)
             const secondCard = container.children[1]
             if (!secondCard) return
             
-            // ✅ Centrar la segunda card usando scrollIntoView
-            secondCard.scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest',
-                inline: 'center'
-            })
+            // ✅ Calcular posición para centrar la card horizontalmente
+            const scrollPosition = secondCard.offsetLeft - (container.offsetWidth / 2) + (secondCard.offsetWidth / 2)
+            container.scrollLeft = scrollPosition
         }
         
         // ✅ Pequeño delay para asegurar que el layout esté completo
         const timer = setTimeout(centerMiddleCard, 100)
         
         return () => clearTimeout(timer)
-    }, [featuredVehicles.length]) // ✅ Solo ejecutar cuando haya cards disponibles
+    }, [featuredVehicles.length])
     
     // ✅ Loading state
     if (isLoading) {
@@ -88,7 +88,10 @@ export const FeaturedVehicles = () => {
     }
     
     return (
-        <section className={styles.featuredSection} aria-label="Vehículos destacados">
+        <section 
+            className={`${styles.featuredSection} ${isVisible ? styles.visible : ''}`} 
+            aria-label="Vehículos destacados"
+        >
             <div className="container">
                 {/* Título "Nuestros Usados" */}
                 <div className={styles.sectionTitle}>
@@ -97,11 +100,14 @@ export const FeaturedVehicles = () => {
                 
                 {/* Contenedor de cards con scroll horizontal en mobile */}
                 <div className={styles.cardsContainer} ref={cardsContainerRef}>
-                    {featuredVehicles.map((vehicle) => (
-                        <CardAutoCompact 
+                    {featuredVehicles.map((vehicle, index) => (
+                        <div 
                             key={vehicle.id || vehicle._id} 
-                            auto={vehicle} 
-                        />
+                            className={styles.cardWrapper}
+                            style={{ '--card-index': index }}
+                        >
+                            <CardAutoCompact auto={vehicle} />
+                        </div>
                     ))}
                 </div>
                 
@@ -120,4 +126,3 @@ export const FeaturedVehicles = () => {
 }
 
 export default FeaturedVehicles
-

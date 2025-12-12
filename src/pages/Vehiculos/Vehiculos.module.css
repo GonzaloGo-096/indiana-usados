@@ -42,7 +42,7 @@
 
 .mainTitle {
   /* ✅ Igual que Home - Solo texto, sin fondo */
-  font-size: 1.5rem;
+  font-size: 1.875rem;
   font-weight: var(--font-weight-bold);
   color: var(--color-black);
   margin: 0;
