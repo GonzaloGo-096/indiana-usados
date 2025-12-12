@@ -7,13 +7,13 @@
  * - Desktop: 3 cards alineadas
  * - Mobile: Scroll horizontal con 1 card completa + 2 asomando
  * - Botón "Ver todos" centrado
- * - Animación staggered al cargar datos
+ * - Animación staggered al cargar datos (igual que Hero)
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Animación al cargar datos
+ * @version 2.1.0 - Animación corregida con delay
  */
 
-import { useMemo, useRef, useEffect } from 'react'
+import { useMemo, useRef, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useVehiclesList } from '@hooks'
 import { CardAutoCompact } from '@vehicles'
@@ -26,6 +26,9 @@ export const FeaturedVehicles = () => {
     const navigate = useNavigate()
     const cardsContainerRef = useRef(null)
     
+    // ✅ Estado para controlar animación (igual que Hero)
+    const [isVisible, setIsVisible] = useState(false)
+    
     // ✅ Petición de solo 3 vehículos
     const { vehicles, isLoading, isError } = useVehiclesList({}, { pageSize: 3 })
     
@@ -34,8 +37,20 @@ export const FeaturedVehicles = () => {
         return vehicles.slice(0, 3)
     }, [vehicles])
     
-    // ✅ Activar animación cuando datos cargan
-    const isVisible = !isLoading && featuredVehicles.length > 0
+    // ✅ Activar animación después de un delay cuando datos cargan (igual que Hero)
+    useEffect(() => {
+        // Solo activar cuando datos están listos
+        if (isLoading || featuredVehicles.length === 0) {
+            return
+        }
+        
+        // Pequeño delay para que la animación se note (igual que Hero)
+        const timer = setTimeout(() => {
+            setIsVisible(true)
+        }, 50)
+        
+        return () => clearTimeout(timer)
+    }, [isLoading, featuredVehicles.length])
     
     // ✅ Handler para botón "Ver todos"
     const handleVerTodos = () => {
@@ -64,7 +79,7 @@ export const FeaturedVehicles = () => {
         }
         
         // ✅ Pequeño delay para asegurar que el layout esté completo
-        const timer = setTimeout(centerMiddleCard, 100)
+        const timer = setTimeout(centerMiddleCard, 150)
         
         return () => clearTimeout(timer)
     }, [featuredVehicles.length])
