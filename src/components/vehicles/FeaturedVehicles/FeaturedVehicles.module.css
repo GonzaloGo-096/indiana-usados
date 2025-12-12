@@ -5,27 +5,18 @@
  * - Desktop: 3 cards alineadas con márgenes equilibrados
  * - Mobile: Scroll horizontal con 1 card completa + 2 asomando
  * - Botón "Ver todos" centrado y destacado
- * - Animación staggered al cargar datos
+ * - Skeleton loading profesional
+ * - Animación staggered al cargar
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Animación al cargar datos
+ * @version 4.0.0 - Skeleton loading + animación profesional
  */
 
 /* ===== SECCIÓN PRINCIPAL ===== */
 .featuredSection {
-  padding: var(--spacing-3) 0;
+  padding: var(--spacing-4) 0;
   background: var(--color-white);
   width: 100%;
-}
-
-/* ===== LOADING STATE ===== */
-.loadingContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: var(--spacing-8);
-  color: var(--color-neutral-500);
-  min-height: 200px;
 }
 
 /* ===== TÍTULO "NUESTROS USADOS" ===== */
@@ -43,11 +34,11 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   font-family: var(--font-display);
-  /* Animación más notoria */
+  /* Animación de entrada */
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-  transition-delay: 0.2s;
+  transform: translateY(25px);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .featuredSection.visible .title {
@@ -71,13 +62,14 @@
   max-width: 100%;
 }
 
-/* ===== CARD WRAPPER (con animación) ===== */
+/* ===== CARD WRAPPER ===== */
 .cardWrapper {
-  /* Animación staggered más notoria */
+  /* Animación staggered */
   opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  transition-delay: calc(0.35s + (var(--card-index, 0) * 0.15s));
+  transform: translateY(30px);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: calc(0.08s + (var(--card-index, 0) * 0.1s));
 }
 
 .featuredSection.visible .cardWrapper {
@@ -90,13 +82,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--spacing-2) 0;
+  padding: var(--spacing-3) 0;
   margin-top: var(--spacing-2);
-  /* Animación más notoria */
+  /* Animación de entrada */
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  transition-delay: 0.8s;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.35s;
 }
 
 .featuredSection.visible .buttonContainer {
@@ -124,9 +117,14 @@
   min-width: 180px;
 }
 
-.verTodosButton:hover {
+.verTodosButton:hover:not(:disabled) {
   background: var(--color-brand-500);
   transform: translateY(-1px);
+}
+
+.verTodosButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .verTodosButton:focus-visible {
