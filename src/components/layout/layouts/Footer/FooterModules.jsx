@@ -12,7 +12,7 @@
  * @version 2.0.0 - Accordion mobile-first
  */
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { footerModules, footerIcons } from './footerConfig.jsx'
 import styles from './FooterModules.module.css'
 
@@ -99,40 +99,40 @@ const FooterModules = () => {
       <h2 className={styles.sectionTitle}>Contacto</h2>
       
       <div className={styles.modulesGrid}>
-      {footerModules.map((module) => {
-        const isOpen = openModules[module.id]
-        
-        return (
-          <div 
-            key={module.id} 
-            className={`${styles.module} ${isOpen ? styles.moduleOpen : ''}`}
-          >
-            {/* Título clickable con chevron */}
-            <button
-              type="button"
-              className={styles.moduleHeader}
-              onClick={() => toggleModule(module.id)}
-              aria-expanded={isOpen}
-              aria-controls={`module-content-${module.id}`}
-            >
-              <h3 className={styles.moduleTitle}>{module.title}</h3>
-              <ChevronIcon />
-            </button>
-            
-            {/* Contenido colapsable */}
+        {footerModules.map((module) => {
+          const isOpen = openModules[module.id]
+          
+          return (
             <div 
-              id={`module-content-${module.id}`}
-              className={styles.moduleContent}
+              key={module.id} 
+              className={`${styles.module} ${isOpen ? styles.moduleOpen : ''}`}
             >
-              <ul className={styles.moduleList}>
-                {module.items.map((item, index) => (
-                  <FooterItem key={`${module.id}-${index}`} item={item} />
-                ))}
-              </ul>
+              {/* Título clickable con chevron */}
+              <button
+                type="button"
+                className={styles.moduleHeader}
+                onClick={() => toggleModule(module.id)}
+                aria-expanded={isOpen}
+                aria-controls={`module-content-${module.id}`}
+              >
+                <h3 className={styles.moduleTitle}>{module.title}</h3>
+                <ChevronIcon />
+              </button>
+              
+              {/* Contenido colapsable */}
+              <div 
+                id={`module-content-${module.id}`}
+                className={styles.moduleContent}
+              >
+                <ul className={styles.moduleList}>
+                  {module.items.map((item, index) => (
+                    <FooterItem key={`${module.id}-${index}`} item={item} />
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
       </div>
     </div>
   )

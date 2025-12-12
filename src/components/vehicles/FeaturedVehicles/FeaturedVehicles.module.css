@@ -143,24 +143,23 @@
 }
 
 .verTodosButton {
-  /* ✅ Estilo igual al botón de postventa para uniformidad pero levemente más grande */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 2.25rem; /* ✅ Levemente más chico */
-  background: var(--color-brand-600); /* ✅ Mismo color que postventa */
+  padding: 0.5rem 2.25rem;
+  background: var(--color-brand-600);
   color: var(--color-text-inverse);
-  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg); /* ✅ Redondeo solo abajo */
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
   text-decoration: none;
   text-transform: none;
-  font-family: var(--font-display); /* ✅ Misma fuente que postventa */
+  font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(0.9375rem, 1.7vw, 1.0625rem); /* ✅ Levemente más chico */
+  font-size: clamp(0.9375rem, 1.7vw, 1.0625rem);
   line-height: 1;
   transition: background var(--transition-fast), transform var(--transition-fast);
   border: none;
   cursor: pointer;
-  min-width: 180px; /* ✅ Ancho mínimo levemente más chico */
+  min-width: 180px;
 }
 
 .verTodosButton:hover {

@@ -48,8 +48,6 @@
 }
 
 /* ===== RESPONSIVE - TABLET Y DESKTOP ===== */
-/* Nota: Estilos mínimos para mantener funcionalidad en pantallas grandes */
-/* La versión desktop completa se implementará en un paso posterior */
 
 @media (min-width: 640px) {
   .footer {

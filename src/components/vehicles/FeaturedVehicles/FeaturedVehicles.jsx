@@ -38,7 +38,7 @@ export const FeaturedVehicles = () => {
         navigate('/vehiculos')
     }
     
-    // ✅ MOBILE: Centrar segunda card al cargar (solo scroll horizontal, sin afectar página)
+    // ✅ MOBILE: Centrar segunda card al cargar (solo en mobile y solo una vez)
     useEffect(() => {
         if (!cardsContainerRef.current || featuredVehicles.length < 3) return
         
@@ -46,24 +46,28 @@ export const FeaturedVehicles = () => {
         const isMobile = window.innerWidth < 992
         if (!isMobile) return
         
-        // ✅ Centrar segunda card usando scrollLeft (solo afecta scroll horizontal del container)
+        // ✅ Esperar a que el DOM esté listo y luego centrar la segunda card
         const centerMiddleCard = () => {
             const container = cardsContainerRef.current
             if (!container) return
             
+            // ✅ Obtener la segunda card (índice 1)
             const secondCard = container.children[1]
             if (!secondCard) return
             
-            // ✅ Calcular posición para centrar la card horizontalmente
-            const scrollPosition = secondCard.offsetLeft - (container.offsetWidth / 2) + (secondCard.offsetWidth / 2)
-            container.scrollLeft = scrollPosition
+            // ✅ Centrar la segunda card usando scrollIntoView
+            secondCard.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            })
         }
         
         // ✅ Pequeño delay para asegurar que el layout esté completo
         const timer = setTimeout(centerMiddleCard, 100)
         
         return () => clearTimeout(timer)
-    }, [featuredVehicles.length])
+    }, [featuredVehicles.length]) // ✅ Solo ejecutar cuando haya cards disponibles
     
     // ✅ Loading state
     if (isLoading) {
