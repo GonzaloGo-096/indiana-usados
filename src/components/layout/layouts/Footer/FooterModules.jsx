@@ -1,18 +1,18 @@
 /**
- * FooterModules - Módulos informativos del footer (Cards 2-4)
+ * FooterModules - Módulos informativos del footer con accordion mobile
  * 
  * Características:
- * - Grid 3→1 columnas responsive
+ * - Accordion slide-down/slide-up en mobile
+ * - Grid 3 columnas en desktop
  * - Data-driven desde configuración
  * - Íconos SVG inline optimizados
  * - Accesibilidad completa
- * - Integrado con design tokens
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Accordion mobile-first
  */
 
-import React from 'react'
+import React, { useState } from 'react'
 import { footerModules, footerIcons } from './footerConfig.jsx'
 import styles from './FooterModules.module.css'
 
@@ -61,21 +61,79 @@ const FooterItem = ({ item }) => {
 }
 
 /**
- * Componente principal de módulos
+ * Chevron SVG para el accordion
+ */
+const ChevronIcon = () => (
+  <svg 
+    className={styles.chevron} 
+    width="20" 
+    height="20" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2"
+    aria-hidden="true"
+  >
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
+)
+
+/**
+ * Componente principal de módulos con accordion
  */
 const FooterModules = () => {
+  // Estado para controlar qué módulos están abiertos (por ID)
+  const [openModules, setOpenModules] = useState({})
+
+  // Toggle para abrir/cerrar un módulo
+  const toggleModule = (moduleId) => {
+    setOpenModules(prev => ({
+      ...prev,
+      [moduleId]: !prev[moduleId]
+    }))
+  }
+
   return (
-    <div className={styles.modulesGrid}>
-      {footerModules.map((module) => (
-        <div key={module.id} className={styles.module}>
-          <h3 className={styles.moduleTitle}>{module.title}</h3>
-          <ul className={styles.moduleList}>
-            {module.items.map((item, index) => (
-              <FooterItem key={`${module.id}-${index}`} item={item} />
-            ))}
-          </ul>
-        </div>
-      ))}
+    <div className={styles.modulesWrapper}>
+      {/* Título principal */}
+      <h2 className={styles.sectionTitle}>Contacto</h2>
+      
+      <div className={styles.modulesGrid}>
+      {footerModules.map((module) => {
+        const isOpen = openModules[module.id]
+        
+        return (
+          <div 
+            key={module.id} 
+            className={`${styles.module} ${isOpen ? styles.moduleOpen : ''}`}
+          >
+            {/* Título clickable con chevron */}
+            <button
+              type="button"
+              className={styles.moduleHeader}
+              onClick={() => toggleModule(module.id)}
+              aria-expanded={isOpen}
+              aria-controls={`module-content-${module.id}`}
+            >
+              <h3 className={styles.moduleTitle}>{module.title}</h3>
+              <ChevronIcon />
+            </button>
+            
+            {/* Contenido colapsable */}
+            <div 
+              id={`module-content-${module.id}`}
+              className={styles.moduleContent}
+            >
+              <ul className={styles.moduleList}>
+                {module.items.map((item, index) => (
+                  <FooterItem key={`${module.id}-${index}`} item={item} />
+                ))}
+              </ul>
+            </div>
+          </div>
+        )
+      })}
+      </div>
     </div>
   )
 }

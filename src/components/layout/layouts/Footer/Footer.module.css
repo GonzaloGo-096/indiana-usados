@@ -1,36 +1,38 @@
 /**
- * Footer.module.css - Diseño mobile-first optimizado
+ * Footer.module.css - Diseño mobile-first profesional
  * 
  * Características:
  * - Mobile-first responsive design
- * - Card elevada con efecto 50/50
+ * - Fondo oscuro profesional
  * - Variables del design system
- * - Separación alta para evitar interferencias
+ * - Espaciados optimizados para mobile
  * 
  * @author Indiana Usados
- * @version 3.0.0 - Refactor mobile-first
+ * @version 4.0.0 - Refactor mobile-first profesional
  */
 
 /* ===== FOOTER PRINCIPAL (MOBILE-FIRST) ===== */
 .footer {
   background-color: var(--color-black);
   color: var(--color-white);
-  padding: 4rem 0 3rem 0; /* Mobile: padding muy generoso (64px arriba, 48px abajo) */
-  margin-top: 5rem; /* Mobile: separación muy alta del contenido (80px) */
+  padding: 2.5rem 0 2rem 0;
+  margin-top: 4rem;
   position: relative;
+  /* Borde superior sutil para separación visual */
+  border-top: 1px solid rgba(0, 85, 164, 0.2);
 }
 
 /* ===== CONTENEDOR ===== */
 .container {
   max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 var(--container-padding-mobile);
+  padding: 0 var(--spacing-4);
 }
 
 /* ===== COPYRIGHT ===== */
 .bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: var(--spacing-4); /* Mobile: padding reducido */
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: var(--spacing-5);
   text-align: center;
   margin-top: var(--spacing-6);
 }
@@ -38,40 +40,43 @@
 .copyright {
   color: var(--color-neutral-400);
   margin: 0;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-family: var(--font-condensed);
-  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  opacity: 0.7;
 }
 
-/* ===== RESPONSIVE - MOBILE FIRST ===== */
+/* ===== RESPONSIVE - TABLET Y DESKTOP ===== */
+/* Nota: Estilos mínimos para mantener funcionalidad en pantallas grandes */
+/* La versión desktop completa se implementará en un paso posterior */
 
-/* Tablet: desde el token del sistema */
-@media (min-width: var(--tablet-min)) {
+@media (min-width: 640px) {
   .footer {
-    padding: 5rem 0 3.5rem 0; /* Tablet: padding extra generoso */
-    margin-top: 6rem; /* Tablet: separación muy alta */
+    padding: 3.5rem 0 2.5rem 0;
+    margin-top: 5rem;
   }
   
   .container {
-    padding: 0 var(--container-padding-tablet);
+    padding: 0 var(--spacing-6);
   }
   
   .bottom {
     padding-top: var(--spacing-6);
     margin-top: var(--spacing-8);
   }
-}
 
-/* Desktop: 992px+ - Máximo espacio */
-@media (min-width: var(--desktop-min)) {
-  .footer {
-    padding: 6rem 0 4rem 0; /* Desktop: padding máximo */
-    margin-top: 7rem; /* Desktop: separación máxima */
+  .copyright {
+    font-size: var(--font-size-sm);
   }
 }
 
-/* Desktop XL: desde el token del sistema */
-@media (min-width: var(--breakpoint-xl)) {
+@media (min-width: 992px) {
+  .footer {
+    padding: 5rem 0 3.5rem 0;
+    margin-top: 6rem;
+  }
+
   .container {
     padding: 0 var(--container-padding-desktop);
   }
