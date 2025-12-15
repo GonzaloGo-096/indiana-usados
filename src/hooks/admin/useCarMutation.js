@@ -74,38 +74,20 @@ export const useCarMutation = () => {
             if (!(formData instanceof FormData)) {
                 throw new Error('Payload inválido: se esperaba FormData')
             }
-            // Log de depuración SIEMPRE para diagnóstico
-            let fileCount = 0
-            const fields = {}
-            for (const [key, value] of formData.entries()) {
-                if (value instanceof File) {
-                    fileCount++
-                    fields[key] = `[File: ${value.name}, ${(value.size/1024).toFixed(1)}KB, type: ${value.type}]`
-                } else {
-                    fields[key] = value
+            // Log de depuración solo en desarrollo
+            if (import.meta.env.DEV) {
+                let fileCount = 0
+                for (const [, value] of formData.entries()) {
+                    if (value instanceof File) fileCount++
                 }
-            }
-            console.log('🚗 CREATE VEHICLE - FormData:', { 
-                totalFields: Object.keys(fields).length, 
-                fileCount,
-                fields,
-                hasToken: !!token
-            })
-            
-            try {
-                const response = await vehiclesAdminService.createVehicle(formData)
-                console.log('✅ CREATE VEHICLE - Response:', response)
-                return response.data
-            } catch (err) {
-                // Log detallado del error del backend
-                console.error('❌ CREATE VEHICLE - Error completo:', {
-                    status: err.response?.status,
-                    statusText: err.response?.statusText,
-                    data: err.response?.data,
-                    message: err.message
+                logger.debug('cars:mutation', 'create: enviando FormData', { 
+                    fieldsApprox: [...formData.keys()].length, 
+                    fileCount 
                 })
-                throw err
             }
+            
+            const response = await vehiclesAdminService.createVehicle(formData)
+            return response.data
         },
         onSuccess: (data) => {
             logger.info('cars:mutation', 'Vehículo creado exitosamente')
@@ -127,12 +109,17 @@ export const useCarMutation = () => {
             if (!(formData instanceof FormData)) {
                 throw new Error('Payload inválido: se esperaba FormData')
             }
-            if (import.meta?.env?.MODE !== 'production') {
+            // Log de depuración solo en desarrollo
+            if (import.meta.env.DEV) {
                 let fileCount = 0
                 for (const [, value] of formData.entries()) {
                     if (value instanceof File) fileCount++
                 }
-                logger.debug('cars:mutation', 'update: enviando FormData', { id, fieldsApprox: [...formData.keys()].length, fileCount })
+                logger.debug('cars:mutation', 'update: enviando FormData', { 
+                    id, 
+                    fieldsApprox: [...formData.keys()].length, 
+                    fileCount 
+                })
             }
             const response = await vehiclesAdminService.updateVehicle(id, formData)
             return response.data

@@ -7,11 +7,11 @@
  * - Desktop: 3 cards alineadas
  * - Mobile: Scroll horizontal con 1 card completa + 2 asomando
  * - Botón "Ver todos" centrado
- * - Skeleton loading profesional
- * - Animación staggered al cargar
+ * - Skeleton loading profesional (visible inmediatamente)
+ * - Animación staggered solo para cards reales
  * 
  * @author Indiana Usados
- * @version 4.0.0 - Skeleton loading + animación profesional
+ * @version 4.1.0 - FASE 1: Skeleton visible inmediatamente, sin espacio blanco
  */
 
 import { useMemo, useRef, useEffect, useState } from 'react'
@@ -28,7 +28,7 @@ export const FeaturedVehicles = () => {
     const navigate = useNavigate()
     const cardsContainerRef = useRef(null)
     
-    // ✅ Estado para controlar animación
+    // ✅ FASE 1: Estado para animación de cards reales (desacoplado de isLoading)
     const [isVisible, setIsVisible] = useState(false)
     
     // ✅ Petición de solo 3 vehículos
@@ -39,17 +39,15 @@ export const FeaturedVehicles = () => {
         return vehicles.slice(0, 3)
     }, [vehicles])
     
-    // ✅ Determinar si hay contenido para mostrar
-    const hasContent = !isLoading && featuredVehicles.length > 0
-    
-    // ✅ Activar animación después de que el contenido esté listo
+    // ✅ FASE 1: Activar animación solo cuando las cards reales están listas
+    // Desacoplado del skeleton - el skeleton se muestra inmediatamente
     useEffect(() => {
-        if (!hasContent) {
-            setIsVisible(false)
+        // Solo activar cuando hay datos reales (no durante loading)
+        if (isLoading || featuredVehicles.length === 0) {
             return
         }
         
-        // requestAnimationFrame + delay para asegurar render completo
+        // requestAnimationFrame + delay para asegurar render completo de cards
         const raf = requestAnimationFrame(() => {
             const timer = setTimeout(() => {
                 setIsVisible(true)
@@ -59,7 +57,7 @@ export const FeaturedVehicles = () => {
         })
         
         return () => cancelAnimationFrame(raf)
-    }, [hasContent])
+    }, [isLoading, featuredVehicles.length])
     
     // ✅ Handler para botón "Ver todos"
     const handleVerTodos = () => {
@@ -99,7 +97,7 @@ export const FeaturedVehicles = () => {
             aria-label="Vehículos destacados"
         >
             <div className="container">
-                {/* Título - siempre visible */}
+                {/* ✅ FASE 1: Título siempre visible (sin depender de isVisible) */}
                 <div className={styles.sectionTitle}>
                     <h2 className={styles.title}>Nuestros Usados</h2>
                 </div>
@@ -107,20 +105,20 @@ export const FeaturedVehicles = () => {
                 {/* Cards Container */}
                 <div className={styles.cardsContainer} ref={cardsContainerRef}>
                     {isLoading ? (
-                        // ✅ Skeleton loading - 3 cards
+                        // ✅ FASE 1: Skeleton visible inmediatamente (usa skeletonWrapper)
                         <>
-                            <div className={styles.cardWrapper}>
+                            <div className={styles.skeletonWrapper}>
                                 <CardAutoSkeleton />
                             </div>
-                            <div className={styles.cardWrapper}>
+                            <div className={styles.skeletonWrapper}>
                                 <CardAutoSkeleton />
                             </div>
-                            <div className={styles.cardWrapper}>
+                            <div className={styles.skeletonWrapper}>
                                 <CardAutoSkeleton />
                             </div>
                         </>
                     ) : (
-                        // ✅ Cards reales con animación
+                        // ✅ Cards reales con animación staggered (usa cardWrapper)
                         featuredVehicles.map((vehicle, index) => (
                             <div 
                                 key={vehicle.id || vehicle._id} 
@@ -133,7 +131,7 @@ export const FeaturedVehicles = () => {
                     )}
                 </div>
                 
-                {/* Botón "Ver todos" */}
+                {/* ✅ FASE 1: Botón siempre visible (sin depender de isVisible) */}
                 <div className={styles.buttonContainer}>
                     <button 
                         onClick={handleVerTodos}

@@ -34,14 +34,7 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   font-family: var(--font-display);
-  /* Animación de entrada */
-  opacity: 0;
-  transform: translateY(25px);
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.featuredSection.visible .title {
+  /* ✅ FASE 1: Visible inmediatamente, sin bloquear por datos */
   opacity: 1;
   transform: translateY(0);
 }
@@ -62,9 +55,16 @@
   max-width: 100%;
 }
 
-/* ===== CARD WRAPPER ===== */
+/* ===== SKELETON WRAPPER - Visible inmediatamente ===== */
+.skeletonWrapper {
+  /* ✅ FASE 1: Skeleton siempre visible durante carga */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== CARD WRAPPER - Animación staggered para cards reales ===== */
 .cardWrapper {
-  /* Animación staggered */
+  /* Animación staggered solo para cards reales */
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
@@ -84,15 +84,7 @@
   align-items: center;
   padding: var(--spacing-3) 0;
   margin-top: var(--spacing-2);
-  /* Animación de entrada */
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  transition-delay: 0.35s;
-}
-
-.featuredSection.visible .buttonContainer {
+  /* ✅ FASE 1: Visible inmediatamente, sin bloquear por datos */
   opacity: 1;
   transform: translateY(0);
 }
@@ -148,18 +140,22 @@
     display: none;
   }
   
-  .cardWrapper {
+  /* ✅ FASE 1: Skeleton y cards comparten dimensiones en mobile */
+  .cardWrapper,
+  .skeletonWrapper {
     scroll-snap-align: center;
     flex-shrink: 0;
     width: 320px;
     max-width: 320px;
   }
   
-  .cardWrapper:first-child {
+  .cardWrapper:first-child,
+  .skeletonWrapper:first-child {
     scroll-margin-left: calc((100vw - 320px) / 2);
   }
   
-  .cardWrapper:last-child {
+  .cardWrapper:last-child,
+  .skeletonWrapper:last-child {
     scroll-margin-right: calc((100vw - 320px) / 2);
   }
 }
@@ -188,7 +184,9 @@
     overflow-x: visible;
   }
   
-  .cardWrapper {
+  /* ✅ FASE 1: Skeleton y cards comparten dimensiones en desktop */
+  .cardWrapper,
+  .skeletonWrapper {
     width: 100%;
     max-width: 360px;
     margin: 0 auto;

@@ -21,7 +21,8 @@ const SortDropdown = React.memo(({
   onSortChange = () => {},
   onClose = () => {},
   disabled = false,
-  preventAutoClose = false
+  preventAutoClose = false,
+  triggerRef = null  // Ref del botón que abre el dropdown
 }) => {
   const dropdownRef = useRef(null)
 
@@ -39,19 +40,23 @@ const SortDropdown = React.memo(({
     return () => document.removeEventListener('keydown', handleEscape)
   }, [isOpen, onClose])
 
-  // ✅ Click outside para cerrar
+  // ✅ Click outside para cerrar (excluyendo el botón trigger)
   useEffect(() => {
     if (!isOpen) return
 
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      const isClickOnDropdown = dropdownRef.current?.contains(e.target)
+      const isClickOnTrigger = triggerRef?.current?.contains(e.target)
+      
+      // Solo cerrar si el click NO es en el dropdown NI en el botón
+      if (!isClickOnDropdown && !isClickOnTrigger) {
         onClose()
       }
     }
 
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [isOpen, onClose])
+  }, [isOpen, onClose, triggerRef])
 
   // ✅ Handler para seleccionar opción
   const handleSortSelect = (sortOption) => {

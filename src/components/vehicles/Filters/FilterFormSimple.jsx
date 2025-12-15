@@ -43,6 +43,7 @@ const FilterFormSimpleComponent = React.forwardRef(({
   const triggerRef = useRef(null)
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
   const sortDropdownRef = useRef(null)
+  const sortButtonRef = useRef(null)
   const timeoutRef = useRef(null)
 
   // ✅ FILTROS - ESTADO SIMPLE
@@ -153,18 +154,20 @@ const FilterFormSimpleComponent = React.forwardRef(({
     setSearchParams(newParams)
   }, [searchParams, setSearchParams])
 
-  // Cerrar dropdown si cambia el sort desde la URL (evita quedarse abierto)
+  // Cerrar dropdown cuando cambia el sort (desde URL o selección)
   useEffect(() => {
-    if (isSortDropdownOpen) {
-      setIsSortDropdownOpen(false)
-    }
+    setIsSortDropdownOpen(false)
   }, [selectedSort])
 
-  // Cerrar dropdown al hacer click fuera
+  // Cerrar dropdown al hacer click fuera (excluyendo el botón de toggle)
   useEffect(() => {
     if (!isSortDropdownOpen) return
     const handleClickOutside = (e) => {
-      if (sortDropdownRef.current && !sortDropdownRef.current.contains(e.target)) {
+      const isClickOnDropdown = sortDropdownRef.current?.contains(e.target)
+      const isClickOnButton = sortButtonRef.current?.contains(e.target)
+      
+      // Solo cerrar si el click NO es en el dropdown NI en el botón
+      if (!isClickOnDropdown && !isClickOnButton) {
         setIsSortDropdownOpen(false)
       }
     }
@@ -265,6 +268,7 @@ const FilterFormSimpleComponent = React.forwardRef(({
       <div className={`${styles.mobileActionsContainer} ${showMobileActions ? styles.visible : ''}`}>
           <div className={styles.actionItem}>
             <button
+              ref={sortButtonRef}
               className={`${styles.mobileActionButton} ${selectedSort ? styles.active : ''}`}
               onClick={toggleSortDropdown}
               disabled={isLoading || isSubmitting}

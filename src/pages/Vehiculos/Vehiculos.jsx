@@ -49,6 +49,7 @@ const Vehiculos = () => {
     const navigate = useNavigate()
     const [isUsingMockData, setIsUsingMockData] = useState(false)
     const filterFormRef = useRef(null)
+    const sortButtonRef = useRef(null)
     
     // ✅ SIMPLIFICADO: Estado de sorting simple
     const [selectedSort, setSelectedSort] = useState(null)
@@ -145,6 +146,7 @@ const Vehiculos = () => {
                     
                     <div style={{ position: 'relative' }}>
                         <button 
+                            ref={sortButtonRef}
                             className={`${styles.actionButton} ${selectedSort ? styles.active : ''}`}
                             onClick={handleSortClick}
                             disabled={isLoading || isLoadingMore}
@@ -163,6 +165,7 @@ const Vehiculos = () => {
                             onSortChange={handleSortChange}
                             onClose={handleCloseSortDropdown}
                             disabled={isLoading || isLoadingMore}
+                            triggerRef={sortButtonRef}
                         />
                     </div>
                 </div>

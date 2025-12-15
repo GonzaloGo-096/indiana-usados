@@ -5,13 +5,17 @@
  * 
  * Responsabilidades:
  * - Gestión completa de autenticación (login, logout, estado)
- * - Validación automática de tokens expirados
- * - Auto-logout en cambio de página
+ * - Validación automática de tokens expirados (UX, no seguridad)
  * - Manejo robusto de errores y retry
  * - Ciclo de vida completo de sesión
  * 
+ * Arquitectura de seguridad (3 capas):
+ * 1. Frontend (este hook): Detecta tokens expirados para mejor UX
+ * 2. Backend: Valida firma JWT en CADA request (seguridad real)
+ * 3. Interceptor axios: Maneja 401 y limpia sesión si backend rechaza
+ * 
  * @author Indiana Usados
- * @version 3.0.0 - Consolidado y seguro
+ * @version 3.1.0 - Documentación de arquitectura de seguridad
  */
 
 import { useState, useEffect, useCallback } from 'react'
@@ -29,12 +33,22 @@ export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // ✅ NUEVO: Validar si un token está expirado
+  /**
+   * Validar si un token JWT está expirado (solo lectura de payload)
+   * 
+   * ⚠️ IMPORTANTE: Esta validación es SOLO para UX, NO para seguridad.
+   * 
+   * - NO verifica la firma del JWT (imposible sin el secret del backend)
+   * - Su propósito es evitar requests con tokens que YA sabemos están expirados
+   * - La SEGURIDAD REAL está en el backend, que valida firma en cada request
+   * - Si alguien manipula el token, el backend rechaza con 401
+   * - El interceptor de axios (axiosInstance.js) maneja el 401 y limpia la sesión
+   */
   const isTokenExpired = useCallback((token) => {
     if (!token) return true
     
     try {
-      // Decodificar JWT (solo payload, sin verificar firma)
+      // Decodificar payload (base64) - NO valida firma, solo lee datos
       const payload = JSON.parse(atob(token.split('.')[1]))
       const currentTime = Math.floor(Date.now() / 1000)
       
