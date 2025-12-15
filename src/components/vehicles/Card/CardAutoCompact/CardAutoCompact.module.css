@@ -52,7 +52,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 12px 12px 0 0;
+    /* border-radius heredado del padre .card via overflow: hidden */
     transition: transform 0.3s ease;
     will-change: transform;
     backface-visibility: hidden;
