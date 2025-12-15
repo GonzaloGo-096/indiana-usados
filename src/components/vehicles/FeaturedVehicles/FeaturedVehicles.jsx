@@ -11,14 +11,14 @@
  * - Animación staggered solo para cards reales
  * 
  * @author Indiana Usados
- * @version 4.1.0 - FASE 1: Skeleton visible inmediatamente, sin espacio blanco
+ * @version 4.2.0 - FASE 2: CLS = 0, skeleton con dimensiones idénticas a card real
  */
 
 import { useMemo, useRef, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useVehiclesList } from '@hooks'
 import { CardAutoCompact } from '@vehicles'
-import { CardAutoSkeleton } from '@components/skeletons'
+import { CardAutoCompactSkeleton } from '@components/skeletons'
 import styles from './FeaturedVehicles.module.css'
 
 /**
@@ -105,16 +105,16 @@ export const FeaturedVehicles = () => {
                 {/* Cards Container */}
                 <div className={styles.cardsContainer} ref={cardsContainerRef}>
                     {isLoading ? (
-                        // ✅ FASE 1: Skeleton visible inmediatamente (usa skeletonWrapper)
+                        // ✅ FASE 2: Skeleton con dimensiones IDÉNTICAS a card real (CLS = 0)
                         <>
                             <div className={styles.skeletonWrapper}>
-                                <CardAutoSkeleton />
+                                <CardAutoCompactSkeleton />
                             </div>
                             <div className={styles.skeletonWrapper}>
-                                <CardAutoSkeleton />
+                                <CardAutoCompactSkeleton />
                             </div>
                             <div className={styles.skeletonWrapper}>
-                                <CardAutoSkeleton />
+                                <CardAutoCompactSkeleton />
                             </div>
                         </>
                     ) : (

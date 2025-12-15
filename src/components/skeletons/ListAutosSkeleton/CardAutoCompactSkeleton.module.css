@@ -1,0 +1,210 @@
+/**
+ * CardAutoCompactSkeleton.module.css - Skeleton con dimensiones IDÉNTICAS a CardAutoCompact
+ * 
+ * FASE 2: Elimina CLS replicando exactamente las dimensiones de la card real.
+ * Cada medida aquí debe coincidir con CardAutoCompact.module.css
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0 - CLS = 0
+ */
+
+/* ===== ANIMACIÓN SHIMMER ===== */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ===== BASE SHIMMER (composable) ===== */
+.shimmerBase {
+  background: linear-gradient(
+    90deg,
+    #e5e7eb 25%,
+    #f3f4f6 37%,
+    #e5e7eb 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+/* ===== ACCESIBILIDAD: Respetar preferencia de movimiento reducido ===== */
+@media (prefers-reduced-motion: reduce) {
+  .shimmerBase {
+    animation: none;
+    background: #e5e7eb;
+  }
+}
+
+/* ===== TARJETA PRINCIPAL (idéntica a .card en CardAutoCompact) ===== */
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 360px;
+  background: #fafafa;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: 0 auto;
+}
+
+/* ===== CONTENEDOR DE IMAGEN (idéntico a .card__image-container) ===== */
+.imageContainer {
+  position: relative;
+  overflow: hidden;
+  background: #f9fafb;
+  /* ✅ MOBILE-FIRST: Altura idéntica a CardAutoCompact */
+  height: 200px;
+}
+
+.image {
+  composes: shimmerBase;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== CUERPO (idéntico a .card__body) ===== */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background: #ffffff;
+}
+
+/* ===== HEADER 60/40 (idéntico a .cardHeader) ===== */
+.header {
+  display: flex;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 0.5px solid #e5e7eb;
+  background: #ffffff;
+  margin: 8px 0;
+}
+
+.headerLeft {
+  flex: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+}
+
+.title {
+  composes: shimmerBase;
+  height: 22px;
+  width: 80%;
+  border-radius: 4px;
+}
+
+.headerRight {
+  flex: 0.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.priceContainer {
+  width: 100%;
+  height: 100%;
+  background: #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 8px 8px 0;
+}
+
+.price {
+  composes: shimmerBase;
+  height: 20px;
+  width: 70%;
+  border-radius: 4px;
+  /* Override para que el shimmer se vea sobre fondo oscuro */
+  background: linear-gradient(
+    90deg,
+    #9ca3af 25%,
+    #d1d5db 37%,
+    #9ca3af 63%
+  );
+  background-size: 400% 100%;
+}
+
+/* ===== DETALLES - 3 DATOS (idéntico a .card__data_container) ===== */
+.details {
+  flex: 1;
+  margin: 0;
+}
+
+.dataContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.dataItem {
+  flex: 1;
+  text-align: center;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.dataItemBorder {
+  border-inline: 1px solid #e5e7eb;
+}
+
+.dataIcon {
+  composes: shimmerBase;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.dataLabel {
+  composes: shimmerBase;
+  height: 11px;
+  width: 24px;
+  border-radius: 2px;
+}
+
+.dataValue {
+  composes: shimmerBase;
+  height: 19px;
+  width: 48px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+/* ===== RESPONSIVE - SM (idéntico a CardAutoCompact) ===== */
+@media (min-width: 576px) {
+  .card { border-radius: 10px; }
+  .imageContainer { height: 240px; }
+  .body { padding: 18px; }
+  .header { height: 54px; }
+  .title { height: 24px; }
+  .price { height: 22px; }
+  .dataContainer { padding: 8px 0; }
+  .dataItem { padding: 8px 10px; }
+  .dataLabel { height: 12px; }
+  .dataValue { height: 20px; }
+}
+
+/* ===== RESPONSIVE - TABLET (idéntico a CardAutoCompact) ===== */
+@media (min-width: 768px) {
+  .card { border-radius: 12px; }
+  .imageContainer { height: 260px; }
+  .body { padding: 20px; }
+  .header { height: 64px; }
+  .title { height: 26px; }
+  .price { height: 24px; }
+  .dataContainer { padding: 10px 0; }
+  .dataItem { padding: 8px 10px; }
+  .dataLabel { height: 13px; }
+  .dataValue { height: 22px; }
+}
+
