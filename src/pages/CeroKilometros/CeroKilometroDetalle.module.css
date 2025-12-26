@@ -1,0 +1,60 @@
+/**
+ * CeroKilometroDetalle.module.css - Estilos placeholder
+ * 
+ * Estilos mínimos para Fase 1
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 40px 24px;
+  min-height: 60vh;
+}
+
+.backLink {
+  display: inline-block;
+  color: var(--color-neutral-600);
+  text-decoration: none;
+  padding: 8px 0;
+  margin-bottom: 24px;
+  transition: color var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--color-brand-500);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: var(--font-display);
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: var(--color-neutral-600);
+  margin: 0 0 32px 0;
+}
+
+.info {
+  background: var(--color-neutral-100);
+  padding: 20px;
+  border-radius: var(--border-radius-md);
+}
+
+.info p {
+  margin: 0 0 8px 0;
+  color: var(--color-neutral-700);
+}
+
+.info p:last-child {
+  margin-bottom: 0;
+}
+

@@ -1,23 +1,20 @@
 /**
  * images.js - Configuración de imágenes
  * 
- * Centraliza las rutas de imágenes para facilitar el mantenimiento
- * y asegurar que funcionen correctamente con Vite
+ * NOTA: Migrado a Cloudinary. Este archivo mantiene compatibilidad.
  * 
  * @author Indiana Usados
- * @version 2.0.0
+ * @version 3.0.0 - Migración a Cloudinary
  */
 
-// Importar imagen por defecto (esto funciona en Vite)
-import { defaultCarImage } from '@assets'
+import { staticImages } from '@config/cloudinaryStaticImages'
 
-// Configuración del entorno - usar config centralizado
-import { config } from '@config'
-const ENVIRONMENT = config.environment
+// Imagen por defecto para vehículos (fallback)
+const defaultCarImage = staticImages.usados.placeholder.src
 
-// Configuración de imágenes locales (usando rutas públicas)
+// Configuración de imágenes locales (compatibilidad)
 const LOCAL_IMAGES = {
-    defaultCarImage: defaultCarImage, // Esta sí funciona porque está importada
+    defaultCarImage: defaultCarImage,
 }
 
 /**
@@ -27,7 +24,6 @@ const LOCAL_IMAGES = {
  * @returns {string} - URL de la imagen
  */
 export const getOptimizedImage = (imageKey, options = {}) => {
-    // Usar imágenes locales
     return LOCAL_IMAGES[imageKey] || LOCAL_IMAGES.defaultCarImage
 }
 
@@ -36,8 +32,6 @@ export const IMAGES = {
     defaultCarImage: getOptimizedImage('defaultCarImage')
 }
 
-// Nota: Funciones legacy migradas:
-// - getCarouselImages() → utils/imageNormalizerOptimized.js
-// - getResponsiveImage() → utils/cloudinaryUrl.js (cldSrcset)
+export { defaultCarImage }
 
 export default IMAGES 

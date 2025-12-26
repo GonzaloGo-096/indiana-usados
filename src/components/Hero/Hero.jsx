@@ -5,14 +5,13 @@
  * Diseño minimalista y premium para Indiana Usados
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Migración a Cloudinary
  */
 
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './Hero.module.css'
-import heroMobile from '../../assets/home/indiana-hero-1-mobile.webp'
-import heroDesktop from '../../assets/home/indiana-hero-1-desktop.webp'
+import { staticImages } from '@config/cloudinaryStaticImages'
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -33,10 +32,10 @@ const Hero = () => {
     >
       {/* Imagen de fondo responsive con <picture> */}
       <picture className={styles.backgroundPicture}>
-        <source media="(min-width: 768px)" srcSet={heroDesktop} />
+        <source media="(min-width: 768px)" srcSet={staticImages.home.heroDesktop.src} />
         <img 
-          src={heroMobile} 
-          alt="Vehículos de calidad en Indiana Usados"
+          src={staticImages.home.heroMobile.src} 
+          alt={staticImages.home.heroMobile.alt}
           className={styles.backgroundImage}
           loading="eager"
           fetchpriority="high"
@@ -57,14 +56,9 @@ const Hero = () => {
         </p>
         
         <div className={styles.ctaContainer}>
-          <a 
-            href="https://peugeotindiana.com.ar/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className={`${styles.cta} ${styles.ctaPrimary}`}
-          >
+          <Link to="/0km" className={`${styles.cta} ${styles.ctaPrimary}`}>
             Peugeot <span className={styles.ctaDivider}>|</span> 0 KM
-          </a>
+          </Link>
           <Link to="/vehiculos" className={`${styles.cta} ${styles.ctaSecondary}`}>
             Usados <span className={styles.ctaDivider}>|</span> Multimarca
           </Link>
@@ -75,5 +69,3 @@ const Hero = () => {
 }
 
 export default Hero
-
-

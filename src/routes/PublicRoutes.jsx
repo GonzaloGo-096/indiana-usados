@@ -23,6 +23,10 @@ const VehiculoDetalle = lazy(() => import('../pages/VehiculoDetalle'))
 const Nosotros = lazy(() => import('../pages/Nosotros'))
 const Postventa = lazy(() => import('../pages/Postventa'))
 
+// ✅ 0KM: Páginas de autos nuevos
+const CeroKilometros = lazy(() => import('../pages/CeroKilometros'))
+const CeroKilometroDetalle = lazy(() => import('../pages/CeroKilometros/CeroKilometroDetalle'))
+
 // ✅ FALLBACK: Componente de carga para Suspense
 const PageLoading = () => (
     <LoadingSpinner 
@@ -43,6 +47,9 @@ const PublicRoutes = () => (
                     <Route path="/vehiculo/:id" element={<VehiculoDetalle />} />
                     <Route path="/nosotros" element={<Nosotros />} />
                     <Route path="/postventa" element={<Postventa />} />
+                    {/* 0KM: Catálogo y detalle de autos nuevos */}
+                    <Route path="/0km" element={<CeroKilometros />} />
+                    <Route path="/0km/:autoSlug" element={<CeroKilometroDetalle />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Suspense>

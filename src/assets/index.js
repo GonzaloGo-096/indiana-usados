@@ -1,35 +1,37 @@
 /**
  * Assets Index - Centralización de recursos estáticos
  * 
- * Estructura por páginas:
- * - common/     → Logos y recursos compartidos
- * - home/       → Imágenes de página Home
- * - postventa/  → Imágenes de página Postventa
- * - vehicles/   → Fallbacks para vehículos
- * - fonts/      → Fuentes Barlow Condensed
+ * NOTA: Las imágenes estáticas ahora se consumen desde Cloudinary
+ * via src/config/cloudinaryStaticImages.js
+ * 
+ * Este archivo mantiene exports legacy para compatibilidad.
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Reorganización por páginas
+ * @version 3.0.0 - Migración a Cloudinary
  */
 
-// ===== COMMON (Recursos compartidos) =====
-import logoNavImg from './common/INDIANA-final.webp'
+import { staticImages } from '@config/cloudinaryStaticImages'
 
-export const logoNav = logoNavImg
-export const indianaNavLogo = logoNavImg // Legacy alias
+// ===== VEHICLES (Fallback para vehículos sin imagen) =====
+// Usado por: ImageCarousel, Dashboard, imageExtractors, imageNormalizerOptimized
+export const defaultCarImage = staticImages.usados.placeholder.src
 
-// ===== VEHICLES (Fallbacks e imágenes) =====
-// TODO: Crear archivo fallback-vehicle.jpg en assets/vehicles/
-// Temporal: usando logo como fallback hasta que se cree la imagen
-export const defaultCarImage = logoNavImg // Temporal: reemplazar cuando exista fallback-vehicle.jpg
+// ===== LEGACY EXPORTS (Compatibilidad hacia atrás) =====
+// Estos exports se mantienen para no romper imports existentes
+// pero ahora apuntan a Cloudinary
 
-export { vehiclesHeroImage } from './vehicles'
+export const logoNav = staticImages.nav.logo.src
+export const indianaNavLogo = staticImages.nav.logo.src // Legacy alias
 
-// ===== HOME (Re-exportar desde subcarpeta) =====
-export { heroImage, heroHomeWebp } from './home'
+// ===== HOME (Legacy) =====
+export const heroImage = {
+  src: staticImages.home.heroDesktop.src,
+  alt: staticImages.home.heroDesktop.alt
+}
+export const heroHomeWebp = staticImages.home.heroDesktop.src
 
-// ===== POSTVENTA (Servicios) =====
-export { default as serviceChapa } from './postventa/service-chapa.webp'
-export { default as serviceTaller } from './postventa/service-taller.webp'
-export { default as serviceRepuestos } from './postventa/service-repuestos.webp'
-export { default as heroPostventa } from './postventa/hero-postventa.webp'
+// ===== POSTVENTA (Legacy) =====
+export const heroPostventa = staticImages.postventa.hero.src
+export const serviceChapa = staticImages.postventa.services.chapa.src
+export const serviceTaller = staticImages.postventa.services.taller.src
+export const serviceRepuestos = staticImages.postventa.services.repuestos.src

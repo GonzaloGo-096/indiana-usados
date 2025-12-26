@@ -1,35 +1,27 @@
 /**
- * Hero Images - Imágenes para el Hero de Home
+ * Home Assets - Imágenes para la página Home
  * 
- * Nota: El componente Hero usa las imágenes directamente.
- * Estas exportaciones se mantienen para compatibilidad.
+ * NOTA: Migrado a Cloudinary. Este archivo mantiene compatibilidad.
  * 
  * @author Indiana Usados
- * @version 3.1.0 - Actualizado para usar imágenes existentes
+ * @version 4.0.0 - Migración a Cloudinary
  */
 
-import indianaHeroDesktop from './indiana-hero-1-desktop.webp'
-import indianaHeroMobile from './indiana-hero-1-mobile.webp'
-
-const generateSrcSet = (baseUrl) => {
-  const widths = [400, 800, 1280, 1920]
-  return widths.map(width => `${baseUrl} ${width}w`).join(', ')
-}
+import { staticImages } from '@config/cloudinaryStaticImages'
 
 // Hero image con srcSet (compatibilidad)
 export const heroImage = {
-  src: indianaHeroDesktop,
-  srcSet: generateSrcSet(indianaHeroDesktop),
-  alt: "Promoción destacada: Vehículo usado de calidad en Indiana Usados",
+  src: staticImages.home.heroDesktop.src,
+  alt: staticImages.home.heroDesktop.alt,
   sizes: "(max-width: 1200px) 100vw, 1200px"
 }
 
-// Hero image responsivo (similar a vehiclesHeroImage)
+// Hero image responsivo
 export const homeHeroImage = {
-  mobile: indianaHeroMobile,
-  desktop: indianaHeroDesktop,
-  alt: "Vehículos de calidad en Indiana Usados"
+  mobile: staticImages.home.heroMobile.src,
+  desktop: staticImages.home.heroDesktop.src,
+  alt: staticImages.home.heroDesktop.alt
 }
 
 // Exportar imágenes individuales para compatibilidad
-export const heroHomeWebp = indianaHeroDesktop
+export const heroHomeWebp = staticImages.home.heroDesktop.src

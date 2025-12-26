@@ -5,13 +5,13 @@
  * Diseño moderno y responsive
  * 
  * @author Indiana Usados
- * @version 3.0.0 - Hero section implementation
+ * @version 4.0.0 - Migración a Cloudinary
  */
 
 import PostventaServiceCard from '@components/PostventaServiceCard'
 import { SEOHead } from '@components/SEO'
 import styles from './Postventa.module.css'
-import imgPostventa from '../../assets/postventa/hero-postventa.webp'
+import { staticImages } from '@config/cloudinaryStaticImages'
 
 // Datos de los servicios actualizados según referencia
 const servicesData = [
@@ -60,8 +60,8 @@ const Postventa = () => {
         <div className="container">
           <div className={styles.heroBanner}>
             <img 
-              src={imgPostventa}
-              alt="Postventa profesional: servicio y mantenimiento de tu vehículo"
+              src={staticImages.postventa.hero.src}
+              alt={staticImages.postventa.hero.alt}
               className={styles.heroImage}
               decoding="async"
               loading="lazy"
@@ -79,18 +79,15 @@ const Postventa = () => {
 
       {/* Services Section */}
       <section className={styles.services}>
-        <div className={styles.servicesContainer}>
-          {servicesData.map((service) => (
-            <PostventaServiceCard
-              key={service.id}
-              title={service.title}
-              description={service.description}
-              image={service.image}
-              alt={service.alt}
-              buttonText={service.buttonText}
-              whatsappMessage={service.whatsappMessage}
-            />
-          ))}
+        <div className="container">
+          <div className={styles.servicesContainer}>
+            {servicesData.map((service) => (
+              <PostventaServiceCard
+                key={service.id}
+                {...service}
+              />
+            ))}
+          </div>
         </div>
       </section>
       </div>
@@ -99,7 +96,3 @@ const Postventa = () => {
 }
 
 export default Postventa
-
-
-
-

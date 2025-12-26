@@ -1,0 +1,298 @@
+/**
+ * CeroKilometros.module.css - Estilos para página 0km
+ * 
+ * Mobile-first, fondo blanco, carrusel horizontal
+ * 
+ * @author Indiana Usados
+ * @version 2.0.0 - Carrusel de modelos
+ */
+
+/* ===== PAGE CONTAINER ===== */
+.page {
+  min-height: 100vh;
+  background: var(--color-white);
+  padding: 0 0 40px 0;
+}
+
+/* ===== HEADER ===== */
+.header {
+  text-align: center;
+  padding: 32px 16px 24px;
+  background: linear-gradient(to bottom, var(--color-neutral-50) 0%, var(--color-white) 100%);
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: clamp(0.9rem, 2.5vw, 1.125rem);
+  color: var(--color-neutral-600);
+  font-weight: var(--font-weight-normal);
+}
+
+/* ===== CARRUSEL SECTION ===== */
+.carouselSection {
+  padding: 16px 0 32px;
+}
+
+.carouselWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ===== CARRUSEL ===== */
+.carousel {
+  display: flex;
+  gap: 20px;
+  padding: 20px 12px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  
+  /* Snap solo en mobile (donde el usuario desliza con el dedo) */
+  scroll-snap-type: x mandatory;
+  
+  /* Ocultar scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel > div {
+  scroll-snap-align: start;
+}
+
+/* ===== SCROLL BUTTONS ===== */
+.scrollButton {
+  position: absolute;
+  z-index: 10;
+  display: none; /* Oculto en mobile */
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-white);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: 
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.scrollButton:hover:not(:disabled) {
+  background: var(--color-brand-500);
+  color: var(--color-white);
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(0, 85, 164, 0.3);
+}
+
+.scrollButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.scrollButtonLeft {
+  left: 8px;
+}
+
+.scrollButtonRight {
+  right: 8px;
+}
+
+/* ===== SCROLL HINT (Mobile) ===== */
+.scrollHint {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0 0;
+  font-size: 0.75rem;
+  color: var(--color-neutral-400);
+  text-align: center;
+}
+
+.scrollHint span {
+  font-size: 0.875rem;
+  animation: bounceHorizontal 1.5s ease-in-out infinite;
+}
+
+.scrollHint span:first-child {
+  animation-direction: alternate-reverse;
+}
+
+@keyframes bounceHorizontal {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+/* ===== CTA SECTION ===== */
+.ctaSection {
+  text-align: center;
+  padding: 32px 24px;
+  margin: 0 16px;
+  background: var(--color-neutral-50);
+  border-radius: var(--border-radius-lg);
+}
+
+.ctaText {
+  margin: 0 0 16px 0;
+  font-size: 1rem;
+  color: var(--color-neutral-700);
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 0.9375rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  background: #25D366;
+  border-radius: var(--border-radius-md);
+  text-decoration: none;
+  transition: 
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.ctaButton:hover {
+  background: #20bd5a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+}
+
+/* ===== BACK LINK ===== */
+.backLink {
+  display: inline-block;
+  margin: 32px 0 0 24px;
+  font-size: 0.9375rem;
+  color: var(--color-neutral-500);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--color-brand-500);
+}
+
+/* ===== RESPONSIVE: TABLET ===== */
+@media (min-width: 768px) {
+  .header {
+    padding: 48px 24px 32px;
+  }
+  
+  .carouselWrapper {
+    padding: 0 32px;
+  }
+  
+  .carousel {
+    gap: 24px;
+    padding: 24px 16px;
+    /* Quitar snap en tablet/desktop - las flechas controlan el scroll */
+    scroll-snap-type: none;
+  }
+  
+  .carousel > div {
+    scroll-snap-align: unset;
+  }
+  
+  .scrollButton {
+    display: flex;
+  }
+  
+  .scrollHint {
+    display: none;
+  }
+  
+  .ctaSection {
+    margin: 0 24px;
+    padding: 40px 32px;
+  }
+  
+  .ctaText {
+    font-size: 1.125rem;
+  }
+  
+  .ctaButton {
+    padding: 14px 32px;
+    font-size: 1rem;
+  }
+}
+
+/* ===== RESPONSIVE: DESKTOP ===== */
+@media (min-width: 992px) {
+  .header {
+    padding: 64px 32px 40px;
+  }
+  
+  .carouselWrapper {
+    padding: 0 56px;
+  }
+  
+  .carousel {
+    gap: 28px;
+    padding: 28px 20px;
+    /* Sin justify-content: center - permite scroll desde el inicio */
+  }
+  
+  .scrollButton {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .scrollButtonLeft {
+    left: 16px;
+  }
+  
+  .scrollButtonRight {
+    right: 16px;
+  }
+  
+  .ctaSection {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 48px 40px;
+  }
+  
+  .backLink {
+    margin-left: calc((100% - var(--container-max-width)) / 2 + 24px);
+  }
+}
+
+/* ===== ACCESIBILIDAD ===== */
+@media (prefers-reduced-motion: reduce) {
+  .carousel {
+    scroll-behavior: auto;
+  }
+  
+  .scrollButton,
+  .ctaButton,
+  .backLink {
+    transition: none;
+  }
+  
+  .scrollHint span {
+    animation: none;
+  }
+}

@@ -9,7 +9,7 @@
  * - ✅ NUEVO: Preloading estratégico
  * 
  * @author Indiana Usados
- * @version 1.1.0 - Preloading estratégico
+ * @version 2.0.0 - Migración a Cloudinary
  */
 
 import React, { useEffect, useState } from 'react'
@@ -17,7 +17,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { usePreloadRoute } from '@hooks'
 import styles from './Nav.module.css'
 import { shouldPreloadOnIdle, requestIdle } from '@utils'
-import logo from '@assets/common/INDIANA-final.webp'
+import { staticImages } from '@config/cloudinaryStaticImages'
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -66,6 +66,11 @@ const Nav = () => {
     preloadRoute('/postventa', () => import('@pages/Postventa'))
   }
 
+  // ✅ 0KM: Preload para la nueva sección
+  const handle0kmPreload = () => {
+    preloadRoute('/0km', () => import('@pages/CeroKilometros'))
+  }
+
   // ✅ PRELOAD ON IDLE: Solo en buenas redes y en rutas ligeras
   useEffect(() => {
     if (!shouldPreloadOnIdle()) return
@@ -93,7 +98,11 @@ const Nav = () => {
           onMouseEnter={handleHomePreload}
           onMouseLeave={() => cancelPreload('/')}
         >
-          <img src={logo} alt="Indiana Usados" className={styles.logo} />
+          <img 
+            src={staticImages.nav.logo.src} 
+            alt={staticImages.nav.logo.alt} 
+            className={styles.logo} 
+          />
         </Link>
         
         <button 
@@ -150,18 +159,18 @@ const Nav = () => {
                 >
                   Usados
                 </Link>
-                <a 
+                <Link 
                   className={styles.dropdownItem}
-                  href="https://peugeotindiana.com.ar/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  to="/0km"
                   onClick={() => {
                     closeMenu()
                     setIsAutosDropdownOpen(false)
                   }}
+                  onMouseEnter={handle0kmPreload}
+                  onMouseLeave={() => cancelPreload('/0km')}
                 >
-                  Peugeot / 0 KM
-                </a>
+                  0 KM
+                </Link>
               </div>
             </div>
             <Link 

@@ -4,7 +4,7 @@
  * Nuevo diseño con Hero principal y CTAs
  * 
  * @author Indiana Usados
- * @version 5.0.0 - Nuevo Hero con CTAs
+ * @version 6.0.0 - Migración a Cloudinary
  */
 
 import { Link } from 'react-router-dom'
@@ -12,7 +12,7 @@ import Hero from '@components/Hero'
 import { FeaturedVehicles } from '@vehicles'
 import { SEOHead } from '@components/SEO'
 import styles from './Home.module.css'
-import imgPostventa from '../../assets/postventa/hero-postventa.webp'
+import { staticImages } from '@config/cloudinaryStaticImages'
 
 const Home = () => {
   return (
@@ -38,8 +38,8 @@ const Home = () => {
           <div className="container">
             <div className={styles.postventaBanner}>
               <img 
-                src={imgPostventa}
-                alt="Post-venta profesional: servicio y mantenimiento de tu vehículo"
+                src={staticImages.postventa.hero.src}
+                alt={staticImages.postventa.hero.alt}
                 className={styles.postventaImage}
                 decoding="async"
                 loading="lazy"
