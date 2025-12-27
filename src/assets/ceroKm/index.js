@@ -27,3 +27,4 @@ export const modeloBoxer = staticImages.ceroKm.modelos.boxer
 // Objeto con todos los modelos (compatibilidad)
 export const modelosMap = staticImages.ceroKm.modelos
 
+

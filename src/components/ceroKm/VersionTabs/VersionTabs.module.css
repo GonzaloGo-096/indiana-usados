@@ -1,0 +1,69 @@
+/**
+ * VersionTabs.module.css - Estilos de tabs de versiones
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+.container {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.tab {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-neutral-600);
+  background: transparent;
+  border: 2px solid var(--color-neutral-200);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: 
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.tab:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-neutral-400);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+.tab.active {
+  color: var(--color-white);
+  background: var(--color-text-primary);
+  border-color: var(--color-text-primary);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 768px) {
+  .container {
+    gap: 12px;
+  }
+  
+  .tab {
+    padding: 14px 32px;
+    font-size: 1.0625rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .tab {
+    padding: 16px 40px;
+    font-size: 1.125rem;
+    letter-spacing: 1.5px;
+  }
+}
+
+

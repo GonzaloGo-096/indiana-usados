@@ -11,6 +11,7 @@
  */
 
 import React, { useState, useRef, useEffect, useMemo, useId } from 'react'
+import { ChevronIcon } from '@components/ui/icons'
 import styles from './MultiSelect.module.css'
 
 const MultiSelect = React.memo(({
@@ -114,18 +115,7 @@ const MultiSelect = React.memo(({
           tabIndex={disabled ? -1 : 0}
         >
           <span className={styles.text}>{placeholder}</span>
-          <svg 
-            className={styles.arrow} 
-            width="16" 
-            height="16" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2"
-            aria-hidden="true"
-          >
-            <polyline points="6,9 12,15 18,9"></polyline>
-          </svg>
+          <ChevronIcon size={16} className={styles.arrow} />
         </button>
 
         {isOpen && (

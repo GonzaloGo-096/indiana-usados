@@ -1,25 +1,31 @@
 /**
- * CeroKilometroDetalle.module.css - Estilos placeholder
+ * CeroKilometroDetalle.module.css - Estilos de página detalle 0km
  * 
- * Estilos mínimos para Fase 1
+ * Mobile-first: Carrusel de versiones
+ * Desktop: Tabs + 2 columnas
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Fase 2
  */
 
-.container {
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: 40px 24px;
-  min-height: 60vh;
+/* ===== PAGE CONTAINER ===== */
+.page {
+  min-height: 100vh;
+  background: var(--color-white);
+  padding-bottom: 40px;
+}
+
+/* ===== HEADER ===== */
+.header {
+  padding: 24px 16px 16px;
 }
 
 .backLink {
   display: inline-block;
-  color: var(--color-neutral-600);
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+  color: var(--color-neutral-500);
   text-decoration: none;
-  padding: 8px 0;
-  margin-bottom: 24px;
   transition: color var(--transition-fast);
 }
 
@@ -28,33 +34,222 @@
 }
 
 .title {
-  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: clamp(1.75rem, 6vw, 3.5rem);
   font-weight: var(--font-weight-bold);
-  color: var(--color-black);
-  margin: 0 0 16px 0;
-  text-transform: uppercase;
-  letter-spacing: 2px;
   font-family: var(--font-display);
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.subtitle {
-  font-size: 1.125rem;
+.brandIcon {
+  flex-shrink: 0;
+  width: clamp(36px, 8vw, 64px);
+  height: clamp(36px, 8vw, 64px);
+}
+
+.modelName {
+  color: var(--color-brand-500);
+  font-weight: var(--font-weight-bold);
+}
+
+/* ===== ERROR STATE ===== */
+.container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.errorTitle {
+  margin: 24px 0 16px;
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+}
+
+.errorText {
   color: var(--color-neutral-600);
-  margin: 0 0 32px 0;
 }
 
-.info {
+/* ===== TABS (Desktop only) ===== */
+.tabsContainer {
+  display: none;
+}
+
+/* ===== MOBILE INDICATOR ===== */
+.mobileIndicator {
+  text-align: center;
+  padding: 0 16px 16px;
+}
+
+.indicatorText {
+  display: block;
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.swipeHint {
+  margin: 4px 0 0;
+  font-size: 0.75rem;
+  color: var(--color-neutral-400);
+}
+
+/* ===== MOBILE CONTENT (Carrusel) ===== */
+.mobileContent {
+  display: block;
+}
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carouselSlide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  scroll-snap-align: start;
+}
+
+.carouselPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  font-size: 1.25rem;
+  color: var(--color-neutral-300);
+}
+
+/* Mobile Nav */
+.mobileNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 16px;
+}
+
+.navButton {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--color-text-primary);
   background: var(--color-neutral-100);
-  padding: 20px;
-  border-radius: var(--border-radius-md);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 
-.info p {
-  margin: 0 0 8px 0;
-  color: var(--color-neutral-700);
+.navButton:hover:not(:disabled) {
+  background: var(--color-text-primary);
+  color: var(--color-white);
 }
 
-.info p:last-child {
-  margin-bottom: 0;
+.navButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
+.dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-neutral-300);
+  border-radius: 50%;
+  transition: background var(--transition-fast);
+}
+
+.dotActive {
+  background: var(--color-text-primary);
+}
+
+/* ===== DESKTOP CONTENT (oculto en mobile) ===== */
+.desktopContent {
+  display: none;
+}
+
+/* ===== RESPONSIVE: TABLET ===== */
+@media (min-width: 768px) {
+  .header {
+    padding: 32px 24px 24px;
+  }
+  
+  .tabsContainer {
+    display: block;
+    padding: 0 24px 24px;
+  }
+  
+  .mobileIndicator {
+    display: none;
+  }
+  
+  .mobileContent {
+    display: none;
+  }
+  
+  .desktopContent {
+    display: block;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+}
+
+/* ===== RESPONSIVE: DESKTOP ===== */
+@media (min-width: 992px) {
+  .header {
+    padding: 48px 32px 32px;
+  }
+  
+  .title {
+    gap: 16px;
+    letter-spacing: 3px;
+  }
+  
+  .tabsContainer {
+    padding: 0 32px 32px;
+  }
+  
+  .desktopContent {
+    padding: 0 32px;
+  }
+}
+
+/* ===== ACCESIBILIDAD ===== */
+@media (prefers-reduced-motion: reduce) {
+  .carousel {
+    scroll-behavior: auto;
+  }
+  
+  .navButton,
+  .backLink,
+  .dot {
+    transition: none;
+  }
+}

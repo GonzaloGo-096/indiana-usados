@@ -11,7 +11,8 @@
  * @version 1.0.0
  */
 
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
+import { ArrowUpIcon } from '@components/ui/icons'
 import styles from './ScrollToTop.module.css'
 
 export const ScrollToTop = ({ 
@@ -50,19 +51,7 @@ export const ScrollToTop = ({
         >
             {children || (
                 <>
-                    <svg 
-                        className={styles.icon} 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke="currentColor"
-                    >
-                        <path 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round" 
-                            strokeWidth={2} 
-                            d="M5 10l7-7m0 0l7 7m-7-7v18" 
-                        />
-                    </svg>
+                    <ArrowUpIcon className={styles.icon} />
                     <span className={styles.text}>Subir</span>
                 </>
             )}

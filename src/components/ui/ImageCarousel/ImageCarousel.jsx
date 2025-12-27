@@ -14,7 +14,7 @@
  */
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
-import { ChevronLeftIcon, ChevronRightIcon } from './icons.jsx'
+import { ChevronIcon } from '@components/ui/icons'
 import { defaultCarImage } from '@assets'
 import CloudinaryImage from '@/components/ui/CloudinaryImage/CloudinaryImage'
 import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
@@ -160,7 +160,7 @@ export const ImageCarousel = ({
                             aria-label="Imagen anterior"
                             type="button"
                         >
-                            <ChevronLeftIcon />
+                            <ChevronIcon direction="left" size={24} />
                         </button>
                         <button 
                             className={`${styles.arrow} ${styles.arrowRight}`}
@@ -168,7 +168,7 @@ export const ImageCarousel = ({
                             aria-label="Imagen siguiente"
                             type="button"
                         >
-                            <ChevronRightIcon />
+                            <ChevronIcon direction="right" size={24} />
                         </button>
                     </>
                 )}
@@ -194,7 +194,7 @@ export const ImageCarousel = ({
                             aria-label="Desplazar miniaturas izquierda"
                             type="button"
                         >
-                            <ChevronLeftIcon />
+                            <ChevronIcon direction="left" size={24} />
                         </button>
                     )}
                     
@@ -232,7 +232,7 @@ export const ImageCarousel = ({
                             aria-label="Desplazar miniaturas derecha"
                             type="button"
                         >
-                            <ChevronRightIcon />
+                            <ChevronIcon direction="right" size={24} />
                         </button>
                     )}
                 </div>

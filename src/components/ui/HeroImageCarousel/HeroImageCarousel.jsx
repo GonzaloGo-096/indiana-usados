@@ -13,6 +13,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react'
+import { ChevronIcon } from '@components/ui/icons'
 import styles from './HeroImageCarousel.module.css'
 
 const HeroImageCarousel = ({ 
@@ -116,15 +117,7 @@ const HeroImageCarousel = ({
             aria-label="Imagen anterior"
             type="button"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path 
-                d="M15 18L9 12L15 6" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              />
-            </svg>
+            <ChevronIcon direction="left" size={24} />
           </button>
           
           <button
@@ -133,15 +126,7 @@ const HeroImageCarousel = ({
             aria-label="Siguiente imagen"
             type="button"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path 
-                d="M9 18L15 12L9 6" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              />
-            </svg>
+            <ChevronIcon direction="right" size={24} />
           </button>
         </>
       )}

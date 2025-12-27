@@ -144,7 +144,8 @@ export default defineConfig({
       '@mappers': resolve(__dirname, 'src/mappers'),
       '@routes': resolve(__dirname, 'src/routes'),
       '@types': resolve(__dirname, 'src/types'),
-      '@schemas': resolve(__dirname, 'src/schemas')
+      '@schemas': resolve(__dirname, 'src/schemas'),
+      '@data': resolve(__dirname, 'src/data')
     }
   },
   

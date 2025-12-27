@@ -13,6 +13,7 @@
  */
 
 import { useState } from 'react'
+import { ChevronIcon } from '@components/ui/icons'
 import { footerModules, footerIcons } from './footerConfig.jsx'
 import styles from './FooterModules.module.css'
 
@@ -61,21 +62,10 @@ const FooterItem = ({ item }) => {
 }
 
 /**
- * Chevron SVG para el accordion
+ * Wrapper para ChevronIcon con estilos del accordion
  */
-const ChevronIcon = () => (
-  <svg 
-    className={styles.chevron} 
-    width="20" 
-    height="20" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2"
-    aria-hidden="true"
-  >
-    <polyline points="6 9 12 15 18 9" />
-  </svg>
+const AccordionChevron = () => (
+  <ChevronIcon size={20} className={styles.chevron} />
 )
 
 /**
@@ -116,7 +106,7 @@ const FooterModules = () => {
                 aria-controls={`module-content-${module.id}`}
               >
                 <h3 className={styles.moduleTitle}>{module.title}</h3>
-                <ChevronIcon />
+                <AccordionChevron />
               </button>
               
               {/* Contenido colapsable */}

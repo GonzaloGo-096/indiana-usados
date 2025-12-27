@@ -17,6 +17,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { RangeSlider } from '@ui'
 import { MultiSelect } from '@ui'
+import { SortIcon, FilterIcon, CloseIcon } from '@components/ui/icons'
 import { marcas, combustibles, cajas, FILTER_DEFAULTS, SORT_OPTIONS } from '@constants'
 import { parseFilters } from '@utils'
 import { logger } from '@utils/logger'
@@ -274,9 +275,7 @@ const FilterFormSimpleComponent = React.forwardRef(({
               disabled={isLoading || isSubmitting}
               type="button"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M3 6h18"></path><path d="M6 12h12"></path><path d="M9 18h6"></path>
-              </svg>
+              <SortIcon size={20} />
               <span>Ordenar</span>
             </button>
             {isSortDropdownOpen && (
@@ -305,9 +304,7 @@ const FilterFormSimpleComponent = React.forwardRef(({
               disabled={isLoading || isSubmitting}
               type="button"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"></polygon>
-              </svg>
+              <FilterIcon size={20} />
               <span>Filtrar</span>
               {activeFiltersCount > 0 && (
                 <span className={styles.badge}>{activeFiltersCount}</span>
@@ -339,10 +336,7 @@ const FilterFormSimpleComponent = React.forwardRef(({
             <h3>Filtros de Búsqueda</h3>
             <div className={styles.titleActions}>
               <button type="button" onClick={closeDrawer} className={styles.closeButtonMobile}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+                <CloseIcon size={24} />
               </button>
               <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
                 Limpiar

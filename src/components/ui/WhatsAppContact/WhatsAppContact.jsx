@@ -9,7 +9,7 @@
  */
 
 import React from 'react'
-import { WhatsAppIconOptimized } from '@ui/icons'
+import { WhatsAppIcon } from '@components/ui/icons'
 import { config } from '@config'
 import styles from './WhatsAppContact.module.css'
 
@@ -40,7 +40,7 @@ const WhatsAppContact = ({
       onClick={handleWhatsAppClick}
       aria-label={`${text} por WhatsApp`}
     >
-      <WhatsAppIconOptimized 
+      <WhatsAppIcon 
         size={20} 
         className={styles.whatsappIcon}
       />

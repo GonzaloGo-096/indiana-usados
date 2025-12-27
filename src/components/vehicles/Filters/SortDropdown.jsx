@@ -12,6 +12,7 @@
  */
 
 import React, { useEffect, useRef } from 'react'
+import { CheckIcon } from '@components/ui/icons'
 import { SORT_OPTIONS } from '@constants'
 import { isValidSortOption } from '@utils'
 
@@ -133,11 +134,7 @@ const SortDropdown = React.memo(({
         aria-selected={selectedSort === null}
       >
         <span>Sin ordenamiento</span>
-        {selectedSort === null && (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="20,6 9,17 4,12"></polyline>
-          </svg>
-        )}
+        {selectedSort === null && <CheckIcon size={16} />}
       </button>
 
       {/* Opciones de ordenamiento */}
@@ -172,11 +169,7 @@ const SortDropdown = React.memo(({
             aria-selected={isSelected}
           >
             <span>{option.label}</span>
-            {isSelected && (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="20,6 9,17 4,12"></polyline>
-              </svg>
-            )}
+            {isSelected && <CheckIcon size={16} />}
           </button>
         )
       })}
