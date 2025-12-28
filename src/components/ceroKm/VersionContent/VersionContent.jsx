@@ -13,8 +13,6 @@ import { ColorSelector } from '../ColorSelector'
 import { ModeloSpecs } from '../ModeloSpecs'
 import styles from './VersionContent.module.css'
 
-// Imagen placeholder cuando no hay imagen disponible
-const PLACEHOLDER_IMAGE = 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766082588/logo-chico_solid_yv8oot.webp'
 
 /**
  * @param {Object} props
@@ -39,9 +37,50 @@ export const VersionContent = memo(({
 }) => {
   if (!version) return null
 
-  const imageUrl = imagenActual?.url || PLACEHOLDER_IMAGE
+  const imageUrl = imagenActual?.url || null
   const imageAlt = imagenActual?.alt || `${modeloNombre} ${version.nombre}`
-  const tituloCompleto = modeloNombre ? `${modeloNombre} ${version.nombre}` : version.nombre
+
+  // Formatear nombre de versión: GT en rojo, siglas en mayúsculas, resto capitalizado
+  const formatVersionName = (nombre) => {
+    // Formatear una palabra: siglas/códigos en mayúscula, resto capitalizado
+    const formatWord = (word) => {
+      const upper = word.toUpperCase()
+      // Códigos alfanuméricos (T200, AM24, GT) o siglas cortas
+      if (word.length <= 2 || /^[A-Z]+\d+$/i.test(word)) {
+        return upper
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    }
+    
+    // Dividir por espacios, formatear cada palabra
+    const palabras = nombre.split(' ')
+    
+    return palabras.map((palabra, i) => {
+      const formatted = formatWord(palabra)
+      const upperWord = palabra.toUpperCase()
+      
+      // Si es GT, ponerlo en rojo
+      if (upperWord === 'GT') {
+        return (
+          <span key={i}>
+            {i > 0 && ' '}
+            <span className={styles.gtText}>{formatted}</span>
+          </span>
+        )
+      }
+      
+      return (i > 0 ? ' ' : '') + formatted
+    })
+  }
+
+  const renderTitulo = () => {
+    return (
+      <>
+        {modeloNombre && `${modeloNombre} `}
+        {formatVersionName(version.nombre)}
+      </>
+    )
+  }
 
   // Layout mobile: todo en columna
   if (layout === 'mobile') {
@@ -49,13 +88,15 @@ export const VersionContent = memo(({
       <article className={styles.mobileContainer}>
         {/* Imagen */}
         <div className={styles.imageContainer}>
-          <img
-            src={imageUrl}
-            alt={imageAlt}
-            className={styles.image}
-            loading="lazy"
-            decoding="async"
-          />
+          {imageUrl && (
+            <img
+              src={imageUrl}
+              alt={imageAlt}
+              className={styles.image}
+              loading="lazy"
+              decoding="async"
+            />
+          )}
         </div>
 
         {/* Selector de colores */}
@@ -74,7 +115,7 @@ export const VersionContent = memo(({
 
         {/* Info */}
         <div className={styles.infoSection}>
-          <h2 className={styles.versionTitle}>{tituloCompleto}</h2>
+          <h2 className={styles.versionTitle}>{renderTitulo()}</h2>
           <p className={styles.versionDescription}>{version.descripcion}</p>
         </div>
 
@@ -92,13 +133,15 @@ export const VersionContent = memo(({
       {/* Columna izquierda: Imagen + Color */}
       <div className={styles.leftColumn}>
         <div className={styles.imageContainer}>
-          <img
-            src={imageUrl}
-            alt={imageAlt}
-            className={styles.image}
-            loading="lazy"
-            decoding="async"
-          />
+          {imageUrl && (
+            <img
+              src={imageUrl}
+              alt={imageAlt}
+              className={styles.image}
+              loading="lazy"
+              decoding="async"
+            />
+          )}
         </div>
 
         <div className={styles.colorSection}>
@@ -117,7 +160,7 @@ export const VersionContent = memo(({
 
       {/* Columna derecha: Info + Specs */}
       <div className={styles.rightColumn}>
-        <h2 className={styles.versionTitle}>{tituloCompleto}</h2>
+        <h2 className={styles.versionTitle}>{renderTitulo()}</h2>
         <p className={styles.versionDescription}>{version.descripcion}</p>
         
         <div className={styles.specsSection}>

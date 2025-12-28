@@ -1,0 +1,404 @@
+/**
+ * ModelGallery.module.css - Estilos para galería de modelo
+ * 
+ * Grid compacto tipo "cruz" con muy poco gap
+ * Mobile: 2x2 (4 imágenes)
+ * Desktop: 3x2 (6 imágenes)
+ * Lightbox modal elegante
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== GALLERY SECTION ===== */
+.gallery {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  padding: 32px 6px;
+  background: #ffffff;
+}
+
+.galleryTitle {
+  margin: 0 0 20px;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-display);
+  color: var(--color-text-primary);
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* ===== GRID LAYOUT ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.gridItem {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #f5f5f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gridItem:hover {
+  transform: scale(1.02);
+  z-index: 2;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.gridItem:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+.gridImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gridItem:hover .gridImage {
+  transform: scale(1.08);
+}
+
+/* Overlay con ícono de zoom */
+.gridItemOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0);
+  color: white;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.gridItem:hover .gridItemOverlay {
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 1;
+}
+
+.gridItemOverlay svg {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+
+/* ===== MODAL OVERLAY ===== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ===== MODAL CONTENT ===== */
+.modalContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  padding: 60px 16px 120px;
+}
+
+/* ===== CLOSE BUTTON ===== */
+.modalCloseBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modalCloseBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* ===== MODAL IMAGE ===== */
+.modalImageContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-height: calc(100vh - 200px);
+  overflow: hidden;
+}
+
+.modalImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===== NAVIGATION BUTTONS ===== */
+.modalNavBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modalNavBtn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.modalNavPrev {
+  left: 16px;
+}
+
+.modalNavNext {
+  right: 16px;
+}
+
+/* ===== COUNTER ===== */
+.modalCounter {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font-display);
+  border-radius: 20px;
+  letter-spacing: 1px;
+  backdrop-filter: blur(4px);
+}
+
+/* ===== MODAL THUMBNAILS ===== */
+.modalThumbnails {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  max-width: calc(100vw - 32px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.modalThumbnails::-webkit-scrollbar {
+  display: none;
+}
+
+.modalThumb {
+  flex-shrink: 0;
+  width: 60px;
+  height: 45px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+.modalThumb:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.modalThumbActive {
+  border-color: white;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.modalThumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== RESPONSIVE: TABLET ===== */
+@media (min-width: 768px) {
+  .gallery {
+    padding: 48px 8px;
+    background: #ffffff;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    border-radius: 0;
+    background: #ffffff;
+  }
+
+  .gridItem {
+    border-radius: 8px;
+  }
+
+  .modalContent {
+    padding: 80px 48px 140px;
+  }
+
+  .modalNavBtn {
+    width: 56px;
+    height: 56px;
+  }
+
+  .modalNavPrev {
+    left: 24px;
+  }
+
+  .modalNavNext {
+    right: 24px;
+  }
+
+  .modalThumb {
+    width: 80px;
+    height: 60px;
+  }
+
+  .modalThumbnails {
+    padding: 16px 24px;
+    gap: 12px;
+  }
+}
+
+/* ===== RESPONSIVE: DESKTOP ===== */
+@media (min-width: 992px) {
+  .gallery {
+    padding: 64px 10px;
+    background: #ffffff;
+  }
+
+  .grid {
+    gap: 10px;
+    width: 100%;
+    padding: 0;
+    background: #ffffff;
+  }
+
+  .gridItem {
+    border-radius: 10px;
+  }
+}
+
+/* ===== RESPONSIVE: LARGE DESKTOP ===== */
+@media (min-width: 1400px) {
+  .gallery {
+    padding: 64px 12px;
+  }
+
+  .grid {
+    gap: 12px;
+  }
+
+  .modalCloseBtn {
+    top: 24px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .modalNavBtn {
+    width: 64px;
+    height: 64px;
+  }
+
+  .modalNavPrev {
+    left: 48px;
+  }
+
+  .modalNavNext {
+    right: 48px;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  .modalOverlay,
+  .modalImage,
+  .gridItem,
+  .gridImage,
+  .gridItemOverlay,
+  .modalNavBtn,
+  .modalCloseBtn,
+  .modalThumb {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ===== FOCUS STYLES ===== */
+.modalCloseBtn:focus-visible,
+.modalNavBtn:focus-visible,
+.modalThumb:focus-visible {
+  outline: 2px solid var(--color-brand-400);
+  outline-offset: 2px;
+}
+

@@ -42,7 +42,6 @@
   font-weight: var(--font-weight-bold);
   font-family: var(--font-display);
   color: var(--color-text-primary);
-  text-transform: uppercase;
   letter-spacing: 1px;
 }
 
@@ -55,6 +54,17 @@
 .modelName {
   color: var(--color-brand-500);
   font-weight: var(--font-weight-bold);
+}
+
+.versionName {
+  color: var(--color-neutral-500);
+  font-weight: var(--font-weight-semibold);
+  font-size: 0.6em;
+}
+
+/* Letras GT siempre en rojo */
+.gtText {
+  color: #dc2626;
 }
 
 /* ===== ERROR STATE ===== */
@@ -75,32 +85,12 @@
   color: var(--color-neutral-600);
 }
 
-/* ===== TABS (Desktop only) ===== */
+/* ===== TABS (Visible en mobile y desktop) ===== */
 .tabsContainer {
-  display: none;
-}
-
-/* ===== MOBILE INDICATOR ===== */
-.mobileIndicator {
-  text-align: center;
+  display: block;
   padding: 0 16px 16px;
 }
 
-.indicatorText {
-  display: block;
-  font-size: 1rem;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.swipeHint {
-  margin: 4px 0 0;
-  font-size: 0.75rem;
-  color: var(--color-neutral-400);
-}
 
 /* ===== MOBILE CONTENT (Carrusel) ===== */
 .mobileContent {
@@ -136,58 +126,6 @@
   color: var(--color-neutral-300);
 }
 
-/* Mobile Nav */
-.mobileNav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  padding: 16px;
-}
-
-.navButton {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  color: var(--color-text-primary);
-  background: var(--color-neutral-100);
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: 
-    background var(--transition-fast),
-    color var(--transition-fast);
-}
-
-.navButton:hover:not(:disabled) {
-  background: var(--color-text-primary);
-  color: var(--color-white);
-}
-
-.navButton:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.dots {
-  display: flex;
-  gap: 8px;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  background: var(--color-neutral-300);
-  border-radius: 50%;
-  transition: background var(--transition-fast);
-}
-
-.dotActive {
-  background: var(--color-text-primary);
-}
 
 /* ===== DESKTOP CONTENT (oculto en mobile) ===== */
 .desktopContent {
@@ -201,12 +139,7 @@
   }
   
   .tabsContainer {
-    display: block;
     padding: 0 24px 24px;
-  }
-  
-  .mobileIndicator {
-    display: none;
   }
   
   .mobileContent {

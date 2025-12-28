@@ -19,20 +19,20 @@
 .desktopContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  padding: 32px 0;
+  gap: 40px;
+  padding: 24px 0;
 }
 
 .leftColumn {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
 .rightColumn {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 /* ===== IMAGEN ===== */
@@ -66,15 +66,15 @@
   padding-bottom: 2px;
   font-size: 0.875rem;
   font-weight: var(--font-weight-semibold);
-  color: var(--color-brand-500);
+  color: var(--color-neutral-500);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--color-brand-500);
+  border-bottom: 1px solid var(--color-neutral-300);
 }
 
 .colorLabel {
   font-size: 1rem;
-  color: var(--color-text-primary);
+  color: var(--color-brand-500);
   font-weight: var(--font-weight-bold);
 }
 
@@ -90,8 +90,12 @@
   font-weight: var(--font-weight-bold);
   font-family: var(--font-display);
   color: var(--color-text-primary);
-  text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+/* Letras GT siempre en rojo */
+.gtText {
+  color: #dc2626;
 }
 
 .versionDescription {
@@ -158,35 +162,53 @@
 
 @media (min-width: 992px) {
   .desktopContainer {
-    gap: 64px;
-    padding: 40px 0;
+    gap: 48px;
+    padding: 32px 0;
   }
   
   .imageContainer {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 4 / 3;
+    max-width: 90%;
   }
   
   .image {
-    padding: 24px;
+    padding: 16px;
+  }
+  
+  .leftColumn {
+    gap: 16px;
   }
   
   .rightColumn {
-    gap: 24px;
-    padding-top: 16px;
+    gap: 20px;
+    padding-top: 0;
+  }
+  
+  .colorTitle {
+    font-size: 0.75rem;
+  }
+  
+  .colorLabel {
+    font-size: 0.9375rem;
   }
   
   .versionTitle {
-    font-size: 2rem;
-    letter-spacing: 2px;
+    font-size: 1.375rem;
+    letter-spacing: 1px;
   }
   
   .versionDescription {
-    font-size: 1.125rem;
-    line-height: 1.7;
+    font-size: 1rem;
+    line-height: 1.6;
   }
   
   .specsTitle {
-    font-size: 1.0625rem;
-    margin-bottom: 16px;
+    font-size: 0.875rem;
+    margin-bottom: 12px;
+  }
+  
+  .ctaButton {
+    padding: 14px 24px;
+    font-size: 0.9375rem;
   }
 }

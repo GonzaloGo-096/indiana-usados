@@ -29,6 +29,41 @@ export const VersionTabs = memo(({
       {versiones.map((version) => {
         const isActive = version.id === versionActivaId
         
+        // Formatear nombre: GT en rojo, siglas en mayúsculas, resto capitalizado
+        const renderNombre = () => {
+          const nombre = version.nombreCorto || ''
+          
+          // Formatear una palabra: siglas/códigos en mayúscula, resto capitalizado
+          const formatWord = (word) => {
+            const upper = word.toUpperCase()
+            // Códigos alfanuméricos (T200, AM24, GT) o siglas cortas
+            if (word.length <= 2 || /^[A-Z]+\d+$/i.test(word)) {
+              return upper
+            }
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+          }
+          
+          // Dividir por espacios, formatear cada palabra
+          const palabras = nombre.split(' ')
+          
+          return palabras.map((palabra, i) => {
+            const formatted = formatWord(palabra)
+            const upperWord = palabra.toUpperCase()
+            
+            // Si es GT, ponerlo en rojo
+            if (upperWord === 'GT') {
+              return (
+                <span key={i}>
+                  {i > 0 && ' '}
+                  <span className={styles.gtText}>{formatted}</span>
+                </span>
+              )
+            }
+            
+            return (i > 0 ? ' ' : '') + formatted
+          })
+        }
+        
         return (
           <button
             key={version.id}
@@ -39,7 +74,7 @@ export const VersionTabs = memo(({
             aria-selected={isActive}
             aria-controls={`panel-${version.id}`}
           >
-            {version.nombreCorto}
+            {renderNombre()}
           </button>
         )
       })}

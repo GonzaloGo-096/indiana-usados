@@ -15,7 +15,7 @@ import React, { useRef, useEffect, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { SEOHead } from '@components/SEO'
 import { getBrandIcon } from '@components/ui/icons'
-import { VersionTabs, VersionContent } from '@components/ceroKm'
+import { VersionTabs, VersionContent, ModelGallery } from '@components/ceroKm'
 import { useModeloSelector } from '@hooks/ceroKm'
 import { existeModelo } from '@data/modelos'
 import styles from './CeroKilometroDetalle.module.css'
@@ -45,13 +45,9 @@ const CeroKilometroDetalle = () => {
     imagenActual,
     indiceVersionActiva,
     totalVersiones,
-    puedeIrAnterior,
-    puedeIrSiguiente,
     cambiarVersion,
     cambiarVersionPorIndice,
-    cambiarColor,
-    irAVersionAnterior,
-    irAVersionSiguiente
+    cambiarColor
   } = useModeloSelector(autoSlug)
 
   // Scroll del carrusel mobile al cambiar versión por tabs
@@ -103,6 +99,45 @@ const CeroKilometroDetalle = () => {
   // Obtener ícono de marca dinámicamente
   const BrandIcon = getBrandIcon(modelo.marca)
 
+  // Formatear nombre de versión: GT en rojo, siglas en mayúsculas, resto capitalizado
+  const renderVersionName = () => {
+    const nombre = versionActiva?.nombreCorto || ''
+    
+    // Formatear una palabra: siglas/códigos en mayúscula, resto capitalizado
+    const formatWord = (word) => {
+      const upper = word.toUpperCase()
+      // Códigos alfanuméricos (T200, AM24, GT) o siglas cortas
+      if (word.length <= 2 || /^[A-Z]+\d+$/i.test(word)) {
+        return upper
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    }
+    
+    // Dividir por espacios, formatear cada palabra
+    const palabras = nombre.split(' ')
+    
+    return (
+      <span className={styles.versionName}>
+        {palabras.map((palabra, i) => {
+          const formatted = formatWord(palabra)
+          const upperWord = palabra.toUpperCase()
+          
+          // Si es GT, ponerlo en rojo
+          if (upperWord === 'GT') {
+            return (
+              <span key={i}>
+                {i > 0 && ' '}
+                <span className={styles.gtText}>{formatted}</span>
+              </span>
+            )
+          }
+          
+          return (i > 0 ? ' ' : '') + formatted
+        })}
+      </span>
+    )
+  }
+
   return (
     <>
       <SEOHead
@@ -121,24 +156,17 @@ const CeroKilometroDetalle = () => {
             {BrandIcon && <BrandIcon className={styles.brandIcon} />}
             <span>{modelo.marca}</span>
             <span className={styles.modelName}>{modelo.nombre}</span>
+            {renderVersionName()}
           </h1>
         </header>
 
-        {/* Tabs de versiones (visible en tablet/desktop) */}
+        {/* Tabs de versiones (visible en mobile y desktop) */}
         <div className={styles.tabsContainer}>
           <VersionTabs
             versiones={versiones}
             versionActivaId={versionActiva?.id}
             onVersionChange={cambiarVersion}
           />
-        </div>
-
-        {/* Indicador de versión mobile */}
-        <div className={styles.mobileIndicator}>
-          <span className={styles.indicatorText}>
-            {versionActiva?.nombreCorto} ({indiceVersionActiva + 1}/{totalVersiones})
-          </span>
-          <p className={styles.swipeHint}>Deslizá para ver otras versiones</p>
         </div>
 
         {/* Contenido Mobile: Carrusel */}
@@ -173,33 +201,6 @@ const CeroKilometroDetalle = () => {
             })}
           </div>
 
-          {/* Navegación mobile */}
-          <div className={styles.mobileNav}>
-            <button
-              className={styles.navButton}
-              onClick={irAVersionAnterior}
-              disabled={!puedeIrAnterior}
-              aria-label="Versión anterior"
-            >
-              ←
-            </button>
-            <div className={styles.dots}>
-              {versiones.map((v, i) => (
-                <span
-                  key={v.id}
-                  className={`${styles.dot} ${i === indiceVersionActiva ? styles.dotActive : ''}`}
-                />
-              ))}
-            </div>
-            <button
-              className={styles.navButton}
-              onClick={irAVersionSiguiente}
-              disabled={!puedeIrSiguiente}
-              aria-label="Versión siguiente"
-            >
-              →
-            </button>
-          </div>
         </div>
 
         {/* Contenido Desktop: Layout 2 columnas */}
@@ -215,6 +216,15 @@ const CeroKilometroDetalle = () => {
             layout="desktop"
           />
         </div>
+
+        {/* Galería de imágenes del modelo (fija, no cambia con versión) */}
+        {modelo.galeria && (
+          <ModelGallery
+            model={`${modelo.marca.toLowerCase()}-${modelo.slug}`}
+            images={modelo.galeria}
+            title="Galería"
+          />
+        )}
       </div>
     </>
   )

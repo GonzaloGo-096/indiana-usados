@@ -2,10 +2,11 @@
  * peugeot2008.js - Data del modelo Peugeot 2008
  * 
  * Contiene toda la información del modelo: versiones, colores permitidos,
- * specs y descripciones. La UI consume esta data sin conocer strings mágicos.
+ * specs, descripciones y galería de imágenes.
+ * La UI consume esta data sin conocer strings mágicos.
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 1.1.0 - Agregada galería de imágenes
  */
 
 import { COLORES } from './colores'
@@ -20,6 +21,24 @@ export const PEUGEOT_2008 = {
   slug: '2008',
   año: 2024,
   
+  // Galería de imágenes (fija por modelo, no por versión)
+  galeria: {
+    mobile: [
+      { publicId: '2008-galeria-1-mobile_xf79qs', alt: 'Peugeot 2008 - Vista exterior' },
+      { publicId: '2008-galeria-2-mobile_d8xwmz', alt: 'Peugeot 2008 - Interior i-Cockpit' },
+      { publicId: '2008-galeria-3-mobile_ykqd6u', alt: 'Peugeot 2008 - Detalle frontal' },
+      { publicId: '2008-galeria-4-mobile_dqf5zf', alt: 'Peugeot 2008 - Vista trasera' }
+    ],
+    desktop: [
+      { publicId: '2008-galeria-1-desktop_cljotq', alt: 'Peugeot 2008 - Vista exterior' },
+      { publicId: '2008-galeria-2-desktop_gp3ruh', alt: 'Peugeot 2008 - Interior i-Cockpit' },
+      { publicId: '2008-galeria-3-desktop_dxvyqd', alt: 'Peugeot 2008 - Detalle frontal' },
+      { publicId: '2008-galeria-4-desktop_c7yoxt', alt: 'Peugeot 2008 - Vista trasera' },
+      { publicId: '2008-galeria-5-desktop_g0mych', alt: 'Peugeot 2008 - Detalles interiores' },
+      { publicId: '2008-galeria-6-desktop_drukj6', alt: 'Peugeot 2008 - Tecnología a bordo' }
+    ]
+  },
+  
   // Versiones disponibles
   versiones: [
     {
@@ -30,13 +49,12 @@ export const PEUGEOT_2008 = {
       coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro', 'gris-selenium'],
       colorDefault: 'blanco-nacre',
       specs: {
-        motor: '1.2 PureTech 130cv',
-        transmision: 'Automática 6 velocidades',
-        traccion: 'Delantera',
-        combustible: 'Nafta',
-        consumo: '6.2 L/100km',
-        potencia: '130 CV',
-        torque: '230 Nm'
+        llantas: 'Aleación diamantadas 17"',
+        faros: 'ECO-LED y DRL LED',
+        motor: 'T200 de 1.0L',
+        caja: 'Automática CVT 7 marchas',
+        sensores: 'Estacionamiento traseros',
+        airbags: 'Frontales y laterales'
       }
     },
     {
@@ -47,13 +65,12 @@ export const PEUGEOT_2008 = {
       coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro', 'gris-selenium'],
       colorDefault: 'gris-selenium',
       specs: {
-        motor: '1.2 PureTech 130cv',
-        transmision: 'Automática 6 velocidades',
-        traccion: 'Delantera',
-        combustible: 'Nafta',
-        consumo: '6.2 L/100km',
-        potencia: '130 CV',
-        torque: '230 Nm'
+        llantas: 'Aleación diamantadas 17"',
+        faros: 'ECO-LED y DRL LED',
+        motor: 'T200 de 1.0L',
+        caja: 'Automática CVT 7 marchas',
+        acceso: 'Arranque sin llave',
+        airbags: 'Frontales, laterales y cortina'
       }
     },
     {
@@ -64,13 +81,12 @@ export const PEUGEOT_2008 = {
       coloresPermitidos: ['negro', 'gris-selenium', 'blanco-nacre'],
       colorDefault: 'negro',
       specs: {
-        motor: '1.2 PureTech 130cv',
-        transmision: 'Automática 6 velocidades',
-        traccion: 'Delantera',
-        combustible: 'Nafta',
-        consumo: '6.4 L/100km',
-        potencia: '130 CV',
-        torque: '230 Nm'
+        llantas: 'Aleación diamantadas 17"',
+        faros: 'ECO-LED y DRL LED',
+        motor: 'T200 de 1.0L',
+        caja: 'Automática CVT 7 marchas',
+        acceso: 'Arranque sin llave',
+        airbags: 'Frontales, laterales y cortina'
       }
     }
   ],

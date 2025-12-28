@@ -1,25 +1,26 @@
 /**
  * ModeloSpecs - Especificaciones técnicas del modelo
  * 
- * Muestra specs en formato tabla/lista.
- * Componente presentacional.
+ * Grid con íconos centrados y valores debajo.
+ * Distribución uniforme del espacio.
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import React, { memo } from 'react'
+import { SPEC_ICONS } from '@components/ui/icons/specs'
 import styles from './ModeloSpecs.module.css'
 
-// Labels para las specs (evitar strings mágicos en UI)
+// Labels para las specs
 const SPEC_LABELS = {
+  llantas: 'Llantas',
+  faros: 'Faros',
   motor: 'Motor',
-  transmision: 'Transmisión',
-  traccion: 'Tracción',
-  combustible: 'Combustible',
-  consumo: 'Consumo',
-  potencia: 'Potencia',
-  torque: 'Torque'
+  caja: 'Caja',
+  sensores: 'Sensores',
+  acceso: 'Acceso',
+  airbags: 'Airbags'
 }
 
 /**
@@ -36,19 +37,30 @@ export const ModeloSpecs = memo(({
   if (!specEntries.length) return null
 
   return (
-    <dl className={`${styles.container} ${styles[variant]}`}>
-      {specEntries.map(([key, value]) => (
-        <div key={key} className={styles.item}>
-          <dt className={styles.label}>{SPEC_LABELS[key]}</dt>
-          <dd className={styles.value}>{value}</dd>
-        </div>
-      ))}
-    </dl>
+    <div className={styles.wrapper}>
+      <dl className={`${styles.container} ${styles[variant]}`}>
+        {specEntries.map(([key, value]) => {
+          const Icon = SPEC_ICONS[key]
+          
+          return (
+            <div key={key} className={styles.item}>
+              {Icon && (
+                <div className={styles.iconWrapper}>
+                  <Icon className={styles.icon} />
+                </div>
+              )}
+              <div className={styles.content}>
+                <dt className={styles.label}>{SPEC_LABELS[key]}</dt>
+                <dd className={styles.value}>{value}</dd>
+              </div>
+            </div>
+          )
+        })}
+      </dl>
+    </div>
   )
 })
 
 ModeloSpecs.displayName = 'ModeloSpecs'
 
 export default ModeloSpecs
-
-
