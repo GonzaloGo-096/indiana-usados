@@ -16,6 +16,12 @@
 }
 
 /* ===== DESKTOP LAYOUT ===== */
+.desktopWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
 .desktopContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -85,12 +91,22 @@
 }
 
 .versionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0;
   font-size: 1.5rem;
   font-weight: var(--font-weight-bold);
   font-family: var(--font-display);
   color: var(--color-text-primary);
   letter-spacing: 1px;
+}
+
+/* Icono de marca en subtítulo */
+.brandIcon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
 }
 
 /* Letras GT siempre en rojo */
@@ -119,14 +135,20 @@
   letter-spacing: 0.5px;
 }
 
-/* ===== CTA BUTTON ===== */
+/* ===== CTA SECTION ===== */
+.ctaSection {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 16px;
+}
+
 .ctaButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 28px;
-  margin-top: auto;
-  font-size: 1rem;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 0.875rem;
   font-weight: var(--font-weight-semibold);
   color: var(--color-white);
   background: #25D366;
@@ -144,6 +166,10 @@
   box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
 }
 
+.ctaIcon {
+  flex-shrink: 0;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (min-width: 768px) {
   .mobileContainer {
@@ -155,6 +181,11 @@
     font-size: 1.75rem;
   }
   
+  .brandIcon {
+    width: 32px;
+    height: 32px;
+  }
+  
   .versionDescription {
     font-size: 1.0625rem;
   }
@@ -162,8 +193,8 @@
 
 @media (min-width: 992px) {
   .desktopContainer {
-    gap: 48px;
-    padding: 32px 0;
+    gap: 40px;
+    padding: 24px 0;
   }
   
   .imageContainer {
@@ -176,11 +207,11 @@
   }
   
   .leftColumn {
-    gap: 16px;
+    gap: 12px;
   }
   
   .rightColumn {
-    gap: 20px;
+    gap: 8px;
     padding-top: 0;
   }
   
@@ -193,22 +224,32 @@
   }
   
   .versionTitle {
-    font-size: 1.375rem;
-    letter-spacing: 1px;
+    font-size: 1.75rem;
+    letter-spacing: 1.5px;
+  }
+  
+  .brandIcon {
+    width: 36px;
+    height: 36px;
   }
   
   .versionDescription {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  
+  .specsSection {
+    margin-top: 12px;
   }
   
   .specsTitle {
     font-size: 0.875rem;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   
   .ctaButton {
-    padding: 14px 24px;
+    padding: 12px 24px;
     font-size: 0.9375rem;
   }
 }

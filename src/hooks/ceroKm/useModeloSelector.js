@@ -9,7 +9,7 @@
  */
 
 import { useState, useCallback, useMemo } from 'react'
-import { getModelo, getColoresVersion, getImagenVersionColor } from '@data/modelos'
+import { getModelo, COLORES } from '@data/modelos'
 
 /**
  * Hook para manejar selección de versión y color de un modelo
@@ -52,9 +52,13 @@ export const useModeloSelector = (modeloSlug) => {
   }, [versiones, versionActivaId, versionInicial])
   
   // Colores disponibles para la versión activa
+  // Obtenemos directamente de la versión para evitar conflictos de IDs entre modelos
   const coloresDisponibles = useMemo(() => {
-    return getColoresVersion(versionActivaId)
-  }, [versionActivaId])
+    if (!versionActiva?.coloresPermitidos) return []
+    return versionActiva.coloresPermitidos
+      .map(colorKey => COLORES[colorKey])
+      .filter(Boolean)
+  }, [versionActiva])
   
   // Color activo (objeto completo)
   const colorActivo = useMemo(() => {
@@ -62,9 +66,18 @@ export const useModeloSelector = (modeloSlug) => {
   }, [coloresDisponibles, colorActivoKey])
   
   // Imagen actual basada en versión y color
+  // Obtenemos directamente del color para evitar conflictos entre modelos
   const imagenActual = useMemo(() => {
-    return getImagenVersionColor(versionActivaId, colorActivoKey)
-  }, [versionActivaId, colorActivoKey])
+    const color = COLORES[colorActivoKey]
+    if (!color) {
+      return { url: null, alt: '', hasImage: false }
+    }
+    return {
+      url: color.url,
+      alt: `${modelo.nombre} ${versionActiva?.nombreCorto || ''} ${color.label}`,
+      hasImage: !!color.url
+    }
+  }, [colorActivoKey, modelo.nombre, versionActiva])
   
   // Índice de versión activa (para navegación)
   const indiceVersionActiva = useMemo(() => {

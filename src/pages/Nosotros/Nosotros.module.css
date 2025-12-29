@@ -5,6 +5,13 @@
  * @version 1.0.0
  */
 
+/* ===== PAGE CONTAINER ===== */
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background-attachment: fixed;
+}
+
 .container {
   display: flex;
   flex-direction: column;

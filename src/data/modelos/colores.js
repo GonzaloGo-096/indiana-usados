@@ -16,7 +16,9 @@
  * - publicId: ID de Cloudinary (null si no hay imagen)
  */
 export const COLORES = {
-  // Colores del 2008
+  // ═══════════════════════════════════════════════════════════════
+  // COLORES DEL 2008
+  // ═══════════════════════════════════════════════════════════════
   'gris-selenium': {
     key: 'gris-selenium',
     label: 'Gris Selenium',
@@ -44,6 +46,45 @@ export const COLORES = {
     hex: '#1F2937',
     publicId: '2008-negro_utp7gx',
     url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766786948/2008-negro_utp7gx.webp'
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // COLORES DEL 3008
+  // ═══════════════════════════════════════════════════════════════
+  '3008-azul-ingaro': {
+    key: '3008-azul-ingaro',
+    label: 'Azul Ingaro',
+    hex: '#2C3E50',
+    publicId: '008-azul-ingaro_fubtjn',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025052/008-azul-ingaro_fubtjn.webp'
+  },
+  '3008-gris-titanium': {
+    key: '3008-gris-titanium',
+    label: 'Gris Titanium',
+    hex: '#4A4A4A',
+    publicId: '3008-gris-oscura_uyljgd',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025049/3008-gris-oscura_uyljgd.webp'
+  },
+  '3008-azul-obsession': {
+    key: '3008-azul-obsession',
+    label: 'Azul Obsession',
+    hex: '#1E3A5F',
+    publicId: '3008-azul_anat7b',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766786949/3008-azul_anat7b.webp'
+  },
+  '3008-gris-artense': {
+    key: '3008-gris-artense',
+    label: 'Gris Artense',
+    hex: '#9CA3AF',
+    publicId: '3008-gris_ynqfxd',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025050/3008-gris_ynqfxd.webp'
+  },
+  '3008-negro-perla': {
+    key: '3008-negro-perla',
+    label: 'Negro Perla',
+    hex: '#1C1C1C',
+    publicId: '3008-negro_q9uqka',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025051/3008-negro_q9uqka.webp'
   }
 }
 

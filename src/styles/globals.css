@@ -27,8 +27,7 @@ html, body {
   font-size: var(--font-size-base, 16px);
   line-height: var(--line-height-normal, 1.5);
   color: var(--color-neutral-900, #202124);
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  background-attachment: fixed;
+  background: var(--color-white);
   min-height: 100vh;
   overscroll-behavior: none; /* Evita el efecto "chicle" al hacer scroll más allá del límite */
 }

@@ -109,7 +109,7 @@
 .services {
   /* Más espacio antes de la primera card */
   padding: calc(var(--section-pad-y) + var(--spacing-6)) 0 var(--section-pad-y) 0;
-  background: var(--color-neutral-50);
+  background: var(--color-white);
 }
 
 /* ===== ESPACIADO MOBILE ESPECÍFICO ===== */

@@ -115,7 +115,7 @@ const Vehiculos = () => {
     const handleCloseSortDropdown = () => setIsSortDropdownOpen(false)
 
     return (
-        <>
+        <div className={styles.page}>
             <VehiclesListSEOHead vehicleCount={total} />
             
             <div className={styles.container}>
@@ -208,7 +208,7 @@ const Vehiculos = () => {
                 </div>
             )}
             </div>
-        </>
+        </div>
     )
 }
 

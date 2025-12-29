@@ -9,6 +9,7 @@
  */
 
 import React, { memo } from 'react'
+import { getBrandIcon, WhatsAppIcon } from '@components/ui/icons'
 import { ColorSelector } from '../ColorSelector'
 import { ModeloSpecs } from '../ModeloSpecs'
 import styles from './VersionContent.module.css'
@@ -73,9 +74,13 @@ export const VersionContent = memo(({
     })
   }
 
+  // Obtener icono de marca
+  const BrandIcon = getBrandIcon(modeloMarca)
+
   const renderTitulo = () => {
     return (
       <>
+        {BrandIcon && <BrandIcon className={styles.brandIcon} />}
         {modeloNombre && `${modeloNombre} `}
         {formatVersionName(version.nombre)}
       </>
@@ -129,52 +134,57 @@ export const VersionContent = memo(({
 
   // Layout desktop: 2 columnas (imagen izq, info der)
   return (
-    <article className={styles.desktopContainer}>
-      {/* Columna izquierda: Imagen + Color */}
-      <div className={styles.leftColumn}>
-        <div className={styles.imageContainer}>
-          {imageUrl && (
-            <img
-              src={imageUrl}
-              alt={imageAlt}
-              className={styles.image}
-              loading="lazy"
-              decoding="async"
+    <article className={styles.desktopWrapper}>
+      <div className={styles.desktopContainer}>
+        {/* Columna izquierda: Imagen + Color */}
+        <div className={styles.leftColumn}>
+          <div className={styles.imageContainer}>
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt={imageAlt}
+                className={styles.image}
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+          </div>
+
+          <div className={styles.colorSection}>
+            <h3 className={styles.colorTitle}>Colores</h3>
+            <ColorSelector
+              colores={coloresDisponibles}
+              colorActivo={colorActivo?.key}
+              onColorChange={onColorChange}
+              size="lg"
             />
-          )}
+            {colorActivo && (
+              <span className={styles.colorLabel}>{colorActivo.label}</span>
+            )}
+          </div>
         </div>
 
-        <div className={styles.colorSection}>
-          <h3 className={styles.colorTitle}>Colores</h3>
-          <ColorSelector
-            colores={coloresDisponibles}
-            colorActivo={colorActivo?.key}
-            onColorChange={onColorChange}
-            size="lg"
-          />
-          {colorActivo && (
-            <span className={styles.colorLabel}>{colorActivo.label}</span>
-          )}
+        {/* Columna derecha: Info + Specs */}
+        <div className={styles.rightColumn}>
+          <h2 className={styles.versionTitle}>{renderTitulo()}</h2>
+          <p className={styles.versionDescription}>{version.descripcion}</p>
+          
+          <div className={styles.specsSection}>
+            <h3 className={styles.specsTitle}>Especificaciones</h3>
+            <ModeloSpecs specs={version.specs} variant="compact" />
+          </div>
         </div>
       </div>
 
-      {/* Columna derecha: Info + Specs */}
-      <div className={styles.rightColumn}>
-        <h2 className={styles.versionTitle}>{renderTitulo()}</h2>
-        <p className={styles.versionDescription}>{version.descripcion}</p>
-        
-        <div className={styles.specsSection}>
-          <h3 className={styles.specsTitle}>Especificaciones</h3>
-          <ModeloSpecs specs={version.specs} variant="compact" />
-        </div>
-
-        {/* CTA WhatsApp */}
+      {/* CTA WhatsApp - Fuera del grid, centrado */}
+      <div className={styles.ctaSection}>
         <a
           href={`https://wa.me/543816295959?text=${encodeURIComponent(`Hola! Me interesa el ${modeloMarca} ${modeloNombre} ${version.nombreCorto} en color ${colorActivo?.label || ''}`)}`}
           className={styles.ctaButton}
           target="_blank"
           rel="noopener noreferrer"
         >
+          <WhatsAppIcon size={18} className={styles.ctaIcon} />
           Consultar por este modelo
         </a>
       </div>
