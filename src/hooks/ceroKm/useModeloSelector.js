@@ -44,7 +44,7 @@ export const useModeloSelector = (modeloSlug) => {
   
   // Estado: versión y color activos
   const [versionActivaId, setVersionActivaId] = useState(versionInicial?.id)
-  const [colorActivoKey, setColorActivoKey] = useState(versionInicial?.colorDefault)
+  const [colorActivoKey, setColorActivoKey] = useState(versionInicial?.colorDefault || null)
   
   // Versión activa (objeto completo)
   const versionActiva = useMemo(() => {
@@ -66,8 +66,18 @@ export const useModeloSelector = (modeloSlug) => {
   }, [coloresDisponibles, colorActivoKey])
   
   // Imagen actual basada en versión y color
-  // Obtenemos directamente del color para evitar conflictos entre modelos
+  // Si no hay colores, usar imagen principal del modelo
   const imagenActual = useMemo(() => {
+    // Si no hay colores disponibles, usar imagen principal del modelo
+    if (!coloresDisponibles.length && modelo.imagenPrincipal) {
+      return {
+        url: modelo.imagenPrincipal.url,
+        alt: modelo.imagenPrincipal.alt || `${modelo.nombre} ${versionActiva?.nombreCorto || ''}`,
+        hasImage: !!modelo.imagenPrincipal.url
+      }
+    }
+    
+    // Si hay colores, usar el color activo
     const color = COLORES[colorActivoKey]
     if (!color) {
       return { url: null, alt: '', hasImage: false }
@@ -77,7 +87,7 @@ export const useModeloSelector = (modeloSlug) => {
       alt: `${modelo.nombre} ${versionActiva?.nombreCorto || ''} ${color.label}`,
       hasImage: !!color.url
     }
-  }, [colorActivoKey, modelo.nombre, versionActiva])
+  }, [colorActivoKey, modelo, versionActiva, coloresDisponibles])
   
   // Índice de versión activa (para navegación)
   const indiceVersionActiva = useMemo(() => {

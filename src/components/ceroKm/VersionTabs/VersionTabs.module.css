@@ -24,13 +24,14 @@
   padding: 10px 16px;
   font-size: 0.875rem;
   font-weight: var(--font-weight-semibold);
-  font-family: var(--font-display);
+  font-family: var(--font-poppins);
   letter-spacing: 0.5px;
   color: var(--color-neutral-600);
   background: transparent;
   border: 2px solid var(--color-neutral-200);
   border-radius: var(--border-radius-md);
   cursor: pointer;
+  text-transform: uppercase;
   transition: 
     color var(--transition-fast),
     background var(--transition-fast),

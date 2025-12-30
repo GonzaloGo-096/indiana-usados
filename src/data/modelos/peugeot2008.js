@@ -6,7 +6,7 @@
  * La UI consume esta data sin conocer strings mágicos.
  * 
  * @author Indiana Usados
- * @version 1.1.0 - Agregada galería de imágenes
+ * @version 2.0.0 - Nuevo formato con equipamiento
  */
 
 import { COLORES } from './colores'
@@ -43,51 +43,63 @@ export const PEUGEOT_2008 = {
   versiones: [
     {
       id: 'active',
-      nombre: 'Active T200 AM24',
-      nombreCorto: 'Active',
-      descripcion: 'Es la versión más accesible de la familia 2008, que se destaca por su excelente equilibrio de estética exterior, performance y equipamiento.',
+      nombre: 'ACTIVE',
+      nombreCorto: 'ACTIVE',
+      descripcion: 'Ingresá al mundo 2008 con la versión ACTIVE, con un gran nivel de equipamiento.',
       coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro', 'gris-selenium'],
       colorDefault: 'blanco-nacre',
-      specs: {
-        llantas: 'Aleación diamantadas 17"',
-        faros: 'ECO-LED y DRL LED',
-        motor: 'T200 de 1.0L',
-        caja: 'Automática CVT 7 marchas',
-        sensores: 'Estacionamiento traseros',
-        airbags: 'Frontales y laterales'
-      }
+      equipamiento: {
+        titulo: 'Con equipamiento:',
+        items: [
+          'Faros ECO-LED',
+          'Faros DRL LED exclusivos de 3 garras',
+          'Llantas 17" diamantadas',
+          'Peugeot i-Cockpit con multimedia de 10"',
+          'Display de conductor digital 2D',
+          'Freno de mano eléctrico'
+        ]
+      },
+      specs: null // Sin specs técnicas
     },
     {
       id: 'allure',
-      nombre: 'Allure T200 AM24',
-      nombreCorto: 'Allure',
-      descripcion: 'La versión Allure cuenta con un gran nivel de equipamiento de tecnología y seguridad de punta.',
+      nombre: 'ALLURE',
+      nombreCorto: 'ALLURE',
+      descripcion: 'La versión Allure se destaca por su elevado nivel de equipamiento de tecnología, confort y seguridad.',
       coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro', 'gris-selenium'],
       colorDefault: 'gris-selenium',
-      specs: {
-        llantas: 'Aleación diamantadas 17"',
-        faros: 'ECO-LED y DRL LED',
-        motor: 'T200 de 1.0L',
-        caja: 'Automática CVT 7 marchas',
-        acceso: 'Arranque sin llave',
-        airbags: 'Frontales, laterales y cortina'
-      }
+      equipamiento: {
+        titulo: 'Además del equipamiento de la versión Active, agrega:',
+        items: [
+          'Airbags de cortina',
+          'Ayudas a la conducción',
+          'Cámara 360º y sensores de estacionamiento delanteros',
+          'Acceso y arranque manos libres',
+          'Cargador inductivo de celular, de 15W'
+        ]
+      },
+      specs: null // Sin specs técnicas
     },
     {
       id: 'gt',
-      nombre: 'GT T200 AM24',
+      nombre: 'GT',
       nombreCorto: 'GT',
-      descripcion: 'La versión GT es la máxima expresión del Peugeot 2008, con detalles y equipamientos únicos, tecnología de punta y la identidad visual de un verdadero GT.',
+      descripcion: 'La versión GT es la máxima expresión del nuevo Peugeot 2008. Cuenta con destalles de diseño únicos y equipamientos exclusivos tanto en el exterior como en el interior, que lo convierten en un verdadero GT.',
       coloresPermitidos: ['negro', 'gris-selenium', 'blanco-nacre'],
       colorDefault: 'negro',
-      specs: {
-        llantas: 'Aleación diamantadas 17"',
-        faros: 'ECO-LED y DRL LED',
-        motor: 'T200 de 1.0L',
-        caja: 'Automática CVT 7 marchas',
-        acceso: 'Arranque sin llave',
-        airbags: 'Frontales, laterales y cortina'
-      }
+      equipamiento: {
+        titulo: 'Además del equipamiento Allure:',
+        items: [
+          'Faros Full LED',
+          'Parrilla frontal color carrocería',
+          'Techo bitono en color negro',
+          'Techo panorámico corredizo',
+          'Asientos de cuero con costura GT',
+          'Volante GT con levas de cambio',
+          'Peugeot i-Cockpit 3D'
+        ]
+      },
+      specs: null // Sin specs técnicas
     }
   ],
   
@@ -146,4 +158,3 @@ export const getImagenVersionColor = (versionId, colorKey) => {
 }
 
 export default PEUGEOT_2008
-

@@ -160,14 +160,16 @@ const CeroKilometroDetalle = () => {
           </h1>
         </header>
 
-        {/* Tabs de versiones (visible en mobile y desktop) */}
-        <div className={styles.tabsContainer}>
-          <VersionTabs
-            versiones={versiones}
-            versionActivaId={versionActiva?.id}
-            onVersionChange={cambiarVersion}
-          />
-        </div>
+        {/* Tabs de versiones (visible solo si hay más de una versión) */}
+        {versiones.length > 1 && (
+          <div className={styles.tabsContainer}>
+            <VersionTabs
+              versiones={versiones}
+              versionActivaId={versionActiva?.id}
+              onVersionChange={cambiarVersion}
+            />
+          </div>
+        )}
 
         {/* Contenido Mobile: Carrusel */}
         <div className={styles.mobileContent}>

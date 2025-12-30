@@ -77,7 +77,19 @@ export const VersionContent = memo(({
   // Obtener icono de marca
   const BrandIcon = getBrandIcon(modeloMarca)
 
+  // Renderizar título según el formato del modelo
   const renderTitulo = () => {
+    // Si el modelo es 2008, 3008 o 5008, formato especial sin formateo de versión
+    if (modeloNombre === '2008' || modeloNombre === '3008' || modeloNombre === '5008') {
+      return (
+        <>
+          {BrandIcon && <BrandIcon className={styles.brandIcon} />}
+          {modeloNombre} {version.nombre}
+        </>
+      )
+    }
+    
+    // Formato estándar para otros modelos
     return (
       <>
         {BrandIcon && <BrandIcon className={styles.brandIcon} />}
@@ -104,19 +116,21 @@ export const VersionContent = memo(({
           )}
         </div>
 
-        {/* Selector de colores */}
-        <div className={styles.colorSection}>
-          <h3 className={styles.colorTitle}>Colores</h3>
-          <ColorSelector
-            colores={coloresDisponibles}
-            colorActivo={colorActivo?.key}
-            onColorChange={onColorChange}
-            size="md"
-          />
-          {colorActivo && (
-            <span className={styles.colorLabel}>{colorActivo.label}</span>
-          )}
-        </div>
+        {/* Selector de colores - Solo mostrar si hay colores disponibles */}
+        {coloresDisponibles && coloresDisponibles.length > 0 && (
+          <div className={styles.colorSection}>
+            <h3 className={styles.colorTitle}>Colores</h3>
+            <ColorSelector
+              colores={coloresDisponibles}
+              colorActivo={colorActivo?.key}
+              onColorChange={onColorChange}
+              size="md"
+            />
+            {colorActivo && (
+              <span className={styles.colorLabel}>{colorActivo.label}</span>
+            )}
+          </div>
+        )}
 
         {/* Info */}
         <div className={styles.infoSection}>
@@ -124,10 +138,25 @@ export const VersionContent = memo(({
           <p className={styles.versionDescription}>{version.descripcion}</p>
         </div>
 
-        {/* Specs */}
-        <div className={styles.specsSection}>
-          <ModeloSpecs specs={version.specs} variant="compact" />
-        </div>
+        {/* Equipamiento o Specs */}
+        {version.equipamiento ? (
+          <div className={styles.equipamientoSection}>
+            {version.equipamiento.titulo && (
+              <h3 className={styles.equipamientoTitle}>{version.equipamiento.titulo}</h3>
+            )}
+            <ul className={styles.equipamientoList}>
+              {version.equipamiento.items.map((item, index) => (
+                <li key={index} className={styles.equipamientoItem}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : version.specs ? (
+          <div className={styles.specsSection}>
+            <ModeloSpecs specs={version.specs} variant="compact" />
+          </div>
+        ) : null}
       </article>
     )
   }
@@ -150,29 +179,47 @@ export const VersionContent = memo(({
             )}
           </div>
 
-          <div className={styles.colorSection}>
-            <h3 className={styles.colorTitle}>Colores</h3>
-            <ColorSelector
-              colores={coloresDisponibles}
-              colorActivo={colorActivo?.key}
-              onColorChange={onColorChange}
-              size="lg"
-            />
-            {colorActivo && (
-              <span className={styles.colorLabel}>{colorActivo.label}</span>
-            )}
-          </div>
+          {/* Selector de colores - Solo mostrar si hay colores disponibles */}
+          {coloresDisponibles && coloresDisponibles.length > 0 && (
+            <div className={styles.colorSection}>
+              <h3 className={styles.colorTitle}>Colores</h3>
+              <ColorSelector
+                colores={coloresDisponibles}
+                colorActivo={colorActivo?.key}
+                onColorChange={onColorChange}
+                size="lg"
+              />
+              {colorActivo && (
+                <span className={styles.colorLabel}>{colorActivo.label}</span>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Columna derecha: Info + Specs */}
+        {/* Columna derecha: Info + Equipamiento/Specs */}
         <div className={styles.rightColumn}>
           <h2 className={styles.versionTitle}>{renderTitulo()}</h2>
           <p className={styles.versionDescription}>{version.descripcion}</p>
           
-          <div className={styles.specsSection}>
-            <h3 className={styles.specsTitle}>Especificaciones</h3>
-            <ModeloSpecs specs={version.specs} variant="compact" />
-          </div>
+          {version.equipamiento ? (
+            <div className={styles.equipamientoSection}>
+              {version.equipamiento.titulo && (
+                <h3 className={styles.equipamientoTitle}>{version.equipamiento.titulo}</h3>
+              )}
+              <ul className={styles.equipamientoList}>
+                {version.equipamiento.items.map((item, index) => (
+                  <li key={index} className={styles.equipamientoItem}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : version.specs ? (
+            <div className={styles.specsSection}>
+              <h3 className={styles.specsTitle}>Especificaciones</h3>
+              <ModeloSpecs specs={version.specs} variant="compact" />
+            </div>
+          ) : null}
         </div>
       </div>
 

@@ -6,19 +6,13 @@
  * La UI consume esta data sin conocer strings mágicos.
  * 
  * @author Indiana Usados
- * @version 1.0.0 - Template inicial (modificar con data real)
+ * @version 4.0.0 - 2 versiones: L2H2 HDI140 y L3H2 HDI140
  */
 
 import { COLORES } from './colores'
 
 /**
  * Configuración del modelo Peugeot Boxer
- * 
- * TODO: Actualizar con data real:
- * - Versiones reales del Boxer
- * - Colores específicos por versión
- * - Specs de cada versión
- * - Galería de imágenes
  */
 export const PEUGEOT_BOXER = {
   id: 'boxer',
@@ -26,6 +20,13 @@ export const PEUGEOT_BOXER = {
   nombre: 'Boxer',
   slug: 'boxer',
   año: 2024,
+  
+  // Imagen principal (la misma de la página principal del carrusel)
+  imagenPrincipal: {
+    publicId: 'boxer-blanca_zsb84z',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766786948/boxer-blanca_zsb84z.webp',
+    alt: 'Peugeot Boxer 0km'
+  },
   
   // Galería de imágenes (fija por modelo, no por versión)
   // TODO: Reemplazar con publicIds reales del Boxer
@@ -46,64 +47,47 @@ export const PEUGEOT_BOXER = {
     ]
   },
   
-  // Versiones disponibles
-  // TODO: Actualizar con versiones reales del Boxer
+  // Versiones disponibles - 2 versiones
   versiones: [
     {
-      id: 'furgon-330',
-      nombre: 'Furgón 330 2.2 HDi',
-      nombreCorto: 'Furgón 330',
-      descripcion: 'El furgón grande de entrada con excelente relación capacidad-precio para flotas.',
-      coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro'],
-      colorDefault: 'blanco-nacre',
+      id: 'l2h2-hdi140',
+      nombre: 'L2H2 HDI140',
+      nombreCorto: 'L2H2 HDI140',
+      descripcion: 'Boxer, es el vehículo utilitario de la marca de mayor capacidad, robusto, económico y adaptable a tu negocio. Diseñado y equipado para responder de manera duradera a las exigencias de los profesionales.',
+      coloresPermitidos: [], // Sin colores
+      colorDefault: null,
       specs: {
         carga: 'Capacidad 1500 kg',
         volumen: '10 m³',
-        motor: 'HDi 2.2L Diesel 140cv',
+        motor: 'HDi 2.2L 140cv',
         caja: 'Manual 6 velocidades',
         puertas: 'Traseras 180°',
         consumo: '8.5 L/100km'
       }
     },
     {
-      id: 'furgon-435',
-      nombre: 'Furgón 435 2.2 HDi',
-      nombreCorto: 'Furgón 435',
-      descripcion: 'Versión de batalla larga con altura elevada para máxima capacidad volumétrica.',
-      coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro'],
-      colorDefault: 'blanco-nacre',
+      id: 'l3h2-hdi140',
+      nombre: 'L3H2 HDI140',
+      nombreCorto: 'L3H2 HDI140',
+      descripcion: 'Boxer, es el vehículo utilitario de la marca de mayor capacidad, robusto, económico y adaptable a tu negocio.',
+      coloresPermitidos: [], // Sin colores
+      colorDefault: null,
       specs: {
         carga: 'Capacidad 1800 kg',
         volumen: '13 m³',
-        motor: 'HDi 2.2L Diesel 160cv',
+        motor: 'HDi 2.2L 140cv',
         caja: 'Manual 6 velocidades',
         puertas: 'Laterales corredizas + traseras 180°',
         consumo: '9.0 L/100km'
-      }
-    },
-    {
-      id: 'furgon-435-premium',
-      nombre: 'Furgón 435 Premium',
-      nombreCorto: 'Premium',
-      descripcion: 'La versión tope de gama con equipamiento completo, caja automática y máximo confort.',
-      coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro', 'gris-selenium'],
-      colorDefault: 'gris-selenium',
-      specs: {
-        carga: 'Capacidad 1800 kg',
-        volumen: '15 m³',
-        motor: 'HDi 2.2L Diesel 180cv',
-        caja: 'Automática 8 velocidades',
-        confort: 'Climatizador + asiento premium',
-        seguridad: 'Pack asistencias completo'
       }
     }
   ],
   
   // Configuración SEO
   seo: {
-    title: 'Peugeot Boxer 0KM | Furgón Grande - Versiones',
-    description: 'Descubrí el nuevo Peugeot Boxer. Furgón grande con capacidad de hasta 1800 kg y 15 m³. Versiones 330, 435 y Premium.',
-    keywords: 'Peugeot Boxer, furgón grande, 0km, utilitario, carga'
+    title: 'Peugeot Boxer 0KM | L2H2 HDI140 y L3H2 HDI140',
+    description: 'Descubrí el nuevo Peugeot Boxer. Vehículo utilitario de mayor capacidad, robusto y económico. Versiones L2H2 HDI140 y L3H2 HDI140.',
+    keywords: 'Peugeot Boxer, furgón grande, 0km, utilitario, carga, L2H2, L3H2, HDI140'
   }
 }
 
@@ -131,4 +115,3 @@ export const getColoresVersion = (versionId) => {
 }
 
 export default PEUGEOT_BOXER
-

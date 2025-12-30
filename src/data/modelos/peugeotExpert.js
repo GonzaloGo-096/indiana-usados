@@ -6,19 +6,13 @@
  * La UI consume esta data sin conocer strings mágicos.
  * 
  * @author Indiana Usados
- * @version 1.0.0 - Template inicial (modificar con data real)
+ * @version 3.0.0 - Versión única
  */
 
 import { COLORES } from './colores'
 
 /**
  * Configuración del modelo Peugeot Expert
- * 
- * TODO: Actualizar con data real:
- * - Versiones reales del Expert
- * - Colores específicos por versión
- * - Specs de cada versión
- * - Galería de imágenes
  */
 export const PEUGEOT_EXPERT = {
   id: 'expert',
@@ -26,6 +20,13 @@ export const PEUGEOT_EXPERT = {
   nombre: 'Expert',
   slug: 'expert',
   año: 2024,
+  
+  // Imagen principal (la misma de la página principal del carrusel)
+  imagenPrincipal: {
+    publicId: 'expert-blanca_bpowxc',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766786957/expert-blanca_bpowxc.webp',
+    alt: 'Peugeot Expert 0km'
+  },
   
   // Galería de imágenes (fija por modelo, no por versión)
   // TODO: Reemplazar con publicIds reales del Expert
@@ -46,16 +47,15 @@ export const PEUGEOT_EXPERT = {
     ]
   },
   
-  // Versiones disponibles
-  // TODO: Actualizar con versiones reales del Expert
+  // Versiones disponibles - Versión única
   versiones: [
     {
-      id: 'furgon',
-      nombre: 'Furgón 1.6 HDi',
-      nombreCorto: 'Furgón',
-      descripcion: 'El furgón mediano con capacidad profesional. Ideal para flotas y trabajos de logística.',
-      coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro'],
-      colorDefault: 'blanco-nacre',
+      id: 'expert',
+      nombre: 'Expert',
+      nombreCorto: 'Expert',
+      descripcion: 'El furgón mediano con capacidad profesional. Ideal para flotas y trabajos de logística que requieren versatilidad y eficiencia.',
+      coloresPermitidos: [], // Sin colores
+      colorDefault: null,
       specs: {
         carga: 'Capacidad 1200 kg',
         volumen: '5.3 m³',
@@ -64,45 +64,13 @@ export const PEUGEOT_EXPERT = {
         puertas: 'Laterales corredizas',
         consumo: '6.5 L/100km'
       }
-    },
-    {
-      id: 'furgon-largo',
-      nombre: 'Furgón Largo 2.0 HDi',
-      nombreCorto: 'Furgón Largo',
-      descripcion: 'Versión de batalla larga con motor 2.0 para máxima capacidad y potencia.',
-      coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro'],
-      colorDefault: 'blanco-nacre',
-      specs: {
-        carga: 'Capacidad 1400 kg',
-        volumen: '6.6 m³',
-        motor: 'HDi 2.0L Diesel 150cv',
-        caja: 'Automática 8 velocidades',
-        puertas: 'Laterales corredizas ambos lados',
-        consumo: '7.0 L/100km'
-      }
-    },
-    {
-      id: 'premium',
-      nombre: 'Premium 2.0 HDi',
-      nombreCorto: 'Premium',
-      descripcion: 'La versión tope de gama con equipamiento completo y máximo confort para el conductor.',
-      coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro', 'gris-selenium'],
-      colorDefault: 'gris-selenium',
-      specs: {
-        carga: 'Capacidad 1400 kg',
-        volumen: '6.6 m³',
-        motor: 'HDi 2.0L Diesel 180cv',
-        caja: 'Automática 8 velocidades',
-        confort: 'Climatizador bi-zona',
-        seguridad: 'Pack asistencias completo'
-      }
     }
   ],
   
   // Configuración SEO
   seo: {
-    title: 'Peugeot Expert 0KM | Furgón Profesional - Versiones',
-    description: 'Descubrí el nuevo Peugeot Expert. Furgón profesional con capacidad de hasta 1400 kg. Versiones Furgón, Furgón Largo y Premium.',
+    title: 'Peugeot Expert 0KM | Furgón Profesional',
+    description: 'Descubrí el nuevo Peugeot Expert. Furgón profesional con capacidad de 1200 kg y 5.3 m³.',
     keywords: 'Peugeot Expert, furgón, profesional, 0km, utilitario'
   }
 }
@@ -131,4 +99,3 @@ export const getColoresVersion = (versionId) => {
 }
 
 export default PEUGEOT_EXPERT
-

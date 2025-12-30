@@ -12,6 +12,7 @@
     /* ===== VARIABLES DE FUENTES ===== */
     --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Inter', Arial, sans-serif;
     --font-condensed: 'Barlow Condensed', var(--font-sans);
+    --font-poppins: 'Poppins', var(--font-sans);
     /* Alias para compatibilidad */
     --font-display: var(--font-condensed);
     --font-family-primary: var(--font-condensed);

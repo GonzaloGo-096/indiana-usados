@@ -6,7 +6,7 @@
  * La UI consume esta data sin conocer strings mágicos.
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Data real del 3008 GT
+ * @version 4.0.0 - Nuevo formato con equipamiento
  */
 
 import { COLORES } from './colores'
@@ -22,21 +22,20 @@ export const PEUGEOT_3008 = {
   año: 2024,
   
   // Galería de imágenes (fija por modelo, no por versión)
-  // TODO: Reemplazar con publicIds reales del 3008 cuando estén disponibles
   galeria: {
     mobile: [
-      { publicId: '2008-galeria-1-mobile_xf79qs', alt: 'Peugeot 3008 - Vista exterior' },
-      { publicId: '2008-galeria-2-mobile_d8xwmz', alt: 'Peugeot 3008 - Interior i-Cockpit' },
-      { publicId: '2008-galeria-3-mobile_ykqd6u', alt: 'Peugeot 3008 - Detalle frontal' },
-      { publicId: '2008-galeria-4-mobile_dqf5zf', alt: 'Peugeot 3008 - Vista trasera' }
+      { publicId: '3008-galeria-2-mobile_rijtkq', alt: 'Peugeot 3008 - Vista exterior' },
+      { publicId: '3008-galeria-3-mobile_vkzjvq', alt: 'Peugeot 3008 - Interior i-Cockpit' },
+      { publicId: '3008-galeria-4-mobile_am7tlq', alt: 'Peugeot 3008 - Detalle frontal' },
+      { publicId: '3008-galeria-5-mobile_e9r37s', alt: 'Peugeot 3008 - Vista trasera' }
     ],
     desktop: [
-      { publicId: '2008-galeria-1-desktop_cljotq', alt: 'Peugeot 3008 - Vista exterior' },
-      { publicId: '2008-galeria-2-desktop_gp3ruh', alt: 'Peugeot 3008 - Interior i-Cockpit' },
-      { publicId: '2008-galeria-3-desktop_dxvyqd', alt: 'Peugeot 3008 - Detalle frontal' },
-      { publicId: '2008-galeria-4-desktop_c7yoxt', alt: 'Peugeot 3008 - Vista trasera' },
-      { publicId: '2008-galeria-5-desktop_g0mych', alt: 'Peugeot 3008 - Detalles interiores' },
-      { publicId: '2008-galeria-6-desktop_drukj6', alt: 'Peugeot 3008 - Tecnología a bordo' }
+      { publicId: '3008-galeria-1-desktop_n0vmel', alt: 'Peugeot 3008 - Vista exterior' },
+      { publicId: '3008-galeria-2-desktop_bappbm', alt: 'Peugeot 3008 - Interior i-Cockpit' },
+      { publicId: '3008-galeria-3-desktop_scc9wl', alt: 'Peugeot 3008 - Detalle frontal' },
+      { publicId: '3008-galeria-4-desktop_am8cpv', alt: 'Peugeot 3008 - Vista trasera' },
+      { publicId: '3008-galeria-5-desktop_sbjrxx', alt: 'Peugeot 3008 - Detalles interiores' },
+      { publicId: '3008-galeria-6-desktop_gnd9ws', alt: 'Peugeot 3008 - Tecnología a bordo' }
     ]
   },
   
@@ -46,7 +45,7 @@ export const PEUGEOT_3008 = {
       id: 'gt',
       nombre: 'GT',
       nombreCorto: 'GT',
-      descripcion: 'La versión GT es la máxima expresión del nuevo 3008. Cuenta con detalles de diseño únicos y equipamientos exclusivos tanto en el exterior como en el interior, que lo convierte en un verdadero GT.',
+      descripcion: 'La versión GT es la máxima expresión del nuevo 3008. Cuenta con detalles de diseño únicos y equipamientos exclusivos tanto en el exterior como en el interior, que lo convierten en un verdadero GT.',
       coloresPermitidos: [
         '3008-azul-ingaro',
         '3008-gris-titanium', 
@@ -55,14 +54,20 @@ export const PEUGEOT_3008 = {
         '3008-negro-perla'
       ],
       colorDefault: '3008-azul-obsession',
-      specs: {
-        llantas: 'Aleación diamantadas 19"',
-        faros: 'Full LED Matrix',
-        motor: 'THP 1.6L Turbo',
-        caja: 'Automática 8 velocidades',
-        icockpit: 'i-Cockpit 3D',
-        airbags: 'Frontales, laterales y cortina'
-      }
+      equipamiento: {
+        titulo: null, // Sin título, solo lista
+        items: [
+          'Faros Píxel LED',
+          'Parrilla frontal color carrocería',
+          'Techo bitono en color negro',
+          'Techo panorámico corredizo',
+          'Asientos de cuero Alcántara con costura GT',
+          'Volante GT con levas de cambio',
+          'Peugeot i-Cockpit 3D',
+          '9+ ADAS'
+        ]
+      },
+      specs: null // Sin specs técnicas
     }
   ],
   

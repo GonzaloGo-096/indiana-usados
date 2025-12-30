@@ -11,6 +11,7 @@
 import { PEUGEOT_208 } from './peugeot208'
 import { PEUGEOT_2008 } from './peugeot2008'
 import { PEUGEOT_3008 } from './peugeot3008'
+import { PEUGEOT_408 } from './peugeot408'
 import { PEUGEOT_5008 } from './peugeot5008'
 import { PEUGEOT_PARTNER } from './peugeotPartner'
 import { PEUGEOT_EXPERT } from './peugeotExpert'
@@ -22,6 +23,7 @@ const MODELOS = {
   '208': PEUGEOT_208,
   '2008': PEUGEOT_2008,
   '3008': PEUGEOT_3008,
+  '408': PEUGEOT_408,
   '5008': PEUGEOT_5008,
   'partner': PEUGEOT_PARTNER,
   'expert': PEUGEOT_EXPERT,
@@ -119,6 +121,7 @@ export {
   PEUGEOT_208,
   PEUGEOT_2008,
   PEUGEOT_3008,
+  PEUGEOT_408,
   PEUGEOT_5008,
   PEUGEOT_PARTNER,
   PEUGEOT_EXPERT,

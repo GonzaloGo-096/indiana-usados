@@ -80,6 +80,11 @@ export const staticImages = {
         alt: "Peugeot 3008 0km",
         titulo: "3008",
       },
+      "408": {
+        src: "https://res.cloudinary.com/drbeomhcu/image/upload/v1767024250/408-gris_fsi73k.webp",
+        alt: "Peugeot 408 0km",
+        titulo: "408",
+      },
       "5008": {
         src: "https://res.cloudinary.com/drbeomhcu/image/upload/v1766786949/5008-azul_sbtpad.png",
         alt: "Peugeot 5008 0km",

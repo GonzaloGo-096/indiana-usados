@@ -6,19 +6,13 @@
  * La UI consume esta data sin conocer strings mágicos.
  * 
  * @author Indiana Usados
- * @version 1.0.0 - Template inicial (modificar con data real)
+ * @version 4.0.0 - Contenido actualizado: Partner Confort 1.6 y 1.6 HDI 92
  */
 
 import { COLORES } from './colores'
 
 /**
  * Configuración del modelo Peugeot Partner
- * 
- * TODO: Actualizar con data real:
- * - Versiones reales del Partner
- * - Colores específicos por versión
- * - Specs de cada versión
- * - Galería de imágenes
  */
 export const PEUGEOT_PARTNER = {
   id: 'partner',
@@ -26,6 +20,13 @@ export const PEUGEOT_PARTNER = {
   nombre: 'Partner',
   slug: 'partner',
   año: 2024,
+  
+  // Imagen principal (la misma de la página principal del carrusel)
+  imagenPrincipal: {
+    publicId: 'partner_blanca_epe2vd',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766786956/partner_blanca_epe2vd.webp',
+    alt: 'Peugeot Partner 0km'
+  },
   
   // Galería de imágenes (fija por modelo, no por versión)
   // TODO: Reemplazar con publicIds reales del Partner
@@ -46,64 +47,47 @@ export const PEUGEOT_PARTNER = {
     ]
   },
   
-  // Versiones disponibles
-  // TODO: Actualizar con versiones reales del Partner
+  // Versiones disponibles - Solo 2 versiones
   versiones: [
     {
-      id: 'furgon',
-      nombre: 'Furgón 1.6 HDi',
-      nombreCorto: 'Furgón',
-      descripcion: 'El utilitario compacto ideal para tu negocio. Máxima capacidad de carga en dimensiones urbanas.',
-      coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro'],
-      colorDefault: 'blanco-nacre',
+      id: '1.6',
+      nombre: 'PARTNER CONFORT 1.6',
+      nombreCorto: 'PARTNER CONFORT 1.6',
+      descripcion: 'Partner Confort satisface las todas las necesidades del conductor y de su actividad. Todo está pensado para que el placer de conducir no se altere en ninguna circunstancia.',
+      coloresPermitidos: [], // Sin colores
+      colorDefault: null,
       specs: {
         carga: 'Capacidad 800 kg',
         volumen: '3.3 m³',
-        motor: 'HDi 1.6L Diesel',
+        motor: '1.6L',
         caja: 'Manual 5 velocidades',
         puertas: 'Laterales corredizas',
         consumo: '5.8 L/100km'
       }
     },
     {
-      id: 'furgon-largo',
-      nombre: 'Furgón Largo 1.6 HDi',
-      nombreCorto: 'Furgón Largo',
-      descripcion: 'Versión de batalla larga con mayor capacidad de carga para trabajos exigentes.',
-      coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro'],
-      colorDefault: 'blanco-nacre',
+      id: '1.6-hdi-92',
+      nombre: 'PARTNER CONFORT 1.6 HDI 92',
+      nombreCorto: 'PARTNER CONFORT 1.6 HDI 92',
+      descripcion: 'Partner Confort satisface las todas las necesidades del conductor y de su actividad. Todo está pensado para que el placer de conducir no se altere en ninguna circunstancia.',
+      coloresPermitidos: [], // Sin colores
+      colorDefault: null,
       specs: {
-        carga: 'Capacidad 1000 kg',
-        volumen: '4.1 m³',
-        motor: 'HDi 1.6L Diesel',
+        carga: 'Capacidad 800 kg',
+        volumen: '3.3 m³',
+        motor: 'HDi 1.6L 92cv',
         caja: 'Manual 5 velocidades',
-        puertas: 'Laterales corredizas ambos lados',
-        consumo: '6.0 L/100km'
-      }
-    },
-    {
-      id: 'patagonica',
-      nombre: 'Patagónica 1.6 HDi',
-      nombreCorto: 'Patagónica',
-      descripcion: 'La versión familiar con 5 plazas y amplio espacio de equipaje. Ideal para trabajo y familia.',
-      coloresPermitidos: ['blanco-nacre', 'gris-artense', 'negro', 'gris-selenium'],
-      colorDefault: 'gris-selenium',
-      specs: {
-        plazas: '5 plazas',
-        equipaje: 'Amplio baúl',
-        motor: 'HDi 1.6L Diesel',
-        caja: 'Manual 5 velocidades',
-        aire: 'Aire acondicionado',
-        consumo: '5.8 L/100km'
+        puertas: 'Laterales corredizas',
+        consumo: '5.5 L/100km'
       }
     }
   ],
   
   // Configuración SEO
   seo: {
-    title: 'Peugeot Partner 0KM | Furgón y Patagónica - Versiones',
-    description: 'Descubrí el nuevo Peugeot Partner. Utilitario versátil para trabajo y familia. Versiones Furgón, Furgón Largo y Patagónica.',
-    keywords: 'Peugeot Partner, furgón, utilitario, 0km, Patagónica'
+    title: 'Peugeot Partner 0KM | Partner Confort 1.6 y 1.6 HDI 92',
+    description: 'Descubrí el nuevo Peugeot Partner Confort. Utilitario versátil para trabajo. Versiones 1.6 y 1.6 HDI 92 disponibles.',
+    keywords: 'Peugeot Partner, Partner Confort, furgón, utilitario, 0km, 1.6, HDI 92'
   }
 }
 
@@ -131,4 +115,3 @@ export const getColoresVersion = (versionId) => {
 }
 
 export default PEUGEOT_PARTNER
-
