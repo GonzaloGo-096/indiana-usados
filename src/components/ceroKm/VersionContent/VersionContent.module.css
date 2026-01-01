@@ -15,6 +15,11 @@
   scroll-snap-align: start;
 }
 
+/* En mobile, quitar margin-top del contenedor de botones */
+.mobileContainer .actionsContainer {
+  margin-top: 0;
+}
+
 /* ===== DESKTOP LAYOUT ===== */
 .desktopWrapper {
   display: flex;
@@ -102,7 +107,7 @@
   font-weight: var(--font-weight-bold);
   font-family: var(--font-poppins);
   color: var(--color-text-primary);
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
@@ -142,11 +147,11 @@
 
 /* ===== EQUIPAMIENTO SECTION ===== */
 .equipamientoSection {
-  margin-top: 16px;
+  margin-top: 8px;
 }
 
 .equipamientoTitle {
-  margin: 0 0 12px 0;
+  margin: 0 0 6px 0;
   font-size: 1rem;
   font-weight: var(--font-weight-semibold);
   font-family: var(--font-poppins);
@@ -159,16 +164,16 @@
   margin: 0;
   padding-left: 0;
   list-style: none;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .equipamientoItem {
   position: relative;
   padding-left: 20px;
   font-size: 0.9375rem;
-  line-height: 1.6;
+  line-height: 1.4;
   color: var(--color-neutral-700);
 }
 
@@ -215,6 +220,128 @@
 
 .ctaIcon {
   flex-shrink: 0;
+}
+
+/* ===== ACTIONS CONTAINER (PDF + WhatsApp + 3D) ===== */
+.actionsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+/* Si solo hay WhatsApp (sin PDF), ocupar todo el ancho */
+.actionsContainer.singleButton {
+  grid-template-columns: 1fr;
+}
+
+/* Asegurar que ambos botones ocupen exactamente 50-50 siempre */
+.actionsContainer .actionButton,
+.actionsContainer .whatsappButton {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Botón PDF - Estilo moderno y minimalista */
+.actionButton {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 16px !important;
+  font-size: 0.9375rem !important;
+  font-weight: var(--font-weight-medium) !important;
+  letter-spacing: 0.02em !important;
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+  transition: 
+    all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.actionButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.actionButton:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+.actionButton:hover::before {
+  opacity: 1;
+}
+
+.actionButton:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+}
+
+.actionButton .icon {
+  width: 20px !important;
+  height: 20px !important;
+  transition: transform 0.25s ease !important;
+}
+
+.actionButton:hover .icon {
+  transform: translateY(-1px);
+}
+
+/* Botón WhatsApp - Estilo igual al de CardDetalle, adaptado al tamaño */
+.whatsappButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* 8px - igual al de CardDetalle */
+  padding: 0.75rem 1rem; /* 12px 16px - compacto para 0km */
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 600; /* Igual al de CardDetalle */
+  font-family: var(--font-poppins); /* Fuente de la sección 0km */
+  line-height: 1;
+  color: var(--color-white);
+  background: #25D366; /* Verde WhatsApp oficial - igual al de CardDetalle */
+  border: none;
+  border-radius: var(--border-radius-md); /* 8px - igual al de CardDetalle */
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.whatsappButton:hover {
+  background: #128C7E; /* Verde más oscuro en hover - igual al de CardDetalle */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.whatsappButton:active {
+  transform: translateY(0);
+}
+
+.whatsappButton:focus-visible {
+  outline: 2px solid #25D366;
+  outline-offset: 2px;
+}
+
+.actionIcon {
+  flex-shrink: 0;
+  width: 18px; /* Tamaño compacto para botones pequeños */
+  height: 18px;
+  color: inherit;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -274,7 +401,7 @@
   
   .versionTitle {
     font-size: 2.25rem;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.8px;
   }
   
   .brandIcon {
@@ -298,25 +425,62 @@
   }
   
   .equipamientoSection {
-    margin-top: 24px;
+    margin-top: 12px;
   }
   
   .equipamientoTitle {
     font-size: 1.125rem;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
   }
   
   .equipamientoList {
-    gap: 12px;
+    gap: 6px;
   }
   
   .equipamientoItem {
     font-size: 1.125rem;
-    line-height: 1.3;
+    line-height: 1.25;
   }
   
   .ctaButton {
     padding: 12px 24px;
     font-size: 0.9375rem;
+  }
+
+  .actionsContainer {
+    margin-top: 32px;
+    gap: 16px;
+  }
+
+  .actionButton {
+    padding: 14px 20px !important;
+    font-size: 0.9375rem !important;
+  }
+
+  .actionButton .icon {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .whatsappButton {
+    padding: 0.875rem 1.25rem; /* 14px 20px - más grande en desktop */
+    font-size: 1rem; /* 16px - igual al de CardDetalle mobile */
+    gap: 0.5rem; /* 8px */
+  }
+
+  .button3D {
+    padding: 0.875rem 1.25rem; /* 14px 20px - más grande en desktop */
+    font-size: 1rem; /* 16px */
+    gap: 0.5rem; /* 8px */
+  }
+
+  .actionIcon {
+    width: 19px; /* Tamaño igual al de CardDetalle mobile */
+    height: 19px;
+  }
+
+  /* En desktop, si hay 3 botones, mantener 3 columnas */
+  .actionsContainer.hasThreeButtons {
+    grid-template-columns: repeat(3, 1fr);
   }
 }

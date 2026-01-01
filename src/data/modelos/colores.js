@@ -23,29 +23,29 @@ export const COLORES = {
     key: 'gris-selenium',
     label: 'Gris Selenium',
     hex: '#6B7280',
-    publicId: '2008-gris-_j05wjn',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766791873/2008-gris-_j05wjn.webp'
+    publicId: 'gris-selenium-frontal_bbgybh',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208537/gris-selenium-frontal_bbgybh.webp'
   },
   'blanco-nacre': {
     key: 'blanco-nacre',
     label: 'Blanco Nacre',
     hex: '#F5F5F0',
-    publicId: '2008-blnaco_lkvtip',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766791875/2008-blnaco_lkvtip.webp'
+    publicId: 'blanco-nacre-frontal_spbnph',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208530/blanco-nacre-frontal_spbnph.webp'
   },
   'gris-artense': {
     key: 'gris-artense',
     label: 'Gris Artense',
     hex: '#9CA3AF',
-    publicId: '2008-grisclaro_jnrtc9',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766791879/2008-grisclaro_jnrtc9.webp'
+    publicId: 'gris-artense-frontal_eablzc',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208544/gris-artense-frontal_eablzc.webp'
   },
   'negro': {
     key: 'negro',
     label: 'Negro',
     hex: '#1F2937',
-    publicId: '2008-negro_utp7gx',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766786948/2008-negro_utp7gx.webp'
+    publicId: 'negro-perla-frontal_tb7di0',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208524/negro-perla-frontal_tb7di0.webp'
   },
 
   // ═══════════════════════════════════════════════════════════════
@@ -55,36 +55,43 @@ export const COLORES = {
     key: '3008-azul-ingaro',
     label: 'Azul Ingaro',
     hex: '#2C3E50',
-    publicId: '008-azul-ingaro_fubtjn',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025052/008-azul-ingaro_fubtjn.webp'
+    publicId: '3008-azul-ingaro-frente_bxxlav',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767209164/3008-azul-ingaro-frente_bxxlav.webp'
   },
   '3008-gris-titanium': {
     key: '3008-gris-titanium',
     label: 'Gris Titanium',
     hex: '#4A4A4A',
-    publicId: '3008-gris-oscura_uyljgd',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025049/3008-gris-oscura_uyljgd.webp'
+    publicId: '3008-gris-titanium-frente_gkzcpg',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767209150/3008-gris-titanium-frente_gkzcpg.webp'
   },
   '3008-azul-obsession': {
     key: '3008-azul-obsession',
     label: 'Azul Obsession',
     hex: '#1E3A5F',
-    publicId: '3008-azul_anat7b',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766786949/3008-azul_anat7b.webp'
+    publicId: '3008-azul-obsession-frente_x6zuus',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767209157/3008-azul-obsession-frente_x6zuus.webp'
   },
   '3008-gris-artense': {
     key: '3008-gris-artense',
     label: 'Gris Artense',
     hex: '#9CA3AF',
-    publicId: '3008-gris_ynqfxd',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025050/3008-gris_ynqfxd.webp'
+    publicId: '3008-gris-artense-frente_gawphy',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767209171/3008-gris-artense-frente_gawphy.webp'
   },
   '3008-negro-perla': {
     key: '3008-negro-perla',
     label: 'Negro Perla',
     hex: '#1C1C1C',
-    publicId: '3008-negro_q9uqka',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025051/3008-negro_q9uqka.webp'
+    publicId: '3008-negro-perla-frente_p967gs',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767209186/3008-negro-perla-frente_p967gs.webp'
+  },
+  '3008-blanco-okenite': {
+    key: '3008-blanco-okenite',
+    label: 'Blanco Okenite',
+    hex: '#F5F5F0',
+    publicId: '3008-blanco-okenite-frente_h7cpe1',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767209178/3008-blanco-okenite-frente_h7cpe1.webp'
   },
 
   // ═══════════════════════════════════════════════════════════════
@@ -94,43 +101,43 @@ export const COLORES = {
     key: '5008-blanco-okenite',
     label: 'Blanco Okenite',
     hex: '#F5F5F0',
-    publicId: '5008-azul-okenite_dhgdd6',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025403/5008-azul-okenite_dhgdd6.webp'
+    publicId: '5008-blanco-okenite-frente_tgi9pq',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208349/5008-blanco-okenite-frente_tgi9pq.webp'
   },
   '5008-azul-ingaro': {
     key: '5008-azul-ingaro',
     label: 'Azul Ingaro',
     hex: '#2C3E50',
-    publicId: '008-azul-ingaro_fubtjn',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025052/008-azul-ingaro_fubtjn.webp'
+    publicId: '5008-azul-ingaro-frente_ftm4xo',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208329/5008-azul-ingaro-frente_ftm4xo.webp'
   },
   '5008-negro-perla': {
     key: '5008-negro-perla',
     label: 'Negro Perla',
     hex: '#1C1C1C',
-    publicId: '5008-negro-perla_cevslo',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025399/5008-negro-perla_cevslo.webp'
+    publicId: '5008-negro-perla-frente_pvdnxb',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208323/5008-negro-perla-frente_pvdnxb.webp'
   },
   '5008-gris-artense': {
     key: '5008-gris-artense',
     label: 'Gris Artense',
     hex: '#9CA3AF',
-    publicId: '5008-gris-artenese_fddznd',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025396/5008-gris-artenese_fddznd.webp'
+    publicId: '5008-gris-artense-frente_krzqln',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208355/5008-gris-artense-frente_krzqln.webp'
   },
   '5008-azul-obsession': {
     key: '5008-azul-obsession',
     label: 'Azul Obsession',
     hex: '#1E3A5F',
-    publicId: '5008-azul-obsession_veuh6m',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025401/5008-azul-obsession_veuh6m.webp'
+    publicId: '5008-azul-obsession-frente_nsesdo',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208336/5008-azul-obsession-frente_nsesdo.webp'
   },
   '5008-gris-titanium': {
     key: '5008-gris-titanium',
     label: 'Gris Titanium',
     hex: '#4A4A4A',
-    publicId: '5008-gris-titanium_c31k3a',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767025397/5008-gris-titanium_c31k3a.webp'
+    publicId: '5008-gris-titanium-frente_nnpkwg',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208317/5008-gris-titanium-frente_nnpkwg.webp'
   },
 
   // ═══════════════════════════════════════════════════════════════
@@ -140,29 +147,29 @@ export const COLORES = {
     key: '408-blanco-okenite',
     label: 'Blanco Okenite',
     hex: '#F5F5F0',
-    publicId: '408-blanco_efkfjy',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767024250/408-blanco_efkfjy.webp'
+    publicId: '408-blanco-okenite-frente2_s5ofk8',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208428/408-blanco-okenite-frente2_s5ofk8.webp'
   },
   '408-azul-obsession': {
     key: '408-azul-obsession',
     label: 'Azul Obsession',
     hex: '#1E3A5F',
-    publicId: '408-azul_dr3aas',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766786943/408-azul_dr3aas.webp'
+    publicId: '408-azul-obsession-frente2_affayl',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208435/408-azul-obsession-frente2_affayl.webp'
   },
   '408-negro-perla': {
     key: '408-negro-perla',
     label: 'Negro Perla',
     hex: '#1C1C1C',
-    publicId: '408-negro_fdk7se',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767024250/408-negro_fdk7se.webp'
+    publicId: '408-negro-perla-frente2_xiekaf',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208416/408-negro-perla-frente2_xiekaf.webp'
   },
   '408-gris-selenium': {
     key: '408-gris-selenium',
     label: 'Gris Selenium',
     hex: '#6B7280',
-    publicId: '408-gris_fsi73k',
-    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767024250/408-gris_fsi73k.webp'
+    publicId: '408-gris-selenium-frente2_s4pkn2',
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767208422/408-gris-selenium-frente2_s4pkn2.webp'
   },
 
   // ═══════════════════════════════════════════════════════════════

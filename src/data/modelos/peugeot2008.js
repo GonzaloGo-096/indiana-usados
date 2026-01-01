@@ -24,18 +24,18 @@ export const PEUGEOT_2008 = {
   // Galería de imágenes (fija por modelo, no por versión)
   galeria: {
     mobile: [
-      { publicId: '2008-galeria-1-mobile_xf79qs', alt: 'Peugeot 2008 - Vista exterior' },
-      { publicId: '2008-galeria-2-mobile_d8xwmz', alt: 'Peugeot 2008 - Interior i-Cockpit' },
-      { publicId: '2008-galeria-3-mobile_ykqd6u', alt: 'Peugeot 2008 - Detalle frontal' },
-      { publicId: '2008-galeria-4-mobile_dqf5zf', alt: 'Peugeot 2008 - Vista trasera' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-mobile_xf79qs.webp', alt: 'Peugeot 2008 - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-mobile_d8xwmz.webp', alt: 'Peugeot 2008 - Interior i-Cockpit' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-mobile_ykqd6u.webp', alt: 'Peugeot 2008 - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-mobile_dqf5zf.webp', alt: 'Peugeot 2008 - Vista trasera' }
     ],
     desktop: [
-      { publicId: '2008-galeria-1-desktop_cljotq', alt: 'Peugeot 2008 - Vista exterior' },
-      { publicId: '2008-galeria-2-desktop_gp3ruh', alt: 'Peugeot 2008 - Interior i-Cockpit' },
-      { publicId: '2008-galeria-3-desktop_dxvyqd', alt: 'Peugeot 2008 - Detalle frontal' },
-      { publicId: '2008-galeria-4-desktop_c7yoxt', alt: 'Peugeot 2008 - Vista trasera' },
-      { publicId: '2008-galeria-5-desktop_g0mych', alt: 'Peugeot 2008 - Detalles interiores' },
-      { publicId: '2008-galeria-6-desktop_drukj6', alt: 'Peugeot 2008 - Tecnología a bordo' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-desktop_cljotq.webp', alt: 'Peugeot 2008 - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-desktop_gp3ruh.webp', alt: 'Peugeot 2008 - Interior i-Cockpit' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-desktop_dxvyqd.webp', alt: 'Peugeot 2008 - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-desktop_c7yoxt.webp', alt: 'Peugeot 2008 - Vista trasera' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-5-desktop_g0mych.webp', alt: 'Peugeot 2008 - Detalles interiores' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-6-desktop_drukj6.webp', alt: 'Peugeot 2008 - Tecnología a bordo' }
     ]
   },
   
@@ -59,7 +59,14 @@ export const PEUGEOT_2008 = {
           'Freno de mano eléctrico'
         ]
       },
-      specs: null // Sin specs técnicas
+      specs: null, // Sin specs técnicas
+      pdf: {
+        href: '/pdf/pdf-2008.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
     },
     {
       id: 'allure',
@@ -78,7 +85,14 @@ export const PEUGEOT_2008 = {
           'Cargador inductivo de celular, de 15W'
         ]
       },
-      specs: null // Sin specs técnicas
+      specs: null, // Sin specs técnicas
+      pdf: {
+        href: '/pdf/pdf-2008.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
     },
     {
       id: 'gt',
@@ -99,7 +113,36 @@ export const PEUGEOT_2008 = {
           'Peugeot i-Cockpit 3D'
         ]
       },
-      specs: null // Sin specs técnicas
+      specs: null, // Sin specs técnicas
+      pdf: {
+        href: '/pdf/pdf-2008.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
+    }
+  ],
+  
+  // Secciones de características destacadas
+  features: [
+    {
+      id: 'conectividad-avanzada',
+      title: 'CONECTIVIDAD AVANZADA',
+      description: 'Una nueva pantalla multimedia de 10", que cuenta con una gran definición y fluidez, además de conexión inalámbrica para para espejar las funciones del celular como música o navegación.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767212686/excelencia2-dk_nvbjlk.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767212621/excelencia2-dk_i58rib.webp'
+      }
+    },
+    {
+      id: 'realidad-aumentada',
+      title: 'REALIDAD AUMENTADA 3D',
+      description: 'Escaneá el QR y conocé de una manera distinta el 2008 a través de la realidad aumentada / 3D.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767212011/2008car6_tpics6.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767212039/laion-ra-4_yrpunt.webp'
+      }
     }
   ],
   
@@ -108,7 +151,19 @@ export const PEUGEOT_2008 = {
     title: 'Peugeot 2008 0KM | Versiones, Colores y Especificaciones',
     description: 'Descubrí el nuevo Peugeot 2008. Motor PureTech 130cv, i-Cockpit 3D y diseño SUV. Versiones Active, Allure y GT disponibles.',
     keywords: 'Peugeot 2008, SUV, 0km, PureTech, i-Cockpit'
-  }
+  },
+
+  // PDF opcional para descarga (ficha técnica, catálogo, etc.)
+  // El archivo debe estar en /public/pdf/
+  // Ejemplo:
+  // pdf: {
+  //   href: '/pdf/peugeot-2008-ficha-tecnica.pdf',
+  //   label: 'Descargar Ficha Técnica',
+  //   fileSize: '1,2 MB',
+  //   openInNewTab: false, // Si true, abre en nueva pestaña en lugar de descargar
+  //   variant: 'primary', // 'primary' | 'secondary' | 'outline'
+  //   size: 'medium' // 'small' | 'medium' | 'large'
+  // }
 }
 
 /**

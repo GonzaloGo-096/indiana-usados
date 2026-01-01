@@ -10,5 +10,8 @@ export { VersionTabs } from './VersionTabs'
 export { ModeloSpecs } from './ModeloSpecs'
 export { VersionContent } from './VersionContent'
 export { ModelGallery } from './ModelGallery'
+export { FeatureSection } from './FeatureSection'
+export { DimensionsSection } from './DimensionsSection'
+export { PdfDownloadButton } from './PdfDownloadButton'
 
 

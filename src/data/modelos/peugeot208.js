@@ -6,7 +6,7 @@
  * La UI consume esta data sin conocer strings mágicos.
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Data real del 208
+ * @version 2.0.1 - Data real del 208
  */
 
 import { COLORES } from './colores'
@@ -24,14 +24,18 @@ export const PEUGEOT_208 = {
   // Galería de imágenes del carrusel (fija por modelo, no por versión)
   galeria: {
     mobile: [
-      { publicId: '208-blanco_au72bz', alt: 'Peugeot 208 Blanco Nacre' },
-      { publicId: '208-gris_mxdmms', alt: 'Peugeot 208 Gris Artense' },
-      { publicId: '208-negro_iqix3k', alt: 'Peugeot 208 Negro Perla' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767130968/ec5dk.jpg_prsxiy.webp', alt: 'Peugeot 208 - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767205148/galeria-208-andando-desktop_ipofof.webp', alt: 'Peugeot 208 - En movimiento' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767205160/galeria-208-frente-desktop_ckq7kc.webp', alt: 'Peugeot 208 - Vista frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767205172/galeria-208-luz-desktop_md7ufy.webp', alt: 'Peugeot 208 - Detalle de luces' }
     ],
     desktop: [
-      { publicId: 'blanco-nacre-frontal2_sbm9lg', alt: 'Peugeot 208 Blanco Nacre' },
-      { publicId: 'negro-perla-frontal2_arxldy', alt: 'Peugeot 208 Negro Perla' },
-      { publicId: 'gris-artense-frontal2_vkzr7h', alt: 'Peugeot 208 Gris Artense' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767204844/ec5dk.jpg_cjrtaq.webp', alt: 'Peugeot 208 - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767204832/galeria-208-luztrasera-desktop_m7sbla.webp', alt: 'Peugeot 208 - Luz trasera' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767204821/galeria-208-andando-desktop_nusjrq.webp', alt: 'Peugeot 208 - En movimiento' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767204809/galeria-208-andando2-desktop_cqltfe.webp', alt: 'Peugeot 208 - En movimiento 2' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767204800/galeria-208-rueda-desktop_uubqtq.webp', alt: 'Peugeot 208 - Detalle de rueda' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767205088/galeria-208-frente-desktop_n8epf6.webp', alt: 'Peugeot 208 - Vista frontal' }
     ]
   },
   
@@ -55,7 +59,14 @@ export const PEUGEOT_208 = {
           'PEUGEOT i-Cockpit con tablero analógico'
         ]
       },
-      specs: null
+      specs: null,
+      pdf: {
+        href: '/pdf/pdf-208.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
     },
     {
       id: 'allure',
@@ -76,7 +87,14 @@ export const PEUGEOT_208 = {
           'Cámara y sensores traseros de estacionamiento'
         ]
       },
-      specs: null
+      specs: null,
+      pdf: {
+        href: '/pdf/pdf-208.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
     },
     {
       id: 'allure-pk',
@@ -95,7 +113,14 @@ export const PEUGEOT_208 = {
           'Nuevo cargador inductivo de celular'
         ]
       },
-      specs: null
+      specs: null,
+      pdf: {
+        href: '/pdf/pdf-208.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
     },
     {
       id: 'gt',
@@ -117,7 +142,14 @@ export const PEUGEOT_208 = {
           'Paquete de Ayudas a la Conducción'
         ]
       },
-      specs: null
+      specs: null,
+      pdf: {
+        href: '/pdf/pdf-208.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
     },
     {
       id: 'allure-pk-t200',
@@ -127,7 +159,14 @@ export const PEUGEOT_208 = {
       coloresPermitidos: ['208-blanco-nacre', '208-gris-artense', '208-negro-perla'],
       colorDefault: '208-negro-perla',
       equipamiento: null,
-      specs: null
+      specs: null,
+      pdf: {
+        href: '/pdf/pdf-208.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
     },
     {
       id: 'allure-at',
@@ -137,7 +176,36 @@ export const PEUGEOT_208 = {
       coloresPermitidos: ['208-blanco-nacre', '208-gris-artense', '208-negro-perla'],
       colorDefault: '208-blanco-nacre',
       equipamiento: null,
-      specs: null
+      specs: null,
+      pdf: {
+        href: '/pdf/pdf-208.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
+    }
+  ],
+  
+  // Secciones de características destacadas
+  features: [
+    {
+      id: 'display-conductor',
+      title: 'DISPLAY DE CONDUCTOR',
+      description: 'Obtené información clave de conducción en un instante con el panel de instrumentos digital configurable, disponible como pantalla 2D o 3D.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/208n5.webp_pbbxu3.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/excelencia1dk2_anz3an.webp'
+      }
+    },
+    {
+      id: 'realidad-aumentada',
+      title: 'REALIDAD AUMENTADA 3D',
+      description: 'Escaneá el QR y conocé de una manera distinta el 208 a través de la realidad aumentada / 3D.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/ec5dk.jpg_prsxiy.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/laion-ra-208-dk2_enmble.webp'
+      }
     }
   ],
   

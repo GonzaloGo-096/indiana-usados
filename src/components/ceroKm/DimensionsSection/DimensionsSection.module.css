@@ -1,0 +1,61 @@
+/**
+ * DimensionsSection.module.css - Estilos de sección de dimensiones
+ * 
+ * Sección simple con imagen responsive.
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== SECTION ===== */
+.section {
+  width: 100%;
+  background: #ffffff;
+  padding: 32px 0;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== IMAGE ===== */
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Mobile: mostrar imagen mobile, ocultar desktop */
+.imageMobile {
+  display: block;
+}
+
+.imageDesktop {
+  display: none;
+}
+
+/* ===== RESPONSIVE: DESKTOP ===== */
+@media (min-width: 992px) {
+  .section {
+    padding: 48px 0;
+  }
+
+  .container {
+    max-width: 1000px;
+    padding: 0 48px;
+  }
+
+  /* Desktop: mostrar imagen desktop, ocultar mobile */
+  .imageMobile {
+    display: none;
+  }
+
+  .imageDesktop {
+    display: block;
+  }
+}
+

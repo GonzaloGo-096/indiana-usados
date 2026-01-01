@@ -24,18 +24,18 @@ export const PEUGEOT_5008 = {
   // Galería de imágenes (fija por modelo, no por versión)
   galeria: {
     mobile: [
-      { publicId: '5008-galeria-2-mobile_jd8oaz', alt: 'Peugeot 5008 - Vista exterior' },
-      { publicId: '5008-galeria-3-mobile_zks3te', alt: 'Peugeot 5008 - Interior 7 plazas' },
-      { publicId: '5008-galeria-4-mobile_iokfwz', alt: 'Peugeot 5008 - Detalle frontal' },
-      { publicId: '5008-galeria-5-mobile_l2oykf', alt: 'Peugeot 5008 - Vista trasera' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/5008-galeria-2-mobile_jd8oaz.webp', alt: 'Peugeot 5008 - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/5008-galeria-3-mobile_zks3te.webp', alt: 'Peugeot 5008 - Interior 7 plazas' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/5008-galeria-4-mobile_iokfwz.webp', alt: 'Peugeot 5008 - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/5008-galeria-5-mobile_l2oykf.webp', alt: 'Peugeot 5008 - Vista trasera' }
     ],
     desktop: [
-      { publicId: '5008-galeria-1-desktop_ozrqvi', alt: 'Peugeot 5008 - Vista exterior' },
-      { publicId: '5008-galeria-4-desktop_h3tcku', alt: 'Peugeot 5008 - Vista trasera' },
-      { publicId: '5008-galeria-3-desktop_lrel2f', alt: 'Peugeot 5008 - Detalle frontal' },
-      { publicId: '5008-galeria-6-desktop_qvuuu8', alt: 'Peugeot 5008 - Tecnología a bordo' },
-      { publicId: '5008-galeria-5-desktop_u9kgbu', alt: 'Peugeot 5008 - Tercera fila de asientos' },
-      { publicId: '5008-galeria-2-desktop_l17ynv', alt: 'Peugeot 5008 - Interior 7 plazas' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/5008-galeria-1-desktop_ozrqvi.webp', alt: 'Peugeot 5008 - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/5008-galeria-4-desktop_h3tcku.webp', alt: 'Peugeot 5008 - Vista trasera' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/5008-galeria-3-desktop_lrel2f.webp', alt: 'Peugeot 5008 - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/5008-galeria-6-desktop_qvuuu8.webp', alt: 'Peugeot 5008 - Tecnología a bordo' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/5008-galeria-5-desktop_u9kgbu.webp', alt: 'Peugeot 5008 - Tercera fila de asientos' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/5008-galeria-2-desktop_l17ynv.webp', alt: 'Peugeot 5008 - Interior 7 plazas' }
     ]
   },
   
@@ -68,7 +68,41 @@ export const PEUGEOT_5008 = {
           '9+ ADAS'
         ]
       },
-      specs: null // Sin specs técnicas
+      specs: null, // Sin specs técnicas
+      pdf: {
+        href: '/pdf/pdf-5008.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
+    }
+  ],
+  
+  // Secciones de características destacadas
+  features: [
+    {
+      id: 'i-cockpit-panoramico',
+      title: 'NUEVO I-COCKPIT® PANORÁMICO',
+      description: 'Revolucioná tu experiencia de conducción con el nuevo i-Cockpit® panorámico de Peugeot.',
+      items: [
+        'Pantalla panorámica flotante y curva de 21" que se integra perfectamente en el tablero para una ergonomía óptima.',
+        'Nuevo volante compacto totalmente equipado con control táctil para una experiencia de conducción óptima y una comodidad incomparable.',
+        'Los i-Toggles personalizables te ofrecen acceso rápido a sus 10 funciones favoritas para un manejo intuitivo.'
+      ],
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767214427/d8_hlprgn.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767213846/d8_p6ze72.webp'
+      }
+    },
+    {
+      id: '7-plazas',
+      title: '7 PLAZAS',
+      description: 'El nuevo 5008 ofrece 7 plazas para mayor comodidad y flexibilidad en tus viajes, disfrutá del espacio y confort en cada trayecto.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767214411/7-plazas-1dk_akauw6.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767213862/7-plazas-1dk_ybqpmg.webp'
+      }
     }
   ],
   

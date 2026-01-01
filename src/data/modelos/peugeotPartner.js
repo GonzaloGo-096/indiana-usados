@@ -32,18 +32,18 @@ export const PEUGEOT_PARTNER = {
   // TODO: Reemplazar con publicIds reales del Partner
   galeria: {
     mobile: [
-      { publicId: '2008-galeria-1-mobile_xf79qs', alt: 'Peugeot Partner - Vista exterior' },
-      { publicId: '2008-galeria-2-mobile_d8xwmz', alt: 'Peugeot Partner - Espacio de carga' },
-      { publicId: '2008-galeria-3-mobile_ykqd6u', alt: 'Peugeot Partner - Detalle frontal' },
-      { publicId: '2008-galeria-4-mobile_dqf5zf', alt: 'Peugeot Partner - Vista trasera' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-mobile_xf79qs.webp', alt: 'Peugeot Partner - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-mobile_d8xwmz.webp', alt: 'Peugeot Partner - Espacio de carga' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-mobile_ykqd6u.webp', alt: 'Peugeot Partner - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-mobile_dqf5zf.webp', alt: 'Peugeot Partner - Vista trasera' }
     ],
     desktop: [
-      { publicId: '2008-galeria-1-desktop_cljotq', alt: 'Peugeot Partner - Vista exterior' },
-      { publicId: '2008-galeria-2-desktop_gp3ruh', alt: 'Peugeot Partner - Espacio de carga' },
-      { publicId: '2008-galeria-3-desktop_dxvyqd', alt: 'Peugeot Partner - Detalle frontal' },
-      { publicId: '2008-galeria-4-desktop_c7yoxt', alt: 'Peugeot Partner - Vista trasera' },
-      { publicId: '2008-galeria-5-desktop_g0mych', alt: 'Peugeot Partner - Interior cabina' },
-      { publicId: '2008-galeria-6-desktop_drukj6', alt: 'Peugeot Partner - Capacidad de carga' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-desktop_cljotq.webp', alt: 'Peugeot Partner - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-desktop_gp3ruh.webp', alt: 'Peugeot Partner - Espacio de carga' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-desktop_dxvyqd.webp', alt: 'Peugeot Partner - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-desktop_c7yoxt.webp', alt: 'Peugeot Partner - Vista trasera' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-5-desktop_g0mych.webp', alt: 'Peugeot Partner - Interior cabina' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-6-desktop_drukj6.webp', alt: 'Peugeot Partner - Capacidad de carga' }
     ]
   },
   
@@ -51,34 +51,73 @@ export const PEUGEOT_PARTNER = {
   versiones: [
     {
       id: '1.6',
-      nombre: 'PARTNER CONFORT 1.6',
-      nombreCorto: 'PARTNER CONFORT 1.6',
+      nombre: 'CONFORT 1.6',
+      nombreCorto: 'CONFORT 1.6',
       descripcion: 'Partner Confort satisface las todas las necesidades del conductor y de su actividad. Todo está pensado para que el placer de conducir no se altere en ninguna circunstancia.',
       coloresPermitidos: [], // Sin colores
       colorDefault: null,
-      specs: {
-        carga: 'Capacidad 800 kg',
-        volumen: '3.3 m³',
-        motor: '1.6L',
-        caja: 'Manual 5 velocidades',
-        puertas: 'Laterales corredizas',
-        consumo: '5.8 L/100km'
+      equipamiento: {
+        titulo: '',
+        items: [
+          'Capacidad de tanque de combustible: 55 Lts',
+          'Capacidad de carga: 3 m³ /800 kg',
+          'Ganchos para sujeción de carga'
+        ]
+      },
+      specs: null,
+      pdf: {
+        href: '/pdf/pdf-partner.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
       }
     },
     {
       id: '1.6-hdi-92',
-      nombre: 'PARTNER CONFORT 1.6 HDI 92',
-      nombreCorto: 'PARTNER CONFORT 1.6 HDI 92',
+      nombre: 'CONFORT 1.6 HDI 92',
+      nombreCorto: 'CONFORT 1.6 HDI 92',
       descripcion: 'Partner Confort satisface las todas las necesidades del conductor y de su actividad. Todo está pensado para que el placer de conducir no se altere en ninguna circunstancia.',
       coloresPermitidos: [], // Sin colores
       colorDefault: null,
-      specs: {
-        carga: 'Capacidad 800 kg',
-        volumen: '3.3 m³',
-        motor: 'HDi 1.6L 92cv',
-        caja: 'Manual 5 velocidades',
-        puertas: 'Laterales corredizas',
-        consumo: '5.5 L/100km'
+      equipamiento: {
+        titulo: '',
+        items: [
+          'Motorización diésel HDi de 92 CV',
+          'Capacidad de tanque de combustible: 55 Lts',
+          'Capacidad de carga: 3 m³ /800 kg',
+          'Ganchos para sujeción de carga'
+        ]
+      },
+      specs: null,
+      pdf: {
+        href: '/pdf/pdf-partner.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
+    }
+  ],
+  
+  // Secciones de características destacadas
+  features: [
+    {
+      id: 'seguridad',
+      title: 'SEGURIDAD',
+      description: 'La protección de los pasajeros se materializa tanto en el diseño como en cada uno de los elementos y sistemas que componen el equipamiento dispuesto en el vehículo. Se buscó en principio equilibrar una dote racional y precisa, incorporando el ABS con REF y el doble airbag de serie en todas las versiones que se suman al equipo predeterminado de luces antiniebla traseras, inmovilizador de motor, barras protectoras de conductor y para la zona de carga y ganchos para sujeción de carga.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767219810/partner-motorizacion1-dk_s7svz6.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767219733/partner-motorizacion1-dk_jhurfj.webp'
+      }
+    },
+    {
+      id: 'capacidad-optimizada',
+      title: 'CAPACIDAD OPTIMIZADA',
+      description: 'La capacidad de carga fue mejorada y permite transportar un total de 800 kg. y un volumen aprovechable de 3.000 lts. Las puertas simétricas traseras son del tipo batiente y permiten un ángulo de apertura de 180º para facilitar el acceso al espacio de carga. La posibilidad de sumar puertas corredizas laterales otorga puntaje extra en funcionalidad.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767219828/partner-seguridad1-dk_uxsh4u.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767219757/partner-seguridad1-dk_nmfdfh.webp'
       }
     }
   ],

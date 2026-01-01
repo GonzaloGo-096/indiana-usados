@@ -1,0 +1,57 @@
+═══════════════════════════════════════════════════════════════════
+📄 CARPETA PARA PDFs - INSTRUCCIONES
+═══════════════════════════════════════════════════════════════════
+
+Coloca TODOS los archivos PDF directamente en esta carpeta:
+
+📁 public/pdf/
+
+═══════════════════════════════════════════════════════════════════
+📋 NOMENCLATURA DE ARCHIVOS:
+═══════════════════════════════════════════════════════════════════
+
+Los archivos PDF deben llamarse EXACTAMENTE así:
+
+✅ pdf-208.pdf       (para el modelo 208)
+✅ pdf-3008.pdf      (para el modelo 3008)
+✅ pdf-5008.pdf      (para el modelo 5008)
+✅ pdf-408.pdf       (para el modelo 408)
+✅ pdf-2008.pdf      (para el modelo 2008)
+✅ pdf-boxer.pdf     (para el modelo Boxer)
+✅ pdf-expert.pdf    (para el modelo Expert)
+✅ pdf-partner.pdf   (para el modelo Partner)
+
+═══════════════════════════════════════════════════════════════════
+📋 ARCHIVOS ESPERADOS:
+═══════════════════════════════════════════════════════════════════
+
+Estructura completa esperada:
+
+public/
+  pdf/
+    pdf-208.pdf
+    pdf-3008.pdf
+    pdf-5008.pdf
+    pdf-408.pdf
+    pdf-2008.pdf
+    pdf-boxer.pdf
+    pdf-expert.pdf
+    pdf-partner.pdf
+
+═══════════════════════════════════════════════════════════════════
+⚠️ IMPORTANTE:
+═══════════════════════════════════════════════════════════════════
+
+1. Los nombres de archivo deben ser EXACTAMENTE:
+   "pdf-[nombre-del-modelo].pdf" (todo en minúsculas)
+
+2. Los archivos deben estar directamente en /public/pdf/
+   NO en subcarpetas
+
+3. Ejemplo de ruta completa:
+   public/pdf/pdf-208.pdf
+
+4. En el código se referencia como:
+   href: '/pdf/pdf-208.pdf'
+
+═══════════════════════════════════════════════════════════════════

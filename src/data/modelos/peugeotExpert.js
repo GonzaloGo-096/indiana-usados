@@ -32,37 +32,97 @@ export const PEUGEOT_EXPERT = {
   // TODO: Reemplazar con publicIds reales del Expert
   galeria: {
     mobile: [
-      { publicId: '2008-galeria-1-mobile_xf79qs', alt: 'Peugeot Expert - Vista exterior' },
-      { publicId: '2008-galeria-2-mobile_d8xwmz', alt: 'Peugeot Expert - Espacio de carga' },
-      { publicId: '2008-galeria-3-mobile_ykqd6u', alt: 'Peugeot Expert - Detalle frontal' },
-      { publicId: '2008-galeria-4-mobile_dqf5zf', alt: 'Peugeot Expert - Vista trasera' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-mobile_xf79qs.webp', alt: 'Peugeot Expert - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-mobile_d8xwmz.webp', alt: 'Peugeot Expert - Espacio de carga' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-mobile_ykqd6u.webp', alt: 'Peugeot Expert - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-mobile_dqf5zf.webp', alt: 'Peugeot Expert - Vista trasera' }
     ],
     desktop: [
-      { publicId: '2008-galeria-1-desktop_cljotq', alt: 'Peugeot Expert - Vista exterior' },
-      { publicId: '2008-galeria-2-desktop_gp3ruh', alt: 'Peugeot Expert - Espacio de carga' },
-      { publicId: '2008-galeria-3-desktop_dxvyqd', alt: 'Peugeot Expert - Detalle frontal' },
-      { publicId: '2008-galeria-4-desktop_c7yoxt', alt: 'Peugeot Expert - Vista trasera' },
-      { publicId: '2008-galeria-5-desktop_g0mych', alt: 'Peugeot Expert - Interior cabina' },
-      { publicId: '2008-galeria-6-desktop_drukj6', alt: 'Peugeot Expert - Capacidad máxima' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-desktop_cljotq.webp', alt: 'Peugeot Expert - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-desktop_gp3ruh.webp', alt: 'Peugeot Expert - Espacio de carga' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-desktop_dxvyqd.webp', alt: 'Peugeot Expert - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-desktop_c7yoxt.webp', alt: 'Peugeot Expert - Vista trasera' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-5-desktop_g0mych.webp', alt: 'Peugeot Expert - Interior cabina' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-6-desktop_drukj6.webp', alt: 'Peugeot Expert - Capacidad máxima' }
     ]
   },
   
-  // Versiones disponibles - Versión única
+  // Versiones disponibles
   versiones: [
     {
-      id: 'expert',
-      nombre: 'Expert',
-      nombreCorto: 'Expert',
-      descripcion: 'El furgón mediano con capacidad profesional. Ideal para flotas y trabajos de logística que requieren versatilidad y eficiencia.',
+      id: 'l3-hdi-120-mixto',
+      nombre: 'L3 HDI 120 - Mixto',
+      nombreCorto: 'L3 HDI 120 - Mixto',
+      descripcion: 'Ingresa al mundo utilitario con Expert, con un gran nivel de equipamiento.',
       coloresPermitidos: [], // Sin colores
       colorDefault: null,
-      specs: {
-        carga: 'Capacidad 1200 kg',
-        volumen: '5.3 m³',
-        motor: 'HDi 1.6L Diesel',
-        caja: 'Manual 6 velocidades',
-        puertas: 'Laterales corredizas',
-        consumo: '6.5 L/100km'
+      equipamiento: {
+        titulo: '',
+        items: [
+          'Motorización 2.2L HDI de 150cv',
+          'Capacidad de carga 4 m³/1285Kg',
+          '3 plazas para pasajeros en fila 2',
+          'Cristales en fila 2',
+          'Pantalla Multimedia 5 pulgadas',
+          'Doble Airbag'
+        ]
+      },
+      specs: null,
+      pdf: {
+        href: '/pdf/pdf-expert.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
+    },
+    {
+      id: 'l3-hdi-120-carga',
+      nombre: 'L3 HDI 120 - Carga',
+      nombreCorto: 'L3 HDI 120 - Carga',
+      descripcion: 'Ingresa al mundo utilitario con Expert, con un gran nivel de equipamiento.',
+      coloresPermitidos: [], // Sin colores
+      colorDefault: null,
+      equipamiento: {
+        titulo: '',
+        items: [
+          'Capacidad de carga de 6,1 m³/1450Kg',
+          '3 plazas delanteras',
+          'Pantalla Multimedia 5 pulgadas',
+          'Doble Airbag',
+          'Dirección asistida Eléctrica',
+          'Motorización 1.5L HDI de 120cv'
+        ]
+      },
+      specs: null,
+      pdf: {
+        href: '/pdf/pdf-expert.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
+    }
+  ],
+  
+  // Secciones de características destacadas
+  features: [
+    {
+      id: 'display-conductor',
+      title: 'DISPLAY DE CONDUCTOR',
+      description: 'Obtené información clave de conducción en un instante con el panel de instrumentos digital configurable, disponible como pantalla 2D o 3D.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/208n5.webp_pbbxu3.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/excelencia1dk2_anz3an.webp'
+      }
+    },
+    {
+      id: 'realidad-aumentada',
+      title: 'REALIDAD AUMENTADA 3D',
+      description: 'Escaneá el QR y conocé de una manera distinta el Expert a través de la realidad aumentada / 3D.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767130968/ec5dk.jpg_prsxiy.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767204844/ec5dk.jpg_cjrtaq.webp'
       }
     }
   ],

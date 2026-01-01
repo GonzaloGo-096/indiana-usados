@@ -14,7 +14,6 @@
 
 import React, { memo, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
-import { CloudinaryImage } from '@components/ui/CloudinaryImage'
 import { ChevronIcon, CloseIcon } from '@components/ui/icons'
 import styles from './ModelGallery.module.css'
 
@@ -23,7 +22,7 @@ import styles from './ModelGallery.module.css'
  * @param {Object} props
  * @param {boolean} props.isOpen - Si el modal está abierto
  * @param {Function} props.onClose - Callback para cerrar
- * @param {Array} props.images - Array de objetos { publicId, alt }
+ * @param {Array} props.images - Array de objetos { url, alt } con URLs completas optimizadas
  * @param {number} props.activeIndex - Índice de imagen activa
  * @param {Function} props.onIndexChange - Callback para cambiar índice
  * @param {string} props.modelName - Nombre del modelo para alt text
@@ -114,14 +113,12 @@ export const GalleryModal = memo(({
 
         {/* Imagen principal */}
         <div className={styles.modalImageContainer}>
-          <CloudinaryImage
-            image={currentImage?.publicId}
+          <img
+            src={currentImage?.url}
             alt={currentImage?.alt || `${modelName} - Imagen ${activeIndex + 1}`}
-            variant="fluid"
-            loading="eager"
-            qualityMode="auto"
             className={styles.modalImage}
-            sizes="90vw"
+            loading="eager"
+            decoding="async"
           />
         </div>
 
@@ -156,20 +153,18 @@ export const GalleryModal = memo(({
         <div className={styles.modalThumbnails}>
           {images.map((image, index) => (
             <button
-              key={image.publicId || index}
+              key={image.url || index}
               type="button"
               className={`${styles.modalThumb} ${index === activeIndex ? styles.modalThumbActive : ''}`}
               onClick={() => onIndexChange?.(index)}
               aria-label={`Ver imagen ${index + 1}`}
             >
-              <CloudinaryImage
-                image={image.publicId}
+              <img
+                src={image.url}
                 alt={`Miniatura ${index + 1}`}
-                variant="fluid"
-                loading="lazy"
-                qualityMode="eco"
                 className={styles.modalThumbImage}
-                sizes="80px"
+                loading="lazy"
+                decoding="async"
               />
             </button>
           ))}

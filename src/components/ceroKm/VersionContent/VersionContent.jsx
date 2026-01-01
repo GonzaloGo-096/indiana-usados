@@ -12,6 +12,7 @@ import React, { memo } from 'react'
 import { getBrandIcon, WhatsAppIcon } from '@components/ui/icons'
 import { ColorSelector } from '../ColorSelector'
 import { ModeloSpecs } from '../ModeloSpecs'
+import { PdfDownloadButton } from '../PdfDownloadButton'
 import styles from './VersionContent.module.css'
 
 
@@ -157,6 +158,32 @@ export const VersionContent = memo(({
             <ModeloSpecs specs={version.specs} variant="compact" />
           </div>
         ) : null}
+
+        {/* Botones de acción: PDF y WhatsApp */}
+        <div className={`${styles.actionsContainer} ${
+          !version.pdf ? styles.singleButton : ''
+        }`}>
+          {version.pdf && (
+            <PdfDownloadButton
+              href={version.pdf.href}
+              label={version.pdf.label || 'Ficha Técnica'}
+              fileSize={version.pdf.fileSize}
+              variant={version.pdf.variant || 'primary'}
+              size={version.pdf.size || 'medium'}
+              className={styles.actionButton}
+            />
+          )}
+          <a
+            href={`https://wa.me/543816295959?text=${encodeURIComponent(`Hola! Me interesa el ${modeloMarca} ${modeloNombre} ${version.nombreCorto}${colorActivo ? ` en color ${colorActivo.label}` : ''}`)}`}
+            className={styles.whatsappButton}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Solicitar más información por WhatsApp"
+          >
+            <WhatsAppIcon size={18} className={styles.actionIcon} />
+            <span>Solicitar más información</span>
+          </a>
+        </div>
       </article>
     )
   }
@@ -220,20 +247,33 @@ export const VersionContent = memo(({
               <ModeloSpecs specs={version.specs} variant="compact" />
             </div>
           ) : null}
-        </div>
-      </div>
 
-      {/* CTA WhatsApp - Fuera del grid, centrado */}
-      <div className={styles.ctaSection}>
-        <a
-          href={`https://wa.me/543816295959?text=${encodeURIComponent(`Hola! Me interesa el ${modeloMarca} ${modeloNombre} ${version.nombreCorto} en color ${colorActivo?.label || ''}`)}`}
-          className={styles.ctaButton}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <WhatsAppIcon size={18} className={styles.ctaIcon} />
-          Consultar por este modelo
-        </a>
+          {/* Botones de acción: PDF y WhatsApp */}
+          <div className={`${styles.actionsContainer} ${
+            !version.pdf ? styles.singleButton : ''
+          }`}>
+            {version.pdf && (
+              <PdfDownloadButton
+                href={version.pdf.href}
+                label={version.pdf.label || 'Ficha Técnica'}
+                fileSize={version.pdf.fileSize}
+                variant={version.pdf.variant || 'primary'}
+                size={version.pdf.size || 'medium'}
+                className={styles.actionButton}
+              />
+            )}
+            <a
+              href={`https://wa.me/543816295959?text=${encodeURIComponent(`Hola! Me interesa el ${modeloMarca} ${modeloNombre} ${version.nombreCorto}${colorActivo ? ` en color ${colorActivo.label}` : ''}`)}`}
+              className={styles.whatsappButton}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Solicitar más información por WhatsApp"
+            >
+              <WhatsAppIcon size={18} className={styles.actionIcon} />
+              <span>Solicitar más información</span>
+            </a>
+          </div>
+        </div>
       </div>
     </article>
   )

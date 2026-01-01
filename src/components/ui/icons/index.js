@@ -42,6 +42,7 @@ export { CloseIcon } from './CloseIcon'
 export { FilterIcon } from './FilterIcon'
 export { SortIcon } from './SortIcon'
 export { ArrowUpIcon } from './ArrowUpIcon'
+export { DownloadIcon } from './DownloadIcon'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // 📱 CONTACTO / SOCIAL - Íconos de redes y comunicación

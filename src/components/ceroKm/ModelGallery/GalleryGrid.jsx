@@ -9,13 +9,12 @@
  */
 
 import React, { memo } from 'react'
-import { CloudinaryImage } from '@components/ui/CloudinaryImage'
 import styles from './ModelGallery.module.css'
 
 /**
  * GalleryGrid Component
  * @param {Object} props
- * @param {Array} props.images - Array de objetos { publicId, alt }
+ * @param {Array} props.images - Array de objetos { url, alt } con URLs completas optimizadas
  * @param {Function} props.onImageClick - Callback al hacer click en imagen
  * @param {string} props.modelName - Nombre del modelo para alt text
  */
@@ -30,20 +29,18 @@ export const GalleryGrid = memo(({
     <div className={styles.grid}>
       {images.map((image, index) => (
         <button
-          key={image.publicId || index}
+          key={image.url || index}
           type="button"
           className={styles.gridItem}
           onClick={() => onImageClick?.(index)}
           aria-label={`Ver imagen ${index + 1} de ${modelName}`}
         >
-          <CloudinaryImage
-            image={image.publicId}
+          <img
+            src={image.url}
             alt={image.alt || `${modelName} - Imagen ${index + 1}`}
-            variant="fluid"
-            loading="lazy"
-            qualityMode="eco"
             className={styles.gridImage}
-            sizes="(max-width: 768px) 45vw, 30vw"
+            loading="lazy"
+            decoding="async"
           />
           <div className={styles.gridItemOverlay}>
             <svg 

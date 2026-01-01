@@ -32,18 +32,18 @@ export const PEUGEOT_BOXER = {
   // TODO: Reemplazar con publicIds reales del Boxer
   galeria: {
     mobile: [
-      { publicId: '2008-galeria-1-mobile_xf79qs', alt: 'Peugeot Boxer - Vista exterior' },
-      { publicId: '2008-galeria-2-mobile_d8xwmz', alt: 'Peugeot Boxer - Espacio de carga' },
-      { publicId: '2008-galeria-3-mobile_ykqd6u', alt: 'Peugeot Boxer - Detalle frontal' },
-      { publicId: '2008-galeria-4-mobile_dqf5zf', alt: 'Peugeot Boxer - Vista trasera' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-mobile_xf79qs.webp', alt: 'Peugeot Boxer - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-mobile_d8xwmz.webp', alt: 'Peugeot Boxer - Espacio de carga' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-mobile_ykqd6u.webp', alt: 'Peugeot Boxer - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-mobile_dqf5zf.webp', alt: 'Peugeot Boxer - Vista trasera' }
     ],
     desktop: [
-      { publicId: '2008-galeria-1-desktop_cljotq', alt: 'Peugeot Boxer - Vista exterior' },
-      { publicId: '2008-galeria-2-desktop_gp3ruh', alt: 'Peugeot Boxer - Espacio de carga' },
-      { publicId: '2008-galeria-3-desktop_dxvyqd', alt: 'Peugeot Boxer - Detalle frontal' },
-      { publicId: '2008-galeria-4-desktop_c7yoxt', alt: 'Peugeot Boxer - Vista trasera' },
-      { publicId: '2008-galeria-5-desktop_g0mych', alt: 'Peugeot Boxer - Interior cabina' },
-      { publicId: '2008-galeria-6-desktop_drukj6', alt: 'Peugeot Boxer - Capacidad máxima' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-desktop_cljotq.webp', alt: 'Peugeot Boxer - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-desktop_gp3ruh.webp', alt: 'Peugeot Boxer - Espacio de carga' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-desktop_dxvyqd.webp', alt: 'Peugeot Boxer - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-desktop_c7yoxt.webp', alt: 'Peugeot Boxer - Vista trasera' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-5-desktop_g0mych.webp', alt: 'Peugeot Boxer - Interior cabina' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-6-desktop_drukj6.webp', alt: 'Peugeot Boxer - Capacidad máxima' }
     ]
   },
   
@@ -63,6 +63,13 @@ export const PEUGEOT_BOXER = {
         caja: 'Manual 6 velocidades',
         puertas: 'Traseras 180°',
         consumo: '8.5 L/100km'
+      },
+      pdf: {
+        href: '/pdf/pdf-boxer.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
       }
     },
     {
@@ -79,6 +86,35 @@ export const PEUGEOT_BOXER = {
         caja: 'Manual 6 velocidades',
         puertas: 'Laterales corredizas + traseras 180°',
         consumo: '9.0 L/100km'
+      },
+      pdf: {
+        href: '/pdf/pdf-boxer.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
+    }
+  ],
+  
+  // Secciones de características destacadas
+  features: [
+    {
+      id: 'display-conductor',
+      title: 'DISPLAY DE CONDUCTOR',
+      description: 'Obtené información clave de conducción en un instante con el panel de instrumentos digital configurable, disponible como pantalla 2D o 3D.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/208n5.webp_pbbxu3.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/excelencia1dk2_anz3an.webp'
+      }
+    },
+    {
+      id: 'realidad-aumentada',
+      title: 'REALIDAD AUMENTADA 3D',
+      description: 'Escaneá el QR y conocé de una manera distinta el Boxer a través de la realidad aumentada / 3D.',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767130968/ec5dk.jpg_prsxiy.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767204844/ec5dk.jpg_cjrtaq.webp'
       }
     }
   ],

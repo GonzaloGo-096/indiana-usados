@@ -12,10 +12,10 @@
  */
 
 import React, { useRef, useEffect, useCallback } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { SEOHead } from '@components/SEO'
 import { getBrandIcon } from '@components/ui/icons'
-import { VersionTabs, VersionContent, ModelGallery } from '@components/ceroKm'
+import { VersionTabs, VersionContent, ModelGallery, FeatureSection, DimensionsSection } from '@components/ceroKm'
 import { useModeloSelector } from '@hooks/ceroKm'
 import { existeModelo } from '@data/modelos'
 import styles from './CeroKilometroDetalle.module.css'
@@ -28,7 +28,6 @@ const CeroKilometroDetalle = () => {
   if (!existeModelo(autoSlug)) {
     return (
       <div className={styles.container}>
-        <Link to="/0km" className={styles.backLink}>← Volver al catálogo</Link>
         <h1 className={styles.errorTitle}>Modelo no encontrado</h1>
         <p className={styles.errorText}>El modelo "{autoSlug}" no está disponible.</p>
       </div>
@@ -151,7 +150,6 @@ const CeroKilometroDetalle = () => {
       <div className={styles.page}>
         {/* Header */}
         <header className={styles.header}>
-          <Link to="/0km" className={styles.backLink}>← Volver al catálogo</Link>
           <h1 className={styles.title}>
             {BrandIcon && <BrandIcon className={styles.brandIcon} />}
             <span>{modelo.marca}</span>
@@ -218,6 +216,23 @@ const CeroKilometroDetalle = () => {
             layout="desktop"
           />
         </div>
+
+        {/* Secciones de características destacadas (si el modelo las tiene) */}
+        {modelo.features && modelo.features.length > 0 && (
+          <>
+            {modelo.features.map((feature, index) => (
+              <FeatureSection
+                key={feature.id}
+                feature={feature}
+                reverse={index % 2 === 1}
+                modeloNombre={modelo.nombre}
+              />
+            ))}
+          </>
+        )}
+
+        {/* Sección de dimensiones (fija para todos los modelos) */}
+        <DimensionsSection />
 
         {/* Galería de imágenes del modelo (fija, no cambia con versión) */}
         {modelo.galeria && (

@@ -24,18 +24,18 @@ export const PEUGEOT_3008 = {
   // Galería de imágenes (fija por modelo, no por versión)
   galeria: {
     mobile: [
-      { publicId: '3008-galeria-2-mobile_rijtkq', alt: 'Peugeot 3008 - Vista exterior' },
-      { publicId: '3008-galeria-3-mobile_vkzjvq', alt: 'Peugeot 3008 - Interior i-Cockpit' },
-      { publicId: '3008-galeria-4-mobile_am7tlq', alt: 'Peugeot 3008 - Detalle frontal' },
-      { publicId: '3008-galeria-5-mobile_e9r37s', alt: 'Peugeot 3008 - Vista trasera' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/3008-galeria-2-mobile_rijtkq.webp', alt: 'Peugeot 3008 - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/3008-galeria-3-mobile_vkzjvq.webp', alt: 'Peugeot 3008 - Interior i-Cockpit' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/3008-galeria-4-mobile_am7tlq.webp', alt: 'Peugeot 3008 - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/3008-galeria-5-mobile_e9r37s.webp', alt: 'Peugeot 3008 - Vista trasera' }
     ],
     desktop: [
-      { publicId: '3008-galeria-1-desktop_n0vmel', alt: 'Peugeot 3008 - Vista exterior' },
-      { publicId: '3008-galeria-2-desktop_bappbm', alt: 'Peugeot 3008 - Interior i-Cockpit' },
-      { publicId: '3008-galeria-3-desktop_scc9wl', alt: 'Peugeot 3008 - Detalle frontal' },
-      { publicId: '3008-galeria-4-desktop_am8cpv', alt: 'Peugeot 3008 - Vista trasera' },
-      { publicId: '3008-galeria-5-desktop_sbjrxx', alt: 'Peugeot 3008 - Detalles interiores' },
-      { publicId: '3008-galeria-6-desktop_gnd9ws', alt: 'Peugeot 3008 - Tecnología a bordo' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/3008-galeria-1-desktop_n0vmel.webp', alt: 'Peugeot 3008 - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/3008-galeria-2-desktop_bappbm.webp', alt: 'Peugeot 3008 - Interior i-Cockpit' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/3008-galeria-3-desktop_scc9wl.webp', alt: 'Peugeot 3008 - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/3008-galeria-4-desktop_am8cpv.webp', alt: 'Peugeot 3008 - Vista trasera' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/3008-galeria-5-desktop_sbjrxx.webp', alt: 'Peugeot 3008 - Detalles interiores' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/3008-galeria-6-desktop_gnd9ws.webp', alt: 'Peugeot 3008 - Tecnología a bordo' }
     ]
   },
   
@@ -67,7 +67,41 @@ export const PEUGEOT_3008 = {
           '9+ ADAS'
         ]
       },
-      specs: null // Sin specs técnicas
+      specs: null, // Sin specs técnicas
+      pdf: {
+        href: '/pdf/pdf-3008.pdf',
+        label: 'Ficha Técnica',
+        fileSize: null,
+        variant: 'primary',
+        size: 'medium'
+      }
+    }
+  ],
+  
+  // Secciones de características destacadas
+  features: [
+    {
+      id: 'i-cockpit-panoramico',
+      title: 'NUEVO I-COCKPIT® PANORÁMICO',
+      description: 'Revolucioná tu experiencia de conducción con el nuevo i-Cockpit® panorámico de Peugeot.',
+      items: [
+        'Pantalla panorámica flotante y curva de 21" que se integra perfectamente en el tablero para una ergonomía óptima.',
+        'Nuevo volante compacto totalmente equipado con control táctil para una experiencia de conducción óptima y una comodidad incomparable.',
+        'Los i-Toggles personalizables te ofrecen acceso rápido a sus 10 funciones favoritas para un manejo intuitivo.'
+      ],
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767217559/D_Showroom_3008_7_1_dnumjb.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767217210/D_Showroom_3008_7_1_qcgpji.webp'
+      }
+    },
+    {
+      id: 'i-connect-advanced',
+      title: 'PEUGEOT I-CONNECT® ADVANCED',
+      description: 'El sistema de entretenimiento i-Connect® Advanced con reconocimiento de voz y ergonomía similar a la de un teléfono inteligente te brinda acceso a navegación 3D conectada y actualizaciones "Over The Air".',
+      images: {
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767217522/D_Showroom_3008_7_2_eqtm8f.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767217228/D_Showroom_3008_7_2_mys7rj.webp'
+      }
     }
   ],
   
