@@ -21,6 +21,12 @@ export const PEUGEOT_208 = {
   slug: '208',
   año: 2024,
   
+  // Hero image (solo desktop)
+  heroImage: {
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767294089/kv-208-dk-14102025_lgr8iu.avif',
+    alt: 'Peugeot 208'
+  },
+  
   // Galería de imágenes del carrusel (fija por modelo, no por versión)
   galeria: {
     mobile: [

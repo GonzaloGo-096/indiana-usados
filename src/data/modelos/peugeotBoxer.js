@@ -21,6 +21,12 @@ export const PEUGEOT_BOXER = {
   slug: 'boxer',
   año: 2024,
   
+  // Hero image (solo desktop)
+  heroImage: {
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767294271/hero-boxer_lzzopv.avif',
+    alt: 'Peugeot Boxer'
+  },
+  
   // Imagen principal (la misma de la página principal del carrusel)
   imagenPrincipal: {
     publicId: 'boxer-blanca_zsb84z',
@@ -100,21 +106,21 @@ export const PEUGEOT_BOXER = {
   // Secciones de características destacadas
   features: [
     {
-      id: 'display-conductor',
-      title: 'DISPLAY DE CONDUCTOR',
-      description: 'Obtené información clave de conducción en un instante con el panel de instrumentos digital configurable, disponible como pantalla 2D o 3D.',
+      id: 'ideal-para-tu-negocio',
+      title: 'IDEAL PARA TU NEGOCIO',
+      description: 'Más que un medio de transporte, la nueva Peugeot Boxer es una herramienta al servicio de la eficacia. Destaca su trayectoria desde hace más de 20 años mantieneniendo todo aquello que la convirtió en un éxito. Esta nueva versión de Peugeot Boxer se destaca por su calidad, seguridad y confort.',
       images: {
-        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/208n5.webp_pbbxu3.webp',
-        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/excelencia1dk2_anz3an.webp'
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767290062/boxer-2-dk3_bjozaq.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767289495/boxer-2-dk3_dpfjfd.webp'
       }
     },
     {
-      id: 'realidad-aumentada',
-      title: 'REALIDAD AUMENTADA 3D',
-      description: 'Escaneá el QR y conocé de una manera distinta el Boxer a través de la realidad aumentada / 3D.',
+      id: 'boxer-es-revolvuion',
+      title: 'BOXER ES revolvuion',
+      description: 'La nueva Peugeot Boxer representa una evolución en todos los aspectos que caracterizan a los vehículos comerciales de la marca avalados en su amplia trayectoria.',
       images: {
-        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767130968/ec5dk.jpg_prsxiy.webp',
-        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767204844/ec5dk.jpg_cjrtaq.webp'
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767290073/boxer-3-dk2_rg9ea1.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767289516/boxer-3-dk2_tr16rk.webp'
       }
     }
   ],

@@ -21,6 +21,12 @@ export const PEUGEOT_PARTNER = {
   slug: 'partner',
   año: 2024,
   
+  // Hero image (solo desktop)
+  heroImage: {
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767294957/confortv24_d0k1sq.avif',
+    alt: 'Peugeot Partner'
+  },
+  
   // Imagen principal (la misma de la página principal del carrusel)
   imagenPrincipal: {
     publicId: 'partner_blanca_epe2vd',

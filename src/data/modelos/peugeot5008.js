@@ -21,6 +21,12 @@ export const PEUGEOT_5008 = {
   slug: '5008',
   año: 2024,
   
+  // Hero image (solo desktop)
+  heroImage: {
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767295001/banner-principal-peugeot-5008-2880x1235_vlawib.avif',
+    alt: 'Peugeot 5008'
+  },
+  
   // Galería de imágenes (fija por modelo, no por versión)
   galeria: {
     mobile: [

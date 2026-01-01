@@ -73,6 +73,21 @@
   color: #dc2626;
 }
 
+/* ===== HERO IMAGE (solo desktop) ===== */
+.heroContainer {
+  display: none;
+  width: 100%;
+  margin: 0 0 48px 0;
+  overflow: hidden;
+}
+
+.heroImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
 /* ===== ERROR STATE ===== */
 .container {
   max-width: var(--container-max-width);
@@ -166,12 +181,16 @@
     margin: 0 auto;
     padding: 0 24px;
   }
+  
+  .heroContainer {
+    display: block;
+  }
 }
 
 /* ===== RESPONSIVE: DESKTOP ===== */
 @media (min-width: 992px) {
   .header {
-    padding: 48px 32px 32px;
+    padding: 0 32px 32px;
   }
   
   .title {

@@ -21,6 +21,12 @@ export const PEUGEOT_2008 = {
   slug: '2008',
   año: 2024,
   
+  // Hero image (solo desktop)
+  heroImage: {
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767293998/kv-2008-dk-13102025_loyq4t.avif',
+    alt: 'Peugeot 2008'
+  },
+  
   // Galería de imágenes (fija por modelo, no por versión)
   galeria: {
     mobile: [

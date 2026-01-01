@@ -21,6 +21,12 @@ export const PEUGEOT_3008 = {
   slug: '3008',
   año: 2024,
   
+  // Hero image (solo desktop)
+  heroImage: {
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767296132/3008-dk_eiblpq.avif',
+    alt: 'Peugeot 3008'
+  },
+  
   // Galería de imágenes (fija por modelo, no por versión)
   galeria: {
     mobile: [

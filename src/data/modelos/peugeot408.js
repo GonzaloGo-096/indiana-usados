@@ -21,6 +21,12 @@ export const PEUGEOT_408 = {
   slug: '408',
   año: 2024,
   
+  // Hero image (solo desktop)
+  heroImage: {
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767294182/408-portada-dk_tk8367.avif',
+    alt: 'Peugeot 408'
+  },
+  
   // Galería de imágenes (fija por modelo, no por versión)
   galeria: {
     mobile: [

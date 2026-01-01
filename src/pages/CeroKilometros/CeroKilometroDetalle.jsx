@@ -148,7 +148,20 @@ const CeroKilometroDetalle = () => {
       />
       
       <div className={styles.page}>
-        {/* Header */}
+        {/* Hero Image (solo desktop) - Al inicio */}
+        {modelo.heroImage && (
+          <div className={styles.heroContainer}>
+            <img
+              src={modelo.heroImage.url}
+              alt={modelo.heroImage.alt}
+              className={styles.heroImage}
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        )}
+
+        {/* Header - Debajo del hero */}
         <header className={styles.header}>
           <h1 className={styles.title}>
             {BrandIcon && <BrandIcon className={styles.brandIcon} />}

@@ -21,6 +21,12 @@ export const PEUGEOT_EXPERT = {
   slug: 'expert',
   año: 2024,
   
+  // Hero image (solo desktop)
+  heroImage: {
+    url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767294210/portada-expert-dk_j5a2cp.avif',
+    alt: 'Peugeot Expert'
+  },
+  
   // Imagen principal (la misma de la página principal del carrusel)
   imagenPrincipal: {
     publicId: 'expert-blanca_bpowxc',
@@ -108,21 +114,21 @@ export const PEUGEOT_EXPERT = {
   // Secciones de características destacadas
   features: [
     {
-      id: 'display-conductor',
-      title: 'DISPLAY DE CONDUCTOR',
-      description: 'Obtené información clave de conducción en un instante con el panel de instrumentos digital configurable, disponible como pantalla 2D o 3D.',
+      id: 'mayor-eficiencia',
+      title: 'MAYOR EFICIENCIA',
+      description: 'Una arquitectura de última generación que conjuga un tamaño ideal y se adapta a todas las necesidades con una capacidad de carga.',
       images: {
-        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/208n5.webp_pbbxu3.webp',
-        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/excelencia1dk2_anz3an.webp'
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767290234/confort3dk_am1dqv.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767289203/confort3dk_rbmyii.webp'
       }
     },
     {
-      id: 'realidad-aumentada',
-      title: 'REALIDAD AUMENTADA 3D',
-      description: 'Escaneá el QR y conocé de una manera distinta el Expert a través de la realidad aumentada / 3D.',
+      id: 'con-nuevas-exigencias',
+      title: 'CON NUEVAS EXIGENCIAS',
+      description: 'El rediseño de Peugeot Expert lo convirtió en el integrante  más moderno de la gama de vehículos utilitarios, definiendo la nueva medida de trabajo para los profesionales actuales. Además de un restyling exterior, para adecuarla a la nueva imagen de la marca, se mejoró la eficiencia, la seguridad y modularidad.',
       images: {
-        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767130968/ec5dk.jpg_prsxiy.webp',
-        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767204844/ec5dk.jpg_cjrtaq.webp'
+        mobile: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767290248/confort1dk_mieky2.webp',
+        desktop: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767289212/confort1dk_oruvxc.webp'
       }
     }
   ],
