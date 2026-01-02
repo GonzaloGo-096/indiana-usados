@@ -117,6 +117,22 @@
   background: transparent;
 }
 
+.card__brand_logo {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Desktop: Logo más grande para aprovechar el espacio extra */
+@media (min-width: 992px) {
+  .card__brand_logo {
+    width: 168px;
+    height: 168px;
+  }
+}
+
 .card__title_container {
   display: flex;
   align-items: center;

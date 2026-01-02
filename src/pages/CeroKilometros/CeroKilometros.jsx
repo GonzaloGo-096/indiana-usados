@@ -65,7 +65,16 @@ const CeroKilometros = () => {
       <div className={styles.page}>
         {/* Header */}
         <header className={styles.header}>
-          <h1 className={styles.title}>Peugeot 0 KM</h1>
+          <h1 className={styles.title}>
+            <img 
+              src="/assets/logos/brands/logo-negro.webp" 
+              alt="Logo Peugeot" 
+              className={styles.logo}
+              width="48"
+              height="48"
+            />
+            Peugeot 0 KM
+          </h1>
           <p className={styles.subtitle}>Descubrí toda la gama de modelos</p>
         </header>
 

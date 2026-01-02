@@ -151,6 +151,9 @@ const CeroKilometroDetalle = () => {
         {/* Hero Image (solo desktop) - Al inicio */}
         {modelo.heroImage && (
           <div className={styles.heroContainer}>
+            <div className={styles.heroBadge}>
+              NUEVO {modelo.nombre}
+            </div>
             <img
               src={modelo.heroImage.url}
               alt={modelo.heroImage.alt}

@@ -38,18 +38,13 @@ export const criticalPreloads = [
   
   // Logo - crítico para FCP (First Contentful Paint)
   {
-    href: '@assets/common/INDIANA-final.webp',
+    href: '/assets/logos/brands/indiana-final.webp',
     as: 'image',
     fetchPriority: 'high',
   },
   
-  // Fuente crítica - Barlow Condensed Bold (usada en títulos)
-  {
-    href: '@assets/fonts/barlowcondensed-bold-webfont.woff2',
-    as: 'font',
-    type: 'font/woff2',
-    crossorigin: 'anonymous',
-  },
+  // ✅ NOTA: Preloads de fuentes movidos a index.html para carga más temprana
+  // Las fuentes críticas (Bold 700 y Semibold 600) se precargan directamente en <head>
 ]
 
 

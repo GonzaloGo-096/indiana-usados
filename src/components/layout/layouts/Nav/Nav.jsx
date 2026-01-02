@@ -17,7 +17,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { usePreloadRoute } from '@hooks'
 import styles from './Nav.module.css'
 import { shouldPreloadOnIdle, requestIdle } from '@utils'
-import { staticImages } from '@config/cloudinaryStaticImages'
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -99,9 +98,11 @@ const Nav = () => {
           onMouseLeave={() => cancelPreload('/')}
         >
           <img 
-            src={staticImages.nav.logo.src} 
-            alt={staticImages.nav.logo.alt} 
-            className={styles.logo} 
+            src="/assets/logos/brands/indiana-final.webp" 
+            alt="Logo Indiana" 
+            className={styles.logo}
+            width="200"
+            height="80"
           />
         </Link>
         

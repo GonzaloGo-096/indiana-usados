@@ -35,21 +35,20 @@ export const PEUGEOT_BOXER = {
   },
   
   // Galería de imágenes (fija por modelo, no por versión)
-  // TODO: Reemplazar con publicIds reales del Boxer
   galeria: {
     mobile: [
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-mobile_xf79qs.webp', alt: 'Peugeot Boxer - Vista exterior' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-mobile_d8xwmz.webp', alt: 'Peugeot Boxer - Espacio de carga' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-mobile_ykqd6u.webp', alt: 'Peugeot Boxer - Detalle frontal' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-mobile_dqf5zf.webp', alt: 'Peugeot Boxer - Vista trasera' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767290073/boxer-3-dk2_rg9ea1.webp', alt: 'Peugeot Boxer - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767290042/galeria-boxer-1_yffl7k.webp', alt: 'Peugeot Boxer - Galería 1' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767290062/boxer-2-dk3_bjozaq.webp', alt: 'Peugeot Boxer - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767293985/optimiza-costos_mvivhr.webp', alt: 'Peugeot Boxer - Optimiza costos' }
     ],
     desktop: [
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-desktop_cljotq.webp', alt: 'Peugeot Boxer - Vista exterior' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-desktop_gp3ruh.webp', alt: 'Peugeot Boxer - Espacio de carga' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-desktop_dxvyqd.webp', alt: 'Peugeot Boxer - Detalle frontal' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-desktop_c7yoxt.webp', alt: 'Peugeot Boxer - Vista trasera' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-5-desktop_g0mych.webp', alt: 'Peugeot Boxer - Interior cabina' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-6-desktop_drukj6.webp', alt: 'Peugeot Boxer - Capacidad máxima' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767289547/galeria-boxer-1_repx16.webp', alt: 'Peugeot Boxer - Galería 1' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767291190/optimiza-costos_qn2ev3.webp', alt: 'Peugeot Boxer - Optimiza costos' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767289495/boxer-2-dk3_dpfjfd.webp', alt: 'Peugeot Boxer - Detalle frontal' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767289516/boxer-3-dk2_tr16rk.webp', alt: 'Peugeot Boxer - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767303071/BoxerNegocio-desktop_wowvbi.webp', alt: 'Peugeot Boxer - Negocio' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767303106/WhatsApp-Image-2025-09-01-at-15.00.38_1_-desktop_vcjvpl.webp', alt: 'Peugeot Boxer - Detalle' }
     ]
   },
   

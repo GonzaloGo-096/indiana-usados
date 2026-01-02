@@ -35,21 +35,20 @@ export const PEUGEOT_PARTNER = {
   },
   
   // Galería de imágenes (fija por modelo, no por versión)
-  // TODO: Reemplazar con publicIds reales del Partner
   galeria: {
     mobile: [
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-mobile_xf79qs.webp', alt: 'Peugeot Partner - Vista exterior' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-mobile_d8xwmz.webp', alt: 'Peugeot Partner - Espacio de carga' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-mobile_ykqd6u.webp', alt: 'Peugeot Partner - Detalle frontal' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-mobile_dqf5zf.webp', alt: 'Peugeot Partner - Vista trasera' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767219889/confortv1_qltqej.webp', alt: 'Peugeot Partner - Confort' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767224620/th-1688668229085.3_ffssaz.webp', alt: 'Peugeot Partner - Diseño' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767219906/th-1688668467496.6_hu6yso.webp', alt: 'Peugeot Partner - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767219924/th-1688668250547.4_f6p2p7.webp', alt: 'Peugeot Partner - Detalle' }
     ],
     desktop: [
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-desktop_cljotq.webp', alt: 'Peugeot Partner - Vista exterior' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-desktop_gp3ruh.webp', alt: 'Peugeot Partner - Espacio de carga' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-desktop_dxvyqd.webp', alt: 'Peugeot Partner - Detalle frontal' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-desktop_c7yoxt.webp', alt: 'Peugeot Partner - Vista trasera' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-5-desktop_g0mych.webp', alt: 'Peugeot Partner - Interior cabina' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-6-desktop_drukj6.webp', alt: 'Peugeot Partner - Capacidad de carga' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767220017/th-1688668467496.6_si03g7.webp', alt: 'Peugeot Partner - Vista exterior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767220036/th-1688668250547.4_pptghz.webp', alt: 'Peugeot Partner - Detalle' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767224482/partner-diseno2-dk_bzsu9f.webp', alt: 'Peugeot Partner - Diseño' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767224464/th-1688668229085.3_iw6fwn.webp', alt: 'Peugeot Partner - Vista lateral' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767302941/5-4-752-desktop_axy8mg.webp', alt: 'Peugeot Partner - Interior' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767302646/partner-confort-05-1-desktop_gda0gs.webp', alt: 'Peugeot Partner - Confort' }
     ]
   },
   

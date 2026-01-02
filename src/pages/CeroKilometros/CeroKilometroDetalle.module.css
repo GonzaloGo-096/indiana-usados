@@ -78,7 +78,22 @@
   display: none;
   width: 100%;
   margin: 0 0 48px 0;
+  position: relative;
   overflow: hidden;
+}
+
+.heroBadge {
+  position: absolute;
+  left: 48px;
+  top: 48px;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-poppins);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  z-index: 10;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .heroImage {

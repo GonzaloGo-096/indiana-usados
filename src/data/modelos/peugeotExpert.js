@@ -35,21 +35,20 @@ export const PEUGEOT_EXPERT = {
   },
   
   // Galería de imágenes (fija por modelo, no por versión)
-  // TODO: Reemplazar con publicIds reales del Expert
   galeria: {
     mobile: [
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-mobile_xf79qs.webp', alt: 'Peugeot Expert - Vista exterior' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-mobile_d8xwmz.webp', alt: 'Peugeot Expert - Espacio de carga' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-mobile_ykqd6u.webp', alt: 'Peugeot Expert - Detalle frontal' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-mobile_dqf5zf.webp', alt: 'Peugeot Expert - Vista trasera' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767300842/expert-luz-delantera-desktop_-_copia-mobile_evudyd.webp', alt: 'Peugeot Expert - Luz delantera' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767300856/expert-rueda-desktop-mobile_by3enz.webp', alt: 'Peugeot Expert - Rueda' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767300868/expert-consola-desktop-mobile_vedvhg.webp', alt: 'Peugeot Expert - Consola' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767290202/motorizacion-expert-dk_pqruv7.webp', alt: 'Peugeot Expert - Motorización' }
     ],
     desktop: [
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-1-desktop_cljotq.webp', alt: 'Peugeot Expert - Vista exterior' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-2-desktop_gp3ruh.webp', alt: 'Peugeot Expert - Espacio de carga' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-3-desktop_dxvyqd.webp', alt: 'Peugeot Expert - Detalle frontal' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-4-desktop_c7yoxt.webp', alt: 'Peugeot Expert - Vista trasera' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-5-desktop_g0mych.webp', alt: 'Peugeot Expert - Interior cabina' },
-      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/2008-galeria-6-desktop_drukj6.webp', alt: 'Peugeot Expert - Capacidad máxima' }
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767300701/expert-rueda-desktop-desktop_pb2v7e.webp', alt: 'Peugeot Expert - Rueda' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767300715/expert-consola-desktop-desktop_ilikxw.webp', alt: 'Peugeot Expert - Consola' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767289327/expert-asientos-desktop_jb0jja.webp', alt: 'Peugeot Expert - Asientos' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767300778/expert-luz-delantera-desktop_-_copia-desktop_rjic4q.webp', alt: 'Peugeot Expert - Luz delantera' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767303191/expert_motor_desk-desktop_kp5yl6.webp', alt: 'Peugeot Expert - Motor' },
+      { url: 'https://res.cloudinary.com/drbeomhcu/image/upload/v1767303228/ExpertMasthead-desktop_qg1zrl.webp', alt: 'Peugeot Expert - Masthead' }
     ]
   },
   

@@ -13,6 +13,7 @@
 
 import React, { memo, useMemo, useCallback } from 'react'
 import { formatValue, formatCaja, formatPrice, formatKilometraje } from '@utils/formatters'
+import { getBrandLogo } from '@utils/getBrandLogo'
 import { useCarouselImages } from '@hooks'
 import { ImageCarousel } from '@ui/ImageCarousel'
 import { WhatsAppContact } from '@ui'
@@ -59,6 +60,11 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
         if (!vehicleData?.marca || !vehicleData?.modelo) return 'Vehículo'
         return `${formatValue(vehicleData.marca)} ${formatValue(vehicleData.modelo)}`
     }, [vehicleData?.marca, vehicleData?.modelo])
+    
+    // ✅ MEMOIZAR LOGO DE MARCA
+    const brandLogo = useMemo(() => {
+        return getBrandLogo(vehicleData?.marca)
+    }, [vehicleData?.marca])
     
     // Memoización de información de contacto
     const finalContactInfo = useMemo(() => {
@@ -118,8 +124,16 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                     <div className={styles.cardHeader}>
                         <div className={styles.headerLeft}>
                             <div className={styles.card__title_container}>
+                                <img 
+                                    src={brandLogo.src} 
+                                    alt={brandLogo.alt} 
+                                    className={styles.card__brand_logo}
+                                    width="120"
+                                    height="120"
+                                    loading="lazy"
+                                />
                                 <h3 className={styles.card__title}>
-                                    {vehicleData.marca} {vehicleData.modelo}
+                                    {vehicleData.modelo}
                                 </h3>
                             </div>
                         </div>

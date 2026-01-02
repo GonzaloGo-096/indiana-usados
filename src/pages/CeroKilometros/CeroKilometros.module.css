@@ -22,6 +22,10 @@
 }
 
 .title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   margin: 0 0 8px 0;
   font-size: clamp(1.75rem, 5vw, 2.5rem);
   font-weight: var(--font-weight-bold);
@@ -29,6 +33,12 @@
   font-family: var(--font-poppins);
   text-transform: uppercase;
   letter-spacing: 3px;
+}
+
+.logo {
+  height: clamp(32px, 6vw, 48px);
+  width: auto;
+  object-fit: contain;
 }
 
 .subtitle {
