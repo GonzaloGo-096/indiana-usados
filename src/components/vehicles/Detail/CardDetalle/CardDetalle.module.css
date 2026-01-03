@@ -7,20 +7,11 @@
  * - Grid adaptativo (3→4 columnas)
  * - Tipografía escalable
  * - Sin duplicación de código
+ * - Elementos directamente sobre fondo de página
  * 
  * @author Indiana Usados
- * @version 7.0.0 - Refactor mobile-first profesional
+ * @version 8.0.0 - Reestructuración: sin contenedor card
  */
-
-/* ===== TARJETA PRINCIPAL ===== */
-.card {
-  background: var(--color-white);
-  border-radius: var(--border-radius-xl);
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
-  border: 1px solid var(--color-neutral-200);
-  /* ✅ MOBILE-FIRST: Sin padding en mobile para aprovechar espacio */
-}
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
 /* ✅ MOBILE-FIRST: Base para mobile (0-768px) */
@@ -39,13 +30,12 @@
   position: relative;
   border-radius: var(--border-radius-lg);
   overflow: hidden;
-  background: #ffffff; /* ✅ Fondo blanco para coincidir con el resto de la card */
   /* ✅ ADAPTATIVO: Se adapta al contenido sin altura mínima fija */
   order: -1; /* Imagen primero en mobile */
   /* ✅ Mobile: Padding vertical mantenido, lateral reducido para imagen más ancha */
   padding-top: var(--spacing-4);
   padding-bottom: var(--spacing-4);
-  padding-left: var(--spacing-1); /* ✅ Mobile: Padding lateral mínimo */
+  padding-left: 0; /* ✅ Sin padding-left */
   padding-right: var(--spacing-1); /* ✅ Mobile: Padding lateral mínimo */
   /* ✅ ADAPTATIVO: Altura según contenido */
   height: fit-content;
@@ -78,7 +68,10 @@
   /* ✅ ADAPTATIVO: Se adapta al contenido sin altura mínima fija */
   order: 1;
   /* ✅ EFECTO COMPRESIÓN: Padding interno para más separación */
-  padding: var(--spacing-4);
+  padding-top: var(--spacing-4);
+  padding-bottom: var(--spacing-4);
+  padding-left: var(--spacing-4);
+  padding-right: 0; /* ✅ Sin padding-right */
   /* ✅ ADAPTATIVO: Altura según contenido */
   height: fit-content;
 }
@@ -94,177 +87,248 @@
   }
 }
 
-/* ===== HEADER 60/40 - ESTILO IDÉNTICO A CARDAUTO ===== */
-.cardHeader {
+/* ===== CONTENEDOR 1: Layout 50-50 (Logo derecha + Contenido izquierda) ===== */
+.container1 {
   display: flex;
-  height: 48px;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 0.5px solid #6b7280;
-  background: #ffffff;
-  margin: 8px 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.headerLeft {
-  flex: 0.6;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  gap: 0; /* ✅ Sin espacio entre contenedores - unidos en el medio */
+  width: 100%;
+  max-width: 800px;
+  margin: 0; /* ✅ Alineado al inicio (izquierda) */
   align-items: center;
-  text-align: center;
-  padding: 8px 12px;
-  background: transparent;
+  justify-content: flex-start; /* ✅ Alineado al inicio */
 }
 
-.card__brand_logo {
-  flex-shrink: 0;
+.container1_left {
+  flex: 0 0 auto; /* ✅ Ocupa solo el espacio necesario del logo */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* ✅ Logo alineado a la derecha (hacia el centro) */
+  padding-right: var(--spacing-2); /* ✅ Pequeño espacio interno si es necesario */
+}
+
+.brand_logo {
   width: 120px;
   height: 120px;
   object-fit: contain;
   display: block;
 }
 
-/* Desktop: Logo más grande para aprovechar el espacio extra */
-@media (min-width: 992px) {
-  .card__brand_logo {
-    width: 168px;
-    height: 168px;
-  }
+.container1_right {
+  flex: 1; /* ✅ Ocupa el espacio restante disponible */
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* ✅ Sin espacio entre las dos cajas verticales */
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0; /* ✅ Permitir reducción */
+  overflow: hidden; /* ✅ Evitar desbordamiento */
+  padding-left: var(--spacing-2); /* ✅ Pequeño espacio interno si es necesario */
 }
 
-.card__title_container {
+.container1_top {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 1px;
+  justify-content: flex-start;
+  gap: var(--spacing-4);
   width: 100%;
+  flex-wrap: nowrap; /* ✅ Mantener en una línea */
+  min-width: 0; /* ✅ Permitir que los elementos se reduzcan */
 }
 
-.card__title {
-  font-size: 22px;
+.modelo_title {
+  font-size: clamp(1.5rem, 4vw, 2rem); /* ✅ Responsive con clamp */
   font-weight: 700;
-  color: #111827;
+  color: var(--color-text-primary);
   margin: 0;
   line-height: 1.3;
+  font-family: var(--font-condensed);
+  text-align: left;
+  flex-shrink: 1;
+  min-width: 0; /* ✅ Permitir reducción */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: 'Barlow Condensed', sans-serif;
 }
 
-.headerRight {
-  flex: 0.4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.priceContainer {
-  width: 100%;
-  height: 100%;
-  background: #111827;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3px 4px;
-  border-radius: 0 8px 8px 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.card__price {
-  font-size: 20px;
-  font-weight: 800;
-  color: #ffffff;
-  margin: 0;
-  font-family: 'Barlow Condensed', sans-serif;
-  line-height: 1.2;
-}
-
-.card__version {
-  font-size: 12px;
-  color: var(--color-neutral-500);
-  margin: 0;
-  font-weight: 500;
-  font-family: var(--font-condensed);
-}
-
-/* ===== DATOS PRINCIPALES - ESTILO IDÉNTICO A CARDAUTO ===== */
-.card__details {
-  flex: 1;
-  margin: 0;
-}
-
-.card__data_container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: transparent;
-  padding: 6px 0;
-  border: none;
-}
-
-.card__data_item {
-  flex: 1;
-  text-align: center;
-  padding: 6px 8px;
-  background: transparent;
-  border: none;
-}
-
-.card__data_item_border {
-  border-inline: 1px solid #e5e7eb;
-}
-
-/* ===== ICONOS DE DATOS - ESTILO IDÉNTICO A CARDAUTO ===== */
-.card__data_icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 8px;
-  color: #6b7280;
-  opacity: 0.8;
-  transition: all 0.2s ease;
-  vertical-align: middle;
-}
-
-.card__data_item:hover .card__data_icon {
-  opacity: 1;
-  color: #374151;
-  transform: scale(1.05);
-}
-
-.card__data_label {
-  display: inline;
-  font-size: 11px;
-  color: #6b7280;
-  margin: 0;
+.version_text {
+  font-size: clamp(1.25rem, 3vw, 1.5rem); /* ✅ Responsive con clamp */
   font-weight: 600;
-  letter-spacing: 0.5px;
-  font-family: 'Barlow Condensed', sans-serif;
-  vertical-align: middle;
-  line-height: 1;
+  color: var(--color-text-secondary);
+  font-family: var(--font-condensed);
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.card__data_value {
-  display: block;
-  font-size: 19px;
-  color: #374151;
+.container1_bottom {
+  display: flex;
+  gap: clamp(0.5rem, 1.5vw, 1rem); /* ✅ Gap responsive */
+  flex-wrap: nowrap; /* ✅ Mantener en una línea */
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0; /* ✅ Permitir reducción */
+}
+
+.spec_value {
+  font-size: clamp(1rem, 2.5vw, 1.25rem); /* ✅ Responsive con clamp */
   font-weight: 700;
-  font-family: 'Barlow Condensed', sans-serif;
-  margin-top: 4px;
-  line-height: 1.2;
+  color: var(--color-text-primary);
+  font-family: var(--font-condensed);
+  text-align: left;
+  display: inline-block;
+  flex-shrink: 1; /* ✅ Permitir reducción */
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ===== INFORMACIÓN ADICIONAL ===== */
+.spec_separator {
+  font-size: clamp(1rem, 2.5vw, 1.25rem); /* ✅ Responsive con clamp */
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  font-family: var(--font-condensed);
+  padding: 0 clamp(0.25rem, 0.75vw, 0.5rem); /* ✅ Padding responsive */
+  opacity: 0.4;
+  user-select: none;
+  flex-shrink: 0; /* ✅ Separador no se reduce */
+}
+
+/* ===== CONTENEDOR 2: Datos principales (Año, Km, Caja) - Iconos y texto más grandes ===== */
+.container2 {
+  margin-top: var(--spacing-4);
+  width: 100%;
+  max-width: 800px; /* ✅ Mismo ancho máximo que container1 */
+  margin-left: 0; /* ✅ Alineado al inicio (izquierda) */
+  margin-right: auto;
+}
+
+.main_data_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.5rem, 1.5vw, 1rem); /* ✅ Gap responsive */
+  flex-wrap: nowrap; /* ✅ Mantener en una línea */
+  width: 100%;
+  min-width: 0; /* ✅ Permitir reducción */
+  overflow: hidden; /* ✅ Evitar desbordamiento */
+}
+
+.main_data_item {
+  flex: 1 1 0; /* ✅ Distribución equitativa (Km - medio) */
+  min-width: clamp(80px, 20vw, 120px); /* ✅ Tamaño mínimo */
+  max-width: 100%;
+  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(0.5rem, 1vw, 0.75rem); /* ✅ Padding aumentado */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main_data_item_flex_shrink {
+  flex: 0 2 0; /* ✅ Año: Cede más espacio (shrink: 2, grow: 0) */
+  min-width: clamp(70px, 18vw, 100px); /* ✅ Tamaño mínimo más pequeño */
+  max-width: 100%;
+  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(0.5rem, 1vw, 0.75rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main_data_item_flex_rigid {
+  flex: 1.5 0.5 0; /* ✅ Caja: Cede menos espacio (shrink: 0.5, grow: 1.5) */
+  min-width: clamp(90px, 22vw, 140px); /* ✅ Tamaño mínimo más grande */
+  max-width: 100%;
+  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(0.5rem, 1vw, 0.75rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main_data_separator {
+  font-size: clamp(2rem, 5vw, 2.75rem); /* ✅ Separador más grande para coincidir con valores */
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  font-family: var(--font-condensed);
+  padding: 0 clamp(0.5rem, 1vw, 0.75rem); /* ✅ Padding aumentado */
+  opacity: 0.4;
+  user-select: none;
+  align-self: center;
+  flex-shrink: 0; /* ✅ Separador no se reduce */
+}
+
+.main_data_content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  align-items: center;
+  text-align: center;
+}
+
+.main_data_label_group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.main_data_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-neutral-600);
+  opacity: 0.9;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.main_data_icon svg {
+  width: clamp(32px, 4vw, 40px); /* ✅ Iconos más grandes */
+  height: clamp(32px, 4vw, 40px);
+}
+
+.main_data_item:hover .main_data_icon {
+  opacity: 1;
+  color: var(--color-neutral-900);
+  transform: scale(1.1);
+}
+
+.main_data_label {
+  font-size: clamp(1rem, 2.5vw, 1.375rem); /* ✅ Labels más grandes */
+  font-weight: 600;
+  color: var(--color-neutral-600);
+  letter-spacing: 0.5px;
+  font-family: var(--font-condensed);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.main_data_value {
+  font-size: clamp(2rem, 5vw, 2.75rem); /* ✅ Valores mucho más grandes */
+  font-weight: 700;
+  color: var(--color-text-primary);
+  font-family: var(--font-condensed);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: center;
+}
+
+/* ===== CONTENEDOR 3: Información adicional ===== */
+.container3 {
+  margin-bottom: var(--spacing-6);
+}
+
 .infoContainer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-2);
   margin: 0 calc(var(--spacing-1) * -1);
-  margin-top: var(--spacing-6);
-  margin-bottom: var(--spacing-6);
   min-height: 2rem;
 }
 
@@ -295,11 +359,37 @@
   line-height: 1.3;
 }
 
+/* ===== CONTENEDOR 4: Precio (30% placeholder / 70% precio) ===== */
+.container4 {
+  display: flex;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  align-items: center;
+}
+
+.price_placeholder {
+  flex: 0 0 30%;
+  /* Espacio reservado para futuro - sin estilos visuales */
+}
+
+.price_display {
+  flex: 0 0 70%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.price_value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  font-family: var(--font-condensed);
+  line-height: 1.2;
+}
+
 /* ===== SECCIÓN DE CONTACTO ===== */
 .contactSection {
-  margin-top: var(--spacing-6); /* ✅ Espacio arriba */
-  padding-top: var(--spacing-8); /* ✅ Espacio grande arriba */
-  padding-bottom: var(--spacing-8); /* ✅ Mismo espacio abajo para centrado vertical */
+  margin-top: var(--spacing-4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -327,11 +417,6 @@
 /* Tablet: 769px - 991px - Layout vertical pero con mejor espaciado */
 /* ✅ Usa breakpoints del sistema: --tablet-min (768px) y --desktop-min (992px) */
 @media (min-width: 769px) and (max-width: 991px) {
-  .card {
-    max-width: 100%; /* ✅ Mantener ancho completo */
-    padding: var(--spacing-4);
-  }
-  
   .cardContent {
     display: flex; /* ✅ Flex vertical en tablet */
     flex-direction: column;
@@ -346,17 +431,15 @@
   
   .detailsSection {
     order: 1;
-    padding: var(--spacing-4);
+    padding-top: var(--spacing-4);
+    padding-bottom: var(--spacing-4);
+    padding-left: var(--spacing-4);
+    padding-right: 0; /* ✅ Sin padding-right */
   }
 }
 
 /* Desktop: 992px+ - Layout 2 columnas (usa --desktop-min del design system) */
 @media (min-width: 992px) {
-  .card {
-    /* ✅ DESKTOP: Padding externo reducido para compensar aumento interno */
-    padding: var(--spacing-4);
-  }
-  
   .cardContent {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -376,51 +459,48 @@
   .detailsSection {
     order: 0;
     /* ✅ DESKTOP: Padding más grande para efecto compresión */
-    padding: var(--spacing-6);
+    padding-top: var(--spacing-6);
+    padding-bottom: var(--spacing-6);
+    padding-left: var(--spacing-6);
+    padding-right: 0; /* ✅ Sin padding-right */
   }
   
-  .cardHeader {
-    height: 64px;
+  .brand_logo {
+    width: 168px;
+    height: 168px;
   }
   
-  .card__title {
-    font-size: 26px;
+  .modelo_title {
+    font-size: clamp(2rem, 4vw, 2.5rem); /* ✅ Mantener clamp para responsive */
   }
   
-  .card__price {
-    font-size: 24px;
+  .spec_value {
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem); /* ✅ Mantener clamp para responsive */
   }
   
-  .card__data_container {
-    padding: 8px 0;
+  .container1_bottom {
+    gap: clamp(0.75rem, 2vw, 1.5rem); /* ✅ Gap responsive */
   }
   
-  .card__data_item {
-    padding: 8px 10px;
+  .container2 {
+    margin-top: var(--spacing-2);
   }
   
-  .card__data_label {
-    font-size: 12px;
+  .main_data_icon svg {
+    width: clamp(28px, 3vw, 32px); /* ✅ Iconos responsive */
+    height: clamp(28px, 3vw, 32px);
   }
   
-  .card__data_value {
-    font-size: 20px;
+  .main_data_label {
+    font-size: clamp(1rem, 2vw, 1.25rem); /* ✅ Mantener clamp para responsive */
   }
   
-  .card__version {
-    font-size: 14px;
+  .main_data_value {
+    font-size: clamp(2rem, 4vw, 2.5rem); /* ✅ Mantener clamp para responsive */
   }
   
-  .card__data_item {
-    padding: var(--spacing-1);
-  }
-  
-  .card__data_label {
-    font-size: 0.75rem;
-  }
-  
-  .card__data_value {
-    font-size: 1.5rem;
+  .price_value {
+    font-size: 2.5rem;
   }
   
   .infoContainer {

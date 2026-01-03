@@ -30,7 +30,8 @@ export const ImageCarousel = ({
     showArrows = true,
     showIndicators = true,
     autoPlay = false,
-    autoPlayInterval = 5000
+    autoPlayInterval = 5000,
+    onMainImageClick
 }) => {
     const [currentIndex, setCurrentIndex] = useState(0)
     const thumbnailRefs = useRef([])
@@ -137,7 +138,19 @@ export const ImageCarousel = ({
     return (
         <div className={styles.carouselContainer}>
             {/* Imagen principal */}
-            <div className={styles.mainImageContainer}>
+            <div 
+                className={`${styles.mainImageContainer} ${onMainImageClick ? styles.mainImageClickable : ''}`}
+                onClick={onMainImageClick ? () => onMainImageClick(currentIndex) : undefined}
+                role={onMainImageClick ? 'button' : undefined}
+                tabIndex={onMainImageClick ? 0 : undefined}
+                onKeyDown={onMainImageClick ? (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        onMainImageClick(currentIndex)
+                    }
+                } : undefined}
+                aria-label={onMainImageClick ? 'Abrir galería en pantalla completa' : undefined}
+            >
                 {/* Una sola imagen - source of truth: currentIndex */}
                 <CloudinaryImage
                     image={allImages[currentIndex]}

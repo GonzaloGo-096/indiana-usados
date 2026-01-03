@@ -11,13 +11,14 @@
  * @version 4.0.0 - Optimizado y limpio
  */
 
-import React, { memo, useMemo, useCallback } from 'react'
-import { formatValue, formatCaja, formatPrice, formatKilometraje } from '@utils/formatters'
+import React, { memo, useMemo, useCallback, useState } from 'react'
+import { formatValue, formatCaja, formatPrice, formatKilometraje, formatCilindradaDisplay, formatHPDisplay } from '@utils/formatters'
 import { getBrandLogo } from '@utils/getBrandLogo'
 import { useCarouselImages } from '@hooks'
 import { ImageCarousel } from '@ui/ImageCarousel'
 import { WhatsAppContact } from '@ui'
-import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
+import { AnioIcon, KmIcon, CajaIconDetalle } from '@components/ui/icons'
+import { GalleryModal } from '@components/ceroKm/ModelGallery'
 import styles from './CardDetalle.module.css'
 
 /**
@@ -28,6 +29,10 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
     
     // Hooks
     const carouselImages = useCarouselImages(auto)
+    
+    // Estado del modal de galería
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [activeIndex, setActiveIndex] = useState(0)
     
     // Memoización de datos del vehículo
     const vehicleData = useMemo(() => {
@@ -76,6 +81,33 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
         return contactInfo || defaultInfo
     }, [contactInfo, vehicleData?.marca, vehicleData?.modelo])
 
+    // Transformar imágenes al formato que espera GalleryModal { url, alt }
+    const galleryImages = useMemo(() => {
+        if (!carouselImages || carouselImages.length === 0) return []
+        return carouselImages.map((img, index) => {
+            // img puede ser string o objeto { url, public_id, original_name }
+            const url = typeof img === 'string' ? img : (img?.url || '')
+            return {
+                url,
+                alt: `${altText} - Imagen ${index + 1}`
+            }
+        }).filter(img => img.url && img.url.trim() !== '')
+    }, [carouselImages, altText])
+    
+    // Handlers del modal
+    const handleImageClick = useCallback((index = 0) => {
+        setActiveIndex(index)
+        setIsModalOpen(true)
+    }, [])
+    
+    const handleCloseModal = useCallback(() => {
+        setIsModalOpen(false)
+    }, [])
+    
+    const handleIndexChange = useCallback((newIndex) => {
+        setActiveIndex(newIndex)
+    }, [])
+
     // Validación
     if (!vehicleData) return null
 
@@ -83,30 +115,21 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
 
     // Datos principales memoizados con iconos
     const mainData = useMemo(() => [
-        { label: 'Año', value: vehicleData.año, icon: CalendarIcon },
-        { label: 'Km', value: formatKilometraje(vehicleData.kms), icon: RouteIcon },
-        { label: 'Caja', value: vehicleData.caja, icon: GearboxIcon }
+        { label: 'Año', value: vehicleData.año, icon: AnioIcon },
+        { label: 'Km', value: formatKilometraje(vehicleData.kms), icon: KmIcon },
+        { label: 'Caja', value: formatCaja(vehicleData.caja), icon: CajaIconDetalle }
     ], [vehicleData.año, vehicleData.kms, vehicleData.caja])
 
     // Información adicional memoizada con formatValue para mostrar "-" si vacío
+    // Removidos: Versión, Cilindrada, HP, Tracción, Llantas, Frenos, Turbo, Categoría, Segmento
     const additionalInfo = useMemo(() => [
-        { label: 'Tracción', value: formatValue(vehicleData.traccion) },
         { label: 'Combustible', value: formatValue(vehicleData.combustible) },
-        { label: 'Versión', value: formatValue(vehicleData.version) },
-        { label: 'Cilindrada', value: formatValue(vehicleData.cilindrada) },
-        { label: 'Segmento', value: formatValue(vehicleData.categoria) },
         { label: 'Tapizado', value: formatValue(vehicleData.tapizado) },
-        { label: 'Color', value: formatValue(vehicleData.color) },
-        { label: 'Categoría', value: formatValue(vehicleData.categoriaVehiculo) },
-        { label: 'Frenos', value: formatValue(vehicleData.frenos) },
-        { label: 'Turbo', value: formatValue(vehicleData.turbo) },
-        { label: 'Llantas', value: formatValue(vehicleData.llantas) },
-        { label: 'HP', value: formatValue(vehicleData.HP) }
+        { label: 'Color', value: formatValue(vehicleData.color) }
     ], [vehicleData])
 
     return (
-        <div className={styles.card} data-testid="vehicle-detail">
-            <div className={styles.cardContent}>
+        <div className={styles.cardContent} data-testid="vehicle-detail">
                 {/* Sección de carrusel de imágenes */}
                 <div className={styles.imageSection} data-testid="vehicle-images">
                     <ImageCarousel 
@@ -115,72 +138,109 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                         showArrows={true}
                         showIndicators={true}
                         autoPlay={false}
+                        onMainImageClick={handleImageClick}
                     />
                 </div>
                 
                 {/* Sección de detalles */}
                 <div className={styles.detailsSection}>
-                    {/* Header 60/40 */}
-                    <div className={styles.cardHeader}>
-                        <div className={styles.headerLeft}>
-                            <div className={styles.card__title_container}>
-                                <img 
-                                    src={brandLogo.src} 
-                                    alt={brandLogo.alt} 
-                                    className={styles.card__brand_logo}
-                                    width="120"
-                                    height="120"
-                                    loading="lazy"
-                                />
-                                <h3 className={styles.card__title}>
-                                    {vehicleData.modelo}
-                                </h3>
-                            </div>
+                    {/* CONTENEDOR 1: Layout en T - Logo + Modelo/Versión/HP/Cilindrada */}
+                    <div className={styles.container1}>
+                        <div className={styles.container1_left}>
+                            <img 
+                                src={brandLogo.src} 
+                                alt={brandLogo.alt} 
+                                className={styles.brand_logo}
+                                width="120"
+                                height="120"
+                                loading="lazy"
+                            />
                         </div>
-                        
-                        <div className={styles.headerRight}>
-                            <div className={styles.priceContainer}>
-                                <span className={styles.card__price}>
-                                    {formatPrice(vehicleData.precio)}
+                        <div className={styles.container1_right}>
+                            {/* Línea 1: Modelo Versión (sin separador) */}
+                            <div className={styles.container1_top}>
+                                <h2 className={styles.modelo_title}>
+                                    {vehicleData.modelo}
+                                </h2>
+                                {formatValue(vehicleData.version) !== '-' && (
+                                    <span className={styles.version_text}>{formatValue(vehicleData.version)}</span>
+                                )}
+                            </div>
+                            {/* Línea 2: Cilindrada | HP | Tracción (siempre los 3) */}
+                            <div className={styles.container1_bottom}>
+                                <span className={styles.spec_value}>
+                                    {formatCilindradaDisplay(vehicleData.cilindrada) || '-'}
+                                </span>
+                                <span className={styles.spec_separator}>|</span>
+                                <span className={styles.spec_value}>
+                                    {formatHPDisplay(vehicleData.HP) || '-'}
+                                </span>
+                                <span className={styles.spec_separator}>|</span>
+                                <span className={styles.spec_value}>
+                                    {formatValue(vehicleData.traccion) !== '-' ? formatValue(vehicleData.traccion) : '-'}
                                 </span>
                             </div>
                         </div>
                     </div>
                     
-                    {/* Datos principales */}
-                    <div className={styles.card__details}>
-                        <div className={styles.card__data_container}>
+                    {/* CONTENEDOR 2: Datos principales (Año | Km | Caja) - Con barras separadoras */}
+                    <div className={styles.container2}>
+                        <div className={styles.main_data_container}>
                             {mainData.map((item, index) => {
                                 const IconComponent = item.icon
+                                // ✅ Año (index 0) cede más espacio, Caja (index 2) cede menos
+                                const flexClass = index === 0 
+                                    ? styles.main_data_item_flex_shrink 
+                                    : index === 2 
+                                    ? styles.main_data_item_flex_rigid 
+                                    : styles.main_data_item
                                 return (
-                                    <div 
-                                        key={item.label}
-                                        className={`${styles.card__data_item} ${
-                                            index === 1 ? styles.card__data_item_border : ''
-                                        }`}
-                                    >
-                                        <div className={styles.card__data_icon}>
-                                            <IconComponent size={16} color="currentColor" />
+                                    <React.Fragment key={item.label}>
+                                        <div className={flexClass}>
+                                            <div className={styles.main_data_content}>
+                                                <div className={styles.main_data_label_group}>
+                                                    <div className={styles.main_data_icon}>
+                                                        <IconComponent size={28} color="currentColor" />
+                                                    </div>
+                                                    <span className={styles.main_data_label}>{item.label}</span>
+                                                </div>
+                                                <span className={styles.main_data_value}>{item.value}</span>
+                                            </div>
                                         </div>
-                                        <span className={styles.card__data_label}>{item.label}</span>
-                                        <span className={styles.card__data_value}>{item.value}</span>
-                                    </div>
+                                        {index < mainData.length - 1 && (
+                                            <span className={styles.main_data_separator}>|</span>
+                                        )}
+                                    </React.Fragment>
                                 )
                             })}
                         </div>
                     </div>
                     
-                    {/* Información adicional */}
-                    <div className={styles.infoContainer}>
-                        {additionalInfo.map((item) => (
-                            <div key={item.label} className={styles.infoItem}>
-                                <span className={styles.infoKey}>{item.label}</span>
-                                <span className={styles.infoValue}>{item.value}</span>
-                            </div>
-                        ))}
+                    {/* CONTENEDOR 3: Información adicional (grid) */}
+                    <div className={styles.container3}>
+                        <div className={styles.infoContainer}>
+                            {additionalInfo.map((item) => (
+                                <div key={item.label} className={styles.infoItem}>
+                                    <span className={styles.infoKey}>{item.label}</span>
+                                    <span className={styles.infoValue}>{item.value}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                     
-                    {/* Sección de contacto refactorizada */}
+                    {/* CONTENEDOR 4: Precio (30% placeholder / 70% precio) */}
+                    <div className={styles.container4}>
+                        <div className={styles.price_placeholder}>
+                            {/* Espacio reservado para futuro */}
+                        </div>
+                        <div className={styles.price_display}>
+                            <span className={styles.price_value}>
+                                {formatPrice(vehicleData.precio)}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    {/* Botón de contacto WhatsApp */}
                     <div className={styles.contactSection}>
                         <WhatsAppContact 
                             text="Consultar este vehículo"
@@ -190,7 +250,18 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                         />
                     </div>
                 </div>
-            </div>
+                
+                {/* Modal de galería */}
+                {galleryImages.length > 0 && (
+                    <GalleryModal
+                        isOpen={isModalOpen}
+                        onClose={handleCloseModal}
+                        images={galleryImages}
+                        activeIndex={activeIndex}
+                        onIndexChange={handleIndexChange}
+                        modelName={altText}
+                    />
+                )}
         </div>
     )
 })

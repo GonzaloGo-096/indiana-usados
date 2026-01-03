@@ -24,6 +24,11 @@
 export { CalendarIcon } from './CalendarIcon'
 export { RouteIcon } from './RouteIcon'
 export { GearboxIcon } from './GearboxIcon'
+export { KilometrajeIcon } from './KilometrajeIcon'
+export { TransmisionIcon } from './TransmisionIcon'
+export { AnioIcon } from './AnioIcon'
+export { KmIcon } from './KmIcon'
+export { CajaIconDetalle } from './CajaIconDetalle'
 
 // ═══════════════════════════════════════════════════════════════════════════
 // 🏷️ MARCAS - Logos de fabricantes

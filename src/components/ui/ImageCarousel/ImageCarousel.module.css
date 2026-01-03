@@ -32,6 +32,19 @@
     contain: layout style paint; /* ✅ OPTIMIZACIÓN: Contención */
 }
 
+.mainImageClickable {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.mainImageClickable:hover {
+    transform: scale(1.01);
+}
+
+.mainImageClickable:active {
+    transform: scale(0.99);
+}
+
 .mainImage {
     width: 100%;
     height: 100%;
@@ -119,34 +132,34 @@
 .thumbnailsContainer {
     width: 100%;
     height: auto;
-    min-height: 80px;
-    overflow: hidden; /* ✅ Cambiado: Ocultar overflow para fade */
+    min-height: 110px; /* ✅ Aumentado: Más espacio para miniaturas más grandes */
+    overflow: visible; /* ✅ Cambiado: Permitir que se vean los bordes */
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #ffffff; /* ✅ Fondo blanco para coincidir con el resto de la card */
-    border-radius: 0; /* ✅ Removido: Sin bordes redondeados */
-    padding: 12px 0; /* ✅ Reducido: Padding vertical mínimo */
-    margin-top: 16px; /* ✅ Reducido: Menos separación */
+    background: transparent; /* ✅ Cambiado: Fondo transparente para no limitar visualmente */
+    border-radius: 0;
+    padding: 16px 0; /* ✅ Aumentado: Más padding para dar espacio a los bordes */
+    margin-top: 16px;
     opacity: 1;
     visibility: visible;
     z-index: 5;
     position: relative;
-    border: none; /* ✅ Removido: Sin borde */
-    box-shadow: none; /* ✅ Removido: Sin sombra */
+    border: none;
+    box-shadow: none;
     gap: 8px; /* ✅ Espacio entre flechas y contenido */
 }
 
 .thumbnails {
     display: flex;
-    gap: 8px; /* ✅ Reducido: Menos espacio entre miniaturas */
-    padding: 8px 0; /* ✅ Sin padding-bottom extra */
+    gap: 12px; /* ✅ Aumentado: Más espacio entre miniaturas para ver mejor los bordes */
+    padding: 12px 0; /* ✅ Aumentado: Más padding para dar espacio a los bordes */
     justify-content: flex-start; /* ✅ Cambiado: Alinear a la izquierda */
     align-items: center;
     flex-wrap: nowrap; /* ✅ CRÍTICO: Una sola línea */
     height: auto;
     overflow-x: auto; /* ✅ CRÍTICO: Scroll horizontal */
-    overflow-y: hidden;
+    overflow-y: visible; /* ✅ Cambiado: Permitir que se vean bordes al hacer hover */
     max-width: 100%;
     flex: 1; /* ✅ Ocupar espacio disponible */
     scroll-behavior: smooth; /* ✅ Scroll suave */
@@ -154,9 +167,7 @@
     -ms-overflow-style: none; /* ✅ IE/Edge: Ocultar scrollbar */
     /* ✅ Webkit: Ocultar scrollbar completamente */
     -webkit-overflow-scrolling: touch; /* ✅ Mobile: Scroll suave */
-    /* ✅ Gradientes fade en bordes (opcional, se puede remover) */
-    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    /* ✅ Removido: Sin máscara para ver mejor los bordes */
 }
 
 /* ✅ Ocultar scrollbar en Webkit */
@@ -267,31 +278,33 @@
 /* ===== MINIATURAS NETFLIX/SPOTIFY - UNA SOLA LÍNEA ===== */
 .thumbnail {
     flex-shrink: 0; /* ✅ CRÍTICO: No encoger */
-    width: 70px; /* ✅ Reducido: Más compacto */
-    height: 50px; /* ✅ Reducido: Mantener proporción */
-    border-radius: 4px; /* ✅ Reducido: Bordes más sutiles */
-    overflow: hidden;
-    border: 2px solid transparent; /* ✅ Inicialmente transparente */
+    width: 120px; /* ✅ Aumentado: Más grandes */
+    height: 85px; /* ✅ Aumentado: Mantener proporción 16:9 */
+    border-radius: 8px; /* ✅ Aumentado: Bordes más redondeados */
+    overflow: visible; /* ✅ Cambiado: Permitir que se vean los bordes */
+    border: 3px solid rgba(0, 0, 0, 0.15); /* ✅ Borde visible siempre */
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ✅ Más rápido */
     background: rgba(255, 255, 255, 0.1); /* ✅ Fondo sutil */
     position: relative;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* ✅ Sombra más sutil */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); /* ✅ Sombra más visible */
     will-change: transform;
     z-index: 1;
+    padding: 0; /* ✅ Sin padding interno */
 }
 
 .thumbnail:hover {
-    border-color: rgba(255, 255, 255, 0.5); /* ✅ Borde blanco sutil en hover */
-    transform: translateY(-2px); /* ✅ Solo elevación, sin escala */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* ✅ Sombra más fuerte */
+    border-color: var(--color-brand-500); /* ✅ Borde azul en hover */
+    transform: translateY(-3px); /* ✅ Más elevación */
+    box-shadow: 0 6px 16px rgba(0, 85, 164, 0.3); /* ✅ Sombra más fuerte con color */
     z-index: 10;
 }
 
 .thumbnail.active {
-    border-color: #ffffff; /* ✅ Borde blanco sólido para activa */
-    transform: translateY(-3px); /* ✅ Más elevación */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* ✅ Sombra más prominente */
+    border-color: var(--color-brand-500); /* ✅ Borde azul sólido para activa */
+    border-width: 4px; /* ✅ Borde más grueso para activa */
+    transform: translateY(-4px); /* ✅ Más elevación */
+    box-shadow: 0 8px 24px rgba(0, 85, 164, 0.4); /* ✅ Sombra más prominente con color */
     position: relative;
     z-index: 5;
 }
@@ -299,14 +312,14 @@
 .thumbnail.active::after {
     content: '';
     position: absolute;
-    bottom: -8px; /* ✅ Debajo de la miniatura */
+    bottom: -10px; /* ✅ Debajo de la miniatura */
     left: 50%;
     transform: translateX(-50%);
-    width: 40px; /* ✅ Línea más larga */
-    height: 2px; /* ✅ Línea más delgada */
-    background: #ffffff; /* ✅ Blanco sólido */
-    border-radius: 1px;
-    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+    width: 50px; /* ✅ Línea más larga */
+    height: 3px; /* ✅ Línea más gruesa */
+    background: var(--color-brand-500); /* ✅ Azul sólido */
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0, 85, 164, 0.4);
 }
 
 .thumbnailImage {
@@ -315,7 +328,7 @@
     object-fit: cover;
     object-position: center;
     transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ✅ Más rápido */
-    border-radius: 2px; /* ✅ Reducido: Bordes menos pronunciados */
+    border-radius: 5px; /* ✅ Aumentado: Bordes más redondeados (menos que el contenedor para ver el borde) */
     will-change: transform;
     display: block;
 }
@@ -332,20 +345,23 @@
 /* ===== RESPONSIVE DESIGN NETFLIX - UNA SOLA LÍNEA ===== */
 @media (max-width: 1024px) {
     .thumbnailsContainer {
-        min-height: 70px; /* ✅ Reducido: Más compacto */
+        min-height: 100px; /* ✅ Aumentado: Más espacio para miniaturas más grandes */
         margin-top: 12px;
-        padding: 10px 0;
-        gap: 6px; /* ✅ Reducido: Menos espacio */
+        padding: 12px 0; /* ✅ Aumentado: Más padding */
+        gap: 6px;
+        overflow: visible; /* ✅ Permitir que se vean los bordes */
     }
     
     .thumbnails {
-        gap: 6px; /* ✅ Reducido: Menos espacio */
-        padding: 6px 0;
+        gap: 10px; /* ✅ Aumentado: Más espacio entre miniaturas */
+        padding: 10px 0; /* ✅ Aumentado: Más padding */
+        overflow-y: visible; /* ✅ Permitir que se vean bordes */
     }
     
     .thumbnail {
-        width: 60px; /* ✅ Reducido: Más pequeñas */
-        height: 43px; /* ✅ Mantener proporción */
+        width: 100px; /* ✅ Aumentado: Más grandes */
+        height: 71px; /* ✅ Mantener proporción 16:9 */
+        border: 3px solid rgba(0, 0, 0, 0.15); /* ✅ Borde visible */
     }
     
     .thumbnailArrowLeft,
@@ -375,22 +391,25 @@
     }
     
     .thumbnailsContainer {
-        min-height: 65px; /* ✅ Reducido: Más compacto */
+        min-height: 90px; /* ✅ Aumentado: Más espacio para miniaturas más grandes */
         margin-top: 12px;
-        padding: 8px 0;
+        padding: 10px 0; /* ✅ Aumentado: Más padding */
         gap: 6px;
+        overflow: visible; /* ✅ Permitir que se vean los bordes */
         /* ✅ MOBILE: Mostrar miniaturas */
         display: flex;
     }
     
     .thumbnails {
-        gap: 6px;
-        padding: 6px 0;
+        gap: 8px; /* ✅ Aumentado: Más espacio entre miniaturas */
+        padding: 8px 0; /* ✅ Aumentado: Más padding */
+        overflow-y: visible; /* ✅ Permitir que se vean bordes */
     }
     
     .thumbnail {
-        width: 55px; /* ✅ Reducido: Más pequeñas en mobile */
-        height: 40px; /* ✅ Mantener proporción */
+        width: 85px; /* ✅ Aumentado: Más grandes en mobile */
+        height: 60px; /* ✅ Mantener proporción 16:9 */
+        border: 3px solid rgba(0, 0, 0, 0.15); /* ✅ Borde visible */
     }
     
     .thumbnailArrowLeft,
@@ -408,20 +427,23 @@
 
 @media (max-width: 480px) {
     .thumbnailsContainer {
-        min-height: 60px; /* ✅ Reducido: Más compacto */
+        min-height: 80px; /* ✅ Aumentado: Más espacio para miniaturas más grandes */
         margin-top: 10px;
-        padding: 6px 0;
-        gap: 4px; /* ✅ Reducido: Menos espacio */
+        padding: 8px 0; /* ✅ Aumentado: Más padding */
+        gap: 4px;
+        overflow: visible; /* ✅ Permitir que se vean los bordes */
     }
     
     .thumbnails {
-        padding: 4px 0;
-        gap: 5px; /* ✅ Reducido: Menos espacio */
+        padding: 6px 0; /* ✅ Aumentado: Más padding */
+        gap: 6px; /* ✅ Aumentado: Más espacio entre miniaturas */
+        overflow-y: visible; /* ✅ Permitir que se vean bordes */
     }
     
     .thumbnail {
-        width: 50px; /* ✅ Reducido: Más pequeñas */
-        height: 36px; /* ✅ Mantener proporción */
+        width: 70px; /* ✅ Aumentado: Más grandes */
+        height: 50px; /* ✅ Mantener proporción 16:9 */
+        border: 2px solid rgba(0, 0, 0, 0.15); /* ✅ Borde visible (un poco más delgado en mobile pequeño) */
     }
     
     .thumbnail.active::after {

@@ -149,3 +149,21 @@ export const formatCilindradaDisplay = (value) => {
     const normalized = normalizeCilindrada(value)
     return normalized ? `${normalized} L` : ''
 }
+
+/**
+ * Formatea HP para visualización con sufijo "HP"
+ * 
+ * @param {string|number} value - Valor de HP
+ * @returns {string} - Valor formateado con unidad
+ * 
+ * @example
+ * formatHPDisplay("150") // "150 HP"
+ * formatHPDisplay(200)   // "200 HP"
+ * formatHPDisplay("")    // ""
+ */
+export const formatHPDisplay = (value) => {
+    if (!value) return ''
+    const num = typeof value === 'string' ? parseFloat(value) : value
+    if (isNaN(num)) return ''
+    return `${num} HP`
+}
