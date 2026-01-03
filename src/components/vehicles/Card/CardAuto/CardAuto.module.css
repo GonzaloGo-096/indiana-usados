@@ -25,18 +25,19 @@
     background: var(--color-white);
     border-radius: var(--border-radius-lg); /* ✅ Bordes suaves moderados */
     overflow: hidden;
-    border: 1px solid var(--color-neutral-200);
-    box-shadow: var(--shadow-sm); /* ✅ Sombra sutil y profesional */
-    transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+    border: 1px solid rgba(255, 255, 255, 0.05); /* ✅ Borde blanco más sutil */
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 8px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(255, 255, 255, 0.05); /* ✅ Border shadow blanco más sutil */
+    transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
     position: relative;
     margin: 0 auto;
     cursor: pointer;
 }
 
-/* ✅ Hover con feedback leve y discreto */
+/* ✅ Hover con efecto glow moderno */
 .card:hover {
-    transform: translateY(-2px); /* ✅ Elevación discreta */
-    box-shadow: var(--shadow-md); /* ✅ Sombra más pronunciada pero profesional */
+    transform: translateY(-4px); /* ✅ Elevación suave */
+    border-color: rgba(255, 255, 255, 0.1); /* ✅ Borde más sutil en hover */
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 12px rgba(255, 255, 255, 0.15), 0 4px 10px rgba(255, 255, 255, 0.08); /* ✅ Border shadow más sutil en hover */
 }
 
 .card:focus {
@@ -135,13 +136,14 @@
     display: flex;
     align-items: baseline;
     justify-content: flex-start;
-    gap: var(--spacing-1); /* ✅ Gap muy pequeño para comprimir */
+    gap: var(--spacing-2); /* ✅ Gap para separar marca y modelo */
     width: 100%;
     flex-wrap: nowrap;
     min-width: 0;
     flex-shrink: 0; /* ✅ No reducir */
     padding-bottom: 0; /* ✅ Sin padding para comprimir */
     line-height: 1.1; /* ✅ Line-height muy compacto */
+    margin-bottom: 0; /* ✅ Sin margin bottom */
 }
 
 .marca_text {
@@ -206,6 +208,8 @@
     width: 100%;
     padding-top: 0; /* ✅ Sin padding top */
     padding-bottom: 0;
+    margin-top: 0; /* ✅ Sin margin top - pegada a fila 1 */
+    margin-bottom: 0; /* ✅ Sin margin bottom */
 }
 
 /* ✅ FILA 3: Caja, Km, Año (sin separadores, alineado a la izquierda) */
@@ -219,7 +223,8 @@
     min-width: 0;
     overflow: visible; /* ✅ Permitir ver el contenido completo */
     flex-shrink: 0;
-    padding-top: var(--spacing-2); /* ✅ Padding top sutil */
+    margin-top: var(--spacing-1); /* ✅ Gap solo entre fila 2 y fila 3 */
+    padding-top: 0; /* ✅ Sin padding top adicional */
 }
 
 .row2_data_item {
@@ -312,7 +317,7 @@
 
 /* ✅ PRECIO BIEN DESTACADO - Jerarquía clara con color de acento */
 .price_value {
-    font-size: clamp(2.75rem, 7.5vw, 3.5rem); /* ✅ Achicado sutilmente */
+    font-size: clamp(2.5rem, 6.5vw, 3rem); /* ✅ Reducido sutilmente */
     font-weight: var(--font-weight-semibold); /* ✅ Bold reducido */
     font-style: italic; /* ✅ Cursiva */
     color: var(--color-brand-500); /* ✅ Color de acento solo para precio */

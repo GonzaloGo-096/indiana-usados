@@ -22,4 +22,7 @@ export { default as AutosGrid } from './List/ListAutos/AutosGrid'
 export { CardDetalle } from './Detail/CardDetalle/CardDetalle'
 
 // ===== FEATURED COMPONENTS =====
-export { default as FeaturedVehicles } from './FeaturedVehicles' 
+export { default as FeaturedVehicles } from './FeaturedVehicles'
+
+// ===== BRANDS CAROUSEL =====
+export { default as BrandsCarousel } from './BrandsCarousel/BrandsCarousel' 

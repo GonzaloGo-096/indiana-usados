@@ -8,8 +8,7 @@
 /* ===== PAGE CONTAINER ===== */
 .page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  background-attachment: fixed;
+  background: transparent; /* ✅ Transparente */
 }
 
 /* ===== HERO SECTION ===== */
@@ -22,9 +21,8 @@
 
 .container {
   max-width: var(--container-max-width);
-  margin: 0 auto;
-  /* ✅ MOBILE-FIRST: Padding base para móvil */
-  padding: 6px 24px;
+  margin: 0 auto; /* ✅ Centrado en desktop */
+  padding: 6px 0;
   width: 100%;
 }
 
@@ -40,16 +38,18 @@
   /* ✅ MOBILE-FIRST: Columna en móvil */
   flex-direction: column;
   gap: 20px;
-  text-align: center;
+  text-align: left; /* ✅ Alineado a la izquierda */
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0;
+  align-items: flex-start; /* ✅ Alineado a la izquierda */
+  margin-bottom: 12px; /* ✅ Margin bottom sutil */
+  margin-top: 40px; /* ✅ Margin top considerable */
+  margin-left: 15px; /* ✅ Margin left de 15px (5px + 10px) */
   padding: 5px 0 0 0;
 }
 
 .mainTitle {
   /* ✅ Igual que Home - Solo texto, sin fondo */
-  font-size: 1.875rem;
+  font-size: 2.53125rem; /* ✅ Aumentado 35%: de 1.875rem a 2.53125rem */
   font-weight: var(--font-weight-bold);
   color: var(--color-black);
   margin: 0;
@@ -60,7 +60,7 @@
 
 /* ✅ NUEVO: Botón volver a lista principal */
 .backButtonContainer {
-  margin-top: 48px; /* ✅ Triple del original (16px × 3 = 48px) */
+  margin-top: 10px; /* ✅ Reducido 80%: de 48px a 10px */
   text-align: center;
 }
 
@@ -153,9 +153,22 @@
   stroke-linejoin: round;
 }
 
+/* ✅ NUEVO: Sección del carrusel a todo el ancho */
+.carouselSection {
+  width: 100%;
+  background: transparent;
+}
+
 /* ✅ NUEVO: Grid de vehículos con margin-top */
 .vehiclesGrid {
-  margin-top: 30px; /* ✅ AGREGADO: Espacio entre formulario y lista de autos */
+  margin-top: 0; /* ✅ Sin margen superior, pegado al carrusel */
+  background: #0a0d14; /* ✅ Fondo negro */
+  padding-top: 50px; /* ✅ Padding superior aumentado (20px * 2.5 = 50px) */
+  padding-bottom: 20px; /* ✅ Padding inferior */
+  margin-left: -40px; /* ✅ Compensar margin-left en mobile */
+  margin-right: 0; /* ✅ Sin margin-right en mobile */
+  width: calc(100% + 40px); /* ✅ Expandir en mobile */
+  padding-left: 40px; /* ✅ Mantener padding interno */
 }
 
 /* ===== ESTILOS PARA BANNER DE DATOS MOCK ===== */
@@ -164,14 +177,14 @@
   border: 1px solid #ffeaa7;
   border-radius: 8px;
   padding: 12px 16px;
-  margin-bottom: 20px;
+  margin-bottom: 4px; /* ✅ Reducido 80%: de 20px a 4px */
   text-align: center;
   color: #856404;
 }
 
 .mockDataBanner strong {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 1px; /* ✅ Reducido 80%: de 4px a 1px */
 }
 
 .mockDataBanner small {
@@ -185,23 +198,34 @@
 /* Ambos deben usar 769px para mantener sincronización de botones y drawer */
 @media (min-width: 769px) {
   .container {
-    /* ✅ Desktop: Padding más generoso */
-    padding: 6px 24px;
+    padding: 6px 0;
   }
   
   .mainTitle {
     /* ✅ Desktop: Título más grande */
-    font-size: 2rem;
+    font-size: 2.7rem; /* ✅ Aumentado 35%: de 2rem a 2.7rem */
   }
   
   .titleSection {
     /* ✅ Desktop: Fila horizontal */
     flex-direction: row;
-    text-align: left;
+    text-align: left; /* ✅ Alineado a la izquierda */
+    align-items: center; /* ✅ Centrar verticalmente en desktop */
   }
   
   .titleSection .actionButtons {
     /* ✅ Desktop: Mostrar botones (especificidad aumentada) */
     display: flex;
   }
-} 
+  
+  /* ✅ Desktop: Expandir fondo negro a todo el ancho de la pantalla */
+  .vehiclesGrid {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    width: 100vw;
+    padding-left: calc(50vw - 50%);
+    padding-right: calc(50vw - 50%);
+  }
+  
+  /* ✅ Desktop: Sección del carrusel ya está a todo el ancho (no necesita breakout) */
+}

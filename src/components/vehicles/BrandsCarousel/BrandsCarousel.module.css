@@ -1,0 +1,100 @@
+/**
+ * BrandsCarousel.module.css - Estilos para el carrusel de marcas
+ * 
+ * @author Indiana Usados
+ * @version 1.1.0
+ */
+
+.carouselContainer {
+  width: 100%;
+  background: #ffffff; /* ✅ Fondo blanco */
+  padding: 24px 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-radius: 12px; /* ✅ Border radius */
+  margin-bottom: 0; /* ✅ Sin margen inferior para que quede junto al contenedor negro */
+}
+
+.carouselTrack {
+  flex: 1;
+  display: flex;
+  gap: 48px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  padding: 0 16px;
+}
+
+.carouselTrack::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.brandItem {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px; /* ✅ Aumentado de 60px a 80px */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.brandItem:hover {
+  transform: scale(1.1);
+}
+
+.brandLogo {
+  max-height: 80px; /* ✅ Aumentado de 60px a 80px */
+  max-width: 160px; /* ✅ Aumentado de 120px a 160px */
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(0%); /* ✅ Logos a color */
+  opacity: 1; /* ✅ Opacidad completa */
+  transition: all 0.3s ease;
+}
+
+.brandItem:hover .brandLogo {
+  opacity: 0.8; /* ✅ Efecto hover sutil */
+  transform: scale(1.05);
+}
+
+.arrowButton {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+  z-index: 10;
+}
+
+.arrowButton:hover {
+  background: #f5f5f5;
+  border-color: rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+}
+
+.arrowButton:active {
+  transform: scale(0.95);
+}
+
+.arrowRight {
+  margin-left: auto;
+}
+
+/* ✅ Ocultar flechas en mobile */
+@media (max-width: 768px) {
+  .arrowButton {
+    display: none;
+  }
+}

@@ -38,7 +38,7 @@ import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { parseFilters, serializeFilters, hasAnyFilter, sortVehicles } from '@utils'
 import { useVehiclesList } from '@hooks'
-import { AutosGrid } from '@vehicles'
+import { AutosGrid, BrandsCarousel } from '@vehicles'
 import FilterFormSimple from '@vehicles/Filters/FilterFormSimple'
 import SortDropdown from '@vehicles/Filters/SortDropdown'
 import { VehiclesListSEOHead } from '@components/SEO'
@@ -170,6 +170,14 @@ const Vehiculos = () => {
                     </div>
                 </div>
             </div>
+            </div>
+
+            {/* ✅ NUEVO: Sección del carrusel a todo el ancho */}
+            <div className={styles.carouselSection}>
+                <BrandsCarousel />
+            </div>
+
+            <div className={styles.container}>
 
             {/* ✅ NUEVO: Formulario de filtros debajo del título */}
         <FilterFormSimple

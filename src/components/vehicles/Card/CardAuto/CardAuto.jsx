@@ -83,7 +83,7 @@ export const CardAuto = memo(({ auto }) => {
     const formattedData = useMemo(() => {
         const cajaFormateada = formatCaja(auto.caja)
         // ✅ Abreviar "Automática" solo en la card
-        const cajaAbreviada = cajaFormateada === 'Automática' ? 'Automat.' : cajaFormateada
+        const cajaAbreviada = cajaFormateada === 'Automática' ? 'autom.' : cajaFormateada
         
         return {
             price: formatPrice(auto.precio),

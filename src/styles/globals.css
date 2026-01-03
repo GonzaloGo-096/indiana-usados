@@ -27,7 +27,7 @@ html, body {
   font-size: var(--font-size-base, 16px);
   line-height: var(--line-height-normal, 1.5);
   color: var(--color-neutral-900, #202124);
-  background: var(--color-white);
+  background: #ffffff; /* ✅ Fondo blanco sólido, sin gradiente para mejor rendimiento */
   min-height: 100vh;
   overscroll-behavior: none; /* Evita el efecto "chicle" al hacer scroll más allá del límite */
 }
@@ -41,6 +41,7 @@ html {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: transparent; /* ✅ Transparente para dejar ver el gradiente del body */
 }
 
 /* ===== UTILIDADES GLOBALES ===== */

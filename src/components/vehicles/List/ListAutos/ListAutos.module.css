@@ -26,7 +26,7 @@
 /* ===== CONTENEDOR DE LISTA CON TÍTULO ===== */
 .listContainer {
     position: relative;
-    max-width: var(--container-max-width);
+    max-width: 1610px; /* ✅ AUMENTADO 15%: De 1400px a 1610px para cards más anchas */
     margin: 0 auto;
     padding: 0 42px; /* ✅ OPTIMIZADO: Padding uniforme en desktop */
     margin-top: 64px; /* ✅ MANTENER: Separación del Nav */
@@ -125,41 +125,51 @@
 .gridContainer {
     position: relative;
     width: 100%;
+    display: flex;
+    justify-content: center; /* ✅ Centrar el grid en desktop */
 }
 
-/* ===== GRID DE VEHÍCULOS - PROFESIONAL ===== */
+/* ===== GRID DE VEHÍCULOS - ESTÁNDAR CON TAMAÑO FIJO ===== */
 .grid {
     display: grid;
-    /* ✅ MEJORA: auto-fill mantiene márgenes, max-width controla ancho */
-    grid-template-columns: repeat(auto-fill, minmax(300px, 340px));
-    /* ✅ MEJORA: justify-content center para márgenes consistentes */
-    justify-content: center;
+    /* ✅ MOBILE: 1 columna, card ocupa 100% */
+    grid-template-columns: 1fr;
     gap: 24px;
     min-height: 150px;
-    /* ✅ MEJORA: Padding consistente en todos los tamaños */
-    padding: 0 20px;
+    padding: 0;
+    margin: 0 auto; /* ✅ Centrado */
 }
 
-/* Tablet y arriba: Gap más generoso */
-@media (min-width: var(--tablet-min)) {
+/* Tablet: 2 columnas con tamaño fijo (desde 768px) */
+@media (min-width: 768px) {
     .grid {
+        grid-template-columns: repeat(2, 380px);
         gap: 28px;
-        padding: 0 24px;
+        justify-content: center;
+        padding: 0;
     }
 }
 
-/* Desktop grande: Máximo de espacio */
-@media (min-width: var(--desktop-min)) {
+/* Desktop: 3 columnas con tamaño fijo (desde 992px) */
+@media (min-width: 992px) {
     .grid {
+        grid-template-columns: repeat(3, 380px);
         gap: 30px;
+        justify-content: center;
+        margin: 0 auto;
+        max-width: fit-content;
     }
 }
 
-/* Desktop XL: Espaciado máximo */
-@media (min-width: var(--breakpoint-xl)) {
+/* Desktop XL: Mantener 3 columnas con tamaño fijo (desde 1200px) */
+@media (min-width: 1200px) {
     .grid {
+        grid-template-columns: repeat(3, 380px);
         gap: 32px;
-        padding: 0 32px;
+        justify-content: center;
+        margin: 0 auto;
+        max-width: fit-content;
+        padding: 0;
     }
 }
 
@@ -167,6 +177,12 @@
 .cardWrapper {
     min-height: 350px;
     width: 100%;
+}
+
+/* ✅ Cards con tamaño fijo en el grid */
+.cardWrapper :global(.card) {
+    width: 100%;
+    max-width: 100%;
 }
 
 @media (max-width: var(--mobile-max)) {
