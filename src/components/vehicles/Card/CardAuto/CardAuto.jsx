@@ -1,28 +1,34 @@
 /**
  * CardAuto - Componente para mostrar información de un vehículo
  * 
- * Responsabilidades:
- * - Mostrar información del vehículo
- * - Imagen con lazy loading
- * - Botón de ver detalle
- * - Diseño responsivo
+ * Rediseño Premium v6.0.0:
+ * - Jerarquía visual clara y profesional
+ * - Diseño limpio, respirable y consistente
+ * - Paleta sobria (blancos, grises, negro)
+ * - Color de acento solo para precio
+ * - Performance optimizada
+ * - Escalable a futuro (favoritos, badges, etc.)
  * 
  * @author Indiana Usados
- * @version 5.1.0 - Performance optimizada
+ * @version 6.0.0 - Rediseño Premium
  */
 
-import React, { memo, useMemo, useCallback, useState } from 'react'
+import React, { memo, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
     formatPrice, 
     formatKilometraje, 
     formatYear, 
     formatCaja,
-    formatBrandModel
+    formatBrandModel,
+    formatValue,
+    formatCilindradaDisplay,
+    formatHPDisplay
 } from '@utils/formatters'
 import { logger } from '@utils/logger'
+import { getBrandLogo } from '@utils/getBrandLogo'
 import styles from './CardAuto.module.css'
-import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
+import { AnioIcon, KmIcon, CajaIconDetalle } from '@components/ui/icons'
 import CloudinaryImage from '@/components/ui/CloudinaryImage/CloudinaryImage'
 import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
 import { usePreloadImages } from '@hooks'
@@ -35,9 +41,6 @@ import { usePreloadImages } from '@hooks'
 export const CardAuto = memo(({ auto }) => {
     const navigate = useNavigate()
     
-    // ✅ EFECTO HOVER DEFINITIVO: Dos imágenes con fade
-    const [isHovering, setIsHovering] = useState(false)
-    
     // ✅ PRELOAD DE IMÁGENES CRÍTICAS - Mejorado para cache borrado
     const { preloadVehicle, getStats } = usePreloadImages([auto], {
         preloadDistance: 400,
@@ -45,17 +48,10 @@ export const CardAuto = memo(({ auto }) => {
         enablePreload: true
     })
     
-    // ✅ URLs de imágenes optimizadas con useMemo
-    const images = useMemo(() => ({
-        primary: auto.fotoPrincipal || auto.imagen || '/auto1.jpg',
-        hover: auto.fotoHover
-    }), [auto.fotoPrincipal, auto.imagen, auto.fotoHover])
-    
-    const { primary: primaryImage, hover: hoverImage } = images
-    
-    // ✅ HANDLERS OPTIMIZADOS
-    const handleMouseEnter = useCallback(() => setIsHovering(true), [])
-    const handleMouseLeave = useCallback(() => setIsHovering(false), [])
+    // ✅ URL de imagen principal optimizada con useMemo
+    const primaryImage = useMemo(() => {
+        return auto.fotoPrincipal || auto.imagen || '/auto1.jpg'
+    }, [auto.fotoPrincipal, auto.imagen])
     
     // ✅ PRELOAD AUTOMÁTICO AL MONTAR - ELIMINADO
     // El preload ahora se maneja por el IntersectionObserver en usePreloadImages
@@ -65,8 +61,8 @@ export const CardAuto = memo(({ auto }) => {
     //     }
     // }, [auto, preloadVehicle])
 
-    // ✅ FUNCIÓN SIMPLE PARA "VER MÁS"
-    const handleVerMas = useCallback(() => {
+    // ✅ HANDLER: Click en toda la tarjeta para abrir detalle
+    const handleCardClick = useCallback(() => {
         const vehicleId = auto.id || auto._id
         if (!vehicleId) {
             logger.error('ui:card-auto', 'ID del vehículo no válido')
@@ -84,35 +80,61 @@ export const CardAuto = memo(({ auto }) => {
     const vehicleId = auto.id || auto._id
 
     // ✅ MEMOIZAR DATOS FORMATEADOS
-    const formattedData = useMemo(() => ({
-        price: formatPrice(auto.precio),
-        kilometers: formatKilometraje(auto.kilometraje || auto.kms),
-        year: formatYear(auto.anio || auto.año),
-        caja: formatCaja(auto.caja),
-        brandModel: formatBrandModel(auto.marca, auto.modelo)
-    }), [auto.precio, auto.kilometraje, auto.kms, auto.anio, auto.año, auto.caja, auto.marca, auto.modelo])
+    const formattedData = useMemo(() => {
+        const cajaFormateada = formatCaja(auto.caja)
+        // ✅ Abreviar "Automática" solo en la card
+        const cajaAbreviada = cajaFormateada === 'Automática' ? 'Automat.' : cajaFormateada
+        
+        return {
+            price: formatPrice(auto.precio),
+            kilometers: formatKilometraje(auto.kilometraje || auto.kms),
+            year: formatYear(auto.anio || auto.año),
+            caja: cajaAbreviada,
+            brandModel: formatBrandModel(auto.marca, auto.modelo),
+            version: formatValue(auto.version || ''),
+            cilindrada: formatCilindradaDisplay(auto.cilindrada || ''),
+            HP: formatHPDisplay(auto.HP || ''),
+            traccion: formatValue(auto.traccion || '')
+        }
+    }, [auto.precio, auto.kilometraje, auto.kms, auto.anio, auto.año, auto.caja, auto.marca, auto.modelo, auto.version, auto.cilindrada, auto.HP, auto.traccion])
+    
+    // ✅ MEMOIZAR LOGO DE MARCA
+    const brandLogo = useMemo(() => {
+        return getBrandLogo(auto?.marca || '')
+    }, [auto?.marca])
+    
+    // ✅ DATOS PRINCIPALES CON ICONOS (Caja, Km, Año)
+    const mainData = useMemo(() => [
+        { label: 'Caja', value: formattedData.caja, icon: CajaIconDetalle },
+        { label: 'Km', value: formattedData.kilometers, icon: KmIcon },
+        { label: 'Año', value: formattedData.year, icon: AnioIcon }
+    ], [formattedData.year, formattedData.kilometers, formattedData.caja])
 
     // ✅ MEMOIZAR ALT TEXT
     const altText = useMemo(() => {
         return `${formattedData.brandModel} - ${formattedData.year}`
     }, [formattedData.brandModel, formattedData.year])
 
-    // ✅ OPTIMIZADO: Memoizar URL de navegación
-    const vehicleUrl = useMemo(() => `/vehiculo/${vehicleId}`, [vehicleId])
-
     return (
         <div 
             className={styles.card} 
             data-testid="vehicle-card"
             data-vehicle-id={auto?.id || auto?._id}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onClick={handleCardClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    handleCardClick()
+                }
+            }}
+            aria-label={`Ver detalles de ${formattedData.brandModel}`}
         >
-            {/* ===== IMAGEN CON FADE DEFINITIVO ===== */}
+            {/* ===== IMAGEN PRINCIPAL ===== */}
             <div className={styles['card__image-container']}>
-                {/* Imagen principal - siempre visible */}
                 <CloudinaryImage
-                    image={auto?.fotoPrincipal || primaryImage}
+                    image={primaryImage}
                     alt={altText}
                     variant="fluid"
                     widths={IMAGE_WIDTHS.card}
@@ -120,93 +142,73 @@ export const CardAuto = memo(({ auto }) => {
                     loading="lazy"
                     fetchpriority="auto"
                     qualityMode="eco"
-                    className={`${styles['card__image']} ${styles['card__image_primary']}`}
+                    className={styles['card__image']}
                 />
-                
-                {/* Imagen hover - solo si existe y es diferente */}
-                {hoverImage && hoverImage !== primaryImage && (
-                    <CloudinaryImage
-                        image={auto?.fotoHover || hoverImage}
-                        alt={altText}
-                        variant="fluid"
-                        widths={IMAGE_WIDTHS.card}
-                        sizes={IMAGE_SIZES.card}
-                        loading="lazy"
-                        fetchpriority="low"
-                        qualityMode="eco"
-                        className={`${styles['card__image']} ${styles['card__image_hover']} ${isHovering ? styles['card__image_hover_active'] : ''}`}
-                    />
-                )}
-                
-                {/* ✅ INDICADORES SUTILES - Solo si hay 2 imágenes */}
-                {hoverImage && hoverImage !== primaryImage && (
-                    <div className={styles['card__indicators']}>
-                        <div className={`${styles['card__indicator']} ${!isHovering ? styles['card__indicator_active'] : ''}`}></div>
-                        <div className={`${styles['card__indicator']} ${isHovering ? styles['card__indicator_active'] : ''}`}></div>
-                    </div>
-                )}
             </div>
 
             {/* ===== CONTENIDO ===== */}
             <div className={styles['card__body']}>
-                {/* ===== HEADER 60/40 ===== */}
-                <div className={styles.cardHeader}>
-                    <div className={styles.headerLeft}>
-                        <div className={styles['card__title_container']}>
-                            <h3 className={styles['card__title']}>
-                                {auto.marca} {auto.modelo}
-                            </h3>
-                        </div>
+                {/* CONTENEDOR 1: Logo izquierda + Datos derecha (2 filas comprimidas) + Fila 3 abajo */}
+                <div className={styles.container1}>
+                    {/* Logo a la izquierda (más chico) */}
+                    <div className={styles.container1_left}>
+                        <img 
+                            src={brandLogo.src} 
+                            alt={brandLogo.alt} 
+                            className={styles.brand_logo}
+                            width="60"
+                            height="60"
+                            loading="lazy"
+                        />
                     </div>
                     
-                    <div className={styles.headerRight}>
-                        <div className={styles.priceContainer}>
-                            <span className={styles['card__price']}>
-                                {formattedData.price}
-                            </span>
+                    {/* Bloque de datos a la derecha */}
+                    <div className={styles.container1_right}>
+                        {/* Fila 1: Marca + Modelo */}
+                        <div className={styles.container1_row1}>
+                            <span className={styles.marca_text}>{auto.marca}</span>
+                            <span className={styles.marca_modelo_separator}>|</span>
+                            <h3 className={styles.modelo_title}>
+                                {auto.modelo}
+                            </h3>
+                        </div>
+                        
+                        {/* Fila 2: Versión (debajo de marca y modelo) */}
+                        {formattedData.version !== '-' && formattedData.version && (
+                            <div className={styles.container1_row2_version}>
+                                <span className={styles.version_text}>{formattedData.version}</span>
+                            </div>
+                        )}
+                        
+                        {/* Fila 3: Caja, Km, Año (sin separadores) */}
+                        <div className={styles.container1_row3}>
+                            {mainData.map((item) => {
+                                return (
+                                    <div key={item.label} className={styles.row2_data_item}>
+                                        <div className={styles.row2_data_content}>
+                                            <span className={styles.row2_data_label}>{item.label}</span>
+                                            <span className={styles.row2_data_value}>{item.value}</span>
+                                        </div>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>
-
-                {/* ===== DETALLES - SOLO 3 DATOS ===== */}
-                <div className={styles['card__details']}>
-                    <div className={styles['card__data_container']}>
-                        <div className={styles['card__data_item']}>
-                            <div className={styles['card__data_icon']}>
-                                <CalendarIcon size={16} color="currentColor" />
-                            </div>
-                            <span className={styles['card__data_label']}>Año</span>
-                            <span className={styles['card__data_value']}>{formattedData.year}</span>
-                        </div>
-                        
-                        <div className={`${styles['card__data_item']} ${styles['card__data_item_border']}`}>
-                            <div className={styles['card__data_icon']}>
-                                <RouteIcon size={16} color="currentColor" />
-                            </div>
-                            <span className={styles['card__data_label']}>Km</span>
-                            <span className={styles['card__data_value']}>{formattedData.kilometers}</span>
-                        </div>
-                        
-                        <div className={styles['card__data_item']}>
-                            <div className={styles['card__data_icon']}>
-                                <GearboxIcon size={16} color="currentColor" />
-                            </div>
-                            <span className={styles['card__data_label']}>Caja</span>
-                            <span className={styles['card__data_value']}>{formattedData.caja}</span>
-                        </div>
+                
+                {/* CONTENEDOR 4: Precio dividido en 2 contenedores */}
+                <div className={styles.container4}>
+                    {/* Contenedor izquierda: "Desde:" con contenido futuro */}
+                    <div className={styles.price_label_container}>
+                        <span className={styles.price_label}>desde:</span>
                     </div>
-                </div>
-
-                {/* ===== BOTÓN VER DETALLE ===== */}
-                <div className={styles['card__footer']}>
-                    <div className={styles['card__footer_border']}></div>
-                    <button 
-                        onClick={handleVerMas}
-                        className={styles['card__button']}
-                        data-testid="link-detalle"
-                    >
-                        Ver más
-                    </button>
+                    
+                    {/* Contenedor derecha: Precio alineado a la derecha */}
+                    <div className={styles.price_display}>
+                        <span className={styles.price_value}>
+                            {formattedData.price}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

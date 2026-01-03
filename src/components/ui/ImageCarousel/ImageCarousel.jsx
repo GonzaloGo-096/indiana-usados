@@ -38,6 +38,9 @@ export const ImageCarousel = ({
     const thumbnailsContainerRef = useRef(null) // ✅ Ref para el contenedor de miniaturas
     const [canScrollLeft, setCanScrollLeft] = useState(false) // ✅ Estado: puede scrollear izquierda
     const [canScrollRight, setCanScrollRight] = useState(false) // ✅ Estado: puede scrollear derecha (inicialmente false, se calculará)
+    const touchStartX = useRef(0) // ✅ Para detectar swipe
+    const touchEndX = useRef(0) // ✅ Para detectar swipe
+    const mainImageContainerRef = useRef(null) // ✅ Ref para el contenedor de imagen principal
 
     // Si no hay imágenes, usar imagen por defecto
     const allImages = useMemo(() => {
@@ -93,6 +96,36 @@ export const ImageCarousel = ({
         setCurrentIndex(index)
     }, [])
 
+    // ✅ Handlers para swipe/touch estándar (solo detección, sin seguimiento visual)
+    const handleTouchStart = useCallback((e) => {
+        touchStartX.current = e.touches[0].clientX
+    }, [])
+
+    const handleTouchMove = useCallback((e) => {
+        touchEndX.current = e.touches[0].clientX
+    }, [])
+
+    const handleTouchEnd = useCallback(() => {
+        if (!touchStartX.current || !touchEndX.current) return
+        
+        const distance = touchStartX.current - touchEndX.current
+        const minSwipeDistance = 50 // ✅ Distancia mínima para considerar swipe
+        
+        if (Math.abs(distance) > minSwipeDistance) {
+            if (distance > 0) {
+                // Swipe izquierda -> siguiente imagen
+                goToNext()
+            } else {
+                // Swipe derecha -> imagen anterior
+                goToPrevious()
+            }
+        }
+        
+        // Reset
+        touchStartX.current = 0
+        touchEndX.current = 0
+    }, [goToNext, goToPrevious])
+
     // ✅ Funciones para scroll horizontal de miniaturas
     const scrollThumbnailsLeft = useCallback(() => {
         if (!thumbnailsContainerRef.current) return
@@ -139,8 +172,12 @@ export const ImageCarousel = ({
         <div className={styles.carouselContainer}>
             {/* Imagen principal */}
             <div 
+                ref={mainImageContainerRef}
                 className={`${styles.mainImageContainer} ${onMainImageClick ? styles.mainImageClickable : ''}`}
                 onClick={onMainImageClick ? () => onMainImageClick(currentIndex) : undefined}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
                 role={onMainImageClick ? 'button' : undefined}
                 tabIndex={onMainImageClick ? 0 : undefined}
                 onKeyDown={onMainImageClick ? (e) => {
@@ -151,8 +188,9 @@ export const ImageCarousel = ({
                 } : undefined}
                 aria-label={onMainImageClick ? 'Abrir galería en pantalla completa' : undefined}
             >
-                {/* Una sola imagen - source of truth: currentIndex */}
+                {/* Imagen con efecto fade estándar */}
                 <CloudinaryImage
+                    key={currentIndex} // ✅ Key para reiniciar animación al cambiar imagen
                     image={allImages[currentIndex]}
                     alt={`${altText} ${currentIndex + 1} de ${allImages.length}`}
                     variant="fluid"
@@ -164,34 +202,47 @@ export const ImageCarousel = ({
                     className={styles.mainImage}
                 />
 
-                {/* Flechas de navegación */}
-                {showArrows && allImages.length > 1 && (
+                {/* Flechas de navegación - Solo desktop */}
+                {allImages.length > 1 && (
                     <>
                         <button 
-                            className={`${styles.arrow} ${styles.arrowLeft}`}
+                            className={`${styles.mainArrow} ${styles.mainArrowLeft}`}
                             onClick={goToPrevious}
                             aria-label="Imagen anterior"
                             type="button"
                         >
-                            <ChevronIcon direction="left" size={24} />
+                            <ChevronIcon direction="left" size={32} />
                         </button>
                         <button 
-                            className={`${styles.arrow} ${styles.arrowRight}`}
+                            className={`${styles.mainArrow} ${styles.mainArrowRight}`}
                             onClick={goToNext}
                             aria-label="Imagen siguiente"
                             type="button"
                         >
-                            <ChevronIcon direction="right" size={24} />
+                            <ChevronIcon direction="right" size={32} />
                         </button>
                     </>
                 )}
 
-                {/* Indicadores */}
-                {showIndicators && allImages.length > 1 && (
-                    <div className={styles.indicators}>
-                        <div className={styles.positionCounter}>
-                            {currentIndex + 1} / {allImages.length}
+                {/* Indicador unificado: icono + contador */}
+                {allImages.length > 1 && (
+                    <div className={styles.swipeIndicator}>
+                        <div className={styles.swipeHint}>
+                            <svg 
+                                width="20" 
+                                height="20" 
+                                viewBox="0 0 24 24" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                strokeWidth="2"
+                                className={styles.swipeIcon}
+                            >
+                                <path d="M21 12l-7-7m7 7l-7 7m7-7H3" />
+                            </svg>
                         </div>
+                        <span className={styles.imageCounter}>
+                            {currentIndex + 1} / {allImages.length}
+                        </span>
                     </div>
                 )}
             </div>

@@ -19,6 +19,7 @@
     gap: 0;
     width: 100%;
     contain: layout style paint; /* ✅ OPTIMIZACIÓN: Contención para mejor rendimiento */
+    position: relative;
 }
 
 /* ===== CONTENEDOR DE IMAGEN PRINCIPAL ===== */
@@ -30,6 +31,7 @@
     overflow: hidden;
     background-color: #ffffff; /* ✅ Fondo blanco para coincidir con el resto de la card */
     contain: layout style paint; /* ✅ OPTIMIZACIÓN: Contención */
+    touch-action: pan-y pinch-zoom; /* ✅ Permitir scroll vertical pero manejar swipe horizontal */
 }
 
 .mainImageClickable {
@@ -51,48 +53,68 @@
     object-fit: cover;
     background-color: transparent;
     min-height: 200px;
+    display: block;
+    /* ✅ Efecto fade estándar - igual que cero kilometro */
+    animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Removido hover effect que interfería con crossfade */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 
-/* ===== FLECHAS DE NAVEGACIÓN NETFLIX ===== */
-.arrow {
+/* ===== FLECHAS DE NAVEGACIÓN IMAGEN PRINCIPAL - DESKTOP ===== */
+.mainArrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 24px; /* ✅ REDUCIDO BASTANTE: De 36px a 24px */
-    height: 24px; /* ✅ REDUCIDO BASTANTE: De 36px a 24px */
-    background: rgba(0, 0, 0, 0.8);
-    border: none;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
-    display: flex;
+    display: none; /* ✅ Ocultas por defecto (mobile) */
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: 10;
-    color: #ffffff;
-    opacity: 1; /* ✅ CAMBIADO: Siempre visible */
-    visibility: visible; /* ✅ CAMBIADO: Siempre visible */
-    backdrop-filter: blur(8px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* ✅ REDUCIDO: Sombra más pequeña */
+    color: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    opacity: 0.8;
 }
 
-/* ✅ REMOVIDO: Las flechas ahora son siempre visibles */
-
-.arrow:hover {
-    background: rgba(0, 0, 0, 0.95);
-    transform: translateY(-50%) scale(1.15); /* ✅ AJUSTADO: Más scale para compensar tamaño pequeño */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* ✅ REDUCIDO: Sombra proporcional */
+.mainArrow:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.arrowLeft {
+.mainArrowLeft {
     left: 16px;
 }
 
-.arrowRight {
+.mainArrowRight {
     right: 16px;
 }
+
+.mainArrow svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* ✅ Mostrar flechas solo en desktop */
+@media (min-width: 769px) {
+    .mainArrow {
+        display: flex;
+    }
+}
+
 
 /* ===== INDICADOR DE POSICIÓN NETFLIX ===== */
 .indicators {
@@ -128,6 +150,71 @@
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
 }
 
+/* ===== INDICADOR DE DESLIZAR MINIMALISTA ===== */
+.swipeIndicator {
+    position: absolute;
+    top: 16px;
+    right: 16px; /* ✅ Reemplaza al indicador de la derecha */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    padding: 8px 16px;
+    border-radius: 24px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.swipeHint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.swipeIcon {
+    width: 16px;
+    height: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    animation: swipeHint 2s ease-in-out infinite;
+}
+
+@keyframes swipeHint {
+    0%, 100% {
+        transform: translateX(0);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateX(4px);
+        opacity: 1;
+    }
+}
+
+.swipeText {
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.imageCounter {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    font-weight: 400;
+    padding-left: 12px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ✅ Solo mostrar en mobile */
+@media (min-width: 769px) {
+    .swipeIndicator {
+        display: none;
+    }
+}
+
 /* ===== VISOR FIJO NETFLIX/SPOTIFY - UNA SOLA LÍNEA ===== */
 .thumbnailsContainer {
     width: 100%;
@@ -139,7 +226,10 @@
     align-items: center;
     background: transparent; /* ✅ Cambiado: Fondo transparente para no limitar visualmente */
     border-radius: 0;
-    padding: 16px 0; /* ✅ Aumentado: Más padding para dar espacio a los bordes */
+    padding-top: 0; /* ✅ Sin padding-top */
+    padding-bottom: 16px; /* ✅ Mantener padding-bottom */
+    padding-left: 40px; /* ✅ Espacio para flecha izquierda flotante */
+    padding-right: 40px; /* ✅ Espacio para flecha derecha flotante */
     margin-top: 16px;
     opacity: 1;
     visibility: visible;
@@ -175,12 +265,14 @@
     display: none; /* ✅ CRÍTICO: Ocultar scrollbar completamente */
 }
 
-/* ✅ Flechas sutiles para navegación de miniaturas - MÁS CHICAS */
+/* ✅ Flechas de miniaturas - FLOTANDO POR FUERA DEL CONTENEDOR */
 .thumbnailArrowLeft,
 .thumbnailArrowRight {
-    flex-shrink: 0;
-    width: 26px; /* ✅ Reducido: De 32px a 26px */
-    height: 26px; /* ✅ Reducido: De 32px a 26px */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
@@ -199,17 +291,17 @@
 .thumbnailArrowRight:hover {
     background: rgba(255, 255, 255, 1);
     color: rgba(0, 0, 0, 0.9);
-    transform: scale(1.1);
+    transform: translateY(-50%) scale(1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     opacity: 1;
 }
 
 .thumbnailArrowLeft {
-    left: 0;
+    left: -35px; /* ✅ Fuera del contenedor a la izquierda */
 }
 
 .thumbnailArrowRight {
-    right: 0;
+    right: -35px; /* ✅ Fuera del contenedor a la derecha */
 }
 
 .thumbnailArrowLeft svg,
@@ -347,7 +439,10 @@
     .thumbnailsContainer {
         min-height: 100px; /* ✅ Aumentado: Más espacio para miniaturas más grandes */
         margin-top: 12px;
-        padding: 12px 0; /* ✅ Aumentado: Más padding */
+        padding-top: 0; /* ✅ Sin padding-top */
+        padding-bottom: 12px; /* ✅ Mantener padding-bottom */
+        padding-left: 0;
+        padding-right: 0;
         gap: 6px;
         overflow: visible; /* ✅ Permitir que se vean los bordes */
     }
@@ -379,8 +474,8 @@
 
 @media (max-width: 768px) {
     .mainImageContainer {
-        height: auto;
-        aspect-ratio: 16 / 9;
+        height: 450px; /* ✅ Más altura en mobile */
+        aspect-ratio: auto;
     }
     
     /* Mobile: cambio instantáneo, sin animaciones */
@@ -393,7 +488,10 @@
     .thumbnailsContainer {
         min-height: 90px; /* ✅ Aumentado: Más espacio para miniaturas más grandes */
         margin-top: 12px;
-        padding: 10px 0; /* ✅ Aumentado: Más padding */
+        padding-top: 0; /* ✅ Sin padding-top */
+        padding-bottom: 10px; /* ✅ Mantener padding-bottom */
+        padding-left: 0;
+        padding-right: 0;
         gap: 6px;
         overflow: visible; /* ✅ Permitir que se vean los bordes */
         /* ✅ MOBILE: Mostrar miniaturas */
@@ -429,7 +527,10 @@
     .thumbnailsContainer {
         min-height: 80px; /* ✅ Aumentado: Más espacio para miniaturas más grandes */
         margin-top: 10px;
-        padding: 8px 0; /* ✅ Aumentado: Más padding */
+        padding-top: 0; /* ✅ Sin padding-top */
+        padding-bottom: 8px; /* ✅ Mantener padding-bottom */
+        padding-left: 0;
+        padding-right: 0;
         gap: 4px;
         overflow: visible; /* ✅ Permitir que se vean los bordes */
     }

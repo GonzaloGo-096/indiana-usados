@@ -1,15 +1,18 @@
 /**
- * CardAuto.module.css - Estilos ULTRA OPTIMIZADOS recreados
+ * CardAuto.module.css - Rediseño Premium
  * 
- * CARACTERÍSTICAS RECREADAS:
- * - Header 60/40 con marca/modelo lado a lado
- * - Precio en contenedor negro
- * - Solo 3 datos (Año, Kms, Caja) en horizontal
- * - Botón "Ver más" minimalista
- * - Optimizaciones de performance críticas
+ * OBJETIVO: Producto "premium confiable", no marketplace informal
+ * 
+ * LINEAMIENTOS:
+ * - Jerarquía visual clara
+ * - Cards limpias, respirables y consistentes
+ * - Paleta sobria (blancos, grises, negro)
+ * - Color de acento solo para precio
+ * - Performance excelente
+ * - Diseño escalable
  * 
  * @author Indiana Usados
- * @version 5.0.0 - ESTILO OPTIMIZADO RECREADO
+ * @version 6.0.0 - Rediseño Premium
  */
 
 /* ===== TARJETA PRINCIPAL ===== */
@@ -19,98 +22,55 @@
     height: 100%;
     width: 100%;
     max-width: 360px;
-    background: #fafafa;
-    border-radius: 8px;
+    background: var(--color-white);
+    border-radius: var(--border-radius-lg); /* ✅ Bordes suaves moderados */
     overflow: hidden;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--color-neutral-200);
+    box-shadow: var(--shadow-sm); /* ✅ Sombra sutil y profesional */
+    transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
     position: relative;
     margin: 0 auto;
+    cursor: pointer;
 }
 
+/* ✅ Hover con feedback leve y discreto */
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px); /* ✅ Elevación discreta */
+    box-shadow: var(--shadow-md); /* ✅ Sombra más pronunciada pero profesional */
 }
 
-/* ===== CONTENEDOR DE IMAGEN CON FADE DEFINITIVO ===== */
+.card:focus {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+}
+
+.card:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* ===== CONTENEDOR DE IMAGEN (FOCO PRINCIPAL) ===== */
 .card__image-container {
     position: relative;
     overflow: hidden;
-    background: #f9fafb;
-    /* ✅ MOBILE-FIRST: Altura base para móvil */
-    height: 200px;
+    background: var(--color-neutral-50); /* ✅ Placeholder elegante */
+    aspect-ratio: 16 / 10; /* ✅ Ratio consistente */
+    width: 100%;
     contain: layout style paint;
     isolation: isolate;
 }
 
 .card__image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* border-radius heredado del padre .card via overflow: hidden */
-    transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                filter 0.3s ease-out;
-    will-change: transform, opacity, filter;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    display: block;
+    transition: transform var(--transition-medium);
+    will-change: transform;
 }
 
-/* Imagen principal - siempre visible */
-.card__image_primary {
-    opacity: 1;
-    z-index: 1;
-}
-
-/* Imagen hover - oculta por defecto */
-.card__image_hover {
-    opacity: 0;
-    z-index: 2;
-}
-
-/* Imagen hover activa - fade in */
-.card__image_hover_active {
-    opacity: 1;
-}
-
-/* Efecto de escala en hover */
-.card:hover .card__image_primary {
-    transform: scale(1.05);
-}
-
-.card:hover .card__image_hover_active {
-    transform: scale(1.08);
-    filter: brightness(1.05) contrast(1.02);
-}
-
-/* ===== INDICADORES SUTILES ===== */
-.card__indicators {
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 6px;
-    z-index: 5;
-}
-
-.card__indicator {
-    width: 20px;
-    height: 2px;
-    background: rgba(200, 200, 200, 0.4);
-    border-radius: 1px;
-    transition: background 0.2s ease;
-}
-
-.card__indicator_active {
-    background: rgba(255, 255, 255, 0.8);
+/* ✅ Zoom sutil en hover */
+.card:hover .card__image {
+    transform: scale(1.03);
 }
 
 /* ===== CUERPO DE LA TARJETA ===== */
@@ -118,234 +78,295 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 16px;
-    background: #ffffff;
+    padding: 10px 10px 5px 10px; /* ✅ Padding: top 10px, right 10px, bottom 5px, left 10px */
+    background: var(--color-white);
+    gap: var(--spacing-2); /* ✅ Gap reducido a spacing-2 */
+    justify-content: space-between;
 }
 
-/* ===== HEADER CON REBORDE VISTOSO ===== */
-.cardHeader {
+/* ===== CONTENEDOR 1: Logo izquierda + Datos derecha (2 filas comprimidas) ===== */
+.container1 {
     display: flex;
-    height: 48px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 0.5px solid #6b7280;
-    background: #ffffff;
-    margin: 8px 0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    flex-direction: row; /* ✅ Layout horizontal */
+    gap: var(--spacing-3);
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-shrink: 0; /* ✅ No reducir */
+    min-height: 0;
 }
 
-.headerLeft {
-    flex: 0.6;
+/* ✅ Logo a la izquierda (más chico) */
+.container1_left {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: var(--spacing-1);
+}
+
+.brand_logo {
+    width: clamp(64px, 18vw, 90px); /* ✅ Logo más grande */
+    height: clamp(64px, 18vw, 90px);
+    object-fit: contain;
+    display: block;
+    opacity: 0.9;
+    transition: opacity var(--transition-fast);
+}
+
+.card:hover .brand_logo {
+    opacity: 1;
+}
+
+/* ✅ Bloque de datos a la derecha - 2 filas comprimidas */
+.container1_right {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 8px 12px;
-    background: transparent;
+    gap: 0; /* ✅ Sin gap */
+    justify-content: flex-start;
+    align-items: flex-start; /* ✅ Alineación vertical start */
+    min-width: 0;
+    overflow: hidden;
 }
 
-.card__title_container {
+/* ✅ FILA 1: Marca + Modelo */
+.container1_row1 {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 1px;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: var(--spacing-1); /* ✅ Gap muy pequeño para comprimir */
     width: 100%;
+    flex-wrap: nowrap;
+    min-width: 0;
+    flex-shrink: 0; /* ✅ No reducir */
+    padding-bottom: 0; /* ✅ Sin padding para comprimir */
+    line-height: 1.1; /* ✅ Line-height muy compacto */
 }
 
+.marca_text {
+    font-size: clamp(1.65rem, 5.4vw, 1.95rem); /* ✅ Agrandado ~20% */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary); /* ✅ Negro, igual que valores */
+    font-family: var(--font-condensed);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
 
-.card__title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #111827;
+.marca_modelo_separator {
+    font-size: clamp(1.65rem, 5.4vw, 1.95rem); /* ✅ Mismo tamaño que marca/modelo */
+    font-weight: var(--font-weight-normal);
+    color: var(--color-neutral-400); /* ✅ Gris claro */
+    font-family: var(--font-condensed);
+    padding: 0 var(--spacing-1);
+    flex-shrink: 0;
+}
+
+.version_separator {
+    font-size: clamp(1.375rem, 4.5vw, 1.625rem);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-neutral-500); /* ✅ Gris, igual que versión */
+    font-family: var(--font-condensed);
+    padding: 0 var(--spacing-1);
+    flex-shrink: 0;
+}
+
+.modelo_title {
+    font-size: clamp(1.65rem, 5.4vw, 1.95rem); /* ✅ Agrandado ~20% */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary); /* ✅ Negro, igual que valores */
     margin: 0;
-    line-height: 1.3;
+    line-height: 1.1;
+    font-family: var(--font-condensed);
+    text-align: left;
+    flex-shrink: 1;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: 'Barlow Condensed', sans-serif;
 }
 
-.headerRight {
-    flex: 0.4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.priceContainer {
-    width: 100%;
-    height: 100%;
-    background: #111827;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3px 4px;
-    border-radius: 0 8px 8px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.card__price {
-    font-size: 20px;
-    font-weight: 800;
-    color: #ffffff;
-    margin: 0;
-    font-family: 'Barlow Condensed', sans-serif;
-    line-height: 1.2;
-}
-
-.card__subtitle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    margin-top: 1px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--color-neutral-500);
-    line-height: 1;
-    font-family: 'Barlow Condensed', sans-serif;
-}
-
-.card__separator {
-    color: #d1d5db;
-    font-weight: 400;
-    margin: 0;
-}
-
-/* ===== DETALLES - SOLO 3 DATOS OPTIMIZADOS ===== */
-.card__details {
-    flex: 1;
-    margin: 0;
-}
-
-.card__data_container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: transparent;
-    padding: 6px 0;
-    border: none;
-}
-
-.card__data_item {
-    flex: 1;
-    text-align: center;
-    padding: 6px 8px;
-    background: transparent;
-    border: none;
-}
-
-.card__data_item_border {
-    border-inline: 1px solid #e5e7eb;
-}
-
-/* ===== ICONOS DE DATOS ===== */
-.card__data_icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 8px;
-    color: #6b7280;
-    opacity: 0.8;
-    transition: all 0.2s ease;
-    vertical-align: middle;
-}
-
-.card__data_item:hover .card__data_icon {
-    opacity: 1;
-    color: #374151;
-    transform: scale(1.05);
-}
-
-.card__data_label {
-    display: inline;
-    font-size: 11px;
-    color: #6b7280;
-    margin: 0;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    font-family: 'Barlow Condensed', sans-serif;
-    vertical-align: middle;
-    line-height: 1;
-}
-
-.card__data_value {
-    display: block;
-    font-size: 19px;
-    color: #374151;
-    font-weight: 700;
-    font-family: 'Barlow Condensed', sans-serif;
-    margin-top: 4px;
-    line-height: 1.2;
-}
-
-/* ===== FOOTER Y BOTÓN ===== */
-.card__footer {
-    margin-top: 0;
-    padding: 0;
-    background: #e5e7eb;
-    border-radius: 0 0 12px 12px;
+.version_text {
+    font-size: clamp(1.125rem, 3.5vw, 1.25rem); /* ✅ Tamaño ajustado para versión separada */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-neutral-500); /* ✅ Gris más claro, resalta menos */
+    font-family: var(--font-condensed);
+    flex-shrink: 1;
+    min-width: 0;
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.card__footer_border {
-    display: none;
-}
-
-.card__button {
+/* ✅ FILA 2: Versión (debajo de marca y modelo) */
+.container1_row2_version {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
     width: 100%;
-    background: var(--color-brand-500);
-    border: none;
-    color: white;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 7px 12px;
-    border-radius: 0;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    text-decoration: none;
+    padding-top: 0; /* ✅ Sin padding top */
+    padding-bottom: 0;
+}
+
+/* ✅ FILA 3: Caja, Km, Año (sin separadores, alineado a la izquierda) */
+.container1_row3 {
+    display: flex;
+    justify-content: flex-start; /* ✅ Alinear a la izquierda */
+    align-items: flex-end; /* ✅ Alineado al bottom */
+    gap: var(--spacing-4); /* ✅ Gap para separar elementos */
+    flex-wrap: nowrap;
+    width: 100%;
+    min-width: 0;
+    overflow: visible; /* ✅ Permitir ver el contenido completo */
+    flex-shrink: 0;
+    padding-top: var(--spacing-2); /* ✅ Padding top sutil */
+}
+
+.row2_data_item {
+    flex: 1; /* ✅ Distribución equitativa del espacio */
+    min-width: 60px; /* ✅ Ancho mínimo para evitar compresión excesiva */
+    display: flex;
+    align-items: flex-end; /* ✅ Alineado al bottom */
+    justify-content: flex-start;
+    height: 100%; /* ✅ Altura completa para que funcione flex-end */
+}
+
+.row2_data_content {
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* ✅ Sin espacio entre clave y valor */
+    align-items: flex-start; /* ✅ Alineado a la izquierda */
+    justify-content: flex-end; /* ✅ Empujar contenido hacia abajo */
+    text-align: left; /* ✅ Texto a la izquierda */
+    width: 100%;
+}
+
+.row2_data_label {
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-neutral-500);
+    letter-spacing: 0.3px;
+    font-family: var(--font-condensed);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: visible; /* ✅ Permitir ver el contenido completo */
+    text-overflow: clip; /* ✅ No truncar, solo cortar si es necesario */
+}
+
+.row2_data_value {
+    font-size: clamp(1.375rem, 4vw, 1.625rem); /* ✅ Agrandado un poco más */
+    font-weight: var(--font-weight-semibold); /* ✅ Menos bold */
+    color: var(--color-text-primary); /* ✅ Negro */
+    font-family: var(--font-condensed);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: visible; /* ✅ Permitir ver el contenido completo */
+    text-overflow: clip; /* ✅ No truncar, solo cortar si es necesario */
+    width: 100%;
+    text-align: left;
+}
+
+
+/* ===== PRECIO DIVIDIDO EN 2 CONTENEDORES ===== */
+.container4 {
+    display: flex;
+    margin-top: 0;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 0;
+    border-top: 1px solid var(--color-neutral-200); /* ✅ Borde superior muy sutil */
+    gap: var(--spacing-2);
+}
+
+/* Contenedor izquierda: "Desde:" con contenido futuro */
+.price_label_container {
+    flex: 0 0 30%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-family: 'Barlow Condensed', sans-serif;
-    margin: 0;
+    justify-content: flex-start;
+    padding: 0;
+    background: transparent;
 }
 
-.card__button:hover {
-    background: var(--color-brand-600);
-    color: white;
-    transform: translateY(-1px);
+.price_label {
+    font-size: clamp(1.25rem, 3vw, 1.5rem); /* ✅ Achicado un poco */
+    font-weight: var(--font-weight-normal);
+    font-style: italic; /* ✅ Letra cursiva */
+    color: var(--color-neutral-600);
+    font-family: var(--font-condensed);
+    text-align: left;
+    text-transform: lowercase;
+}
+
+/* Contenedor derecha: Precio alineado a la derecha */
+.price_display {
+    flex: 0 0 70%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* ✅ Alineado a la derecha */
+    padding: 0;
+    padding-right: var(--spacing-3); /* ✅ Padding derecho */
+    background: transparent;
+}
+
+/* ✅ PRECIO BIEN DESTACADO - Jerarquía clara con color de acento */
+.price_value {
+    font-size: clamp(2.75rem, 7.5vw, 3.5rem); /* ✅ Achicado sutilmente */
+    font-weight: var(--font-weight-semibold); /* ✅ Bold reducido */
+    font-style: italic; /* ✅ Cursiva */
+    color: var(--color-brand-500); /* ✅ Color de acento solo para precio */
+    font-family: var(--font-condensed);
+    line-height: 1.2;
+    text-align: right; /* ✅ Alineado a la derecha */
+    letter-spacing: -0.5px;
+}
+
+/* ✅ Signo de pesos más chico */
+.price_value::first-letter {
+    font-size: 0.65em; /* ✅ 65% del tamaño del precio */
 }
 
 /* ===== RESPONSIVE - MOBILE FIRST ===== */
-
-@media (min-width: var(--breakpoint-sm)) {
-    .card { border-radius: 10px; }
-    .card__image-container { height: 240px; }
-    .card__body { padding: 18px; }
-    .cardHeader { height: 54px; }
-    .card__title { font-size: 24px; }
-    .card__price { font-size: 22px; }
-    .card__data_container { padding: 8px 0; }
-    .card__data_item { padding: 8px 10px; }
-    .card__data_label { font-size: 12px; }
-    .card__data_value { font-size: 20px; }
-    .card__button { font-size: 14px; padding: 8px 14px; }
+@media (min-width: 576px) {
+    .card {
+        border-radius: var(--border-radius-lg);
+    }
+    
+    .card__body {
+        padding: 10px 10px 5px 10px; /* ✅ Padding: top 10px, right 10px, bottom 5px, left 10px */
+        gap: var(--spacing-5);
+    }
+    
+    .container1 {
+        gap: var(--spacing-4);
+    }
+    
+    .container1_right {
+        gap: var(--spacing-1);
+    }
+    
 }
 
-@media (min-width: var(--tablet-min)) {
-    .card { border-radius: 12px; }
-    .card__image-container { height: 260px; }
-    .card__body { padding: 20px; }
-    .cardHeader { height: 64px; }
-    .card__title { font-size: 26px; }
-    .card__price { font-size: 24px; }
-    .card__subtitle { font-size: 14px; }
-    .card__data_container { padding: 10px 0; }
-    .card__data_item { padding: 8px 10px; }
-    .card__data_label { font-size: 13px; }
-    .card__data_value { font-size: 22px; }
-    .card__button { font-size: 15px; padding: 8px 16px; }
-} 
+@media (min-width: 768px) {
+    .card {
+        border-radius: var(--border-radius-xl);
+    }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .card__image,
+    .brand_logo {
+        transition: none;
+    }
+    
+    .card:hover .card__image {
+        transform: none;
+    }
+    
+    .card:hover {
+        transform: none;
+    }
+}
