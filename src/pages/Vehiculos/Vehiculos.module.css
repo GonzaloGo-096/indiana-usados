@@ -2,13 +2,13 @@
  * Vehiculos.module.css - Estilos para la página de vehículos
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Sistema de superficies aplicado (FASE 3.3)
  */
 
 /* ===== PAGE CONTAINER ===== */
 .page {
-  min-height: 100vh;
-  background: transparent; /* ✅ Transparente */
+  /* ✅ Migrado: Fondo principal → token semántico surface */
+  background-color: var(--color-surface);
 }
 
 /* ===== HERO SECTION ===== */
@@ -24,6 +24,9 @@
   margin: 0 auto; /* ✅ Centrado en desktop */
   padding: 6px 0;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* ✅ Permitir que los hijos ocupen todo el ancho */
 }
 
 .content {
@@ -38,29 +41,43 @@
   /* ✅ MOBILE-FIRST: Columna en móvil */
   flex-direction: column;
   gap: 20px;
-  text-align: left; /* ✅ Alineado a la izquierda */
-  justify-content: space-between;
-  align-items: flex-start; /* ✅ Alineado a la izquierda */
-  margin-bottom: 12px; /* ✅ Margin bottom sutil */
-  margin-top: 40px; /* ✅ Margin top considerable */
-  margin-left: 15px; /* ✅ Margin left de 15px (5px + 10px) */
-  padding: 5px 0 0 0;
+  text-align: left;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  margin-top: 40px;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 5px 0 0 15px;
+  width: 100%;
+  max-width: 100%;
 }
+
+/* ✅ Barra divisoria entre título y botones - Removido de aquí, se moverá al mainTitle::after */
 
 .mainTitle {
   /* ✅ Igual que Home - Solo texto, sin fondo */
   font-size: 2.53125rem; /* ✅ Aumentado 35%: de 1.875rem a 2.53125rem */
   font-weight: var(--font-weight-bold);
-  color: var(--color-black);
+  /* ✅ Migrado: Texto principal oscuro → text-primary */
+  color: var(--color-text-primary);
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-family: var(--font-display);
+  position: relative; /* ✅ Para posicionar el ::after */
+}
+
+/* ✅ Barra divisoria después del título (solo en desktop) */
+.mainTitle::after {
+  content: '';
+  display: none; /* ✅ Oculto en mobile */
 }
 
 /* ✅ NUEVO: Botón volver a lista principal */
 .backButtonContainer {
   margin-top: 10px; /* ✅ Reducido 80%: de 48px a 10px */
+  margin-bottom: 0; /* ✅ Sin margen inferior para evitar espacio blanco */
   text-align: center;
 }
 
@@ -92,61 +109,63 @@
 .actionButtons {
   /* ✅ MOBILE-FIRST: Oculto por defecto en móvil */
   display: none;
-  gap: 8px;
+  gap: 12px; /* ✅ Espaciado claro entre botones */
   align-items: center;
   position: relative;
-  border: 3px solid var(--color-brand-500);
-  border-radius: 8px;
-  padding: 2px 5px;
-  background: rgba(255, 255, 255, 0.8);
-}
-
-/* ✅ NUEVO: Línea divisora entre botones */
-.actionButtons::after {
-  content: '';
-  width: 1px;
-  height: 20px;
-  background: var(--color-brand-500);
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0.3;
+  border: none;
+  border-radius: 0 0 12px 12px; /* ✅ Redondeado abajo como parte del carrusel */
+  /* ✅ No block: solo el ancho necesario para los botones */
+  width: fit-content;
+  /* ✅ Mismo fondo y sombra que el carrusel para efecto sobresalido */
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.02);
+  margin-top: 0;
+  padding-left: 24px; /* ✅ Pegado a la izquierda como el carrusel */
+  padding-right: 24px;
+  padding-top: 10px; /* ✅ Padding vertical equilibrado */
+  padding-bottom: 10px;
 }
 
 .actionButton {
   background: transparent;
   border: none;
-  font-size: 1rem;
+  font-size: 0.9375rem; /* ✅ Tamaño de texto más legible (15px) */
   font-weight: var(--font-weight-semibold);
-  color: var(--color-black);
+  /* ✅ Migrado: Texto principal oscuro → text-primary */
+  color: var(--color-text-primary);
   text-transform: none; /* ✅ Sin mayúsculas forzadas */
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   cursor: pointer;
-  padding: 6px 10px;
-  transition: all 0.2s ease;
+  padding: 8px 16px; /* ✅ Padding más generoso para mejor área de click */
+  border-radius: 6px; /* ✅ Bordes redondeados */
+  /* ✅ Optimizado: solo transicionar propiedades específicas (mejor rendimiento) */
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px; /* ✅ Espaciado entre icono y texto */
   font-family: var(--font-display);
+  white-space: nowrap; /* ✅ Evitar que el texto se parta */
 }
 
 .actionButton:hover {
+  background-color: rgba(0, 85, 164, 0.08); /* ✅ Fondo sutil al hover */
   color: var(--color-brand-600);
 }
 
 .actionButton.active {
-  background: rgba(0, 85, 164, 0.1);
+  /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 10% opacidad) */
+  background: rgba(0, 85, 164, 0.12);
   color: var(--color-brand-600);
-  border-radius: 6px;
-  padding: 6px 10px;
 }
 
 .actionButton svg {
-  width: 16px;
-  height: 16px;
+  width: 18px; /* ✅ Tamaño fijo y equilibrado */
+  height: 18px;
   stroke: currentColor;
   fill: none;
   stroke-width: 2;
+  flex-shrink: 0; /* ✅ Evitar que el icono se comprima */
   /* Asegurar que el ícono siempre sea el mismo */
   stroke-dasharray: none;
   stroke-linecap: round;
@@ -157,18 +176,37 @@
 .carouselSection {
   width: 100%;
   background: transparent;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ Wrapper para el formulario de filtros */
+.filtersWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 /* ✅ NUEVO: Grid de vehículos con margin-top */
 .vehiclesGrid {
   margin-top: 0; /* ✅ Sin margen superior, pegado al carrusel */
-  background: #0a0d14; /* ✅ Fondo negro */
+  /* ✅ Migrado: Fondo oscuro histórico eliminado → token semántico surface (unificación visual bajo sistema de superficies claras) */
+  background-color: var(--color-surface);
   padding-top: 50px; /* ✅ Padding superior aumentado (20px * 2.5 = 50px) */
   padding-bottom: 20px; /* ✅ Padding inferior */
-  margin-left: -40px; /* ✅ Compensar margin-left en mobile */
-  margin-right: 0; /* ✅ Sin margin-right en mobile */
-  width: calc(100% + 40px); /* ✅ Expandir en mobile */
-  padding-left: 40px; /* ✅ Mantener padding interno */
+  margin-left: calc(-50vw + 50%); /* ✅ Breakout technique para mobile - expandir a full width */
+  margin-right: calc(-50vw + 50%); /* ✅ Breakout technique simétrico */
+  margin-bottom: -6px; /* ✅ Margen negativo para compensar padding del container */
+  width: 100vw; /* ✅ Ancho completo del viewport */
+  max-width: 100vw; /* ✅ Garantía de no exceder viewport */
+  padding-left: calc(50vw - 50% + 15px); /* ✅ Padding que alinea con el container + padding del titleSection */
+  padding-right: calc(50vw - 50%); /* ✅ Padding simétrico */
+  overflow-x: hidden; /* ✅ Prevención de overflow */
 }
 
 /* ===== ESTILOS PARA BANNER DE DATOS MOCK ===== */
@@ -209,22 +247,43 @@
   .titleSection {
     /* ✅ Desktop: Fila horizontal */
     flex-direction: row;
-    text-align: left; /* ✅ Alineado a la izquierda */
-    align-items: center; /* ✅ Centrar verticalmente en desktop */
+    text-align: left;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--spacing-2);
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 15px;
+    width: 100%;
+    max-width: 100%;
   }
   
-  .titleSection .actionButtons {
-    /* ✅ Desktop: Mostrar botones (especificidad aumentada) */
+  /* ✅ Barra divisoria después del título en desktop */
+  .mainTitle::after {
+    content: '';
+    display: none; /* ✅ Oculto ya que no hay botones en el título */
+  }
+  
+  /* ✅ Desktop: Mostrar botones cuando están en carouselSection */
+  .carouselSection .actionButtons {
     display: flex;
   }
   
-  /* ✅ Desktop: Expandir fondo negro a todo el ancho de la pantalla */
+  .actionButton {
+    /* ✅ Desktop: Más chico aún */
+    font-size: 1.6rem; /* ✅ Más chico */
+  }
+  
+  /* ✅ Desktop: Expandir grid a todo el ancho de la pantalla */
   .vehiclesGrid {
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
+    margin-bottom: -6px; /* ✅ Margen negativo para compensar padding del container */
     width: 100vw;
-    padding-left: calc(50vw - 50%);
-    padding-right: calc(50vw - 50%);
+    max-width: 100vw;
+    padding-left: max(0px, calc((100vw - var(--container-max-width)) / 2)); /* ✅ Padding que alinea con el container cuando está centrado */
+    padding-right: max(0px, calc((100vw - var(--container-max-width)) / 2)); /* ✅ Padding simétrico */
+    overflow-x: hidden; /* ✅ Prevención de overflow - solo en este nivel */
   }
   
   /* ✅ Desktop: Sección del carrusel ya está a todo el ancho (no necesita breakout) */

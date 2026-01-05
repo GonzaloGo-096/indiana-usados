@@ -64,7 +64,8 @@
   left: var(--spacing-5);
   width: 40px;
   height: 3px;
-  background: var(--color-black);
+  /* ✅ Migrado: Elemento decorativo/iconografía → neutral-900 */
+  background: var(--color-neutral-900);
   border-radius: 2px;
   opacity: 0.12;
 }
@@ -72,7 +73,8 @@
 .title {
   font-size: 20px; /* ✅ REDUCIDO: De 22px a 20px */
   font-weight: 700;
-  color: var(--color-black);
+  /* ✅ Migrado: Texto principal oscuro → text-primary */
+  color: var(--color-text-primary);
   margin: 0;
   line-height: 1.25;
   font-family: var(--font-condensed);

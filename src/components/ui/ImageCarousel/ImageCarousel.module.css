@@ -339,6 +339,7 @@
     background: var(--color-brand-500);
     color: white;
     transform: translateY(-50%) scale(1.1); /* ✅ SIMPLIFICADO: Menos escala */
+    /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 40% opacidad) */
     box-shadow: 0 6px 20px rgba(0, 85, 164, 0.4);
     border-color: var(--color-brand-500); /* ✅ NUEVO: Azul Francia */
 }
@@ -388,7 +389,8 @@
 .thumbnail:hover {
     border-color: var(--color-brand-500); /* ✅ Borde azul en hover */
     transform: translateY(-3px); /* ✅ Más elevación */
-    box-shadow: 0 6px 16px rgba(0, 85, 164, 0.3); /* ✅ Sombra más fuerte con color */
+    /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 30% opacidad) */
+    box-shadow: 0 6px 16px rgba(0, 85, 164, 0.3);
     z-index: 10;
 }
 
@@ -396,7 +398,8 @@
     border-color: var(--color-brand-500); /* ✅ Borde azul sólido para activa */
     border-width: 4px; /* ✅ Borde más grueso para activa */
     transform: translateY(-4px); /* ✅ Más elevación */
-    box-shadow: 0 8px 24px rgba(0, 85, 164, 0.4); /* ✅ Sombra más prominente con color */
+    /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 40% opacidad) */
+    box-shadow: 0 8px 24px rgba(0, 85, 164, 0.4);
     position: relative;
     z-index: 5;
 }
@@ -411,6 +414,7 @@
     height: 3px; /* ✅ Línea más gruesa */
     background: var(--color-brand-500); /* ✅ Azul sólido */
     border-radius: 2px;
+    /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 40% opacidad) */
     box-shadow: 0 2px 4px rgba(0, 85, 164, 0.4);
 }
 

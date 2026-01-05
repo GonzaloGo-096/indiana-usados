@@ -6,13 +6,14 @@
  * - Desktop: altura escénica (min-height), contenido centrado
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Sistema de superficies aplicado (FASE 3.3)
  */
 
 /* ===== SECTION (Mobile-first: sin altura forzada) ===== */
 .section {
   width: 100%;
-  background: #0a0d14;
+  /* ✅ Migrado: Fondo oscuro histórico eliminado → token semántico surface (unificación visual bajo sistema de superficies claras) */
+  background-color: var(--color-surface);
   overflow: hidden;
 }
 
@@ -55,7 +56,8 @@
   font-size: 1.25rem;
   font-weight: var(--font-weight-bold);
   font-family: var(--font-poppins);
-  color: #ffffff;
+  /* ✅ Migrado: Texto blanco → text-primary (adaptado a fondo claro) */
+  color: var(--color-text-primary);
   text-transform: uppercase;
   letter-spacing: 1px;
   line-height: 1.2;
@@ -63,7 +65,8 @@
 
 .titleDivider {
   margin: 0 8px;
-  color: rgba(255, 255, 255, 0.5);
+  /* ✅ Migrado: Divider blanco semitransparente → neutral-400 (adaptado a fondo claro) */
+  color: var(--color-neutral-400);
   font-weight: normal;
 }
 
@@ -71,7 +74,8 @@
   margin: 0 0 12px 0;
   font-size: 1rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.8);
+  /* ✅ Migrado: Texto blanco semitransparente → neutral-700 (adaptado a fondo claro) */
+  color: var(--color-neutral-700);
 }
 
 .itemsList {
@@ -84,7 +88,8 @@
   margin: 0 0 8px 0;
   font-size: 1rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.8);
+  /* ✅ Migrado: Texto blanco semitransparente → neutral-700 (adaptado a fondo claro) */
+  color: var(--color-neutral-700);
   position: relative;
   padding-left: 16px;
 }
@@ -93,7 +98,8 @@
   content: '•';
   position: absolute;
   left: 0;
-  color: rgba(255, 255, 255, 0.6);
+  /* ✅ Migrado: Bullet blanco semitransparente → neutral-500 (adaptado a fondo claro) */
+  color: var(--color-neutral-500);
   font-weight: bold;
 }
 
@@ -103,7 +109,8 @@
   font-size: 1.125rem;
   font-weight: var(--font-weight-bold);
   font-family: var(--font-poppins);
-  color: #ffffff;
+  /* ✅ Migrado: Texto blanco → text-primary (adaptado a fondo claro) */
+  color: var(--color-text-primary);
   text-transform: uppercase;
   letter-spacing: 1px;
   line-height: 1.3;
@@ -113,7 +120,8 @@
   margin: 0 0 20px 0;
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
+  /* ✅ Migrado: Texto blanco semitransparente → neutral-700 (adaptado a fondo claro) */
+  color: var(--color-neutral-700);
 }
 
 .threeDButton {

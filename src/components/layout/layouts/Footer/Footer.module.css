@@ -13,12 +13,14 @@
 
 /* ===== FOOTER PRINCIPAL (MOBILE-FIRST) ===== */
 .footer {
-  background-color: var(--color-black);
+  /* ✅ Migrado: Fondo oscuro de sección → surface-dark */
+  background-color: var(--color-surface-dark);
   color: var(--color-white);
   padding: 2.5rem 0 2rem 0;
-  margin-top: 4rem;
+  margin-top: 0;
   position: relative;
   /* Borde superior sutil para separación visual */
+  /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 20% opacidad) */
   border-top: 1px solid rgba(0, 85, 164, 0.2);
 }
 
@@ -52,7 +54,7 @@
 @media (min-width: 640px) {
   .footer {
     padding: 3.5rem 0 2.5rem 0;
-    margin-top: 5rem;
+    margin-top: 0;
   }
   
   .container {
@@ -72,7 +74,7 @@
 @media (min-width: 992px) {
   .footer {
     padding: 5rem 0 3.5rem 0;
-    margin-top: 6rem;
+    margin-top: 0;
   }
 
   .container {

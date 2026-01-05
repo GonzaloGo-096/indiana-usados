@@ -29,7 +29,8 @@
 .title {
   font-size: 1.5rem;
   font-weight: var(--font-weight-bold);
-  color: var(--color-black);
+  /* ✅ Migrado: Texto principal oscuro → text-primary */
+  color: var(--color-text-primary);
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;

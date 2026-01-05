@@ -8,13 +8,21 @@
 .carouselContainer {
   width: 100%;
   background: #ffffff; /* ✅ Fondo blanco */
-  padding: 24px 0;
+  padding: 16px 0 8px 0; /* ✅ Padding ajustado: top reducido para compensar padding del track, bottom para espacio de escala */
   position: relative;
   display: flex;
   align-items: center;
   gap: 16px;
   border-radius: 12px; /* ✅ Border radius */
   margin-bottom: 0; /* ✅ Sin margen inferior para que quede junto al contenedor negro */
+  /* ✅ Sombra ambiental sutil para crear sensación de profundidad y separación del fondo */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.02);
+}
+
+/* ✅ Cuando hay selección, los logos no seleccionados se atenúan */
+.carouselContainer.hasSelection .brandItem:not(.brandItemSelected) .brandLogo {
+  opacity: 0.4;
+  filter: grayscale(30%);
 }
 
 .carouselTrack {
@@ -25,7 +33,7 @@
   scroll-behavior: smooth;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
-  padding: 0 16px;
+  padding: 8px 24px; /* ✅ Padding vertical aumentado para reservar espacio suficiente cuando el logo crece (scale 1.1) */
 }
 
 .carouselTrack::-webkit-scrollbar {
@@ -40,6 +48,8 @@
   height: 80px; /* ✅ Aumentado de 60px a 80px */
   cursor: pointer;
   transition: transform 0.2s ease;
+  padding: 0 16px; /* ✅ Padding lateral para evitar cortes */
+  position: relative; /* ✅ Para posicionar el checkmark */
 }
 
 .brandItem:hover {
@@ -54,7 +64,7 @@
   object-fit: contain;
   filter: grayscale(0%); /* ✅ Logos a color */
   opacity: 1; /* ✅ Opacidad completa */
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease, filter 0.3s ease; /* ✅ Animación suave */
 }
 
 .brandItem:hover .brandLogo {
@@ -62,13 +72,47 @@
   transform: scale(1.05);
 }
 
+/* ✅ Hover sobre logo seleccionado: mantener opacidad plena */
+.brandItemSelected:hover .brandLogo {
+  opacity: 1;
+}
+
+/* ✅ ESTADO SELECCIONADO: Logo activo en color pleno */
+.brandItemSelected .brandLogo {
+  opacity: 1 !important;
+  filter: grayscale(0%) !important;
+}
+
+/* ✅ Checkmark verde para marca seleccionada */
+.checkmark {
+  position: absolute;
+  top: -4px;
+  right: 4px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: checkmarkAppear 0.2s ease;
+}
+
+@keyframes checkmarkAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .arrowButton {
   flex-shrink: 0;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: #ffffff;
+  border: none;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,8 +123,8 @@
 }
 
 .arrowButton:hover {
-  background: #f5f5f5;
-  border-color: rgba(0, 0, 0, 0.2);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   transform: scale(1.1);
 }
 
@@ -96,5 +140,24 @@
 @media (max-width: 768px) {
   .arrowButton {
     display: none;
+  }
+}
+
+/* ✅ Desktop: flechas con position absolute, no ocupan espacio */
+@media (min-width: 769px) {
+  .arrowButton {
+    position: absolute;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .arrowButton:first-of-type {
+    left: 8px;
+  }
+
+  .arrowButton.arrowRight {
+    right: 8px !important;
+    left: auto !important;
+    margin-left: 0;
   }
 }

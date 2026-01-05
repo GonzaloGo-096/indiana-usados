@@ -9,15 +9,16 @@
  * - El usuario debe hacer clic en "Enviar" después de que se abra la conversación
  * 
  * @author Indiana Usados
- * @version 3.0.0 - Usa sistema de íconos centralizado
+ * @version 4.0.0 - Usa iconos de imágenes desde src/assets/redes
  */
 
-import { 
-  LocationIcon, 
-  PhoneIcon, 
-  InstagramIcon, 
-  WhatsAppIcon 
-} from '@components/ui/icons'
+// Importar iconos de redes sociales desde assets
+import whatsappIcon from '@assets/redes/Whatsapp_logo_PNG8.webp'
+import instagramIcon from '@assets/redes/Instagram_logo_PNG8.webp'
+import gmailIcon from '@assets/redes/Gmail-logo.webp'
+import facebookIcon from '@assets/redes/FacebookPNG2.webp'
+import mapsIcon from '@assets/redes/Google-Maps-logo-1.webp'
+import { PhoneIcon } from '@components/ui/icons'
 
 // ✅ CONFIGURACIÓN DE MÓDULOS INFORMATIVOS (Cards 2-4)
 // Orden: WhatsApp → Instagram → Teléfono → Ubicación
@@ -66,7 +67,7 @@ const createModuleItems = (whatsappNumber, message = '', instagramUser = '', pho
   
   // Crear un item de ubicación para cada dirección
   const locationItems = locations.map((loc, index) => ({
-    icon: 'location',
+    icon: 'maps',
     text: loc,
     href: `https://maps.google.com/maps?q=${encodeURIComponent(loc)}`,
     type: 'link',
@@ -112,11 +113,12 @@ export const footerModules = [
   }
 ]
 
-// ✅ MAPEO DE ÍCONOS - Usa componentes centralizados
-// El tamaño 16 es el estándar para footer items
+// ✅ MAPEO DE ÍCONOS - Usa imágenes desde src/assets/redes + SVG para teléfono
 export const footerIcons = {
-  location: <LocationIcon size={16} />,
-  phone: <PhoneIcon size={16} />,
-  instagram: <InstagramIcon size={16} />,
-  whatsapp: <WhatsAppIcon size={16} />
+  whatsapp: whatsappIcon,
+  instagram: instagramIcon,
+  gmail: gmailIcon,
+  facebook: facebookIcon,
+  maps: mapsIcon,
+  phone: 'svg' // Marcador especial para indicar que es SVG
 }

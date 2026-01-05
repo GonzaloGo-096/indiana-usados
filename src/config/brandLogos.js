@@ -24,13 +24,13 @@ export const BRAND_LOGOS = {
     src: '/assets/logos/brands/Peugeot_logo_PNG8.webp',
     alt: 'Logo Peugeot'
   },
-  toyota: {
-    src: '/assets/logos/brands/Toyota-logo-1-1.webp',
-    alt: 'Logo Toyota'
+  fiat: {
+    src: '/assets/logos/brands/Fiat-Logo-PNG.webp',
+    alt: 'Logo Fiat'
   },
-  honda: {
-    src: '/assets/logos/brands/Honda_logo_PNG4.webp',
-    alt: 'Logo Honda'
+  volkswagen: {
+    src: '/assets/logos/brands/Volkswagen_logo_PNG5.webp',
+    alt: 'Logo Volkswagen'
   },
   ford: {
     src: '/assets/logos/brands/Ford-logo-1.webp',
@@ -40,9 +40,9 @@ export const BRAND_LOGOS = {
     src: '/assets/logos/brands/Chevrolet_logo_PNG7.webp',
     alt: 'Logo Chevrolet'
   },
-  volkswagen: {
-    src: '/assets/logos/brands/Volkswagen_logo_PNG5.webp',
-    alt: 'Logo Volkswagen'
+  honda: {
+    src: '/assets/logos/brands/Honda_logo_PNG4.webp',
+    alt: 'Logo Honda'
   },
   nissan: {
     src: '/assets/logos/brands/Nissan-Logo-PNG.webp',
@@ -52,9 +52,9 @@ export const BRAND_LOGOS = {
     src: '/assets/logos/brands/Renault-Logo-PNG.webp',
     alt: 'Logo Renault'
   },
-  fiat: {
-    src: '/assets/logos/brands/Fiat-Logo-PNG.webp',
-    alt: 'Logo Fiat'
+  toyota: {
+    src: '/assets/logos/brands/Toyota-logo-1-1.webp',
+    alt: 'Logo Toyota'
   },
   citroen: {
     src: '/assets/logos/brands/Citroen-Logo_PNG1.webp',

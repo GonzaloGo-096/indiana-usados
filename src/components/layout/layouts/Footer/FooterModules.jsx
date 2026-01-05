@@ -13,49 +13,57 @@
  */
 
 import { useState } from 'react'
-import { ChevronIcon } from '@components/ui/icons'
+import { ChevronIcon, PhoneIcon } from '@components/ui/icons'
 import { footerModules, footerIcons } from './footerConfig.jsx'
 import styles from './FooterModules.module.css'
 
 /**
- * Componente individual para cada ítem
+ * Componente individual para cada ítem (solo icono como imagen o SVG)
  */
 const FooterItem = ({ item }) => {
-  const IconComponent = footerIcons[item.icon]
+  const iconSrc = footerIcons[item.icon]
+  const isSvgIcon = iconSrc === 'svg' // Teléfono usa SVG
   
-  const content = (
-    <>
-      <span className={styles.itemIcon}>
-        {IconComponent}
-      </span>
-      <span className={styles.itemText}>{item.text}</span>
-    </>
-  )
-
   // Si es un enlace
   if (item.type === 'link') {
     return (
       <li className={styles.moduleItem}>
         <a
           href={item.href}
-          className={styles.itemLink}
+          className={styles.iconLink}
           {...(item.external && {
             target: '_blank',
             rel: 'noopener noreferrer'
           })}
           aria-label={item.external ? `${item.text} (se abre en nueva ventana)` : item.text}
         >
-          {content}
+          {isSvgIcon ? (
+            <PhoneIcon size={50} className={styles.iconSvg} />
+          ) : (
+            <img 
+              src={iconSrc} 
+              alt={item.text}
+              className={`${styles.iconImage} ${item.icon === 'maps' ? styles.iconImageMaps : ''}`}
+            />
+          )}
         </a>
       </li>
     )
   }
 
-  // Si es solo texto
+  // Si es solo texto (aunque no debería usarse con el nuevo diseño)
   return (
     <li className={styles.moduleItem}>
-      <span className={styles.itemContent}>
-        {content}
+      <span className={styles.iconLink}>
+        {isSvgIcon ? (
+          <PhoneIcon size={50} className={styles.iconSvg} />
+        ) : (
+          <img 
+            src={iconSrc} 
+            alt={item.text}
+            className={`${styles.iconImage} ${item.icon === 'maps' ? styles.iconImageMaps : ''}`}
+          />
+        )}
       </span>
     </li>
   )
@@ -95,7 +103,7 @@ const FooterModules = () => {
           return (
             <div 
               key={module.id} 
-              className={`${styles.module} ${isOpen ? styles.moduleOpen : ''}`}
+              className={`${styles.module} ${isOpen ? styles.moduleOpen : ''} ${styles.moduleAccordion}`}
             >
               {/* Título clickable con chevron */}
               <button
@@ -109,12 +117,12 @@ const FooterModules = () => {
                 <AccordionChevron />
               </button>
               
-              {/* Contenido colapsable */}
+              {/* Contenido colapsable con iconos horizontales */}
               <div 
                 id={`module-content-${module.id}`}
                 className={styles.moduleContent}
               >
-                <ul className={styles.moduleList}>
+                <ul className={styles.iconsList}>
                   {module.items.map((item, index) => (
                     <FooterItem key={`${module.id}-${index}`} item={item} />
                   ))}

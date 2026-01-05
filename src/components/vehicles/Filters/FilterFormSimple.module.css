@@ -1,6 +1,6 @@
 /**
  * FilterFormSimple.module.css
- * @version 2.0.0 - Optimizado
+ * @version 2.1.0 - Color de marca aplicado a CTAs principales (FASE 3.4)
  */
 
 /* ===== BASE ===== */
@@ -18,7 +18,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: #0a0d14;
+  /* ✅ Migrado: CTA principal → color de marca según sistema */
+  background-color: var(--color-brand-500);
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -27,7 +28,8 @@
   transition: all 0.2s ease;
 }
 
-.filterButtonMobile:hover { background: #0f1419; transform: translateY(-1px); }
+/* ✅ Migrado: Hover → brand-600 para jerarquía visual */
+.filterButtonMobile:hover { background-color: var(--color-brand-600); transform: translateY(-1px); }
 .filterButtonMobile:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 .badge {
@@ -109,34 +111,30 @@
 
 .formTitle {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  margin-bottom: 0.0625rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 0;
+  padding: 0;
+  border: none; /* ✅ Border eliminado */
 }
 
 .formTitle h3 {
-  color: #0a0d14;
-  font-size: 1rem;
-  font-weight: 600;
-  font-family: 'Barlow Condensed', sans-serif;
-  margin: 0;
+  display: none; /* ✅ Título oculto */
 }
 
 .titleActions {
-  display: flex;
-  gap: 0.25rem;
-  align-items: center;
+  display: none; /* ✅ Botones del título ocultos (movidos abajo) */
 }
 
-.closeButtonMobile { display: none; }
+.closeButtonMobile { 
+  display: none; /* ✅ Oculto en desktop, visible en mobile */
+}
 
 .rangesSection,
 .selectsSection {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
+  gap: 2rem; /* ✅ Aumentado a 2rem para mayor separación entre inputs */
   margin-bottom: 0.0625rem;
   padding: 0;
   border-radius: 0.375rem;
@@ -218,12 +216,14 @@
 
 .applyButton {
   composes: buttonBase;
-  background: #0a0d14;
+  /* ✅ Migrado: CTA principal → color de marca según sistema */
+  background-color: var(--color-brand-500);
   color: #ffffff;
-  border-color: #0a0d14;
+  border-color: var(--color-brand-500);
 }
 
-.applyButton:hover:not(:disabled) { background: #0f1419; border-color: #0f1419; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+/* ✅ Migrado: Hover/Active → brand-600 para jerarquía visual */
+.applyButton:hover:not(:disabled) { background-color: var(--color-brand-600); border-color: var(--color-brand-600); transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
 
 .clearButton {
   composes: buttonBase;
@@ -239,6 +239,16 @@
 
 .applyButton:disabled,
 .clearButton:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ✅ Botones en desktop - Abajo del formulario */
+.desktopButtons {
+  display: none; /* Oculto por defecto, visible en desktop */
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+}
 
 .sortDropdown {
   position: absolute;
@@ -284,15 +294,64 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ===== DESKTOP VISIBILITY STATES ===== */
+/* ✅ Optimizado para rendimiento: usar opacity + transform (GPU-accelerated) */
+.desktopVisible {
+  display: block;
+  width: 100%;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.25s;
+}
+
+.desktopHidden {
+  display: block; /* ✅ Mantener en el flow para permitir transiciones */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-12px);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.2s;
+  pointer-events: none; /* ✅ Deshabilitar interacciones cuando está oculto */
+  max-height: 0;
+  overflow: hidden;
+}
+
 /* ===== RESPONSIVE ===== */
 /* ⚠️ Breakpoint 768px sincronizado con Vehiculos.jsx */
 @media (min-width: 769px) {
   .rangesSection,
-  .selectsSection { grid-template-columns: repeat(3, 1fr); }
-  .formWrapper { width: 90%; max-width: 700px; }
-  .filterContainer { margin-top: 2rem; }
+  .selectsSection { 
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem; /* ✅ Aumentado a 2rem para mayor separación entre inputs en desktop */
+  }
+  .formWrapper { 
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    /* ✅ Mismo fondo blanco y sombra que el carrusel */
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.02);
+    border-radius: 0;
+    border: none;
+    padding: 16px 24px;
+  }
+  .filterContainer { 
+    margin-top: 0;
+    width: 100%;
+    max-width: none;
+    justify-content: flex-start;
+  }
   .mobileButtons,
   .mobileActionsContainer { display: none; }
+  
+  /* ✅ Mostrar botones abajo en desktop */
+  .desktopButtons {
+    display: flex;
+  }
 }
 
 @media (max-width: 768px) {
@@ -401,8 +460,10 @@
     cursor: pointer;
     transition: all 0.2s ease;
   }
-  .mobileButtons .applyButton { background: #0a0d14; color: #ffffff; border: 1px solid #0a0d14; }
-  .mobileButtons .applyButton:hover { background: #1a1d24; }
+  /* ✅ Migrado: CTA principal mobile → color de marca según sistema */
+  .mobileButtons .applyButton { background-color: var(--color-brand-500); color: #ffffff; border: 1px solid var(--color-brand-500); }
+  /* ✅ Migrado: Hover mobile → brand-600 para jerarquía visual */
+  .mobileButtons .applyButton:hover { background-color: var(--color-brand-600); }
   .mobileButtons .clearButton { background: transparent; color: #6b7280; border: 1px solid #d1d5db; }
   .mobileButtons .clearButton:hover { background: #f3f4f6; }
 

@@ -5,13 +5,14 @@
  * Desktop: Tabs + 2 columnas
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Fase 2
+ * @version 3.0.0 - Sistema de superficies aplicado (FASE 3.3)
  */
 
 /* ===== PAGE CONTAINER ===== */
 .page {
   min-height: 100vh;
-  background: var(--color-white);
+  /* ✅ Migrado: Fondo principal → token semántico surface */
+  background-color: var(--color-surface);
   padding-bottom: 40px;
 }
 

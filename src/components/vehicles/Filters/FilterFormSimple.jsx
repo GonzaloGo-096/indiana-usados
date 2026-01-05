@@ -250,7 +250,15 @@ const FilterFormSimpleComponent = React.forwardRef(({
     showFilters: () => setIsVisibleDesktop(true),
     hideFilters: () => setIsVisibleDesktop(false),
     isFiltersVisible: isMobile ? isDrawerOpen : isVisibleDesktop,
-  }), [isMobile, isDrawerOpen, isVisibleDesktop, toggleDrawer, closeDrawer, toggleVisibility])
+    
+    // ✅ NUEVO: Método para actualizar marca desde afuera (carrusel cuando panel está abierto)
+    updateMarcaFilter: (marcaArray) => {
+      setFilters(prev => ({ ...prev, marca: marcaArray }))
+    },
+    
+    // ✅ NUEVO: Método para obtener estado local actual (para carrusel cuando panel está abierto)
+    getCurrentFilters: () => filters,
+  }), [isMobile, isDrawerOpen, isVisibleDesktop, toggleDrawer, closeDrawer, toggleVisibility, filters])
 
   // ✅ CONTEO DE FILTROS ACTIVOS
   const activeFiltersCount = [
@@ -332,19 +340,11 @@ const FilterFormSimpleComponent = React.forwardRef(({
       
       <div className={styles.formWrapper}>
         <form id="filterForm" onSubmit={onSubmit} className={styles.form}>
+          {/* Título y botones de cierre solo en mobile */}
           <div className={styles.formTitle}>
-            <h3>Filtros de Búsqueda</h3>
-            <div className={styles.titleActions}>
-              <button type="button" onClick={closeDrawer} className={styles.closeButtonMobile}>
-                <CloseIcon size={24} />
-              </button>
-              <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
-                Limpiar
-              </button>
-              <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
-                {isSubmitting ? 'Aplicando...' : 'Aplicar'}
-              </button>
-            </div>
+            <button type="button" onClick={closeDrawer} className={styles.closeButtonMobile}>
+              <CloseIcon size={24} />
+            </button>
           </div>
 
           {/* Botones - Arriba de los inputs en mobile */}
@@ -395,16 +395,8 @@ const FilterFormSimpleComponent = React.forwardRef(({
           </div>
 
           {/* MultiSelects */}
+          {/* ✅ ELIMINADO: Input de marca - ahora se usa el carrusel de marcas */}
           <div className={styles.selectsSection}>
-            <div className={styles.formGroup}>
-              <MultiSelect
-                label="Marca"
-                options={marcas}
-                value={filters.marca}
-                onChange={(val) => handleFilterChange('marca', val)}
-                placeholder="Todas las marcas"
-              />
-            </div>
             <div className={styles.formGroup}>
               <MultiSelect
                 label="Combustible"
@@ -424,38 +416,27 @@ const FilterFormSimpleComponent = React.forwardRef(({
               />
             </div>
           </div>
+
+          {/* Botones - Abajo en desktop */}
+          <div className={styles.desktopButtons}>
+            <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
+              Limpiar
+            </button>
+            <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
+              {isSubmitting ? 'Aplicando...' : 'Aplicar'}
+            </button>
+          </div>
         </form>
       </div>
     </div>
   )
 
-  // ✅ EN DESKTOP: No mostrar nada hasta que se active
-  if (!isMobile && !isVisibleDesktop) {
-    return null
-  }
-
-  // ✅ EN DESKTOP: Wrapper con animación slideDown
-  if (!isMobile && isVisibleDesktop) {
+  // ✅ EN DESKTOP: Renderizar siempre pero controlar visibilidad con CSS (optimizado para rendimiento)
+  if (!isMobile) {
     return (
-      <div style={{
-        animation: 'slideDown 0.3s ease-out',
-        marginTop: '0',
-        marginBottom: '20px',
-      }}>
-        <style>{`
-          @keyframes slideDown {
-            from {
-              opacity: 0;
-              transform: translateY(-20px);
-              max-height: 0;
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-              max-height: 1000px;
-            }
-          }
-        `}</style>
+      <div 
+        className={isVisibleDesktop ? styles.desktopVisible : styles.desktopHidden}
+      >
         {formContent}
       </div>
     )

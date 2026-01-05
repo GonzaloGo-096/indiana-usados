@@ -125,8 +125,12 @@
 .gridContainer {
     position: relative;
     width: 100%;
+    max-width: 100%; /* ✅ Prevenir desbordamiento */
     display: flex;
-    justify-content: center; /* ✅ Centrar el grid en desktop */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    /* ✅ REMOVIDO overflow-x: hidden - causa efecto de ocultamiento, ya está controlado en vehiclesGrid */
 }
 
 /* ===== GRID DE VEHÍCULOS - ESTÁNDAR CON TAMAÑO FIJO ===== */
@@ -134,19 +138,23 @@
     display: grid;
     /* ✅ MOBILE: 1 columna, card ocupa 100% */
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: clamp(24px, 6vw, 48px); /* ✅ CAPA 3: Gap dinámico responsivo - Evita overflow en pantallas pequeñas */
     min-height: 150px;
     padding: 0;
     margin: 0 auto; /* ✅ Centrado */
+    max-width: 100%; /* ✅ CAPA 4: Asegurar que no exceda el contenedor */
+    width: 100%; /* ✅ CAPA 4: Ocupar ancho disponible sin desbordar */
 }
 
 /* Tablet: 2 columnas con tamaño fijo (desde 768px) */
 @media (min-width: 768px) {
     .grid {
         grid-template-columns: repeat(2, 380px);
-        gap: 28px;
+        gap: clamp(28px, 7vw, 56px); /* ✅ Gap dinámico - Se adapta al espacio disponible */
         justify-content: center;
         padding: 0;
+        max-width: fit-content; /* ✅ Ajustarse al contenido: 2 columnas (760px) + 1 gap (hasta 56px) = ~816px */
+        width: fit-content; /* ✅ Ajustarse al contenido */
     }
 }
 
@@ -154,10 +162,11 @@
 @media (min-width: 992px) {
     .grid {
         grid-template-columns: repeat(3, 380px);
-        gap: 30px;
+        gap: clamp(30px, 5vw, 60px); /* ✅ Gap dinámico - Máximo 60px pero se adapta si es necesario */
         justify-content: center;
         margin: 0 auto;
-        max-width: fit-content;
+        max-width: fit-content; /* ✅ Ajustarse al contenido: 3 columnas (1140px) + 2 gaps (hasta 120px) = ~1260px */
+        width: fit-content; /* ✅ Ajustarse al contenido */
     }
 }
 
@@ -165,10 +174,11 @@
 @media (min-width: 1200px) {
     .grid {
         grid-template-columns: repeat(3, 380px);
-        gap: 32px;
+        gap: clamp(32px, 5.3vw, 64px); /* ✅ Gap dinámico - Máximo 64px pero se adapta */
         justify-content: center;
         margin: 0 auto;
-        max-width: fit-content;
+        max-width: fit-content; /* ✅ Ajustarse al contenido: 3 columnas (1140px) + 2 gaps (hasta 128px) = ~1268px */
+        width: fit-content; /* ✅ Ajustarse al contenido */
         padding: 0;
     }
 }
@@ -355,6 +365,8 @@
     align-items: center;
     padding: 2rem 0;
     margin-top: 1rem;
+    width: 100%;
+    max-width: 100%;
 }
 
 .loadMoreButton {

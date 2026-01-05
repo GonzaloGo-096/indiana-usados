@@ -110,7 +110,7 @@
   transition: max-height 0.35s ease-in;
 }
 
-/* ===== LISTA DE ÍTEMS ===== */
+/* ===== LISTA DE ÍTEMS (LEGACY - para compatibilidad) ===== */
 .moduleList {
   list-style: none;
   margin: 0;
@@ -118,6 +118,19 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-1);
+}
+
+/* ===== LISTA DE ÍCONOS HORIZONTAL ===== */
+.iconsList {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-3) var(--spacing-2) var(--spacing-4) var(--spacing-2);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .moduleItem {
@@ -155,21 +168,70 @@
   border-radius: var(--border-radius-sm);
 }
 
-/* ===== ÍCONOS ===== */
+/* ===== ÍCONOS (IMÁGENES) ===== */
 .itemIcon {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  min-width: 20px;
-  color: var(--color-brand-500);
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.iconImage {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  filter: brightness(1);
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+  display: block;
+}
+
+.iconImageMaps {
+  width: 62.5px;
+  height: 62.5px;
+}
+
+.iconSvg {
+  width: 50px;
+  height: 50px;
+  color: #34A853; /* Verde teléfono */
+  transition: transform var(--transition-fast), color var(--transition-fast);
   flex-shrink: 0;
 }
 
-.itemIcon svg {
-  width: 16px;
-  height: 16px;
+/* ===== ENLACES DE ÍCONOS ===== */
+.iconLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast);
+  cursor: pointer;
+  min-height: 24px;
+  min-width: 24px;
+}
+
+.iconLink:hover .iconImage,
+.iconLink:focus .iconImage {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+.iconLink:hover .iconSvg,
+.iconLink:focus .iconSvg {
+  transform: scale(1.1);
+  color: #2E7D32; /* Verde más oscuro en hover */
+}
+
+.iconLink:hover,
+.iconLink:focus {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.iconLink:focus {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
 }
 
 /* ===== TEXTO ===== */
@@ -189,41 +251,49 @@
 
 @media (min-width: 768px) {
   .sectionTitle {
-    display: none; /* Ocultar título "Contacto" en desktop */
+    display: block; /* Mostrar título "Contacto" en desktop */
+    margin-bottom: var(--spacing-6);
   }
 
   .modulesGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr 1fr;
     gap: var(--spacing-8);
   }
-
+  
   .module {
+    grid-column: 1;
     border-bottom: none;
-    padding-right: var(--spacing-6);
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .module:last-child {
-    border-right: none;
     padding-right: 0;
+    border-right: none;
+    align-self: start;
   }
 
-  /* En desktop, el header no es clickable */
-  .moduleHeader {
-    cursor: default;
-    padding: 0 0 var(--spacing-4) 0;
+  /* Todas las secciones son accordion en desktop */
+  .moduleAccordion .moduleHeader {
+    cursor: pointer;
+    padding: var(--spacing-5) var(--spacing-2);
   }
 
-  /* Ocultar chevron en desktop */
-  .chevron {
-    display: none;
+  /* Chevron visible para todas las secciones en desktop */
+  .moduleAccordion .chevron {
+    display: block;
   }
 
-  /* Contenido siempre visible en desktop */
-  .moduleContent {
-    max-height: none;
+  /* Contenido colapsable para todas las secciones en desktop */
+  .moduleAccordion .moduleContent {
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  .moduleAccordion.moduleOpen .moduleContent {
+    max-height: 500px;
     overflow: visible;
+  }
+
+  /* En desktop también mostrar iconos horizontalmente */
+  .iconsList {
+    padding: var(--spacing-4) 0 0 0;
   }
 
   .moduleTitle {
@@ -236,6 +306,12 @@
     gap: var(--spacing-2);
   }
 
+  .iconsList {
+    padding: var(--spacing-4) 0 0 0;
+    gap: var(--spacing-3);
+    justify-content: flex-start;
+  }
+
   .itemContent,
   .itemLink {
     padding: var(--spacing-1) 0;
@@ -244,6 +320,25 @@
   .itemText {
     text-transform: none;
     letter-spacing: 0.3px;
+  }
+
+  .iconImage {
+    width: 55px;
+    height: 55px;
+  }
+
+  .iconImageMaps {
+    width: 68.75px;
+    height: 68.75px;
+  }
+
+  .iconSvg {
+    width: 55px;
+    height: 55px;
+  }
+
+  .iconLink {
+    padding: var(--spacing-2);
   }
 }
 
@@ -256,6 +351,6 @@
   }
 
   .module {
-    max-width: 360px;
+    max-width: none;
   }
 }

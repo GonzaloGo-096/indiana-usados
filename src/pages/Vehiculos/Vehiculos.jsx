@@ -54,6 +54,9 @@ const Vehiculos = () => {
     // ✅ SIMPLIFICADO: Estado de sorting simple
     const [selectedSort, setSelectedSort] = useState(null)
     const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
+    
+    // ✅ NUEVO: Estado local para marca cuando el formulario está abierto
+    const [localMarca, setLocalMarca] = useState(null)
 
     // ✅ SIMPLIFICADO: Sincronización con URL para sorting
     useEffect(() => {
@@ -61,11 +64,18 @@ const Vehiculos = () => {
     }, [sp])
 
     // ✅ NUEVO: Parsear filtros del querystring
-    const filters = parseFilters(sp)
-    const isFiltered = hasAnyFilter(filters)
+    const urlFilters = parseFilters(sp)
+    const isFiltered = hasAnyFilter(urlFilters)
+    
+    // ✅ NUEVO: Determinar si el formulario está visible
+    const isFiltersVisible = filterFormRef.current?.isFiltersVisible || false
+    
+    // ✅ NUEVO: Obtener marca actual (del estado local si formulario está abierto, de URL si está cerrado)
+    const currentMarca = isFiltersVisible && localMarca !== null ? localMarca : (urlFilters.marca || [])
+    const filters = { ...urlFilters, marca: currentMarca }
 
-    // ✅ NUEVO: Hook unificado para vehículos
-    const { vehicles, total, hasNextPage, loadMore, isLoadingMore, isLoading, isError, error, refetch } = useVehiclesList(filters)
+    // ✅ NUEVO: Hook unificado para vehículos (siempre usa URL como fuente de verdad para fetch)
+    const { vehicles, total, hasNextPage, loadMore, isLoadingMore, isLoading, isError, error, refetch } = useVehiclesList(urlFilters)
 
     // ✅ SIMPLIFICADO: Vehículos ordenados
     const sortedVehicles = useMemo(() => {
@@ -99,6 +109,39 @@ const Vehiculos = () => {
         }
     }
 
+    // ✅ NUEVO: Handler para selección de marca en carrusel
+    const handleBrandSelect = (brandName) => {
+        const isFiltersVisible = filterFormRef.current?.isFiltersVisible || false
+        
+        if (isFiltersVisible) {
+            // Panel abierto: obtener estado actual del formulario (puede tener cambios no guardados)
+            const currentFilters = filterFormRef.current?.getCurrentFilters?.() || { marca: [] }
+            const currentMarcaList = currentFilters.marca || []
+            const isSelected = currentMarcaList.includes(brandName)
+            const newMarca = isSelected 
+                ? currentMarcaList.filter(m => m !== brandName) // Deseleccionar: remover del array
+                : [...currentMarcaList, brandName] // Seleccionar: agregar al array existente
+            
+            // Actualizar estado local del padre
+            setLocalMarca(newMarca)
+            
+            // Actualizar estado del formulario sin submit inmediato
+            if (filterFormRef.current?.updateMarcaFilter) {
+                filterFormRef.current.updateMarcaFilter(newMarca)
+            }
+        } else {
+            // Panel cerrado: actualizar URL directamente (dispara fetch automático)
+            const currentMarcaList = urlFilters.marca || []
+            const isSelected = currentMarcaList.includes(brandName)
+            const newMarca = isSelected 
+                ? currentMarcaList.filter(m => m !== brandName) // Deseleccionar: remover del array
+                : [...currentMarcaList, brandName] // Seleccionar: agregar al array existente
+            
+            const newFilters = { ...urlFilters, marca: newMarca }
+            setSp(serializeFilters(newFilters), { replace: false })
+        }
+    }
+
     // ✅ SIMPLIFICADO: Handlers para sorting
     const handleSortClick = () => setIsSortDropdownOpen(!isSortDropdownOpen)
     const handleSortChange = (sortOption) => {
@@ -127,11 +170,33 @@ const Vehiculos = () => {
                 </div>
             )}
 
-            {/* ✅ MODIFICADO: Título con botones en la misma línea */}
+            {/* ✅ MODIFICADO: Título sin botones */}
             <div className={styles.titleSection}>
                 <h1 className={styles.mainTitle}>
                     Nuestros Usados
                 </h1>
+            </div>
+            </div>
+
+            {/* ✅ NUEVO: Sección del carrusel a todo el ancho con botones integrados */}
+            <div className={styles.carouselSection}>
+                <BrandsCarousel 
+                    selectedBrands={currentMarca}
+                    onBrandSelect={handleBrandSelect}
+                    isFiltersVisible={isFiltersVisible}
+                />
+                
+                {/* ✅ Formulario de filtros entre carrusel y botones */}
+                <div className={styles.filtersWrapper}>
+                    <FilterFormSimple
+                        ref={filterFormRef}
+                        onApplyFilters={onApply}
+                        isLoading={isLoading}
+                        isError={isError}
+                        error={error}
+                        onRetry={refetch}
+                    />
+                </div>
                 
                 <div className={styles.actionButtons}>
                     <button 
@@ -170,24 +235,8 @@ const Vehiculos = () => {
                     </div>
                 </div>
             </div>
-            </div>
-
-            {/* ✅ NUEVO: Sección del carrusel a todo el ancho */}
-            <div className={styles.carouselSection}>
-                <BrandsCarousel />
-            </div>
 
             <div className={styles.container}>
-
-            {/* ✅ NUEVO: Formulario de filtros debajo del título */}
-        <FilterFormSimple
-          ref={filterFormRef}
-          onApplyFilters={onApply}
-          isLoading={isLoading}
-          isError={isError}
-          error={error}
-          onRetry={refetch}
-        />
 
             {/* ✅ NUEVO: Grid de vehículos unificado */}
             <div className={styles.vehiclesGrid}>

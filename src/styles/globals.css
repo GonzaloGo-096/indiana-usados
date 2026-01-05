@@ -30,6 +30,9 @@ html, body {
   background: #ffffff; /* ✅ Fondo blanco sólido, sin gradiente para mejor rendimiento */
   min-height: 100vh;
   overscroll-behavior: none; /* Evita el efecto "chicle" al hacer scroll más allá del límite */
+  overflow-x: hidden; /* ✅ CAPA 1: Prevención global de scroll horizontal - Buena práctica estándar */
+  width: 100%;
+  max-width: 100vw; /* ✅ CAPA 1: Asegurar que nunca exceda el viewport */
 }
 
 /* Scroll suave nativo para anclas internas */

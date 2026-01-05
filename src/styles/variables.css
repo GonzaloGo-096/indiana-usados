@@ -5,7 +5,7 @@
  * y consistencia en toda la aplicación.
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Sistema completo de tokens de color
  */
 
 :root {
@@ -49,10 +49,15 @@
     --font-hero-lg: clamp(1.75rem, 6vw, 2.75rem);
     --font-hero-xl: clamp(2rem, 7vw, 3.25rem);
 
-    /* ===== VARIABLES DE COLORES ===== */
+    /* ========================================
+       ESCALAS BASE DE COLORES
+       ======================================== */
+
+    /* ===== COLORES BASE ===== */
     --color-white: #ffffff;
-    --color-black: #0a0d14; /* 🎨 NUEVO: Negro profundo */
-    
+    /* Nota: --color-black eliminado. Usar --color-neutral-900 para negro canónico */
+
+    /* ===== ESCALA NEUTRAL (Grises) ===== */
     --color-neutral-50: #f9fafb;
     --color-neutral-100: #f3f4f6;
     --color-neutral-200: #e5e7eb;
@@ -62,8 +67,9 @@
     --color-neutral-600: #4b5563;
     --color-neutral-700: #374151;
     --color-neutral-800: #1f2937;
-    --color-neutral-900: #0a0d14; /* 🎨 NUEVO: Negro profundo más opaco */
+    --color-neutral-900: #0a0d14; /* Negro profundo canónico */
 
+    /* ===== ESCALA PRIMARY (Azul genérico) ===== */
     --color-primary-50: #eff6ff;
     --color-primary-100: #dbeafe;
     --color-primary-200: #bfdbfe;
@@ -75,37 +81,131 @@
     --color-primary-800: #1e40af;
     --color-primary-900: #1e3a8a;
 
-    /* ===== VARIABLES DE MARCA ===== */
-    --color-brand-500: #0055A4;
-    --color-brand-600: #003d7a;
+    /* ========================================
+       COLORES SEMÁNTICOS (Error, Success, Warning, Info)
+       ======================================== */
 
-    /* ===== VARIABLES DE COLORES SEMÁNTICOS ===== */
+    /* ===== ESCALA ERROR (Rojo) ===== */
+    /* Valores basados en uso actual en componentes */
+    --color-error-50: #fef2f2;
+    --color-error-100: #fee2e2;
+    --color-error-200: #fecaca;
+    --color-error-300: #fca5a5;
+    --color-error-400: #f87171;
+    --color-error-500: #ef4444; /* Valor usado actualmente */
+    --color-error-600: #dc2626; /* Valor usado actualmente */
+    --color-error-700: #b91c1c; /* Valor usado actualmente */
+    --color-error-800: #991b1b;
+    --color-error-900: #7f1d1d;
+
+    /* ===== ESCALA SUCCESS (Verde) ===== */
+    --color-success-50: #f0fdf4;
+    --color-success-100: #dcfce7;
+    --color-success-200: #bbf7d0;
+    --color-success-300: #86efac;
+    --color-success-400: #4ade80;
+    --color-success-500: #22c55e;
+    --color-success-600: #16a34a;
+    --color-success-700: #15803d;
+    --color-success-800: #166534;
+    --color-success-900: #14532d;
+
+    /* ===== ESCALA WARNING (Amarillo/Naranja) ===== */
+    /* Valores basados en uso actual en componentes */
+    --color-warning-50: #fffbeb;
+    --color-warning-100: #fef3c7; /* Valor usado actualmente */
+    --color-warning-200: #fde68a;
+    --color-warning-300: #fcd34d;
+    --color-warning-400: #fbbf24;
+    --color-warning-500: #f59e0b; /* Valor usado actualmente */
+    --color-warning-600: #d97706; /* Valor usado actualmente */
+    --color-warning-700: #b45309;
+    --color-warning-800: #92400e;
+    --color-warning-900: #78350f;
+
+    /* ===== ESCALA INFO (Azul) ===== */
+    --color-info-50: #eff6ff;
+    --color-info-100: #dbeafe;
+    --color-info-200: #bfdbfe;
+    --color-info-300: #93c5fd;
+    --color-info-400: #60a5fa;
+    --color-info-500: #3b82f6;
+    --color-info-600: #2563eb;
+    --color-info-700: #1d4ed8;
+    --color-info-800: #1e40af;
+    --color-info-900: #1e3a8a;
+
+    /* ========================================
+       COLORES DE MARCA
+       ======================================== */
+
+    /* ===== ESCALA BRAND (Azul Francia - Marca principal) ===== */
+    --color-brand-500: #0055A4; /* Azul Francia base */
+    --color-brand-600: #003d7a; /* Azul Francia oscuro */
+    --color-brand-700: #002d5a; /* Azul Francia muy oscuro (usado en gradientes) */
+
+    /* ========================================
+       TOKENS SEMÁNTICOS DE TEXTO
+       ======================================== */
+
     --color-text-primary: var(--color-neutral-900);
+    --color-text-secondary: var(--color-neutral-600);
+    --color-text-tertiary: var(--color-neutral-500);
     --color-text-inverse: var(--color-white);
-    --color-surface: var(--color-white);
-    --color-border: var(--color-neutral-200);
 
-    /* ===== VARIABLES DE TRANSICIONES ===== */
+    /* ========================================
+       TOKENS SEMÁNTICOS DE SUPERFICIES
+       ======================================== */
+    
+    /* Sistema de superficies: tonos suaves aptos para uso prolongado, sin blanco/negro puro */
+    
+    /* Superficie principal: tono claro muy suave (casi blanco pero no puro) para fondos base */
+    --color-surface: #fafafa; /* Blanco suave - apto para lectura prolongada, no #fff puro */
+    
+    /* Superficie sutil: tono gris muy claro para separación visual ligera */
+    --color-surface-subtle: var(--color-neutral-100); /* #f3f4f6 - separación sutil */
+    
+    /* Superficie elevada: tono más claro que surface para elementos destacados */
+    --color-surface-elevated: var(--color-neutral-50); /* #f9fafb - máxima elevación en modo claro */
+    
+    /* Superficie oscura: tono oscuro suave para secciones editoriales (no negro puro) */
+    --color-surface-dark: var(--color-neutral-800); /* #1f2937 - oscuro suave, apto para lectura prolongada */
+
+    /* ===== TOKENS SEMÁNTICOS DE BORDES ===== */
+    --color-border: var(--color-neutral-200);
+    --color-border-subtle: var(--color-neutral-100);
+
+    /* ========================================
+       TRANSICIONES
+       ======================================== */
     --transition-fast: 0.15s ease;
     --transition-normal: 0.3s ease;
     --transition-medium: 0.5s ease;
     --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 0.8s ease;
 
-    /* ===== VARIABLES DE SOMBRAS ===== */
+    /* ========================================
+       SOMBRAS
+       ======================================== */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-    /* ===== VARIABLES DE BORDER RADIUS ===== */
+    /* ========================================
+       BORDER RADIUS
+       ======================================== */
     --border-radius-sm: 4px;
     --border-radius-md: 8px;
     --border-radius-lg: 12px;
     --border-radius-xl: 16px;
     --border-radius-2xl: 20px;
 
-    /* ===== VARIABLES ESPECÍFICAS DE CARD AUTO ===== */
+    /* ========================================
+       VARIABLES ESPECÍFICAS DE COMPONENTES
+       ======================================== */
+
+    /* ===== CARD AUTO ===== */
     --card-border-radius: 16px;
     --card-border-radius-tablet: 12px;
     --card-border-radius-mobile: 8px;
@@ -117,11 +217,15 @@
     --card-image-height: 200px;
     --card-table-padding: var(--spacing-2) var(--spacing-1) var(--spacing-2) 0;
 
-    /* ===== VARIABLES DE LAYOUT ===== */
+    /* ========================================
+       LAYOUT
+       ======================================== */
     --container-max-width: 1200px;
     --container-padding: var(--spacing-4);
     
-    /* ===== VARIABLES DE Z-INDEX ===== */
+    /* ========================================
+       Z-INDEX
+       ======================================== */
     --z-dropdown: 1000;
     --z-sticky: 1020;
     --z-fixed: 1030;
@@ -130,7 +234,9 @@
     --z-popover: 1060;
     --z-tooltip: 1070;
 
-    /* ===== VARIABLES RESPONSIVE ===== */
+    /* ========================================
+       BREAKPOINTS Y RESPONSIVE
+       ======================================== */
     /* Breakpoints para uso en CSS */
     --breakpoint-xs: 0px;
     --breakpoint-sm: 576px;
@@ -153,7 +259,9 @@
     --breakpoint-xl-value: 1200;
     --breakpoint-2xl-value: 1400;
 
-    /* ===== UTILIDADES RESPONSIVE ===== */
+    /* ========================================
+       UTILIDADES RESPONSIVE
+       ======================================== */
     /* Contenedores responsive */
     --container-padding-mobile: var(--spacing-2);
     --container-padding-tablet: var(--spacing-4);

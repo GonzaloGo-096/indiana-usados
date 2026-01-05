@@ -4,8 +4,13 @@
  * Muestra las marcas disponibles en un carrusel horizontal
  * con flechas de navegación y logos seleccionables.
  * 
+ * ✅ ACTUALIZADO: Integrado con sistema de filtros
+ * - Recibe selectedBrands desde URL (fuente de verdad)
+ * - Emite onBrandSelect cuando se selecciona una marca
+ * - Estado visual basado en selectedBrands (no estado interno)
+ * 
  * @author Indiana Usados
- * @version 1.1.0
+ * @version 2.0.0 - Integración con filtros
  */
 
 import React, { useRef, useState, useEffect } from 'react'
@@ -13,7 +18,7 @@ import { BRAND_LOGOS } from '@config/brandLogos'
 import { ChevronIcon } from '@components/ui/icons'
 import styles from './BrandsCarousel.module.css'
 
-const BrandsCarousel = ({ onBrandSelect }) => {
+const BrandsCarousel = ({ selectedBrands = [], onBrandSelect, isFiltersVisible = false }) => {
   // Obtener solo las marcas que tienen logos reales (no el logo genérico)
   const brands = Object.values(BRAND_LOGOS).filter(
     brand => !brand.src.includes('logo-negro.webp')
@@ -63,14 +68,29 @@ const BrandsCarousel = ({ onBrandSelect }) => {
     }
   }
 
+  // ✅ ACTUALIZADO: Obtener nombre de marca desde alt (ej: "Logo Toyota" → "Toyota")
+  const getBrandName = (brand) => {
+    return brand.alt.replace('Logo ', '')
+  }
+
+  // ✅ ACTUALIZADO: Verificar si una marca está seleccionada
+  const isBrandSelected = (brandName) => {
+    return selectedBrands.includes(brandName)
+  }
+
+  // ✅ ACTUALIZADO: Handler que pasa el nombre de la marca (no el objeto brand)
   const handleBrandClick = (brand) => {
     if (onBrandSelect) {
-      onBrandSelect(brand)
+      const brandName = getBrandName(brand)
+      onBrandSelect(brandName)
     }
   }
 
+  // ✅ Detectar si hay alguna marca seleccionada (para aplicar estilos globales)
+  const hasSelectedBrand = selectedBrands.length > 0
+
   return (
-    <div className={styles.carouselContainer}>
+    <div className={`${styles.carouselContainer} ${hasSelectedBrand ? styles.hasSelection : ''}`}>
       {/* Flecha izquierda */}
       {canScrollLeft && (
         <button 
@@ -89,19 +109,29 @@ const BrandsCarousel = ({ onBrandSelect }) => {
       >
         {brands.map((brand, index) => {
           // Obtener el nombre de la marca desde el alt text
-          const brandName = brand.alt.replace('Logo ', '')
+          const brandName = getBrandName(brand)
+          const isSelected = isBrandSelected(brandName)
           return (
             <div 
               key={index} 
-              className={styles.brandItem}
+              className={`${styles.brandItem} ${isSelected ? styles.brandItemSelected : ''}`}
               onClick={() => handleBrandClick(brand)}
             >
               <img
                 src={brand.src}
                 alt={brand.alt}
-                className={styles.brandLogo}
+                className={`${styles.brandLogo} ${isSelected ? styles.brandLogoSelected : ''}`}
                 loading="lazy"
               />
+              {/* ✅ Tilde verde cuando está seleccionado */}
+              {isSelected && (
+                <div className={styles.checkmark}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="#10b981" />
+                    <path d="M8 12l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+              )}
             </div>
           )
         })}

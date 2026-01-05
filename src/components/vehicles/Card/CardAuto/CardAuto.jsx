@@ -83,7 +83,7 @@ export const CardAuto = memo(({ auto }) => {
     const formattedData = useMemo(() => {
         const cajaFormateada = formatCaja(auto.caja)
         // ✅ Abreviar "Automática" solo en la card
-        const cajaAbreviada = cajaFormateada === 'Automática' ? 'autom.' : cajaFormateada
+        const cajaAbreviada = cajaFormateada === 'Automática' ? 'Autom.' : cajaFormateada
         
         return {
             price: formatPrice(auto.precio),
@@ -173,14 +173,7 @@ export const CardAuto = memo(({ auto }) => {
                             </h3>
                         </div>
                         
-                        {/* Fila 2: Versión (debajo de marca y modelo) */}
-                        {formattedData.version !== '-' && formattedData.version && (
-                            <div className={styles.container1_row2_version}>
-                                <span className={styles.version_text}>{formattedData.version}</span>
-                            </div>
-                        )}
-                        
-                        {/* Fila 3: Caja, Km, Año (sin separadores) */}
+                        {/* Fila 2: Caja, Km, Año (sin separadores) */}
                         <div className={styles.container1_row3}>
                             {mainData.map((item) => {
                                 return (

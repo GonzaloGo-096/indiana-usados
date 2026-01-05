@@ -4,13 +4,14 @@
  * Mobile-first, fondo blanco, carrusel horizontal
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Carrusel de modelos
+ * @version 3.0.0 - Sistema de superficies aplicado (FASE 3.3)
  */
 
 /* ===== PAGE CONTAINER ===== */
 .page {
   min-height: 100vh;
-  background: var(--color-white);
+  /* ✅ Migrado: Fondo principal → token semántico surface */
+  background-color: var(--color-surface);
   padding: 0 0 40px 0;
 }
 
@@ -18,7 +19,8 @@
 .header {
   text-align: center;
   padding: 32px 16px 24px;
-  background: linear-gradient(to bottom, var(--color-neutral-50) 0%, var(--color-white) 100%);
+  /* ✅ Migrado: Gradiente del header usa token semántico surface */
+  background: linear-gradient(to bottom, var(--color-neutral-50) 0%, var(--color-surface) 100%);
 }
 
 .title {
@@ -112,6 +114,7 @@
   background: var(--color-brand-500);
   color: var(--color-white);
   transform: scale(1.1);
+  /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 30% opacidad) */
   box-shadow: 0 4px 16px rgba(0, 85, 164, 0.3);
 }
 

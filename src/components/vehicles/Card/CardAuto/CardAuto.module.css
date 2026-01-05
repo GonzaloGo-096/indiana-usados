@@ -25,7 +25,7 @@
     background: var(--color-white);
     border-radius: var(--border-radius-lg); /* ✅ Bordes suaves moderados */
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.05); /* ✅ Borde blanco más sutil */
+    border: 0.5px solid rgba(255, 255, 255, 0.05); /* ✅ Borde blanco la mitad de grosor */
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 8px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(255, 255, 255, 0.05); /* ✅ Border shadow blanco más sutil */
     transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
     position: relative;
@@ -95,6 +95,10 @@
     justify-content: flex-start;
     flex-shrink: 0; /* ✅ No reducir */
     min-height: 0;
+    /* ✅ Borde sutil a la derecha */
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    /* ✅ Bordes redondeados arriba, recto abajo */
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
 }
 
 /* ✅ Logo a la izquierda (más chico) */
@@ -247,7 +251,7 @@
 }
 
 .row2_data_label {
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    font-size: clamp(0.875rem, 2.3vw, 1rem); /* ✅ Aumentado sutilmente: de 0.75-0.875rem a 0.875-1rem */
     font-weight: var(--font-weight-semibold);
     color: var(--color-neutral-500);
     letter-spacing: 0.3px;
@@ -260,7 +264,7 @@
 
 .row2_data_value {
     font-size: clamp(1.375rem, 4vw, 1.625rem); /* ✅ Agrandado un poco más */
-    font-weight: var(--font-weight-semibold); /* ✅ Menos bold */
+    font-weight: 100; /* ✅ Ultra ligero - lo más fino posible */
     color: var(--color-text-primary); /* ✅ Negro */
     font-family: var(--font-condensed);
     line-height: 1.2;
@@ -269,6 +273,8 @@
     text-overflow: clip; /* ✅ No truncar, solo cortar si es necesario */
     width: 100%;
     text-align: left;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 
@@ -281,7 +287,11 @@
     width: 100%;
     padding-top: 0;
     border-top: 1px solid var(--color-neutral-200); /* ✅ Borde superior muy sutil */
+    /* ✅ Borde sutil a la izquierda */
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
     gap: var(--spacing-2);
+    /* ✅ Borde redondeado solo en la esquina superior izquierda, resto recto */
+    border-radius: var(--border-radius-lg) 0 0 0;
 }
 
 /* Contenedor izquierda: "Desde:" con contenido futuro */
@@ -291,6 +301,7 @@
     align-items: center;
     justify-content: flex-start;
     padding: 0;
+    padding-left: var(--spacing-2); /* ✅ Padding izquierdo agregado */
     background: transparent;
 }
 
@@ -317,7 +328,7 @@
 
 /* ✅ PRECIO BIEN DESTACADO - Jerarquía clara con color de acento */
 .price_value {
-    font-size: clamp(2.5rem, 6.5vw, 3rem); /* ✅ Reducido sutilmente */
+    font-size: clamp(2.375rem, 6.2vw, 2.875rem); /* ✅ Reducido muy sutilmente */
     font-weight: var(--font-weight-semibold); /* ✅ Bold reducido */
     font-style: italic; /* ✅ Cursiva */
     color: var(--color-brand-500); /* ✅ Color de acento solo para precio */
