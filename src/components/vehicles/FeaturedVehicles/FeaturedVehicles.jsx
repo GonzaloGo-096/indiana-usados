@@ -61,7 +61,7 @@ export const FeaturedVehicles = () => {
     
     // ✅ Handler para botón "Ver todos"
     const handleVerTodos = () => {
-        navigate('/vehiculos')
+        navigate('/usados')
     }
     
     // ✅ MOBILE: Centrar segunda card al cargar

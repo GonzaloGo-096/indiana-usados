@@ -33,8 +33,8 @@
  *   - getOnePhoto → mapVehicle() → extractAllImageUrls()
  * 
  * 📍 USO POR PÁGINA:
- * - /vehiculos (Listado): extractVehicleImageUrls() + extractAllImageUrls()
- * - /vehiculos/:id (Detalle): extractVehicleImageUrls() + extractAllImageUrls()
+ * - /usados (Listado): extractVehicleImageUrls() + extractAllImageUrls()
+ * - /vehiculo/:id (Detalle): extractVehicleImageUrls() + extractAllImageUrls()
  * - /admin/dashboard: extractFirstImageUrl() (thumbnails)
  * - usePreloadImages: extractAllImageUrls() (preload)
  * 

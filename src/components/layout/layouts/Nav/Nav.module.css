@@ -73,8 +73,7 @@
   align-items: center;
   position: absolute;
   right: 24px; /* ✅ CAMBIADO: De left: 50% a right: 24px */
-  top: 50%; /* ✅ CAMBIADO: De 70% a 50% para centrar verticalmente */
-  transform: translateY(-50%); /* ✅ CAMBIADO: Solo translateY para centrar verticalmente */
+  bottom: 4px; /* ✅ Posicionar muy cerca del borde inferior */
   z-index: 1000;
 }
 
@@ -205,6 +204,12 @@
   color: white;
   background: rgba(255, 255, 255, 0.03);
   font-weight: 600;
+}
+
+.navDivider {
+  opacity: 0.5;
+  font-weight: 300;
+  margin: 0 4px;
 }
 
 /* Botón especial Indiana 0 kilómetros */
@@ -392,8 +397,7 @@
   .nav {
     position: absolute;
     right: 24px; /* ✅ CAMBIADO: De left: 50% a right: 24px */
-    top: 50%; /* ✅ CAMBIADO: De 70% a 50% para centrar verticalmente */
-    transform: translateY(-50%); /* ✅ CAMBIADO: Solo translateY para centrar verticalmente */
+    bottom: 4px; /* ✅ Posicionar muy cerca del borde inferior */
     background: transparent;
     border: none;
     box-shadow: none;

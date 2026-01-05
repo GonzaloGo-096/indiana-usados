@@ -9,7 +9,7 @@
  * - ✅ NUEVO: Preloading estratégico
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Migración a Cloudinary
+ * @version 3.0.0 - Refactor: Usados y 0 KM como items principales (sin dropdown)
  */
 
 import React, { useEffect, useState } from 'react'
@@ -20,7 +20,6 @@ import { shouldPreloadOnIdle, requestIdle } from '@utils'
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isAutosDropdownOpen, setIsAutosDropdownOpen] = useState(false)
   const location = useLocation()
 
   // ✅ NUEVO: Hook de preloading estratégico
@@ -49,8 +48,8 @@ const Nav = () => {
   }
 
   // ✅ NUEVO: Funciones de preloading para rutas
-  const handleVehiculosPreload = () => {
-    preloadRoute('/vehiculos', () => import('@pages/Vehiculos'))
+  const handleUsadosPreload = () => {
+    preloadRoute('/usados', () => import('@pages/Vehiculos'))
   }
 
   const handleNosotrosPreload = () => {
@@ -70,6 +69,11 @@ const Nav = () => {
     preloadRoute('/0km', () => import('@pages/CeroKilometros'))
   }
 
+  // ✅ PLANES: Preload para la página de planes
+  const handlePlanesPreload = () => {
+    preloadRoute('/planes', () => import('@pages/Planes'))
+  }
+
   // ✅ PRELOAD ON IDLE: Solo en buenas redes y en rutas ligeras
   useEffect(() => {
     if (!shouldPreloadOnIdle()) return
@@ -79,7 +83,7 @@ const Nav = () => {
     const cancel = requestIdle(() => {
       // Precargar módulos críticos probables
       import('@pages/Postventa')
-      import('@pages/Vehiculos')
+      import('@pages/Vehiculos') // Mantener import para compatibilidad
     })
     return () => {
       if (typeof cancel === 'number') clearTimeout(cancel)
@@ -132,48 +136,41 @@ const Nav = () => {
               Inicio
             </Link>
             
-            {/* ✅ NUEVO: Dropdown de Autos */}
-            <div 
-              className={styles.dropdown}
-              onMouseEnter={() => setIsAutosDropdownOpen(true)}
-              onMouseLeave={() => setIsAutosDropdownOpen(false)}
+            {/* ✅ Peugeot | 0 KM */}
+            <Link 
+              className={`${styles.navLink} ${isActive('/0km') ? styles.active : ''}`} 
+              to="/0km"
+              aria-current={isActive('/0km') ? 'page' : undefined}
+              onClick={closeMenu}
+              onMouseEnter={handle0kmPreload}
+              onMouseLeave={() => cancelPreload('/0km')}
             >
-              <button 
-                className={`${styles.dropdownToggle} ${isActive('/vehiculos') ? styles.active : ''}`}
-                onClick={() => setIsAutosDropdownOpen(!isAutosDropdownOpen)}
-              >
-                Autos
-                <span className={`${styles.dropdownArrow} ${isAutosDropdownOpen ? styles.dropdownArrowOpen : ''}`}>▼</span>
-              </button>
-              
-              <div className={`${styles.dropdownMenu} ${isAutosDropdownOpen ? styles.dropdownMenuOpen : ''}`}>
-                <Link 
-                  className={styles.dropdownItem}
-                  to="/vehiculos"
-                  aria-current={isActive('/vehiculos') ? 'page' : undefined}
-                  onClick={() => {
-                    closeMenu()
-                    setIsAutosDropdownOpen(false)
-                  }}
-                  onMouseEnter={handleVehiculosPreload}
-                  onMouseLeave={() => cancelPreload('/vehiculos')}
-                >
-                  Usados
-                </Link>
-                <Link 
-                  className={styles.dropdownItem}
-                  to="/0km"
-                  onClick={() => {
-                    closeMenu()
-                    setIsAutosDropdownOpen(false)
-                  }}
-                  onMouseEnter={handle0kmPreload}
-                  onMouseLeave={() => cancelPreload('/0km')}
-                >
-                  0 KM
-                </Link>
-              </div>
-            </div>
+              Peugeot <span className={styles.navDivider}>|</span> 0 KM
+            </Link>
+            
+            {/* ✅ Planes */}
+            <Link 
+              className={`${styles.navLink} ${isActive('/planes') ? styles.active : ''}`} 
+              to="/planes"
+              aria-current={isActive('/planes') ? 'page' : undefined}
+              onClick={closeMenu}
+              onMouseEnter={handlePlanesPreload}
+              onMouseLeave={() => cancelPreload('/planes')}
+            >
+              Planes
+            </Link>
+            
+            {/* ✅ Usados | Multimarca */}
+            <Link 
+              className={`${styles.navLink} ${isActive('/usados') ? styles.active : ''}`} 
+              to="/usados"
+              aria-current={isActive('/usados') ? 'page' : undefined}
+              onClick={closeMenu}
+              onMouseEnter={handleUsadosPreload}
+              onMouseLeave={() => cancelPreload('/usados')}
+            >
+              Usados <span className={styles.navDivider}>|</span> Multimarca
+            </Link>
             <Link 
               className={`${styles.navLink} ${isActive('/postventa') ? styles.active : ''}`} 
               to="/postventa"

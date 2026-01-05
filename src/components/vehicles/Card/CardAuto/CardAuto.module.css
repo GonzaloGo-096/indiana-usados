@@ -25,19 +25,19 @@
     background: var(--color-white);
     border-radius: var(--border-radius-lg); /* ✅ Bordes suaves moderados */
     overflow: hidden;
-    border: 0.5px solid rgba(255, 255, 255, 0.05); /* ✅ Borde blanco la mitad de grosor */
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 8px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(255, 255, 255, 0.05); /* ✅ Border shadow blanco más sutil */
+    border: 0.5px solid rgba(0, 0, 0, 0.08); /* ✅ Borde negro sutil */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.08); /* ✅ Sombra negra base */
     transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
     position: relative;
     margin: 0 auto;
     cursor: pointer;
 }
 
-/* ✅ Hover con efecto glow moderno */
+/* ✅ Hover con efecto flotación y sombra negra pronunciada */
 .card:hover {
-    transform: translateY(-4px); /* ✅ Elevación suave */
-    border-color: rgba(255, 255, 255, 0.1); /* ✅ Borde más sutil en hover */
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 12px rgba(255, 255, 255, 0.15), 0 4px 10px rgba(255, 255, 255, 0.08); /* ✅ Border shadow más sutil en hover */
+    transform: translateY(-8px); /* ✅ Elevación más marcada para efecto flotación */
+    border-color: rgba(0, 0, 0, 0.12); /* ✅ Borde más visible en hover */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.1); /* ✅ Sombra negra pronunciada para efecto flotación */
 }
 
 .card:focus {
@@ -161,8 +161,9 @@
 
 .marca_modelo_separator {
     font-size: clamp(1.65rem, 5.4vw, 1.95rem); /* ✅ Mismo tamaño que marca/modelo */
-    font-weight: var(--font-weight-normal);
-    color: var(--color-neutral-400); /* ✅ Gris claro */
+    font-weight: var(--font-weight-light); /* ✅ Más ligero para ser más sutil */
+    color: var(--color-neutral-300); /* ✅ Gris más claro y sutil */
+    opacity: 0.6; /* ✅ Reducir opacidad para mayor sutileza */
     font-family: var(--font-condensed);
     padding: 0 var(--spacing-1);
     flex-shrink: 0;
@@ -273,8 +274,11 @@
     text-overflow: clip; /* ✅ No truncar, solo cortar si es necesario */
     width: 100%;
     text-align: left;
+    letter-spacing: -0.5px; /* ✅ Espaciado más compacto para apariencia más fina */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-synthesis: none; /* ✅ Evitar síntesis de peso de fuente */
+    text-rendering: optimizeLegibility; /* ✅ Optimizar renderizado para texto fino */
 }
 
 

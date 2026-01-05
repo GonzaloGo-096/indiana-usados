@@ -51,7 +51,8 @@ export const SEO_CONFIG = {
   // Configuración de páginas estáticas para sitemap
   staticPages: {
     '/': { changefreq: 'daily', priority: '1.0' },
-    '/vehiculos': { changefreq: 'daily', priority: '0.9' },
+    '/usados': { changefreq: 'daily', priority: '0.9' },
+    '/0km': { changefreq: 'daily', priority: '0.9' },
     '/nosotros': { changefreq: 'monthly', priority: '0.6' },
     '/postventa': { changefreq: 'monthly', priority: '0.8' }
   },

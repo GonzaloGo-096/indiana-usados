@@ -19,10 +19,30 @@
   padding: var(--section-padding-compact) 0;
 }
 
+/* ✅ Contenedor independiente para el título */
+.titleContainer {
+  max-width: var(--container-max-width);
+  margin-left: 16px; /* ✅ 16px de margen desde la izquierda */
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 6px;
+  padding-bottom: 0;
+  padding-left: 0; /* ✅ Sin padding izquierdo para alinear al inicio */
+  padding-right: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* ✅ Alinear contenido a la izquierda */
+}
+
 .container {
   max-width: var(--container-max-width);
   margin: 0 auto; /* ✅ Centrado en desktop */
-  padding: 6px 0;
+  padding-top: 6px;
+  padding-bottom: 0; /* ✅ Padding inferior removido - el espacio lo maneja gridContainer */
+  padding-left: 15px;
+  padding-right: 15px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -48,7 +68,7 @@
   margin-top: 40px;
   margin-left: 0;
   margin-right: 0;
-  padding: 5px 0 0 15px;
+  padding: 5px 0 0 15px; /* ✅ Padding izquierdo para alinear con el contenido */
   width: 100%;
   max-width: 100%;
 }
@@ -123,7 +143,7 @@
   padding-left: 24px; /* ✅ Pegado a la izquierda como el carrusel */
   padding-right: 24px;
   padding-top: 10px; /* ✅ Padding vertical equilibrado */
-  padding-bottom: 10px;
+  padding-bottom: 10px; /* ✅ Padding inferior equilibrado */
 }
 
 .actionButton {
@@ -198,10 +218,10 @@
   /* ✅ Migrado: Fondo oscuro histórico eliminado → token semántico surface (unificación visual bajo sistema de superficies claras) */
   background-color: var(--color-surface);
   padding-top: 50px; /* ✅ Padding superior aumentado (20px * 2.5 = 50px) */
-  padding-bottom: 20px; /* ✅ Padding inferior */
+  padding-bottom: 0; /* ✅ Padding inferior removido - el espacio lo maneja gridContainer */
   margin-left: calc(-50vw + 50%); /* ✅ Breakout technique para mobile - expandir a full width */
   margin-right: calc(-50vw + 50%); /* ✅ Breakout technique simétrico */
-  margin-bottom: -6px; /* ✅ Margen negativo para compensar padding del container */
+  margin-bottom: 0; /* ✅ Sin margen negativo */
   width: 100vw; /* ✅ Ancho completo del viewport */
   max-width: 100vw; /* ✅ Garantía de no exceder viewport */
   padding-left: calc(50vw - 50% + 15px); /* ✅ Padding que alinea con el container + padding del titleSection */
@@ -236,7 +256,8 @@
 /* Ambos deben usar 769px para mantener sincronización de botones y drawer */
 @media (min-width: 769px) {
   .container {
-    padding: 6px 0;
+    padding-top: 6px;
+    padding-bottom: 0; /* ✅ Padding inferior removido - el espacio lo maneja gridContainer */
   }
   
   .mainTitle {
@@ -253,7 +274,7 @@
     gap: var(--spacing-2);
     margin-left: 0;
     margin-right: 0;
-    padding-left: 15px;
+    padding-left: 0; /* ✅ Padding lateral removido, lo maneja titleContainer */
     width: 100%;
     max-width: 100%;
   }
@@ -278,7 +299,7 @@
   .vehiclesGrid {
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
-    margin-bottom: -6px; /* ✅ Margen negativo para compensar padding del container */
+    margin-bottom: 0; /* ✅ Sin margen negativo - mantener 20px de espacio al footer */
     width: 100vw;
     max-width: 100vw;
     padding-left: max(0px, calc((100vw - var(--container-max-width)) / 2)); /* ✅ Padding que alinea con el container cuando está centrado */

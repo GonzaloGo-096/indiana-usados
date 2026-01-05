@@ -1,28 +1,31 @@
 /**
  * CeroKilometroDetalle - Página de detalle de modelo 0km
  * 
- * Mobile: Carrusel horizontal de versiones
+ * Mobile: Carrusel horizontal de versiones (VersionCarousel)
  * Desktop: Tabs + layout de 2 columnas
  * 
- * Usa el hook useModeloSelector para manejar estado.
- * Componentes presentacionales reutilizables.
+ * Responsabilidades:
+ * - Orquestación de estado de dominio (useModeloSelector)
+ * - Decisión de qué renderizar en cada slide
+ * - Lógica de negocio y formateo
+ * 
+ * El carrusel (VersionCarousel) solo controla la navegación, no el contenido.
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Fase 2: Implementación real con data
+ * @version 3.0.0 - Refactor: Separación de responsabilidades (VersionCarousel)
  */
 
-import React, { useRef, useEffect, useCallback } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 import { SEOHead } from '@components/SEO'
 import { getBrandIcon } from '@components/ui/icons'
-import { VersionTabs, VersionContent, ModelGallery, FeatureSection, DimensionsSection } from '@components/ceroKm'
+import { VersionTabs, VersionContent, VersionCarousel, ModelGallery, FeatureSection, DimensionsSection } from '@components/ceroKm'
 import { useModeloSelector } from '@hooks/ceroKm'
 import { existeModelo } from '@data/modelos'
 import styles from './CeroKilometroDetalle.module.css'
 
 const CeroKilometroDetalle = () => {
   const { autoSlug } = useParams()
-  const carouselRef = useRef(null)
   
   // Verificar si el modelo existe
   if (!existeModelo(autoSlug)) {
@@ -48,50 +51,6 @@ const CeroKilometroDetalle = () => {
     cambiarVersionPorIndice,
     cambiarColor
   } = useModeloSelector(autoSlug)
-
-  // Scroll del carrusel mobile al cambiar versión por tabs
-  useEffect(() => {
-    const carousel = carouselRef.current
-    if (!carousel) return
-    
-    const slideWidth = carousel.offsetWidth
-    carousel.scrollTo({
-      left: indiceVersionActiva * slideWidth,
-      behavior: 'smooth'
-    })
-  }, [indiceVersionActiva])
-
-  // Detectar swipe en mobile para cambiar versión
-  const handleCarouselScroll = useCallback(() => {
-    const carousel = carouselRef.current
-    if (!carousel) return
-    
-    const slideWidth = carousel.offsetWidth
-    const scrollPosition = carousel.scrollLeft
-    const newIndex = Math.round(scrollPosition / slideWidth)
-    
-    if (newIndex !== indiceVersionActiva && newIndex >= 0 && newIndex < totalVersiones) {
-      cambiarVersionPorIndice(newIndex)
-    }
-  }, [indiceVersionActiva, totalVersiones, cambiarVersionPorIndice])
-
-  // Debounce del scroll para evitar múltiples cambios
-  useEffect(() => {
-    const carousel = carouselRef.current
-    if (!carousel) return
-    
-    let scrollTimeout
-    const handleScroll = () => {
-      clearTimeout(scrollTimeout)
-      scrollTimeout = setTimeout(handleCarouselScroll, 100)
-    }
-    
-    carousel.addEventListener('scroll', handleScroll)
-    return () => {
-      carousel.removeEventListener('scroll', handleScroll)
-      clearTimeout(scrollTimeout)
-    }
-  }, [handleCarouselScroll])
 
   if (!modelo) return null
 
@@ -186,38 +145,32 @@ const CeroKilometroDetalle = () => {
         )}
 
         {/* Contenido Mobile: Carrusel */}
-        <div className={styles.mobileContent}>
-          <div 
-            ref={carouselRef}
-            className={styles.carousel}
-          >
-            {versiones.map((version, index) => {
-              const isActive = version.id === versionActiva?.id
-              return (
-                <div key={version.id} className={styles.carouselSlide}>
-                  {/* Solo renderizar contenido completo si es la versión activa o adyacente */}
-                  {Math.abs(index - indiceVersionActiva) <= 1 ? (
-                    <VersionContent
-                      version={isActive ? versionActiva : version}
-                      modeloMarca={modelo.marca}
-                      modeloNombre={modelo.nombre}
-                      colorActivo={isActive ? colorActivo : null}
-                      coloresDisponibles={isActive ? coloresDisponibles : []}
-                      imagenActual={isActive ? imagenActual : null}
-                      onColorChange={cambiarColor}
-                      layout="mobile"
-                    />
-                  ) : (
-                    <div className={styles.carouselPlaceholder}>
-                      <span>{version.nombreCorto}</span>
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-          </div>
-
-        </div>
+        <VersionCarousel
+          versions={versiones}
+          activeIndex={indiceVersionActiva}
+          onChangeIndex={cambiarVersionPorIndice}
+          ariaLabel={`Versiones del ${modelo.marca} ${modelo.nombre}. Use las flechas para navegar.`}
+        >
+          {(version, index, isActive) => (
+            // El padre decide qué renderizar, el carrusel solo controla la navegación
+            isActive ? (
+              <VersionContent
+                version={version}
+                modeloMarca={modelo.marca}
+                modeloNombre={modelo.nombre}
+                colorActivo={colorActivo}
+                coloresDisponibles={coloresDisponibles}
+                imagenActual={imagenActual}
+                onColorChange={cambiarColor}
+                layout="mobile"
+              />
+            ) : (
+              <div className={styles.carouselPlaceholder}>
+                <span>{version.nombreCorto}</span>
+              </div>
+            )
+          )}
+        </VersionCarousel>
 
         {/* Contenido Desktop: Layout 2 columnas */}
         <div className={styles.desktopContent}>

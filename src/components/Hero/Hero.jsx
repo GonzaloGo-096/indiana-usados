@@ -59,7 +59,7 @@ const Hero = () => {
           <Link to="/0km" className={`${styles.cta} ${styles.ctaPrimary}`}>
             Peugeot <span className={styles.ctaDivider}>|</span> 0 KM
           </Link>
-          <Link to="/vehiculos" className={`${styles.cta} ${styles.ctaSecondary}`}>
+          <Link to="/usados" className={`${styles.cta} ${styles.ctaSecondary}`}>
             Usados <span className={styles.ctaDivider}>|</span> Multimarca
           </Link>
         </div>

@@ -60,10 +60,10 @@ if (!validateConfig()) {
   logger.error('app:config', 'Error en configuración de la aplicación')
 }
 
-// ✅ Prefetch de ruta crítica (/vehiculos) cuando el navegador esté idle
+// ✅ Prefetch de ruta crítica (/usados) cuando el navegador esté idle
 if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
   requestIdleCallback(() => {
-    // Prefetch del chunk de la ruta /vehiculos (segunda ruta más visitada)
+    // Prefetch del chunk de la ruta /usados (segunda ruta más visitada)
     // Usar el mismo import que PublicRoutes.jsx para asegurar que se carga el mismo chunk
     import('./pages/Vehiculos').catch(() => {
       // Silenciar errores de prefetch (no crítico)

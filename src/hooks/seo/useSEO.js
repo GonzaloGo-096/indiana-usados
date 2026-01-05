@@ -253,7 +253,7 @@ export const useVehicleSEO = (vehicle) => {
 
   // URL canónica (usar ID por ahora, luego cambiar a slug)
   const vehicleId = vehicle.id || vehicle._id
-  const vehicleUrl = vehicleId ? `/vehiculo/${vehicleId}` : '/vehiculos'
+  const vehicleUrl = vehicleId ? `/vehiculo/${vehicleId}` : '/usados'
 
   // Keywords dinámicos
   const keywords = [
@@ -287,7 +287,7 @@ export const useVehiclesListSEO = (vehicleCount = 0) => {
     title,
     description,
     keywords: 'catálogo autos usados, vehículos usados disponibles, comprar auto usado, autos usados con garantía',
-    url: '/vehiculos',
+    url: '/usados',
     type: 'website'
   })
 }

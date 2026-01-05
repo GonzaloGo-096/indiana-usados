@@ -39,7 +39,7 @@ const VehiculoDetalle = () => {
 
     // Función para volver preservando scroll
     const handleBack = () => {
-        navigateWithScroll('/vehiculos')
+        navigateWithScroll('/usados')
     }
 
     // Estado de carga
@@ -58,7 +58,7 @@ const VehiculoDetalle = () => {
                     title="Error al cargar el vehículo"
                     message={error?.message || 'No se pudo cargar la información del vehículo'}
                     actionText="Volver a la lista de vehículos"
-                    actionLink="/vehiculos"
+                    actionLink="/usados"
                     variant="error"
                 />
             </>
@@ -74,7 +74,7 @@ const VehiculoDetalle = () => {
                     title="Vehículo no encontrado"
                     message="El vehículo que buscas no existe o ha sido removido."
                     actionText="Volver a la lista de vehículos"
-                    actionLink="/vehiculos"
+                    actionLink="/usados"
                     variant="notFound"
                 />
             </>

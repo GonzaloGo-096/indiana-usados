@@ -7,6 +7,7 @@
 
 export { ColorSelector } from './ColorSelector'
 export { VersionTabs } from './VersionTabs'
+export { VersionCarousel } from './VersionCarousel'
 export { ModeloSpecs } from './ModeloSpecs'
 export { VersionContent } from './VersionContent'
 export { ModelGallery } from './ModelGallery'

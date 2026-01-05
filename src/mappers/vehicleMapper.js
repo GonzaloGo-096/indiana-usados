@@ -33,7 +33,7 @@
  * 
  * 🔄 FLUJO DE USO:
  * 
- * LISTADO (/vehiculos):
+ * LISTADO (/usados):
  * Backend.getAllPhotos() → mapVehiclesPage()
  *   ├─ extractVehicleImageUrls() → {principal, hover}
  *   ├─ extractAllImageUrls(v, {includeExtras: false})
@@ -41,7 +41,7 @@
  *   ↓
  * AutosGrid → CardAuto → usa strings directamente
  * 
- * DETALLE (/vehiculos/:id):
+ * DETALLE (/vehiculo/:id):
  * Backend.getOnePhoto(id) → mapVehicle()
  *   ├─ extractVehicleImageUrls() → {principal, hover}
  *   ├─ extractAllImageUrls(v, {includeExtras: true})

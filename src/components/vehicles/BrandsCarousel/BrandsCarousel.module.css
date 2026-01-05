@@ -17,6 +17,7 @@
   margin-bottom: 0; /* ✅ Sin margen inferior para que quede junto al contenedor negro */
   /* ✅ Sombra ambiental sutil para crear sensación de profundidad y separación del fondo */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.02);
+  overflow: visible; /* ✅ Asegurar que las flechas no se oculten */
 }
 
 /* ✅ Cuando hay selección, los logos no seleccionados se atenúan */
@@ -122,16 +123,6 @@
   z-index: 10;
 }
 
-.arrowButton:hover {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  transform: scale(1.1);
-}
-
-.arrowButton:active {
-  transform: scale(0.95);
-}
-
 .arrowRight {
   margin-left: auto;
 }
@@ -147,14 +138,22 @@
 @media (min-width: 769px) {
   .arrowButton {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     margin-left: 0;
     margin-right: 0;
     background: var(--color-neutral-900); /* ✅ Fondo negro siempre visible */
     color: var(--color-white); /* ✅ Ícono blanco para contraste */
+    z-index: 20; /* ✅ Aumentar z-index para asegurar visibilidad */
   }
 
   .arrowButton:hover {
     background: var(--color-neutral-800); /* ✅ Fondo más claro en hover */
+    transform: translateY(-50%) scale(1.1); /* ✅ Combinar translateY y scale para mantener posición */
+  }
+
+  .arrowButton:active {
+    transform: translateY(-50%) scale(0.95); /* ✅ Mantener posición al hacer click */
   }
 
   .arrowButton:first-of-type {

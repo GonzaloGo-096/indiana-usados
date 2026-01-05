@@ -34,7 +34,7 @@
  * @version 3.3.0 - Documentación mejorada: responsabilidades, arquitectura y flujos
  */
 
-import React, { useEffect, useState, useRef, useMemo } from 'react'
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { parseFilters, serializeFilters, hasAnyFilter, sortVehicles } from '@utils'
 import { useVehiclesList } from '@hooks'
@@ -63,16 +63,28 @@ const Vehiculos = () => {
         setSelectedSort(sp.get('sort'))
     }, [sp])
 
-    // ✅ NUEVO: Parsear filtros del querystring
-    const urlFilters = parseFilters(sp)
-    const isFiltered = hasAnyFilter(urlFilters)
+    // ✅ OPTIMIZADO: Parsear filtros del querystring (memoizado)
+    const urlFilters = useMemo(() => {
+        return parseFilters(sp)
+    }, [sp.toString()])
+
+    // ✅ OPTIMIZADO: Verificar si hay filtros activos (memoizado)
+    const isFiltered = useMemo(() => {
+        return hasAnyFilter(urlFilters)
+    }, [urlFilters])
     
     // ✅ NUEVO: Determinar si el formulario está visible
     const isFiltersVisible = filterFormRef.current?.isFiltersVisible || false
     
-    // ✅ NUEVO: Obtener marca actual (del estado local si formulario está abierto, de URL si está cerrado)
-    const currentMarca = isFiltersVisible && localMarca !== null ? localMarca : (urlFilters.marca || [])
-    const filters = { ...urlFilters, marca: currentMarca }
+    // ✅ OPTIMIZADO: Obtener marca actual (memoizado)
+    const currentMarca = useMemo(() => {
+        return isFiltersVisible && localMarca !== null ? localMarca : (urlFilters.marca || [])
+    }, [isFiltersVisible, localMarca, urlFilters.marca])
+    
+    // ✅ OPTIMIZADO: Filtros combinados (memoizado)
+    const filters = useMemo(() => {
+        return { ...urlFilters, marca: currentMarca }
+    }, [urlFilters, currentMarca])
 
     // ✅ NUEVO: Hook unificado para vehículos (siempre usa URL como fuente de verdad para fetch)
     const { vehicles, total, hasNextPage, loadMore, isLoadingMore, isLoading, isError, error, refetch } = useVehiclesList(urlFilters)
@@ -93,21 +105,22 @@ const Vehiculos = () => {
         }
     }, [vehicles])
 
-    // ✅ Handlers para filtros
-    const onApply = (newFilters) => {
+    // ✅ OPTIMIZADO: Handlers para filtros (memoizados)
+    const onApply = useCallback((newFilters) => {
         // Aplicar filtros de forma declarativa
         setSp(serializeFilters(newFilters), { replace: false })
-    }
-    const onClear = () => {
+    }, [setSp])
+    
+    const onClear = useCallback(() => {
         setSp(new URLSearchParams(), { replace: false })
-    }
+    }, [setSp])
 
-    // ✅ NUEVO: Handler para el botón Filtrar del título (toggle)
-    const handleFilterClick = () => {
+    // ✅ OPTIMIZADO: Handler para el botón Filtrar del título (toggle, memoizado)
+    const handleFilterClick = useCallback(() => {
         if (filterFormRef.current) {
             filterFormRef.current.toggleFilters()
         }
-    }
+    }, [])
 
     // ✅ NUEVO: Handler para selección de marca en carrusel
     const handleBrandSelect = (brandName) => {
@@ -142,8 +155,10 @@ const Vehiculos = () => {
         }
     }
 
-    // ✅ SIMPLIFICADO: Handlers para sorting
-    const handleSortClick = () => setIsSortDropdownOpen(!isSortDropdownOpen)
+    // ✅ OPTIMIZADO: Handlers para sorting (memoizados)
+    const handleSortClick = useCallback(() => {
+        setIsSortDropdownOpen(!isSortDropdownOpen)
+    }, [isSortDropdownOpen])
     const handleSortChange = (sortOption) => {
         setSelectedSort(sortOption)
         setIsSortDropdownOpen(false)
@@ -155,27 +170,30 @@ const Vehiculos = () => {
         }
         setSp(newParams, { replace: true })
     }
-    const handleCloseSortDropdown = () => setIsSortDropdownOpen(false)
+    const handleCloseSortDropdown = useCallback(() => {
+        setIsSortDropdownOpen(false)
+    }, [])
 
     return (
         <div className={styles.page}>
             <VehiclesListSEOHead vehicleCount={total} />
             
-            <div className={styles.container}>
-            {/* ✅ Banner de datos mock */}
-            {isUsingMockData && (
-                <div className={styles.mockDataBanner}>
-                    <strong>📱 Modo Demostración</strong>
-                    <small>Mostrando datos de ejemplo. Conecta tu backend para ver datos reales.</small>
-                </div>
-            )}
+            {/* ✅ Título en contenedor independiente */}
+            <div className={styles.titleContainer}>
+                {/* ✅ Banner de datos mock */}
+                {isUsingMockData && (
+                    <div className={styles.mockDataBanner}>
+                        <strong>📱 Modo Demostración</strong>
+                        <small>Mostrando datos de ejemplo. Conecta tu backend para ver datos reales.</small>
+                    </div>
+                )}
 
-            {/* ✅ MODIFICADO: Título sin botones */}
-            <div className={styles.titleSection}>
-                <h1 className={styles.mainTitle}>
-                    Nuestros Usados
-                </h1>
-            </div>
+                {/* ✅ MODIFICADO: Título sin botones */}
+                <div className={styles.titleSection}>
+                    <h1 className={styles.mainTitle}>
+                        Nuestros Usados
+                    </h1>
+                </div>
             </div>
 
             {/* ✅ NUEVO: Sección del carrusel a todo el ancho con botones integrados */}
@@ -257,7 +275,7 @@ const Vehiculos = () => {
             {isFiltered && (
                 <div className={styles.backButtonContainer}>
                     <button 
-                        onClick={() => navigate('/vehiculos')}
+                        onClick={() => navigate('/usados')}
                         className={styles.backButton}
                     >
                         Volver a lista principal
