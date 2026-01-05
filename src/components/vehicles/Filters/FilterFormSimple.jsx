@@ -383,7 +383,7 @@ const FilterFormSimpleComponent = React.forwardRef(({
             </div>
             <div className={styles.formGroup}>
               <RangeSlider
-                label="Kms"
+                label="km"
                 min={FILTER_DEFAULTS.KILOMETRAJE.min}
                 max={FILTER_DEFAULTS.KILOMETRAJE.max}
                 step={5000}
@@ -397,15 +397,16 @@ const FilterFormSimpleComponent = React.forwardRef(({
           {/* MultiSelects */}
           {/* ✅ ELIMINADO: Input de marca - ahora se usa el carrusel de marcas */}
           <div className={styles.selectsSection}>
-            <div className={styles.formGroup}>
-              <MultiSelect
-                label="Combustible"
-                options={combustibles}
-                value={filters.combustible}
-                onChange={(val) => handleFilterChange('combustible', val)}
-                placeholder="Seleccionar combustibles"
-              />
+            {/* ✅ Botones dentro del grid ocupando el espacio del input faltante */}
+            <div className={styles.desktopButtons}>
+              <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
+                Limpiar
+              </button>
+              <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
+                {isSubmitting ? 'Aplicando...' : 'Aplicar'}
+              </button>
             </div>
+            
             <div className={styles.formGroup}>
               <MultiSelect
                 label="Caja"
@@ -415,28 +416,26 @@ const FilterFormSimpleComponent = React.forwardRef(({
                 placeholder="Todas las cajas"
               />
             </div>
-          </div>
-
-          {/* Botones - Abajo en desktop */}
-          <div className={styles.desktopButtons}>
-            <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
-              Limpiar
-            </button>
-            <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
-              {isSubmitting ? 'Aplicando...' : 'Aplicar'}
-            </button>
+            
+            <div className={styles.formGroup}>
+              <MultiSelect
+                label="Combustible"
+                options={combustibles}
+                value={filters.combustible}
+                onChange={(val) => handleFilterChange('combustible', val)}
+                placeholder="Seleccionar combustibles"
+              />
+            </div>
           </div>
         </form>
       </div>
     </div>
   )
 
-  // ✅ EN DESKTOP: Renderizar siempre pero controlar visibilidad con CSS (optimizado para rendimiento)
+  // ✅ EN DESKTOP: Renderizar siempre manteniendo el ancho completo, con efecto slide simple
   if (!isMobile) {
     return (
-      <div 
-        className={isVisibleDesktop ? styles.desktopVisible : styles.desktopHidden}
-      >
+      <div className={isVisibleDesktop ? styles.desktopVisible : styles.desktopHidden}>
         {formContent}
       </div>
     )

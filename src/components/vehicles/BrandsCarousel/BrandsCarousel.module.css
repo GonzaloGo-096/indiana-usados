@@ -143,12 +143,18 @@
   }
 }
 
-/* ✅ Desktop: flechas con position absolute, no ocupan espacio */
+/* ✅ Desktop: flechas con position absolute, no ocupan espacio, siempre con fondo negro */
 @media (min-width: 769px) {
   .arrowButton {
     position: absolute;
     margin-left: 0;
     margin-right: 0;
+    background: var(--color-neutral-900); /* ✅ Fondo negro siempre visible */
+    color: var(--color-white); /* ✅ Ícono blanco para contraste */
+  }
+
+  .arrowButton:hover {
+    background: var(--color-neutral-800); /* ✅ Fondo más claro en hover */
   }
 
   .arrowButton:first-of-type {

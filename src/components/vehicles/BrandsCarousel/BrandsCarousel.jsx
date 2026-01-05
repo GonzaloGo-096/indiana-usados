@@ -53,7 +53,7 @@ const BrandsCarousel = ({ selectedBrands = [], onBrandSelect, isFiltersVisible =
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        left: -300,
+        left: -500,
         behavior: 'smooth'
       })
     }
@@ -62,7 +62,7 @@ const BrandsCarousel = ({ selectedBrands = [], onBrandSelect, isFiltersVisible =
   const scrollRight = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        left: 300,
+        left: 500,
         behavior: 'smooth'
       })
     }

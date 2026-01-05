@@ -134,10 +134,10 @@
 .selectsSection {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem; /* ✅ Aumentado a 2rem para mayor separación entre inputs */
-  margin-bottom: 0.0625rem;
+  gap: 3rem; /* ✅ Aumentado espacio entre inputs (de 2rem a 3rem) */
+  margin-bottom: 0;
   padding: 0;
-  border-radius: 0.375rem;
+  border-radius: 0;
   overflow: visible;
   justify-items: stretch;
 }
@@ -145,109 +145,184 @@
 .rangesSection {
   z-index: 20;
   position: relative;
+  margin-bottom: 1.5rem; /* ✅ Espacio entre secciones */
 }
 
-.rangesSection .formGroup { margin-bottom: 0.03125rem; }
-.rangesSection .formGroup label { color: #0a0d14; font-weight: 600; margin-bottom: 0.25rem; font-size: 0.625rem; }
+.rangesSection .formGroup { 
+  margin-bottom: 0; 
+}
+
+.rangesSection .formGroup label { 
+  color: var(--color-text-primary); 
+  font-weight: var(--font-weight-semibold); 
+  margin-bottom: var(--spacing-2); 
+  font-size: calc(var(--font-size-base) * 2) !important; /* ✅ Doble de tamaño */
+}
 
 .selectsSection {
-  background: #ffffff;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
+  background: transparent; /* ✅ Fondo transparente para integración visual */
+  padding: 0;
+  border-radius: 0;
   border: none;
   position: relative;
-  /* ✅ Z-index más bajo que los dropdowns para que los dropdowns se muestren por encima */
   z-index: 1;
 }
 
 /* ✅ Orden inverso de z-index para que el primer select tenga prioridad sobre los de abajo */
-.selectsSection .formGroup:nth-child(1) { z-index: 30; }
-.selectsSection .formGroup:nth-child(2) { z-index: 20; }
-.selectsSection .formGroup:nth-child(3) { z-index: 10; }
+/* ✅ NOTA: Botones ahora son el primer elemento (nth-child(1)), entonces los selects son nth-child(2) y nth-child(3) */
+.selectsSection .formGroup:nth-child(2) { z-index: 30; } /* Caja */
+.selectsSection .formGroup:nth-child(3) { z-index: 20; } /* Combustible */
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.03125rem;
+  gap: var(--spacing-2); /* ✅ Espaciado consistente entre label e input */
   width: 100%;
-  align-items: center;
-  margin-bottom: 0.03125rem;
+  align-items: stretch; /* ✅ Alineación a la izquierda para mejor lectura */
+  margin-bottom: 0;
   max-width: none;
-  padding: 0 0.25rem;
+  padding: 0;
   overflow: visible;
   position: relative;
 }
 
-.formGroup > div { width: 100%; max-width: none; padding: 0 0.125rem; margin-bottom: 0; }
-.formGroup > div > div { margin-bottom: 0; }
+.formGroup > div { 
+  width: 100%; 
+  max-width: none; 
+  padding: 0; 
+  margin-bottom: 0; 
+}
+
+.formGroup > div > div { 
+  margin-bottom: 0; 
+}
+
 .formGroup .rangeSlider,
-.formGroup .multiSelect { margin-bottom: 0; width: 100%; padding: 0 0.125rem; }
-.formGroup .multiSelect .trigger { padding: 0.375rem 0.25rem; }
+.formGroup .multiSelect { 
+  margin-bottom: 0; 
+  width: 100%; 
+  padding: 0; 
+}
+
+/* ✅ Reducir tamaño visual de inputs (select y range) */
+.formGroup .multiSelect .trigger { 
+  padding: 5px 8px !important; /* ✅ Más chico */
+  min-height: 28px !important; /* ✅ Más chico */
+  font-size: calc(var(--font-size-base) * 2) !important; /* ✅ Doble de tamaño */
+}
+
+/* ✅ Doble tamaño de texto en MultiSelect */
+.formGroup .multiSelect .trigger .text {
+  font-size: calc(var(--font-size-base) * 2) !important; /* ✅ Doble de tamaño */
+}
+
+/* ✅ Estilos del RangeSlider en formulario de filtros */
 .formGroup .rangeSlider .container,
-.formGroup .rangeSlider .values { padding: 0 0.125rem; }
-.formGroup .label { margin-bottom: 0.0625rem; font-size: 0.625rem; }
-.formGroup .values { margin-top: 0.25rem; gap: 0.5rem; }
-.formGroup .container { margin-bottom: 0; }
+.formGroup .rangeSlider .values { 
+  padding: 0; 
+}
+
+.formGroup .container { 
+  margin-bottom: 0; 
+}
+
 .formGroup label {
-  text-align: center;
-  font-weight: 600;
-  font-size: 0.625rem;
-  font-family: 'Barlow Condensed', sans-serif;
-  color: #0a0d14;
-  margin-bottom: 0.25rem;
+  text-align: left; /* ✅ Alineación a la izquierda para mejor legibilidad */
+  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--font-size-base) * 2) !important; /* ✅ Doble de tamaño */
+  font-family: var(--font-display);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2); /* ✅ Espacio consistente debajo del label */
   text-transform: capitalize;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 .buttonBase {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  font-weight: 600;
+  padding: var(--spacing-3) var(--spacing-6); /* ✅ Padding más generoso (12px 24px) */
+  border-radius: 8px; /* ✅ Bordes más redondeados y modernos */
+  font-size: var(--font-size-base); /* ✅ 16px - tamaño estándar legible */
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-display);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid transparent;
   text-decoration: none;
-  min-height: 2rem;
+  min-height: 44px; /* ✅ Altura mínima accesible */
+  white-space: nowrap;
 }
 
 .applyButton {
   composes: buttonBase;
   /* ✅ Migrado: CTA principal → color de marca según sistema */
   background-color: var(--color-brand-500);
-  color: #ffffff;
+  color: var(--color-white);
   border-color: var(--color-brand-500);
+  box-shadow: 0 2px 4px rgba(0, 85, 164, 0.2); /* ✅ Sombra sutil para profundidad */
 }
 
 /* ✅ Migrado: Hover/Active → brand-600 para jerarquía visual */
-.applyButton:hover:not(:disabled) { background-color: var(--color-brand-600); border-color: var(--color-brand-600); transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+.applyButton:hover:not(:disabled) { 
+  background-color: var(--color-brand-600); 
+  border-color: var(--color-brand-600); 
+  transform: translateY(-1px); 
+  box-shadow: 0 4px 8px rgba(0, 85, 164, 0.25); /* ✅ Sombra más pronunciada en hover */
+}
+
+.applyButton:active:not(:disabled) { 
+  transform: translateY(0); 
+  box-shadow: 0 1px 2px rgba(0, 85, 164, 0.2); 
+}
 
 .clearButton {
   composes: buttonBase;
-  background: #f3f4f6;
-  color: #6b7280;
-  border-color: #d1d5db;
+  background: var(--color-neutral-100);
+  color: var(--color-text-secondary);
+  border-color: var(--color-neutral-300);
 }
 
-.clearButton:hover:not(:disabled) { background: #e5e7eb; border-color: #9ca3af; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+.clearButton:hover:not(:disabled) { 
+  background: var(--color-neutral-200); 
+  border-color: var(--color-neutral-400); 
+  color: var(--color-text-primary);
+  transform: translateY(-1px); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); 
+}
 
-.applyButton:active:not(:disabled),
-.clearButton:active:not(:disabled) { transform: translateY(0); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+.clearButton:active:not(:disabled) { 
+  transform: translateY(0); 
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); 
+}
 
 .applyButton:disabled,
-.clearButton:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+.clearButton:disabled { 
+  opacity: 0.5; 
+  cursor: not-allowed; 
+  transform: none; 
+  box-shadow: none; 
+}
 
-/* ✅ Botones en desktop - Abajo del formulario */
+/* ✅ Botones en desktop - Dentro del grid ocupando el espacio del input faltante */
 .desktopButtons {
   display: none; /* Oculto por defecto, visible en desktop */
-  gap: 0.75rem;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
+  gap: var(--spacing-3); /* ✅ Espaciado entre botones (12px) */
+  align-items: flex-start; /* ✅ Alinear arriba como los inputs */
+  justify-content: stretch;
+  flex-direction: row; /* ✅ Botones uno al lado del otro (horizontal) */
+  margin-top: 0; /* ✅ Sin margen superior (ya está en el grid) */
+  padding: 0; /* ✅ Sin padding extra */
+  border: none; /* ✅ Sin borde */
+}
+
+/* ✅ Botones dentro del grid ocupan todo el espacio disponible */
+.desktopButtons button {
+  flex: 1; /* ✅ Cada botón ocupa la mitad del espacio horizontal */
+  width: 100%; /* ✅ Ancho completo dentro del flex */
 }
 
 .sortDropdown {
@@ -295,28 +370,22 @@
 }
 
 /* ===== DESKTOP VISIBILITY STATES ===== */
-/* ✅ Optimizado para rendimiento: usar opacity + transform (GPU-accelerated) */
 .desktopVisible {
-  display: block;
   width: 100%;
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-              visibility 0.25s;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
 .desktopHidden {
-  display: block; /* ✅ Mantener en el flow para permitir transiciones */
+  width: 100%;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-12px);
-  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-              visibility 0.2s;
-  pointer-events: none; /* ✅ Deshabilitar interacciones cuando está oculto */
-  max-height: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  height: 0;
   overflow: hidden;
 }
 
@@ -326,7 +395,7 @@
   .rangesSection,
   .selectsSection { 
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem; /* ✅ Aumentado a 2rem para mayor separación entre inputs en desktop */
+    gap: 3rem; /* ✅ Aumentado espacio entre inputs */
   }
   .formWrapper { 
     width: 100%;

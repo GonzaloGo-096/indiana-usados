@@ -38,8 +38,14 @@ const RangeSlider = React.memo(({
     return ((val - min) / (max - min)) * 100
   }
 
+  // ✅ Función para redondear valores al múltiplo más cercano del step (estándar Material Design)
+  const snapToStep = (value) => {
+    return Math.round((value - min) / step) * step + min
+  }
+
   const getValueFromPercentage = (percentage) => {
-    return Math.round((percentage / 100) * (max - min) + min)
+    const rawValue = (percentage / 100) * (max - min) + min
+    return snapToStep(rawValue)
   }
 
   // Memoizar cálculos de posiciones para evitar recálculos

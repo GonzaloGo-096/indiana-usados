@@ -14,7 +14,7 @@
 
 .label {
   display: block;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   color: var(--color-neutral-700);
   margin-bottom: var(--spacing-sm);
@@ -38,7 +38,7 @@
 .range {
   position: absolute;
   height: 100%;
-  background: var(--color-neutral-900);
+  background: var(--color-brand-500);
   border-radius: 3px;
   transition: all 0.2s ease;
 }
@@ -120,13 +120,14 @@
 }
 
 .value {
-  font-size: var(--font-size-xs);
-  color: var(--color-neutral-600);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
   font-weight: var(--font-weight-medium);
 }
 
 .separator {
-  color: var(--color-neutral-400);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-lg);
   margin: 0 var(--spacing-xs);
 }
 
