@@ -19,37 +19,60 @@
   min-height: 100vh;
 }
 
-/* ===== BOTÓN DE VOLVER ===== */
+/* ===== BOTÓN DE VOLVER - ESTILO UNIFICADO PLANES (OUTLINE) ===== */
 .backButton {
   margin-bottom: 2rem;
 }
 
 .backLink {
+  --button-padding-y: var(--spacing-3);
+  --button-padding-x: var(--spacing-4);
+  --button-font-size: clamp(0.875rem, 2vw, 1rem);
+  --button-letter-spacing: 0.5px;
+  --button-hover-lift: -1px;
+  
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem; /* ✅ REDUCIDO: De 0.5rem a 0.375rem */
-  padding: 0.5rem 0.875rem; /* ✅ REDUCIDO: De 0.75rem 1.25rem a 0.5rem 0.875rem */
-  background: #1f2937;
-  color: white;
+  gap: var(--spacing-2);
+  padding: var(--button-padding-y) var(--button-padding-x);
+  background: transparent;
+  color: var(--color-brand-500);
   text-decoration: none;
-  border-radius: 6px; /* ✅ REDUCIDO: De 8px a 6px */
-  font-weight: 600;
-  font-size: 0.8rem; /* ✅ REDUCIDO: De 0.875rem a 0.8rem */
-  transition: all 0.2s ease;
-  border: none;
+  font-size: var(--button-font-size);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: var(--button-letter-spacing);
+  border-radius: var(--border-radius-md);
+  border: 2px solid var(--color-brand-500);
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* ✅ REDUCIDO: Sombra más sutil */
+  transition: 
+    background-color var(--transition-fast),
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .backLink:hover {
-  background: #374151;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: var(--color-brand-500-rgba-10);
+  color: var(--color-brand-600);
+  border-color: var(--color-brand-600);
+  transform: translateY(var(--button-hover-lift));
+}
+
+.backLink:active {
+  transform: translateY(0);
+}
+
+.backLink:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
 }
 
 .backArrow {
-  font-size: 0.875rem; /* ✅ REDUCIDO: De 1rem a 0.875rem */
-  font-weight: 700;
+  font-size: 1em;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
 }
 
 /* ===== CONTENIDO PRINCIPAL ===== */

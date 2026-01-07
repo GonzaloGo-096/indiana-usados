@@ -5,64 +5,34 @@
  * @version 1.0.0
  */
 
-/* ===== BASE BUTTON ===== */
+/* ===== BASE BUTTON - ESTILO UNIFICADO PLANES ===== */
 .button {
+  --button-padding-y: var(--spacing-3);
+  --button-padding-x: var(--spacing-4);
+  --button-font-size: clamp(0.875rem, 2vw, 1rem);
+  --button-letter-spacing: 0.5px;
+  --button-hover-lift: -1px;
+  
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 16px;
-  font-size: 0.9375rem;
-  font-weight: var(--font-weight-medium);
-  font-family: var(--font-poppins);
-  letter-spacing: 0.02em;
-  color: var(--color-white);
-  background: linear-gradient(135deg, var(--color-brand-500) 0%, var(--color-brand-600) 100%);
-  border: none;
-  border-radius: var(--border-radius-lg);
+  padding: var(--button-padding-y) var(--button-padding-x);
+  font-size: var(--button-font-size);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: var(--button-letter-spacing);
+  border-radius: var(--border-radius-md);
   text-decoration: none;
   cursor: pointer;
-  /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con opacidad) */
-  box-shadow: 
-    0 1px 3px rgba(0, 85, 164, 0.2),
-    0 1px 2px rgba(0, 85, 164, 0.15);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+  transition: 
+    background-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
   -webkit-tap-highlight-color: transparent;
-}
-
-.button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-.button:hover {
-  background: linear-gradient(135deg, var(--color-brand-600) 0%, var(--color-brand-700) 100%);
-  transform: translateY(-1px);
-  /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con opacidad) */
-  box-shadow: 
-    0 4px 12px rgba(0, 85, 164, 0.25),
-    0 2px 4px rgba(0, 85, 164, 0.15);
-}
-
-.button:hover::before {
-  opacity: 1;
-}
-
-.button:active {
-  transform: translateY(0);
-  /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con opacidad) */
-  box-shadow: 
-    0 1px 3px rgba(0, 85, 164, 0.2),
-    0 1px 2px rgba(0, 85, 164, 0.15);
 }
 
 .button:focus-visible {
@@ -70,38 +40,53 @@
   outline-offset: 2px;
 }
 
-/* ===== VARIANTS ===== */
+.button:active {
+  transform: translateY(0);
+}
+
+/* ===== VARIANTS - ESTILO UNIFICADO PLANES ===== */
+/* ✅ PRIMARY: Filled (relleno) - Para acciones principales */
 .button.primary {
-  background: linear-gradient(135deg, var(--color-brand-500) 0%, var(--color-brand-600) 100%);
+  background: var(--color-brand-500);
   color: var(--color-white);
+  border: none;
 }
 
 .button.primary:hover {
-  /* ✅ Migrado: Azul hardcodeado → sistema de tokens */
-  background: linear-gradient(135deg, var(--color-brand-600) 0%, var(--color-brand-700) 100%);
+  background: var(--color-brand-600);
+  transform: translateY(var(--button-hover-lift));
+  box-shadow: 0 2px 8px var(--color-brand-500-rgba-20);
 }
 
+.button.primary:active {
+  box-shadow: 0 1px 4px var(--color-brand-500-rgba-15);
+}
+
+/* ✅ SECONDARY: Neutral (gris) - Para acciones secundarias */
 .button.secondary {
   background: var(--color-neutral-100);
-  border-color: var(--color-neutral-300);
+  border: 2px solid var(--color-neutral-300);
   color: var(--color-text-primary);
 }
 
 .button.secondary:hover {
   background: var(--color-neutral-200);
   border-color: var(--color-neutral-400);
+  transform: translateY(var(--button-hover-lift));
 }
 
+/* ✅ OUTLINE: Transparente (borde azul) - Para "Descargar ficha técnica" */
 .button.outline {
   background: transparent;
-  border-color: var(--color-brand-500);
+  border: 2px solid var(--color-brand-500);
   color: var(--color-brand-500);
 }
 
 .button.outline:hover {
-  background: var(--color-brand-50);
-  border-color: var(--color-brand-600);
+  background: var(--color-brand-500-rgba-10);
   color: var(--color-brand-600);
+  border-color: var(--color-brand-600);
+  transform: translateY(var(--button-hover-lift));
 }
 
 /* ===== SIZES ===== */

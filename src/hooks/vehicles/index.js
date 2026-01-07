@@ -14,3 +14,6 @@ export { useVehiclesList } from './useVehiclesList'
 
 // ✅ Hook para detalle individual
 export { useVehicleDetail } from './useVehicleDetail'
+
+// ✅ Hook para prefetch inteligente
+export { useVehiclePrefetch } from './useVehiclePrefetch'

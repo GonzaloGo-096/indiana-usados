@@ -10,16 +10,31 @@
 /* ===== MOBILE CONTENT (Carrusel) ===== */
 .mobileContent {
   display: block;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Ocultar en desktop (≥768px) - Solo visible en mobile */
+@media (min-width: 768px) {
+  .mobileContent {
+    display: none;
+  }
 }
 
 .carousel {
-  display: flex;
+  display: flex !important;
+  width: 100% !important;
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  position: relative;
+  box-sizing: border-box;
+  flex-wrap: nowrap;
 }
 
 .carousel::-webkit-scrollbar {
@@ -27,8 +42,20 @@
 }
 
 .carouselSlide {
-  flex: 0 0 100%;
-  min-width: 100%;
+  flex: 0 0 100% !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
   scroll-snap-align: start;
+  position: relative;
+  box-sizing: border-box;
+  flex-shrink: 0 !important;
+}
+
+/* Accesibilidad: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .carousel {
+    scroll-behavior: auto;
+  }
 }
 

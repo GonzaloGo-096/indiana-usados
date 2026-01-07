@@ -16,6 +16,7 @@ export { CloudinaryImage } from './CloudinaryImage'
 export { default as RangeSlider } from './RangeSlider/RangeSlider' 
 export { default as MultiSelect } from './MultiSelect/MultiSelect'
 export { default as HeroImageCarousel } from './HeroImageCarousel'
+export { default as CarouselDots } from './CarouselDots/CarouselDots'
 
 // ✅ NUEVOS: Componentes para Code Splitting
 export { LoadingSpinner } from './LoadingSpinner'

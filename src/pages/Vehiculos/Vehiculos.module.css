@@ -169,13 +169,13 @@
 }
 
 .actionButton:hover {
-  background-color: rgba(0, 85, 164, 0.08); /* ✅ Fondo sutil al hover */
+  background-color: var(--color-brand-500-rgba-10); /* ✅ Fondo sutil al hover */
   color: var(--color-brand-600);
 }
 
 .actionButton.active {
   /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 10% opacidad) */
-  background: rgba(0, 85, 164, 0.12);
+  background: var(--color-brand-500-rgba-15);
   color: var(--color-brand-600);
 }
 

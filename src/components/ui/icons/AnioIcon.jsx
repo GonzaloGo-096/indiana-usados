@@ -23,3 +23,4 @@ export const AnioIcon = ({ className = '', size = 24, color = 'currentColor' }) 
 
 export default AnioIcon
 
+

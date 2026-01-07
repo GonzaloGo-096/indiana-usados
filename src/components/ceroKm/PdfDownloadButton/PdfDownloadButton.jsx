@@ -31,7 +31,7 @@ export const PdfDownloadButton = memo(({
   label,
   fileSize,
   openInNewTab = false,
-  variant = 'primary',
+  variant = 'outline', // ✅ Cambiado a outline por defecto (transparente)
   size = 'medium',
   className = ''
 }) => {

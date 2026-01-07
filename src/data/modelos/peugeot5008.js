@@ -79,7 +79,7 @@ export const PEUGEOT_5008 = {
         href: '/pdf/pdf-5008.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     }

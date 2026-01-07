@@ -10,7 +10,7 @@ import { logger } from '@utils/logger'
 import { FORM_RULES } from '@constants/forms'
 
 // ✅ IMAGEN PREDETERMINADA - Ruta pública (funciona en local y producción)
-const logoChicoDefault = '/assets/logos/brands/logo-chico-solid.webp'
+const logoChicoDefault = '/assets/logos/logos-indiana/desktop/logo-chico-solid.webp'
 
 // ✅ CAMPOS DE IMAGEN (estructura actualizada)
 export const IMAGE_FIELDS = {

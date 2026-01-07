@@ -168,7 +168,7 @@ export const VersionContent = memo(({
               href={version.pdf.href}
               label={version.pdf.label || 'Ficha Técnica'}
               fileSize={version.pdf.fileSize}
-              variant={version.pdf.variant || 'primary'}
+              variant={version.pdf.variant || 'outline'}
               size={version.pdf.size || 'medium'}
               className={styles.actionButton}
             />
@@ -257,7 +257,7 @@ export const VersionContent = memo(({
                 href={version.pdf.href}
                 label={version.pdf.label || 'Ficha Técnica'}
                 fileSize={version.pdf.fileSize}
-                variant={version.pdf.variant || 'primary'}
+                variant={version.pdf.variant || 'outline'}
                 size={version.pdf.size || 'medium'}
                 className={styles.actionButton}
               />

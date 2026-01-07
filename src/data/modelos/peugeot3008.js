@@ -78,7 +78,7 @@ export const PEUGEOT_3008 = {
         href: '/pdf/pdf-3008.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     }

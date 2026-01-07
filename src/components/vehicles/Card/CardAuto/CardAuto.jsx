@@ -31,7 +31,7 @@ import styles from './CardAuto.module.css'
 import { AnioIcon, KmIcon, CajaIconDetalle } from '@components/ui/icons'
 import CloudinaryImage from '@/components/ui/CloudinaryImage/CloudinaryImage'
 import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
-import { usePreloadImages } from '@hooks'
+import { usePreloadImages, useVehiclePrefetch } from '@hooks'
 
 /**
  * Componente CardAuto optimizado
@@ -40,6 +40,7 @@ import { usePreloadImages } from '@hooks'
  */
 export const CardAuto = memo(({ auto }) => {
     const navigate = useNavigate()
+    const { prefetchVehicleDetail } = useVehiclePrefetch()
     
     // ✅ PRELOAD DE IMÁGENES CRÍTICAS - Mejorado para cache borrado
     const { preloadVehicle, getStats } = usePreloadImages([auto], {
@@ -70,6 +71,14 @@ export const CardAuto = memo(({ auto }) => {
         }
         navigate(`/vehiculo/${vehicleId}`)
     }, [auto, navigate])
+
+    // ✅ OPTIMIZADO: Prefetch al hover (mejora percepción de velocidad)
+    const handleMouseEnter = useCallback(() => {
+        const vehicleId = auto.id || auto._id
+        if (vehicleId) {
+            prefetchVehicleDetail(vehicleId)
+        }
+    }, [auto, prefetchVehicleDetail])
     
     // ✅ VALIDAR DATOS DEL VEHÍCULO
     if (!auto || (!auto.id && !auto._id)) {
@@ -82,14 +91,13 @@ export const CardAuto = memo(({ auto }) => {
     // ✅ MEMOIZAR DATOS FORMATEADOS
     const formattedData = useMemo(() => {
         const cajaFormateada = formatCaja(auto.caja)
-        // ✅ Abreviar "Automática" solo en la card
-        const cajaAbreviada = cajaFormateada === 'Automática' ? 'Autom.' : cajaFormateada
+        // ✅ Mostrar "Automática" completo (sin abreviar)
         
         return {
             price: formatPrice(auto.precio),
             kilometers: formatKilometraje(auto.kilometraje || auto.kms),
             year: formatYear(auto.anio || auto.año),
-            caja: cajaAbreviada,
+            caja: cajaFormateada,
             brandModel: formatBrandModel(auto.marca, auto.modelo),
             version: formatValue(auto.version || ''),
             cilindrada: formatCilindradaDisplay(auto.cilindrada || ''),
@@ -97,6 +105,11 @@ export const CardAuto = memo(({ auto }) => {
             traccion: formatValue(auto.traccion || '')
         }
     }, [auto.precio, auto.kilometraje, auto.kms, auto.anio, auto.año, auto.caja, auto.marca, auto.modelo, auto.version, auto.cilindrada, auto.HP, auto.traccion])
+    
+    // ✅ Detectar si es "Automática" para aplicar estilos especiales
+    const isAutomatica = useMemo(() => {
+        return formattedData.caja === 'Automática'
+    }, [formattedData.caja])
     
     // ✅ MEMOIZAR LOGO DE MARCA
     const brandLogo = useMemo(() => {
@@ -121,6 +134,7 @@ export const CardAuto = memo(({ auto }) => {
             data-testid="vehicle-card"
             data-vehicle-id={auto?.id || auto?._id}
             onClick={handleCardClick}
+            onMouseEnter={handleMouseEnter}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
@@ -155,7 +169,7 @@ export const CardAuto = memo(({ auto }) => {
                         <img 
                             src={brandLogo.src} 
                             alt={brandLogo.alt} 
-                            className={styles.brand_logo}
+                            className={`${styles.brand_logo} ${brandLogo.size === 'small' ? styles.brand_logo_small : ''} ${brandLogo.size === 'large' ? styles.brand_logo_large : ''}`}
                             width="60"
                             height="60"
                             loading="lazy"
@@ -174,10 +188,16 @@ export const CardAuto = memo(({ auto }) => {
                         </div>
                         
                         {/* Fila 2: Caja, Km, Año (sin separadores) */}
-                        <div className={styles.container1_row3}>
+                        <div className={`${styles.container1_row3} ${isAutomatica ? styles.container1_row3_automatica : ''}`}>
                             {mainData.map((item) => {
+                                const isCajaItem = item.label === 'Caja'
+                                const isCajaAutomatica = isCajaItem && isAutomatica
+                                
                                 return (
-                                    <div key={item.label} className={styles.row2_data_item}>
+                                    <div 
+                                        key={item.label} 
+                                        className={`${styles.row2_data_item} ${isCajaAutomatica ? styles.row2_data_item_automatica : ''}`}
+                                    >
                                         <div className={styles.row2_data_content}>
                                             <span className={styles.row2_data_label}>{item.label}</span>
                                             <span className={styles.row2_data_value}>{item.value}</span>

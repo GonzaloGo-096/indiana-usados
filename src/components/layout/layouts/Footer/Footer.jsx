@@ -2,6 +2,7 @@
  * Footer - Componente de pie de página simplificado
  * 
  * Características:
+ * - Logo de marca en encabezado
  * - Tres módulos informativos data-driven
  * - Grid responsive 3→1
  * - Íconos SVG optimizados
@@ -9,7 +10,7 @@
  * - Integrado con design tokens
  * 
  * @author Indiana Usados
- * @version 3.0.0 - Simplificado sin card elevada
+ * @version 3.1.0 - Agregado logo en encabezado
  */
 
 import FooterModules from './FooterModules'
@@ -21,6 +22,18 @@ const Footer = () => {
   return (
     <footer className={styles.footer} id="contacto" tabIndex="-1">
       <div className={styles.container}>
+        {/* ✅ LOGO ENCABEZADO */}
+        <div className={styles.header}>
+          <img 
+            src="/assets/logos/logos-indiana/mobile/logo-chico-solid-fallback-transparente.webp"
+            alt="Indiana Usados"
+            className={styles.logo}
+            width="120"
+            height="auto"
+            loading="lazy"
+          />
+        </div>
+
         {/* ✅ MÓDULOS INFORMATIVOS */}
         <FooterModules />
         

@@ -29,7 +29,7 @@
 .carouselTrack {
   flex: 1;
   display: flex;
-  gap: 48px;
+  gap: 56px; /* ✅ Aumentado de 48px a 56px para separación más sutil */
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none; /* Firefox */
@@ -66,6 +66,18 @@
   filter: grayscale(0%); /* ✅ Logos a color */
   opacity: 1; /* ✅ Opacidad completa */
   transition: opacity 0.3s ease, filter 0.3s ease; /* ✅ Animación suave */
+}
+
+/* ✅ Logo pequeño para Peugeot y Fiat */
+.brandLogoSmall {
+  max-height: 70px;
+  max-width: 140px;
+}
+
+/* ✅ Logo grande para Honda */
+.brandLogoLarge {
+  max-height: 95px;
+  max-width: 190px;
 }
 
 .brandItem:hover .brandLogo {
@@ -127,10 +139,19 @@
   margin-left: auto;
 }
 
-/* ✅ Ocultar flechas en mobile */
+/* ✅ Ocultar flechas en mobile y reducir espacio entre logos */
 @media (max-width: 768px) {
   .arrowButton {
     display: none;
+  }
+  
+  .carouselTrack {
+    gap: 16px; /* ✅ Reducido de 48px a 16px en mobile para todos los logos */
+    padding: 8px 12px; /* ✅ Reducido padding lateral de 24px a 12px */
+  }
+  
+  .brandItem {
+    padding: 0 4px; /* ✅ Reducido padding lateral de 16px a 4px para todos los logos */
   }
 }
 

@@ -57,29 +57,50 @@
     width: 100%;
 }
 
+/* ✅ BOTÓN - ESTILO UNIFICADO PLANES (OUTLINE) */
 .button {
+    --button-padding-y: var(--spacing-3);
+    --button-padding-x: var(--spacing-4);
+    --button-font-size: clamp(0.875rem, 2vw, 1rem);
+    --button-letter-spacing: 0.5px;
+    --button-hover-lift: -1px;
+    
     display: inline-flex;
     align-items: center;
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: rgba(220, 53, 69, 0.85); /* ✅ OPTIMIZADO: Simplificado de gradiente complejo */
-    backdrop-filter: blur(10px); /* ✅ OPTIMIZADO: Reducido de 15px a 10px */
-    -webkit-backdrop-filter: blur(10px); /* ✅ OPTIMIZADO: Reducido de 15px a 10px */
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    color: white;
+    justify-content: center;
+    padding: var(--button-padding-y) var(--button-padding-x);
+    background: transparent;
+    color: var(--color-brand-500);
     text-decoration: none;
-    border-radius: var(--border-radius-sm);
-    transition: background var(--transition-fast), border var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast); /* OPTIMIZADO */
-    font-weight: var(--font-weight-medium);
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.1); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+    font-size: var(--button-font-size);
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: var(--button-letter-spacing);
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--color-brand-500);
+    cursor: pointer;
+    transition: 
+        background-color var(--transition-fast),
+        transform var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast);
 }
 
 .button:hover {
-    background: rgba(220, 53, 69, 0.9); /* ✅ OPTIMIZADO: Simplificado de gradiente complejo */
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    color: white;
-    text-decoration: none;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15); /* ✅ OPTIMIZADO: Simplificado de sombra compleja */
+    background: var(--color-brand-500-rgba-10);
+    color: var(--color-brand-600);
+    border-color: var(--color-brand-600);
+    transform: translateY(var(--button-hover-lift));
+}
+
+.button:active {
+    transform: translateY(0);
+}
+
+.button:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
 }
 
 /* ===== VARIANTES ===== */

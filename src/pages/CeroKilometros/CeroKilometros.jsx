@@ -8,45 +8,120 @@
  * @version 2.0.0 - Carrusel de modelos con Cloudinary
  */
 
-import React, { useRef, useState, useEffect, useCallback } from 'react'
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { SEOHead } from '@components/SEO'
 import { ModelCard } from '@components/ModelCard'
 import { modelos } from '@assets/ceroKm'
 import styles from './CeroKilometros.module.css'
+import CarouselDots from '@components/ui/CarouselDots/CarouselDots'
 
 const CeroKilometros = () => {
-  const carouselRef = useRef(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(true)
+  // Refs independientes para cada carrusel
+  const vehCarouselRef = useRef(null)
+  const utilCarouselRef = useRef(null)
+  // Estado de scroll para cada carrusel
+  const [vehCanScrollLeft, setVehCanScrollLeft] = useState(false)
+  const [vehCanScrollRight, setVehCanScrollRight] = useState(true)
+  const [utilCanScrollLeft, setUtilCanScrollLeft] = useState(false)
+  const [utilCanScrollRight, setUtilCanScrollRight] = useState(true)
 
-  // Verificar estado de scroll
-  const checkScrollButtons = useCallback(() => {
-    const carousel = carouselRef.current
+  // Separar modelos en dos grupos: Vehículos vs Utilitarios (Partner, Expert, Boxer)
+  const utilitariosKeys = useMemo(() => ['partner', 'expert', 'boxer'], [])
+  const { vehiculos, utilitarios } = useMemo(() => {
+    const lower = (s) => (s || '').toLowerCase()
+    const util = modelos.filter(m => utilitariosKeys.includes(lower(m.slug)))
+    const veh = modelos.filter(m => !utilitariosKeys.includes(lower(m.slug)))
+    return { vehiculos: veh, utilitarios: util }
+  }, [utilitariosKeys])
+
+  // Paginación basada en viewport (anchura del contenedor visible)
+  const [vehPageCount, setVehPageCount] = useState(1)
+  const [vehActivePage, setVehActivePage] = useState(0)
+  const [vehProgress, setVehProgress] = useState(0)
+  const [utilPageCount, setUtilPageCount] = useState(1)
+  const [utilActivePage, setUtilActivePage] = useState(0)
+
+  // Verificar estado de scroll (helper)
+  const checkScrollButtons = useCallback((ref, setLeft, setRight) => {
+    const carousel = ref.current
     if (!carousel) return
 
     const { scrollLeft, scrollWidth, clientWidth } = carousel
-    setCanScrollLeft(scrollLeft > 0)
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10)
+    setLeft(scrollLeft > 0)
+    setRight(scrollLeft < scrollWidth - clientWidth - 10)
   }, [])
 
+  const checkPagination = useCallback((ref, setCount, setActive) => {
+    const carousel = ref.current
+    if (!carousel) return
+    const { scrollLeft, scrollWidth, clientWidth } = carousel
+    const pages = Math.max(1, Math.ceil(scrollWidth / clientWidth))
+    const active = Math.min(pages - 1, Math.max(0, Math.round(scrollLeft / clientWidth)))
+    setCount(pages)
+    setActive(active)
+  }, [])
+
+  // Efectos: listeners de scroll/resize por carrusel
   useEffect(() => {
-    const carousel = carouselRef.current
+    const carousel = vehCarouselRef.current
     if (!carousel) return
 
-    checkScrollButtons()
-    carousel.addEventListener('scroll', checkScrollButtons)
-    window.addEventListener('resize', checkScrollButtons)
+    checkScrollButtons(vehCarouselRef, setVehCanScrollLeft, setVehCanScrollRight)
+    checkPagination(vehCarouselRef, setVehPageCount, setVehActivePage)
+    const onScroll = () => {
+      checkScrollButtons(vehCarouselRef, setVehCanScrollLeft, setVehCanScrollRight)
+      checkPagination(vehCarouselRef, setVehPageCount, setVehActivePage)
+      const el = vehCarouselRef.current
+      if (el) {
+        const denom = Math.max(1, el.scrollWidth - el.clientWidth)
+        setVehProgress(el.scrollLeft / denom)
+      }
+    }
+    const onResize = () => {
+      checkScrollButtons(vehCarouselRef, setVehCanScrollLeft, setVehCanScrollRight)
+      checkPagination(vehCarouselRef, setVehPageCount, setVehActivePage)
+      const el = vehCarouselRef.current
+      if (el) {
+        const denom = Math.max(1, el.scrollWidth - el.clientWidth)
+        setVehProgress(el.scrollLeft / denom)
+      }
+    }
+    carousel.addEventListener('scroll', onScroll)
+    window.addEventListener('resize', onResize)
 
     return () => {
-      carousel.removeEventListener('scroll', checkScrollButtons)
-      window.removeEventListener('resize', checkScrollButtons)
+      carousel.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
     }
-  }, [checkScrollButtons])
+  }, [checkScrollButtons, checkPagination])
+
+  useEffect(() => {
+    const carousel = utilCarouselRef.current
+    if (!carousel) return
+
+    checkScrollButtons(utilCarouselRef, setUtilCanScrollLeft, setUtilCanScrollRight)
+    checkPagination(utilCarouselRef, setUtilPageCount, setUtilActivePage)
+    const onScroll = () => {
+      checkScrollButtons(utilCarouselRef, setUtilCanScrollLeft, setUtilCanScrollRight)
+      checkPagination(utilCarouselRef, setUtilPageCount, setUtilActivePage)
+    }
+    const onResize = () => {
+      checkScrollButtons(utilCarouselRef, setUtilCanScrollLeft, setUtilCanScrollRight)
+      checkPagination(utilCarouselRef, setUtilPageCount, setUtilActivePage)
+    }
+    carousel.addEventListener('scroll', onScroll)
+    window.addEventListener('resize', onResize)
+
+    return () => {
+      carousel.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [checkScrollButtons, checkPagination])
 
   // Scroll del carrusel (2 cards por click)
-  const scroll = (direction) => {
-    const carousel = carouselRef.current
+  const scroll = (ref, direction) => {
+    const carousel = ref.current
     if (!carousel) return
 
     // ~2 cards + gap por click para navegación más rápida
@@ -65,27 +140,47 @@ const CeroKilometros = () => {
       <div className={styles.page}>
         {/* Header */}
         <header className={styles.header}>
-          <h1 className={styles.title}>
+          {/* Logos: Peugeot y Indiana */}
+          <div className={styles.logosContainer}>
             <img 
-              src="/assets/logos/brands/logo-negro.webp" 
+              src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
               alt="Logo Peugeot" 
-              className={styles.logo}
-              width="48"
-              height="48"
+              className={styles.peugeotLogo}
+              loading="eager"
             />
+            <div className={styles.logoDivider} />
+            <img 
+              src="/assets/logos/logos-indiana/desktop/azul-chico-desktop.webp" 
+              alt="Logo Indiana" 
+              className={styles.indianaLogo}
+              loading="eager"
+            />
+          </div>
+
+          <h1 className={styles.title}>
             Peugeot 0 KM
           </h1>
           <p className={styles.subtitle}>Descubrí toda la gama de modelos</p>
         </header>
 
-        {/* Carrusel de modelos */}
-        <section className={styles.carouselSection} aria-label="Modelos Peugeot 0km">
+        {/* Sección: Gama de Vehículos */}
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>
+            <img 
+              src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
+              alt="Logo Peugeot" 
+              className={styles.sectionLogo}
+            />
+            Gama de Vehículos — Variante 1 (Pill)
+          </h2>
+        </div>
+        <section className={styles.carouselSection} aria-label="Gama de Vehículos Peugeot 0km">
           <div className={styles.carouselWrapper}>
             {/* Botón izquierdo */}
             <button
               className={`${styles.scrollButton} ${styles.scrollButtonLeft}`}
-              onClick={() => scroll('left')}
-              disabled={!canScrollLeft}
+              onClick={() => scroll(vehCarouselRef, 'left')}
+              disabled={!vehCanScrollLeft}
               aria-label="Ver modelos anteriores"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -95,12 +190,12 @@ const CeroKilometros = () => {
 
             {/* Carrusel */}
             <div 
-              ref={carouselRef}
+              ref={vehCarouselRef}
               className={styles.carousel}
               role="list"
-              aria-label="Carrusel de modelos"
+              aria-label="Carrusel de modelos - vehículos"
             >
-              {modelos.map((modelo) => (
+              {vehiculos.map((modelo) => (
                 <div key={modelo.slug} role="listitem">
                   <ModelCard
                     src={modelo.src}
@@ -115,8 +210,8 @@ const CeroKilometros = () => {
             {/* Botón derecho */}
             <button
               className={`${styles.scrollButton} ${styles.scrollButtonRight}`}
-              onClick={() => scroll('right')}
-              disabled={!canScrollRight}
+              onClick={() => scroll(vehCarouselRef, 'right')}
+              disabled={!vehCanScrollRight}
               aria-label="Ver más modelos"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -126,9 +221,98 @@ const CeroKilometros = () => {
           </div>
 
           {/* Indicador de scroll en mobile */}
-          <p className={styles.scrollHint}>
-            <span>←</span> Deslizá para ver más modelos <span>→</span>
-          </p>
+          {/* Indicador Autocity-inspired (azul/blanco) */}
+          <CarouselDots
+            count={vehPageCount}
+            activeIndex={vehActivePage}
+            variant="autocity"
+            onDotClick={(i) => {
+              const el = vehCarouselRef.current
+              if (!el) return
+              el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
+            }}
+          />
+        </section>
+
+        {/* Sección: Gama de Utilitarios */}
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>
+            <img 
+              src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
+              alt="Logo Peugeot" 
+              className={styles.sectionLogo}
+            />
+            Gama de Utilitarios — Variante 2b (Micro‑Dash)
+          </h2>
+        </div>
+        <section className={styles.carouselSection} aria-label="Gama de Utilitarios Peugeot">
+          <div className={styles.carouselWrapper}>
+            {/* Botón izquierdo */}
+            <button
+              className={`${styles.scrollButton} ${styles.scrollButtonLeft}`}
+              onClick={() => scroll(utilCarouselRef, 'left')}
+              disabled={!utilCanScrollLeft}
+              aria-label="Ver utilitarios anteriores"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+
+            {/* Carrusel */}
+            <div 
+              ref={utilCarouselRef}
+              className={styles.carousel}
+              role="list"
+              aria-label="Carrusel de modelos - utilitarios"
+            >
+              {utilitarios.map((modelo) => (
+                <div key={modelo.slug} role="listitem">
+                  <ModelCard
+                    src={modelo.src}
+                    alt={modelo.alt}
+                    titulo={modelo.titulo}
+                    slug={modelo.slug}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Botón derecho */}
+            <button
+              className={`${styles.scrollButton} ${styles.scrollButtonRight}`}
+              onClick={() => scroll(utilCarouselRef, 'right')}
+              disabled={!utilCanScrollRight}
+              aria-label="Ver más utilitarios"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Indicador de scroll en mobile */}
+          <CarouselDots
+            count={utilPageCount}
+            activeIndex={utilActivePage}
+            variant="microDash"
+            onDotClick={(i) => {
+              const el = utilCarouselRef.current
+              if (!el) return
+              el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
+            }}
+          />
+          {/* Indicador Autocity-inspired (azul/blanco) */}
+          <CarouselDots
+            count={utilPageCount}
+            activeIndex={utilActivePage}
+            variant="autocity"
+            onDotClick={(i) => {
+              const el = utilCarouselRef.current
+              if (!el) return
+              el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
+            }}
+          />
         </section>
 
         {/* CTA */}

@@ -14,5 +14,7 @@ export { ModelGallery } from './ModelGallery'
 export { FeatureSection } from './FeatureSection'
 export { DimensionsSection } from './DimensionsSection'
 export { PdfDownloadButton } from './PdfDownloadButton'
+export { ScrollParallaxTransition208 } from './ScrollParallaxTransition208'
+export { ScrollParallaxTransition2008 } from './ScrollParallaxTransition2008'
 
 

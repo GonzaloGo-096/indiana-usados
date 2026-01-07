@@ -20,11 +20,13 @@ import styles from './FeatureSection.module.css'
  * @param {Object} props.feature.images - { mobile, desktop } con URLs completas optimizadas
  * @param {boolean} props.reverse - Invertir orden imagen/texto en desktop
  * @param {string} props.modeloNombre - Nombre del modelo (ej: '208')
+ * @param {boolean} props.isLast - Indica si es la última FeatureSection antes de DimensionsSection
  */
 export const FeatureSection = memo(({
   feature,
   reverse = false,
-  modeloNombre = ''
+  modeloNombre = '',
+  isLast = false
 }) => {
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === 'undefined') return true
@@ -61,7 +63,7 @@ export const FeatureSection = memo(({
   const isRealidadAumentada = isMobile && (modeloNombre === '208' || modeloNombre === '2008') && title === 'REALIDAD AUMENTADA 3D'
 
   return (
-    <section className={`${styles.section} ${reverse ? styles.reverse : ''}`}>
+    <section className={`${styles.section} ${reverse ? styles.reverse : ''} ${isLast ? styles.isLast : ''}`}>
       <div className={styles.container}>
         {/* Imagen - URLs directas optimizadas (mobile y desktop separados) */}
         {(images?.mobile || images?.desktop) && (

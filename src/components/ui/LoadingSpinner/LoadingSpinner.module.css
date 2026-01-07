@@ -42,7 +42,7 @@
 .spinnerRing {
     position: absolute;
     border: 3px solid transparent;
-    border-top: 3px solid var(--color-primary-500);
+    border-top: 3px solid var(--color-brand-500);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }

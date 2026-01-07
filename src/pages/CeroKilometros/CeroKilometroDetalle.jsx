@@ -19,7 +19,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { SEOHead } from '@components/SEO'
 import { getBrandIcon } from '@components/ui/icons'
-import { VersionTabs, VersionContent, VersionCarousel, ModelGallery, FeatureSection, DimensionsSection } from '@components/ceroKm'
+import { VersionTabs, VersionContent, VersionCarousel, ModelGallery, FeatureSection, DimensionsSection, ScrollParallaxTransition208, ScrollParallaxTransition2008 } from '@components/ceroKm'
 import { useModeloSelector } from '@hooks/ceroKm'
 import { existeModelo } from '@data/modelos'
 import styles from './CeroKilometroDetalle.module.css'
@@ -54,8 +54,9 @@ const CeroKilometroDetalle = () => {
 
   if (!modelo) return null
 
-  // Obtener ícono de marca dinámicamente
+  // Obtener ícono de marca dinámicamente (usar Peugeot vintage en título)
   const BrandIcon = getBrandIcon(modelo.marca)
+  const isPeugeot = (modelo.marca || '').toLowerCase() === 'peugeot'
 
   // Formatear nombre de versión: GT en rojo, siglas en mayúsculas, resto capitalizado
   const renderVersionName = () => {
@@ -126,7 +127,17 @@ const CeroKilometroDetalle = () => {
         {/* Header - Debajo del hero */}
         <header className={styles.header}>
           <h1 className={styles.title}>
-            {BrandIcon && <BrandIcon className={styles.brandIcon} />}
+            {isPeugeot ? (
+              <img
+                src="/assets/logos/logos-peugeot/Peugeot_logo_PNG9.webp"
+                alt="Peugeot vintage"
+                className={styles.brandIcon}
+                loading="eager"
+                decoding="async"
+              />
+            ) : (
+              BrandIcon && <BrandIcon className={styles.brandIcon} />
+            )}
             <span>{modelo.marca}</span>
             <span className={styles.modelName}>{modelo.nombre}</span>
             {renderVersionName()}
@@ -189,15 +200,27 @@ const CeroKilometroDetalle = () => {
         {/* Secciones de características destacadas (si el modelo las tiene) */}
         {modelo.features && modelo.features.length > 0 && (
           <>
-            {modelo.features.map((feature, index) => (
-              <FeatureSection
-                key={feature.id}
-                feature={feature}
-                reverse={index % 2 === 1}
-                modeloNombre={modelo.nombre}
-              />
-            ))}
+            {modelo.features.map((feature, index) => {
+              const isLast = index === modelo.features.length - 1
+              return (
+                <FeatureSection
+                  key={feature.id}
+                  feature={feature}
+                  reverse={index % 2 === 1}
+                  modeloNombre={modelo.nombre}
+                  isLast={isLast}
+                />
+              )
+            })}
           </>
+        )}
+
+        {/* Sección premium de transición parallax (solo para modelos 208 y 2008) */}
+        {autoSlug === '208' && (
+          <ScrollParallaxTransition208 />
+        )}
+        {autoSlug === '2008' && (
+          <ScrollParallaxTransition2008 />
         )}
 
         {/* Sección de dimensiones (fija para todos los modelos) */}

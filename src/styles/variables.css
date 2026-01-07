@@ -5,7 +5,7 @@
  * y consistencia en toda la aplicación.
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Sistema completo de tokens de color
+ * @version 3.0.0 - Migración a #061B9C como color principal, escala completa brand 50-900
  */
 
 :root {
@@ -139,10 +139,26 @@
        COLORES DE MARCA
        ======================================== */
 
-    /* ===== ESCALA BRAND (Azul Francia - Marca principal) ===== */
-    --color-brand-500: #0055A4; /* Azul Francia base */
-    --color-brand-600: #003d7a; /* Azul Francia oscuro */
-    --color-brand-700: #002d5a; /* Azul Francia muy oscuro (usado en gradientes) */
+    /* ===== ESCALA BRAND (Azul Indiana - Marca principal) ===== */
+    /* Base: #061B9C - Azul Indiana principal */
+    --color-brand-50: #eff2ff;
+    --color-brand-100: #dde4ff;
+    --color-brand-200: #c2ceff;
+    --color-brand-300: #9ba8ff;
+    --color-brand-400: #6d7aff;
+    --color-brand-500: #061B9C; /* Azul Indiana base - Color principal */
+    --color-brand-600: #050F7A; /* Azul Indiana oscuro - Hover/Active */
+    --color-brand-700: #040A5C; /* Azul Indiana muy oscuro - Gradientes */
+    --color-brand-800: #03063D; /* Azul Indiana extremo oscuro */
+    --color-brand-900: #02031F; /* Azul Indiana casi negro */
+    
+    /* Variables RGBA derivadas para transparencias comunes */
+    --color-brand-500-rgba-10: color-mix(in srgb, var(--color-brand-500) 10%, transparent);
+    --color-brand-500-rgba-15: color-mix(in srgb, var(--color-brand-500) 15%, transparent);
+    --color-brand-500-rgba-20: color-mix(in srgb, var(--color-brand-500) 20%, transparent);
+    --color-brand-500-rgba-25: color-mix(in srgb, var(--color-brand-500) 25%, transparent);
+    --color-brand-500-rgba-30: color-mix(in srgb, var(--color-brand-500) 30%, transparent);
+    --color-brand-500-rgba-40: color-mix(in srgb, var(--color-brand-500) 40%, transparent);
 
     /* ========================================
        TOKENS SEMÁNTICOS DE TEXTO

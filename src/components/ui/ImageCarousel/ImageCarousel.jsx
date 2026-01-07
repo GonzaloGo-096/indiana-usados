@@ -20,6 +20,7 @@ import CloudinaryImage from '@/components/ui/CloudinaryImage/CloudinaryImage'
 import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
 
 import styles from './ImageCarousel.module.css'
+import CarouselDots from '@components/ui/CarouselDots/CarouselDots'
 
 /**
  * Componente ImageCarousel
@@ -224,25 +225,15 @@ export const ImageCarousel = ({
                     </>
                 )}
 
-                {/* Indicador unificado: icono + contador */}
+                {/* Indicador unificado estilo 'autocity' */}
                 {allImages.length > 1 && (
-                    <div className={styles.swipeIndicator}>
-                        <div className={styles.swipeHint}>
-                            <svg 
-                                width="20" 
-                                height="20" 
-                                viewBox="0 0 24 24" 
-                                fill="none" 
-                                stroke="currentColor" 
-                                strokeWidth="2"
-                                className={styles.swipeIcon}
-                            >
-                                <path d="M21 12l-7-7m7 7l-7 7m7-7H3" />
-                            </svg>
-                        </div>
-                        <span className={styles.imageCounter}>
-                            {currentIndex + 1} / {allImages.length}
-                        </span>
+                    <div className={styles.dotsContainer}>
+                        <CarouselDots
+                            count={allImages.length}
+                            activeIndex={currentIndex}
+                            variant="autocity"
+                            onDotClick={(i) => setCurrentIndex(i)}
+                        />
                     </div>
                 )}
             </div>

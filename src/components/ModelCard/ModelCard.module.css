@@ -1,93 +1,159 @@
 /**
- * ModelCard.module.css - Estilos para cards de modelos 0km
+ * ModelCard.module.css - Diseño Premium Profesional
  * 
- * Mobile-first, fondo blanco, borde sutil, hover simple
+ * Conceptos aplicados:
+ * - Cards elegantes con elevación sutil
+ * - Micro-interacciones refinadas
+ * - Badge decorativo para categorización
+ * - Gradientes sutiles para profundidad
+ * - Tipografía jerárquica mejorada
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Migrado a tokens semánticos (FASE 3.2)
+ * @version 3.0.0 - Rediseño Premium
  */
 
-/* ===== CARD PRINCIPAL ===== */
+/* ===== CARD PRINCIPAL - Diseño Elegante ===== */
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   background: var(--color-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--border-radius-xl);
   overflow: hidden;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
   
-  /* ✅ Migrado: Borde sutil → token semántico border-subtle */
-  border: 1px solid var(--color-border-subtle);
+  /* Borde sutil con transición */
+  border: 1.5px solid var(--color-neutral-200);
   
-  /* Transición suave */
+  /* Transiciones refinadas */
   transition: 
-    box-shadow var(--transition-fast),
-    border-color var(--transition-fast);
+    transform var(--transition-smooth),
+    box-shadow var(--transition-smooth),
+    border-color var(--transition-smooth);
   
-  /* Mobile: Cards más grandes */
-  min-width: 240px;
-  max-width: 260px;
+  /* Tamaños responsivos */
+  min-width: clamp(260px, 30vw, 320px);
+  max-width: clamp(260px, 30vw, 320px);
   flex-shrink: 0;
+  
+  /* Elevación inicial sutil */
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.02);
 }
 
-/* ✅ Migrado: Hover con sombra y borde usando tokens semánticos */
+/* Hover: Elevación y transformación elegante */
 .card:hover {
-  /* ✅ Migrado: Sombra hover → token shadow-md */
-  box-shadow: var(--shadow-md);
-  /* ✅ Migrado: Borde hover → token border */
-  border-color: var(--color-border);
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--color-brand-500);
+  box-shadow: 
+    0 16px 48px rgba(6, 27, 156, 0.15),
+    0 8px 16px rgba(6, 27, 156, 0.1),
+    0 2px 4px rgba(6, 27, 156, 0.05);
+}
+
+.card:active {
+  transform: translateY(-4px) scale(1.01);
 }
 
 .card:focus-visible {
-  outline: 2px solid var(--color-brand-500);
-  outline-offset: 2px;
+  outline: 3px solid var(--color-brand-500);
+  outline-offset: 3px;
+  border-radius: var(--border-radius-xl);
 }
 
-/* ===== CONTENEDOR DE IMAGEN ===== */
+/* ===== CONTENEDOR DE IMAGEN - Con Overlay Sutil ===== */
 .imageContainer {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  /* ✅ Mantenido: Gradiente placeholder local al componente (no migrado a token global) */
-  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-neutral-50) 0%,
+    var(--color-white) 50%,
+    var(--color-neutral-50) 100%
+  );
+}
+
+/* Overlay decorativo sutil */
+.imageContainer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(6, 27, 156, 0.01) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-smooth);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card:hover .imageContainer::after {
+  opacity: 1;
 }
 
 .image {
+  position: relative;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 16px;
-  transition: transform var(--transition-normal);
+  padding: clamp(20px, 3vw, 32px);
+  transition: 
+    transform var(--transition-smooth),
+    filter var(--transition-smooth);
+  z-index: 0;
 }
 
-/* Hover en imagen: zoom muy sutil */
+/* Hover en imagen: zoom y brillo sutil */
 .card:hover .image {
-  transform: scale(1.02);
+  transform: scale(1.05);
+  filter: brightness(1.02);
 }
 
-/* ===== CONTENIDO ===== */
+/* ===== CONTENIDO - Tipografía Mejorada ===== */
 .content {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px 12px 16px;
-  background: var(--color-white);
+  padding: clamp(20px, 3vw, 28px) clamp(16px, 2vw, 24px) clamp(24px, 3vw, 32px);
+  background: linear-gradient(
+    to bottom,
+    var(--color-white) 0%,
+    var(--color-neutral-50) 100%
+  );
+  border-top: 1px solid var(--color-neutral-100);
 }
 
 .title {
+  position: relative;
   margin: 0;
-  font-size: 2.3rem;
-  font-weight: var(--font-weight-bold);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: var(--font-weight-extrabold);
   color: var(--color-text-primary);
   font-family: var(--font-display);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: clamp(2px, 0.4vw, 4px);
   text-align: center;
-  line-height: 1;
+  line-height: 1.1;
+  transition: color var(--transition-smooth);
+}
+
+/* Efecto sutil en hover del título */
+.card:hover .title {
+  color: var(--color-brand-500);
+  text-shadow: 0 2px 8px var(--color-brand-500-rgba-10);
 }
 
 /* ===== RESPONSIVE: TABLET ===== */

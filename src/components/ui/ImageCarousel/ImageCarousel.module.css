@@ -310,6 +310,16 @@
     height: 14px; /* ✅ Reducido: De 18px a 14px */
 }
 
+/* Dots container para indicador 'autocity' */
+.dotsContainer {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    pointer-events: auto;
+}
+
 /* ===== CONTROLES NETFLIX/SPOTIFY ===== */
 .thumbnailControls {
     position: absolute;
@@ -339,8 +349,8 @@
     background: var(--color-brand-500);
     color: white;
     transform: translateY(-50%) scale(1.1); /* ✅ SIMPLIFICADO: Menos escala */
-    /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 40% opacidad) */
-    box-shadow: 0 6px 20px rgba(0, 85, 164, 0.4);
+    /* ✅ Migrado: Usa variables rgba derivadas del sistema */
+    box-shadow: 0 6px 20px var(--color-brand-500-rgba-40);
     border-color: var(--color-brand-500); /* ✅ NUEVO: Azul Francia */
 }
 
@@ -389,8 +399,8 @@
 .thumbnail:hover {
     border-color: var(--color-brand-500); /* ✅ Borde azul en hover */
     transform: translateY(-3px); /* ✅ Más elevación */
-    /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 30% opacidad) */
-    box-shadow: 0 6px 16px rgba(0, 85, 164, 0.3);
+    /* ✅ Migrado: Usa variables rgba derivadas del sistema */
+    box-shadow: 0 6px 16px var(--color-brand-500-rgba-30);
     z-index: 10;
 }
 
@@ -398,8 +408,8 @@
     border-color: var(--color-brand-500); /* ✅ Borde azul sólido para activa */
     border-width: 4px; /* ✅ Borde más grueso para activa */
     transform: translateY(-4px); /* ✅ Más elevación */
-    /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 40% opacidad) */
-    box-shadow: 0 8px 24px rgba(0, 85, 164, 0.4);
+    /* ✅ Migrado: Usa variables rgba derivadas del sistema */
+    box-shadow: 0 8px 24px var(--color-brand-500-rgba-40);
     position: relative;
     z-index: 5;
 }
@@ -414,8 +424,8 @@
     height: 3px; /* ✅ Línea más gruesa */
     background: var(--color-brand-500); /* ✅ Azul sólido */
     border-radius: 2px;
-    /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 40% opacidad) */
-    box-shadow: 0 2px 4px rgba(0, 85, 164, 0.4);
+    /* ✅ Migrado: Usa variables rgba derivadas del sistema */
+    box-shadow: 0 2px 4px var(--color-brand-500-rgba-40);
 }
 
 .thumbnailImage {

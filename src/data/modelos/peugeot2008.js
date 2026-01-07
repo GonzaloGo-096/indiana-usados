@@ -70,7 +70,7 @@ export const PEUGEOT_2008 = {
         href: '/pdf/pdf-2008.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     },
@@ -96,7 +96,7 @@ export const PEUGEOT_2008 = {
         href: '/pdf/pdf-2008.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     },
@@ -124,7 +124,7 @@ export const PEUGEOT_2008 = {
         href: '/pdf/pdf-2008.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     }

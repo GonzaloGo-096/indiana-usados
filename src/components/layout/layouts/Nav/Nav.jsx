@@ -20,6 +20,7 @@ import { shouldPreloadOnIdle, requestIdle } from '@utils'
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [is0kmDropdownOpen, setIs0kmDropdownOpen] = useState(false)
   const location = useLocation()
 
   // ✅ NUEVO: Hook de preloading estratégico
@@ -36,18 +37,10 @@ const Nav = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false)
+    setIs0kmDropdownOpen(false)
   }
 
-  const handleScrollToFooter = (event) => {
-    event.preventDefault()
-    const footerEl = document.getElementById('contacto')
-    if (footerEl) {
-      footerEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-    closeMenu()
-  }
-
-  // ✅ NUEVO: Funciones de preloading para rutas
+  // ✅ NUEVO: Funciones de preloading para rutas (definidas primero)
   const handleUsadosPreload = () => {
     preloadRoute('/usados', () => import('@pages/Vehiculos'))
   }
@@ -72,6 +65,30 @@ const Nav = () => {
   // ✅ PLANES: Preload para la página de planes
   const handlePlanesPreload = () => {
     preloadRoute('/planes', () => import('@pages/Planes'))
+  }
+
+  const toggle0kmDropdown = (e) => {
+    e.preventDefault()
+    setIs0kmDropdownOpen(!is0kmDropdownOpen)
+  }
+
+  const handle0kmMouseEnter = () => {
+    setIs0kmDropdownOpen(true)
+    handle0kmPreload()
+  }
+
+  const handle0kmMouseLeave = () => {
+    setIs0kmDropdownOpen(false)
+    cancelPreload('/0km')
+  }
+
+  const handleScrollToFooter = (event) => {
+    event.preventDefault()
+    const footerEl = document.getElementById('contacto')
+    if (footerEl) {
+      footerEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    closeMenu()
   }
 
   // ✅ PRELOAD ON IDLE: Solo en buenas redes y en rutas ligeras
@@ -102,7 +119,7 @@ const Nav = () => {
           onMouseLeave={() => cancelPreload('/')}
         >
           <img 
-            src="/assets/logos/brands/indiana-final.webp" 
+            src="/assets/logos/logos-indiana/indiana-final.webp" 
             alt="Logo Indiana" 
             className={styles.logo}
             width="200"
@@ -136,29 +153,42 @@ const Nav = () => {
               Inicio
             </Link>
             
-            {/* ✅ Peugeot | 0 KM */}
-            <Link 
-              className={`${styles.navLink} ${isActive('/0km') ? styles.active : ''}`} 
-              to="/0km"
-              aria-current={isActive('/0km') ? 'page' : undefined}
-              onClick={closeMenu}
-              onMouseEnter={handle0kmPreload}
-              onMouseLeave={() => cancelPreload('/0km')}
+            {/* ✅ Peugeot | 0 KM con dropdown de Planes */}
+            <div 
+              className={styles.dropdown}
+              onMouseEnter={handle0kmMouseEnter}
+              onMouseLeave={handle0kmMouseLeave}
             >
-              Peugeot <span className={styles.navDivider}>|</span> 0 KM
-            </Link>
-            
-            {/* ✅ Planes */}
-            <Link 
-              className={`${styles.navLink} ${isActive('/planes') ? styles.active : ''}`} 
-              to="/planes"
-              aria-current={isActive('/planes') ? 'page' : undefined}
-              onClick={closeMenu}
-              onMouseEnter={handlePlanesPreload}
-              onMouseLeave={() => cancelPreload('/planes')}
-            >
-              Planes
-            </Link>
+              <button
+                className={`${styles.dropdownToggle} ${isActive('/0km') || isActive('/planes') ? styles.active : ''} ${is0kmDropdownOpen ? styles.active : ''}`}
+                onClick={toggle0kmDropdown}
+                aria-expanded={is0kmDropdownOpen}
+                aria-haspopup="true"
+              >
+                Peugeot <span className={styles.navDivider}>|</span> 0 KM
+                <span className={`${styles.dropdownArrow} ${is0kmDropdownOpen ? styles.dropdownArrowOpen : ''}`}>
+                  ▼
+                </span>
+              </button>
+              <div className={`${styles.dropdownMenu} ${is0kmDropdownOpen ? styles.dropdownMenuOpen : ''}`}>
+                <Link 
+                  className={`${styles.dropdownItem} ${isActive('/0km') ? styles.active : ''}`}
+                  to="/0km"
+                  onClick={closeMenu}
+                  onMouseEnter={handle0kmPreload}
+                >
+                  Peugeot <span className={styles.navDivider}>|</span> 0 KM
+                </Link>
+                <Link 
+                  className={`${styles.dropdownItem} ${isActive('/planes') ? styles.active : ''}`}
+                  to="/planes"
+                  onClick={closeMenu}
+                  onMouseEnter={handlePlanesPreload}
+                >
+                  Planes
+                </Link>
+              </div>
+            </div>
             
             {/* ✅ Usados | Multimarca */}
             <Link 

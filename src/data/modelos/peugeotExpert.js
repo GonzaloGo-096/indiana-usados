@@ -77,7 +77,7 @@ export const PEUGEOT_EXPERT = {
         href: '/pdf/pdf-expert.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     },
@@ -104,7 +104,7 @@ export const PEUGEOT_EXPERT = {
         href: '/pdf/pdf-expert.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     }

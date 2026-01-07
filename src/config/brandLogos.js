@@ -21,28 +21,27 @@
 export const BRAND_LOGOS = {
   // Marcas con logos disponibles
   peugeot: {
-    src: '/assets/logos/brands/Peugeot_logo_PNG8.webp',
-    alt: 'Logo Peugeot'
+    src: '/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp',
+    alt: 'Logo Peugeot',
+    size: 'small'
+  },
+  'peugeot-vintage': {
+    src: '/assets/logos/brands/Peugeot_logo_vintage.webp',
+    alt: 'Logo Peugeot Vintage'
   },
   fiat: {
     src: '/assets/logos/brands/Fiat-Logo-PNG.webp',
-    alt: 'Logo Fiat'
-  },
-  volkswagen: {
-    src: '/assets/logos/brands/Volkswagen_logo_PNG5.webp',
-    alt: 'Logo Volkswagen'
+    alt: 'Logo Fiat',
+    size: 'small'
   },
   ford: {
     src: '/assets/logos/brands/Ford-logo-1.webp',
     alt: 'Logo Ford'
   },
-  chevrolet: {
-    src: '/assets/logos/brands/Chevrolet_logo_PNG7.webp',
-    alt: 'Logo Chevrolet'
-  },
   honda: {
-    src: '/assets/logos/brands/Honda_logo_PNG4.webp',
-    alt: 'Logo Honda'
+    src: '/assets/logos/brands/Honda_logo_PNG5.webp',
+    alt: 'Logo Honda',
+    size: 'large'
   },
   nissan: {
     src: '/assets/logos/brands/Nissan-Logo-PNG.webp',
@@ -53,12 +52,16 @@ export const BRAND_LOGOS = {
     alt: 'Logo Renault'
   },
   toyota: {
-    src: '/assets/logos/brands/Toyota-logo-1-1.webp',
+    src: '/assets/logos/brands/Toyota-logo-1.webp',
     alt: 'Logo Toyota'
   },
   citroen: {
     src: '/assets/logos/brands/Citroen-Logo_PNG1.webp',
     alt: 'Logo Citroën'
+  },
+  chevrolet: {
+    src: '/assets/logos/brands/Chevrolet_logo_PNG7.webp',
+    alt: 'Logo Chevrolet'
   },
   bmw: {
     src: '/assets/logos/brands/BMW_logo_PNG1.webp',
@@ -69,13 +72,20 @@ export const BRAND_LOGOS = {
     alt: 'Logo Audi'
   },
   jeep: {
-    src: '/assets/logos/brands/Jeep_logo_PNG2-.webp',
+    src: '/assets/logos/brands/Jeep_logo_PNG1-.webp',
     alt: 'Logo Jeep'
   },
-  // Marcas sin logo específico - usarán el fallback
   hyundai: {
-    src: '/assets/logos/brands/logo-negro.webp',
+    src: '/assets/logos/brands/Hyundai_logo_PNG1.webp',
     alt: 'Logo Hyundai'
+  },
+  indiana: {
+    src: '/assets/logos/brands/INDIANA_logo_1.webp',
+    alt: 'Logo Indiana'
+  },
+  'indiana-2': {
+    src: '/assets/logos/brands/INDIANA_logo_2.webp',
+    alt: 'Logo Indiana 2'
   },
   kia: {
     src: '/assets/logos/brands/logo-negro.webp',
@@ -106,8 +116,12 @@ export const BRAND_LOGOS = {
     alt: 'Logo Opel'
   },
   mercedesbenz: {
-    src: '/assets/logos/brands/logo-negro.webp',
+    src: '/assets/logos/brands/Mercedes_logo_PNG1.webp',
     alt: 'Logo Mercedes-Benz'
+  },
+  volkswagen: {
+    src: '/assets/logos/brands/Volkswagen_logo_PNG5.webp',
+    alt: 'Logo Volkswagen'
   },
   volvo: {
     src: '/assets/logos/brands/logo-negro.webp',

@@ -89,7 +89,7 @@ const VehiculoDetalle = () => {
             <div className={styles.backButton}>
                 <button onClick={handleBack} className={styles.backLink}>
                     <span className={styles.backArrow}>←</span>
-                    <span>Atrás</span>
+                    <span>Volver a la lista</span>
                 </button>
             </div>
             

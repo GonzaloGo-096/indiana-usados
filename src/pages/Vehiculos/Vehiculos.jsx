@@ -37,7 +37,8 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { parseFilters, serializeFilters, hasAnyFilter, sortVehicles } from '@utils'
-import { useVehiclesList } from '@hooks'
+import { useVehiclesList, useVehiclePrefetch } from '@hooks'
+import { requestIdle, shouldPreloadOnIdle } from '@utils/preload'
 import { AutosGrid, BrandsCarousel } from '@vehicles'
 import FilterFormSimple from '@vehicles/Filters/FilterFormSimple'
 import SortDropdown from '@vehicles/Filters/SortDropdown'
@@ -54,40 +55,32 @@ const Vehiculos = () => {
     // ✅ SIMPLIFICADO: Estado de sorting simple
     const [selectedSort, setSelectedSort] = useState(null)
     const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
-    
-    // ✅ NUEVO: Estado local para marca cuando el formulario está abierto
-    const [localMarca, setLocalMarca] = useState(null)
 
     // ✅ SIMPLIFICADO: Sincronización con URL para sorting
     useEffect(() => {
         setSelectedSort(sp.get('sort'))
     }, [sp])
 
-    // ✅ OPTIMIZADO: Parsear filtros del querystring (memoizado)
-    const urlFilters = useMemo(() => {
+    // ✅ REFACTORIZADO: Filtros derivados únicamente desde URL (única fuente de verdad)
+    const filters = useMemo(() => {
         return parseFilters(sp)
     }, [sp.toString()])
 
     // ✅ OPTIMIZADO: Verificar si hay filtros activos (memoizado)
     const isFiltered = useMemo(() => {
-        return hasAnyFilter(urlFilters)
-    }, [urlFilters])
-    
-    // ✅ NUEVO: Determinar si el formulario está visible
-    const isFiltersVisible = filterFormRef.current?.isFiltersVisible || false
-    
-    // ✅ OPTIMIZADO: Obtener marca actual (memoizado)
-    const currentMarca = useMemo(() => {
-        return isFiltersVisible && localMarca !== null ? localMarca : (urlFilters.marca || [])
-    }, [isFiltersVisible, localMarca, urlFilters.marca])
-    
-    // ✅ OPTIMIZADO: Filtros combinados (memoizado)
-    const filters = useMemo(() => {
-        return { ...urlFilters, marca: currentMarca }
-    }, [urlFilters, currentMarca])
+        return hasAnyFilter(filters)
+    }, [filters])
 
-    // ✅ NUEVO: Hook unificado para vehículos (siempre usa URL como fuente de verdad para fetch)
-    const { vehicles, total, hasNextPage, loadMore, isLoadingMore, isLoading, isError, error, refetch } = useVehiclesList(urlFilters)
+    // ✅ OPTIMIZADO: Marcas seleccionadas memoizadas (evita recrear array en cada render)
+    const selectedBrands = useMemo(() => {
+        return filters.marca || []
+    }, [filters.marca])
+
+    // ✅ REFACTORIZADO: Hook unificado para vehículos (usa filters derivados de URL)
+    const { vehicles, total, hasNextPage, loadMore, isLoadingMore, isLoading, isError, error, refetch } = useVehiclesList(filters)
+
+    // ✅ OPTIMIZADO: Hook para prefetch inteligente
+    const { prefetchVehiclesList } = useVehiclePrefetch()
 
     // ✅ SIMPLIFICADO: Vehículos ordenados
     const sortedVehicles = useMemo(() => {
@@ -104,6 +97,37 @@ const Vehiculos = () => {
             setIsUsingMockData(false)
         }
     }, [vehicles])
+
+    // ✅ OPTIMIZADO: Prefetch inteligente en idle (mejora percepción de velocidad)
+    useEffect(() => {
+        // Solo prefetch si está habilitado y hay conexión adecuada
+        if (!shouldPreloadOnIdle()) return
+
+        // Prefetch en idle con timeout de 2 segundos
+        const idleId = requestIdle(() => {
+            // 1. Prefetch página siguiente si existe
+            if (hasNextPage && !isLoading && vehicles.length > 0) {
+                // Calcular cursor de página siguiente (asumiendo que la primera página es 1)
+                const nextCursor = Math.floor(vehicles.length / 8) + 1
+                prefetchVehiclesList(filters, 8, nextCursor)
+            }
+
+            // 2. Prefetch datos comunes (primera página sin filtros)
+            if (isFiltered) {
+                // Si hay filtros activos, prefetch la primera página sin filtros
+                prefetchVehiclesList({}, 8, 1)
+            }
+        }, { timeout: 2000 })
+
+        return () => {
+            // Cleanup: cancelar prefetch si el componente se desmonta
+            if (typeof window !== 'undefined' && window.cancelIdleCallback && typeof idleId === 'number') {
+                window.cancelIdleCallback(idleId)
+            } else if (typeof idleId === 'number') {
+                clearTimeout(idleId)
+            }
+        }
+    }, [hasNextPage, isLoading, vehicles.length, isFiltered, filters, prefetchVehiclesList])
 
     // ✅ OPTIMIZADO: Handlers para filtros (memoizados)
     const onApply = useCallback((newFilters) => {
@@ -122,44 +146,27 @@ const Vehiculos = () => {
         }
     }, [])
 
-    // ✅ NUEVO: Handler para selección de marca en carrusel
-    const handleBrandSelect = (brandName) => {
-        const isFiltersVisible = filterFormRef.current?.isFiltersVisible || false
+    // ✅ REFACTORIZADO: Handler para selección de marca en carrusel (siempre escribe a URL)
+    const handleBrandSelect = useCallback((brandName) => {
+        // Leer siempre desde filters (derivados de URL)
+        const currentMarcaList = filters.marca || []
+        const isSelected = currentMarcaList.includes(brandName)
+        const newMarca = isSelected 
+            ? currentMarcaList.filter(m => m !== brandName) // Deseleccionar: remover del array
+            : [...currentMarcaList, brandName] // Seleccionar: agregar al array existente
         
-        if (isFiltersVisible) {
-            // Panel abierto: obtener estado actual del formulario (puede tener cambios no guardados)
-            const currentFilters = filterFormRef.current?.getCurrentFilters?.() || { marca: [] }
-            const currentMarcaList = currentFilters.marca || []
-            const isSelected = currentMarcaList.includes(brandName)
-            const newMarca = isSelected 
-                ? currentMarcaList.filter(m => m !== brandName) // Deseleccionar: remover del array
-                : [...currentMarcaList, brandName] // Seleccionar: agregar al array existente
-            
-            // Actualizar estado local del padre
-            setLocalMarca(newMarca)
-            
-            // Actualizar estado del formulario sin submit inmediato
-            if (filterFormRef.current?.updateMarcaFilter) {
-                filterFormRef.current.updateMarcaFilter(newMarca)
-            }
-        } else {
-            // Panel cerrado: actualizar URL directamente (dispara fetch automático)
-            const currentMarcaList = urlFilters.marca || []
-            const isSelected = currentMarcaList.includes(brandName)
-            const newMarca = isSelected 
-                ? currentMarcaList.filter(m => m !== brandName) // Deseleccionar: remover del array
-                : [...currentMarcaList, brandName] // Seleccionar: agregar al array existente
-            
-            const newFilters = { ...urlFilters, marca: newMarca }
-            setSp(serializeFilters(newFilters), { replace: false })
-        }
-    }
+        // Escribir únicamente vía setSearchParams
+        const newFilters = { ...filters, marca: newMarca }
+        setSp(serializeFilters(newFilters), { replace: false })
+    }, [filters, setSp])
 
     // ✅ OPTIMIZADO: Handlers para sorting (memoizados)
     const handleSortClick = useCallback(() => {
         setIsSortDropdownOpen(!isSortDropdownOpen)
     }, [isSortDropdownOpen])
-    const handleSortChange = (sortOption) => {
+    
+    // ✅ OPTIMIZADO: Handler de cambio de sort memoizado (evita re-render de SortDropdown)
+    const handleSortChange = useCallback((sortOption) => {
         setSelectedSort(sortOption)
         setIsSortDropdownOpen(false)
         const newParams = new URLSearchParams(sp)
@@ -169,10 +176,16 @@ const Vehiculos = () => {
             newParams.delete('sort')
         }
         setSp(newParams, { replace: true })
-    }
+    }, [sp, setSp])
+    
     const handleCloseSortDropdown = useCallback(() => {
         setIsSortDropdownOpen(false)
     }, [])
+    
+    // ✅ OPTIMIZADO: Estado disabled memoizado para SortDropdown (claridad)
+    const isSortDisabled = useMemo(() => {
+        return isLoading || isLoadingMore
+    }, [isLoading, isLoadingMore])
 
     return (
         <div className={styles.page}>
@@ -199,9 +212,8 @@ const Vehiculos = () => {
             {/* ✅ NUEVO: Sección del carrusel a todo el ancho con botones integrados */}
             <div className={styles.carouselSection}>
                 <BrandsCarousel 
-                    selectedBrands={currentMarca}
+                    selectedBrands={selectedBrands}
                     onBrandSelect={handleBrandSelect}
-                    isFiltersVisible={isFiltersVisible}
                 />
                 
                 {/* ✅ Formulario de filtros entre carrusel y botones */}
@@ -232,7 +244,7 @@ const Vehiculos = () => {
                             ref={sortButtonRef}
                             className={`${styles.actionButton} ${selectedSort ? styles.active : ''}`}
                             onClick={handleSortClick}
-                            disabled={isLoading || isLoadingMore}
+                            disabled={isSortDisabled}
                         >
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M3 6h18"></path>
@@ -247,7 +259,7 @@ const Vehiculos = () => {
                             selectedSort={selectedSort}
                             onSortChange={handleSortChange}
                             onClose={handleCloseSortDropdown}
-                            disabled={isLoading || isLoadingMore}
+                            disabled={isSortDisabled}
                             triggerRef={sortButtonRef}
                         />
                     </div>

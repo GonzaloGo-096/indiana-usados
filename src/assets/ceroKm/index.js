@@ -28,3 +28,4 @@ export const modeloBoxer = staticImages.ceroKm.modelos.boxer
 export const modelosMap = staticImages.ceroKm.modelos
 
 
+

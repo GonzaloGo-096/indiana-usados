@@ -42,3 +42,4 @@ export const hasBrandIcon = (marca) => {
   return !!BRAND_ICONS[key]
 }
 
+

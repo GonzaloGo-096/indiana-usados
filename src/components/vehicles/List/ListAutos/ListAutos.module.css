@@ -139,7 +139,7 @@
     display: grid;
     /* ✅ MOBILE: 1 columna, card ocupa 100% */
     grid-template-columns: 1fr;
-    gap: clamp(24px, 6vw, 48px); /* ✅ CAPA 3: Gap dinámico responsivo - Evita overflow en pantallas pequeñas */
+    gap: clamp(16px, 4vw, 32px); /* ✅ Gap reducido: De 24-48px a 16-32px */
     min-height: 150px;
     padding: 0;
     margin: 0 auto; /* ✅ Centrado */
@@ -151,10 +151,10 @@
 @media (min-width: 768px) {
     .grid {
         grid-template-columns: repeat(2, 380px);
-        gap: clamp(28px, 7vw, 56px); /* ✅ Gap dinámico - Se adapta al espacio disponible */
+        gap: clamp(20px, 5vw, 40px); /* ✅ Gap reducido: De 28-56px a 20-40px */
         justify-content: center;
         padding: 0;
-        max-width: fit-content; /* ✅ Ajustarse al contenido: 2 columnas (760px) + 1 gap (hasta 56px) = ~816px */
+        max-width: fit-content; /* ✅ Ajustarse al contenido: 2 columnas (760px) + 1 gap (hasta 40px) = ~800px */
         width: fit-content; /* ✅ Ajustarse al contenido */
     }
 }
@@ -163,10 +163,10 @@
 @media (min-width: 992px) {
     .grid {
         grid-template-columns: repeat(3, 380px);
-        gap: clamp(30px, 5vw, 60px); /* ✅ Gap dinámico - Máximo 60px pero se adapta si es necesario */
+        gap: clamp(24px, 4vw, 48px); /* ✅ Gap reducido: De 30-60px a 24-48px */
         justify-content: center;
         margin: 0 auto;
-        max-width: fit-content; /* ✅ Ajustarse al contenido: 3 columnas (1140px) + 2 gaps (hasta 120px) = ~1260px */
+        max-width: fit-content; /* ✅ Ajustarse al contenido: 3 columnas (1140px) + 2 gaps (hasta 96px) = ~1236px */
         width: fit-content; /* ✅ Ajustarse al contenido */
     }
 }
@@ -175,7 +175,7 @@
 @media (min-width: 1200px) {
     .grid {
         grid-template-columns: repeat(3, 380px);
-        gap: clamp(32px, 5.3vw, 64px); /* ✅ Gap dinámico - Máximo 64px pero se adapta */
+        gap: clamp(24px, 4vw, 48px); /* ✅ Gap reducido: De 32-64px a 24-48px */
         justify-content: center;
         margin: 0 auto;
         max-width: fit-content; /* ✅ Ajustarse al contenido: 3 columnas (1140px) + 2 gaps (hasta 128px) = ~1268px */
@@ -359,7 +359,7 @@
     }
 }
 
-/* ✅ BOTÓN "CARGAR MÁS" */
+/* ✅ BOTÓN "CARGAR MÁS" - ESTILO UNIFICADO PLANES (OUTLINE - TRANSPARENTE) */
 .loadMoreSection {
     display: flex;
     justify-content: center;
@@ -371,40 +371,61 @@
 }
 
 .loadMoreButton {
-    background: #1f2937; /* ✅ MISMO COLOR que botón "Volver a la lista" */
-    color: white;
-    border: none;
-    border-radius: 6px; /* ✅ MISMO BORDER-RADIUS que botón "Volver a la lista" */
-    padding: 0.75rem 1.25rem; /* ✅ AJUSTADO: Más padding para igualar altura */
-    font-size: 0.8rem; /* ✅ MISMO FONT-SIZE que botón "Volver a la lista" */
-    font-weight: 600;
+    --button-padding-y: var(--spacing-3);
+    --button-padding-x: var(--spacing-4);
+    --button-font-size: clamp(0.875rem, 2vw, 1rem);
+    --button-letter-spacing: 0.5px;
+    --button-hover-lift: -1px;
+    
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--button-padding-y) var(--button-padding-x);
+    background: transparent;
+    color: var(--color-brand-500);
+    text-decoration: none;
+    font-size: var(--button-font-size);
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: var(--button-letter-spacing);
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--color-brand-500);
     cursor: pointer;
-    transition: all 0.2s ease; /* ✅ MISMA TRANSICIÓN que botón "Volver a la lista" */
-    min-width: 160px; /* ✅ REDUCIDO: De 200px a 160px */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* ✅ MISMA SOMBRA que botón "Volver a la lista" */
-    display: inline-flex; /* ✅ MISMO DISPLAY que botón "Volver a la lista" */
-    align-items: center; /* ✅ MISMO ALIGN-ITEMS que botón "Volver a la lista" */
-    justify-content: center; /* ✅ CENTRAR TEXTO */
+    min-width: 160px;
+    transition: 
+        background-color var(--transition-fast),
+        transform var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast);
 }
 
 .loadMoreButton:hover:not(:disabled) {
-    background: #374151; /* ✅ MISMO COLOR HOVER que botón "Volver a la lista" */
-    transform: translateY(-1px); /* ✅ MISMO EFECTO que botón "Volver a la lista" */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* ✅ MISMA SOMBRA HOVER */
-}
-
-.loadMoreButton:disabled {
-    background: #9ca3af;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+    background: var(--color-brand-500-rgba-10);
+    color: var(--color-brand-600);
+    border-color: var(--color-brand-600);
+    transform: translateY(var(--button-hover-lift));
 }
 
 .loadMoreButton:active:not(:disabled) {
-    transform: translateY(0); /* ✅ MISMO EFECTO que botón "Volver a la lista" */
+    transform: translateY(0);
 }
 
-/* ✅ ANIMACIÓN: Entrada suave como botón "Subir" */
+.loadMoreButton:disabled {
+    background: transparent;
+    color: var(--color-neutral-400);
+    border-color: var(--color-neutral-400);
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.6;
+}
+
+.loadMoreButton:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+}
+
+/* ✅ ANIMACIÓN: Entrada suave */
 .loadMoreButton {
     animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -420,11 +441,11 @@
     }
 }
 
-/* ✅ RESPONSIVE para botón - Mobile compacto */
+/* ✅ RESPONSIVE - Mobile compacto */
 @media (max-width: 768px) {
     .loadMoreButton {
-        padding: 0.625rem 1.125rem;
-        font-size: 0.8125rem;
+        padding: var(--spacing-2) var(--spacing-3);
+        font-size: clamp(0.8125rem, 1.5vw, 0.875rem);
         min-width: 150px;
     }
 } 

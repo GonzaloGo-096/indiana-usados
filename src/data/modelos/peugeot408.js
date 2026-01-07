@@ -77,7 +77,7 @@ export const PEUGEOT_408 = {
         href: '/pdf/pdf-408.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     }

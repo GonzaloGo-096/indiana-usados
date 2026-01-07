@@ -16,6 +16,7 @@
 
 import React, { useRef, useEffect, useCallback } from 'react'
 import styles from './VersionCarousel.module.css'
+import CarouselDots from '@components/ui/CarouselDots/CarouselDots'
 
 /**
  * @param {Object} props
@@ -228,6 +229,17 @@ export const VersionCarousel = ({
           )
         })}
       </div>
+      {/* Indicador 'autocity' con navegación por dot */}
+      <CarouselDots
+        count={versions.length}
+        activeIndex={activeIndex}
+        variant="autocity"
+        onDotClick={(i) => {
+          if (typeof onChangeIndex === 'function') {
+            onChangeIndex(i)
+          }
+        }}
+      />
     </div>
   )
 }

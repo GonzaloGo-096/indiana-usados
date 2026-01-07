@@ -73,7 +73,7 @@ export const PEUGEOT_BOXER = {
         href: '/pdf/pdf-boxer.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     },
@@ -96,7 +96,7 @@ export const PEUGEOT_BOXER = {
         href: '/pdf/pdf-boxer.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     }

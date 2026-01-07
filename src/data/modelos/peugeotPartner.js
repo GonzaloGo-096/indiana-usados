@@ -74,7 +74,7 @@ export const PEUGEOT_PARTNER = {
         href: '/pdf/pdf-partner.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     },
@@ -99,7 +99,7 @@ export const PEUGEOT_PARTNER = {
         href: '/pdf/pdf-partner.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     }

@@ -70,7 +70,7 @@ export const PEUGEOT_208 = {
         href: '/pdf/pdf-208.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     },
@@ -98,7 +98,7 @@ export const PEUGEOT_208 = {
         href: '/pdf/pdf-208.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     },
@@ -124,7 +124,7 @@ export const PEUGEOT_208 = {
         href: '/pdf/pdf-208.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     },
@@ -153,7 +153,7 @@ export const PEUGEOT_208 = {
         href: '/pdf/pdf-208.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     },
@@ -170,7 +170,7 @@ export const PEUGEOT_208 = {
         href: '/pdf/pdf-208.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     },
@@ -187,7 +187,7 @@ export const PEUGEOT_208 = {
         href: '/pdf/pdf-208.pdf',
         label: 'Ficha Técnica',
         fileSize: null,
-        variant: 'primary',
+        variant: 'outline',
         size: 'medium'
       }
     }

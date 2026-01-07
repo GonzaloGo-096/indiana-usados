@@ -196,7 +196,7 @@
 }
 
 .actionButtonOutline:hover {
-  background: rgba(0, 85, 164, 0.1);
+  background: var(--color-brand-500-rgba-10);
   color: var(--color-brand-600);
   border-color: var(--color-brand-600);
   transform: translateY(-1px);

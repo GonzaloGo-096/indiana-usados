@@ -176,3 +176,4 @@ const PlanDetalle = () => {
 
 export default PlanDetalle
 
+

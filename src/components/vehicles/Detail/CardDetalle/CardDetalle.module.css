@@ -113,6 +113,18 @@
   display: block;
 }
 
+/* ✅ Logo pequeño para Peugeot y Fiat */
+.brand_logo_small {
+  width: 95px;
+  height: 95px;
+}
+
+/* ✅ Logo grande para Honda */
+.brand_logo_large {
+  width: 135px;
+  height: 135px;
+}
+
 .container1_right {
   flex: 1; /* ✅ Ocupa el espacio restante disponible */
   display: flex;

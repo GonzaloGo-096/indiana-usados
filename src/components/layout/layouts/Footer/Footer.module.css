@@ -21,7 +21,7 @@
   position: relative;
   /* Borde superior sutil para separación visual */
   /* ✅ Simplificación: se elimina color-mix(), se conserva valor visual (equivalente a --color-brand-500 con 20% opacidad) */
-  border-top: 1px solid rgba(0, 85, 164, 0.2);
+  border-top: 1px solid var(--color-brand-500-rgba-20);
 }
 
 /* ===== CONTENEDOR ===== */
@@ -29,6 +29,27 @@
   max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 0 var(--spacing-4);
+}
+
+/* ===== LOGO ENCABEZADO ===== */
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--spacing-8);
+  padding-bottom: var(--spacing-6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logo {
+  width: clamp(100px, 20vw, 140px);
+  height: auto;
+  opacity: 0.9;
+  transition: opacity var(--transition-fast);
+}
+
+.logo:hover {
+  opacity: 1;
 }
 
 /* ===== COPYRIGHT ===== */

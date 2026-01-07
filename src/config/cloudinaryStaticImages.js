@@ -30,14 +30,14 @@ export const staticImages = {
 
   nav: {
     logo: {
-      src: "/assets/logos/brands/indiana-final.webp",
+      src: "/assets/logos/logos-indiana/indiana-final.webp",
       alt: "Logo Indiana",
     },
   },
 
   usados: {
     placeholder: {
-      src: "/assets/logos/brands/logo-chico-solid.webp",
+      src: "/assets/logos/logos-indiana/desktop/logo-chico-solid.webp",
       alt: "Imagen predeterminada del vehículo",
     },
   },

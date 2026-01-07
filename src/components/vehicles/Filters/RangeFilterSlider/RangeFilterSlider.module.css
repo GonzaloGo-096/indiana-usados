@@ -1,0 +1,224 @@
+/**
+ * RangeFilterSlider.module.css - Estilos del slider de rango con filtros
+ */
+
+.container {
+  width: 100%;
+  padding: 1.5rem;
+  background: var(--color-neutral-900, #0a0d14);
+  border-radius: 8px;
+  border: 1px solid var(--color-neutral-800, #0f1419);
+}
+
+.sliderSection {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-neutral-100, #f3f4f6);
+  margin-bottom: 0.75rem;
+}
+
+.valueDisplay {
+  color: var(--color-brand-500, #3b82f6);
+  font-weight: 700;
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-neutral-700, #1f2937);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 1rem 0;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-brand-500, #3b82f6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  background: var(--color-brand-400, #60a5fa);
+  transform: scale(1.1);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-brand-500, #3b82f6);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.slider::-moz-range-thumb:hover {
+  background: var(--color-brand-400, #60a5fa);
+  transform: scale(1.1);
+}
+
+.rangeLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--color-neutral-400, #9ca3af);
+  margin-top: 0.5rem;
+}
+
+.status {
+  padding: 1rem;
+  text-align: center;
+  color: var(--color-neutral-300, #d1d5db);
+  font-size: 0.875rem;
+}
+
+.error {
+  padding: 1rem;
+  text-align: center;
+  color: var(--color-error-500, #ef4444);
+  font-size: 0.875rem;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 4px;
+}
+
+.vehiclesSection {
+  margin-top: 1.5rem;
+}
+
+.vehiclesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.vehiclesHeader h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-neutral-100, #f3f4f6);
+  margin: 0;
+}
+
+/* ✅ BOTÓN "CARGAR MÁS" - ESTILO UNIFICADO PLANES (OUTLINE - TRANSPARENTE) */
+.loadMoreButton {
+    --button-padding-y: var(--spacing-3);
+    --button-padding-x: var(--spacing-4);
+    --button-font-size: clamp(0.875rem, 2vw, 1rem);
+    --button-letter-spacing: 0.5px;
+    --button-hover-lift: -1px;
+    
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--button-padding-y) var(--button-padding-x);
+    background: transparent;
+    color: var(--color-brand-500);
+    text-decoration: none;
+    font-size: var(--button-font-size);
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: var(--button-letter-spacing);
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--color-brand-500);
+    cursor: pointer;
+    transition: 
+        background-color var(--transition-fast),
+        transform var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+.loadMoreButton:hover:not(:disabled) {
+    background: var(--color-brand-500-rgba-10);
+    color: var(--color-brand-600);
+    border-color: var(--color-brand-600);
+    transform: translateY(var(--button-hover-lift));
+}
+
+.loadMoreButton:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.loadMoreButton:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+}
+
+.loadMoreButton:disabled {
+    background: transparent;
+    color: var(--color-neutral-400);
+    border-color: var(--color-neutral-400);
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.vehiclesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.vehicleItem {
+  padding: 1rem;
+  background: var(--color-neutral-800, #0f1419);
+  border-radius: 6px;
+  border: 1px solid var(--color-neutral-700, #1f2937);
+  transition: border-color 0.2s ease;
+}
+
+.vehicleItem:hover {
+  border-color: var(--color-brand-500, #3b82f6);
+}
+
+.vehicleInfo {
+  margin-bottom: 0.5rem;
+}
+
+.vehicleInfo strong {
+  color: var(--color-neutral-100, #f3f4f6);
+  font-size: 1rem;
+}
+
+.vehicleInfo span {
+  color: var(--color-neutral-400, #9ca3af);
+  font-size: 0.875rem;
+}
+
+.vehicleDetails {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  color: var(--color-neutral-300, #d1d5db);
+}
+
+.vehicleDetails span {
+  padding: 0.25rem 0.5rem;
+  background: var(--color-neutral-700, #1f2937);
+  border-radius: 4px;
+}
+
+.empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--color-neutral-400, #9ca3af);
+  font-size: 0.875rem;
+}
+

@@ -150,7 +150,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                             <img 
                                 src={brandLogo.src} 
                                 alt={brandLogo.alt} 
-                                className={styles.brand_logo}
+                                className={`${styles.brand_logo} ${brandLogo.size === 'small' ? styles.brand_logo_small : ''} ${brandLogo.size === 'large' ? styles.brand_logo_large : ''}`}
                                 width="120"
                                 height="120"
                                 loading="lazy"
