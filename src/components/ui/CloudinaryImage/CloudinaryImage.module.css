@@ -13,6 +13,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center; /* ✅ CRÍTICO: Centrar imagen para evitar deformación */
   transition: opacity 0.5s ease-out;
   opacity: 0;
   z-index: 2;
@@ -31,6 +32,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center; /* ✅ CRÍTICO: Centrar placeholder para evitar deformación */
   filter: blur(12px);
   transform: scale(1.02);
   transition: opacity 0.6s ease-out;
@@ -51,10 +53,8 @@
   overflow: hidden;
   width: 100%;
   height: 100%;
-  /* ✅ CRÍTICO: Asegurar que herede altura incluso cuando el padre tiene contain: layout style paint */
-  min-height: 0;
-  /* ✅ CRÍTICO: Asegurar que ocupe todo el espacio disponible del contenedor padre */
+  /* ✅ OPTIMIZADO: Asegurar que ocupe todo el espacio disponible del contenedor padre */
   flex-shrink: 0;
-  /* ✅ CRÍTICO: Forzar aspect-ratio igual al padre para calcular altura correctamente con lazy loading */
-  aspect-ratio: 16 / 10;
+  /* ✅ REMOVIDO: aspect-ratio redundante (ya está en el padre .card__image-container) */
+  /* El padre ya tiene aspect-ratio: 16 / 10, no necesitamos duplicarlo */
 }

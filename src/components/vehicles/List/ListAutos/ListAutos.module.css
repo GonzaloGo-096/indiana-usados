@@ -195,13 +195,15 @@
 /* ===== WRAPPER DE TARJETAS - ULTRA COMPACTO ===== */
 .cardWrapper {
     min-height: 350px;
+    height: auto; /* ✅ CRÍTICO: Altura real basada en contenido para que height: 100% de la card funcione */
     width: 100%;
 }
 
 /* ✅ Cards con tamaño fijo en el grid */
 .cardWrapper :global(.card) {
     width: 100%;
-    max-width: 100%;
+    /* ✅ REMOVIDO: max-width: 100% que puede interferir con max-width: 360px de la card */
+    /* La card ya tiene max-width: 360px definido, no necesitamos forzarlo a 100% */
 }
 
 /* Mobile: Centrar las cards */
