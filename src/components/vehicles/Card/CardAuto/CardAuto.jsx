@@ -31,7 +31,7 @@ import styles from './CardAuto.module.css'
 import { AnioIcon, KmIcon, CajaIconDetalle } from '@components/ui/icons'
 import CloudinaryImage from '@/components/ui/CloudinaryImage/CloudinaryImage'
 import { IMAGE_SIZES, IMAGE_WIDTHS } from '@constants/imageSizes'
-import { usePreloadImages, useVehiclePrefetch } from '@hooks'
+import { useVehiclePrefetch } from '@hooks'
 
 /**
  * Componente CardAuto optimizado
@@ -41,13 +41,6 @@ import { usePreloadImages, useVehiclePrefetch } from '@hooks'
 export const CardAuto = memo(({ auto }) => {
     const navigate = useNavigate()
     const { prefetchVehicleDetail } = useVehiclePrefetch()
-    
-    // ✅ PRELOAD DE IMÁGENES CRÍTICAS - Mejorado para cache borrado
-    const { preloadVehicle, getStats } = usePreloadImages([auto], {
-        preloadDistance: 400,
-        maxPreload: 2,
-        enablePreload: true
-    })
     
     // ✅ URL de imagen principal optimizada con useMemo
     const primaryImage = useMemo(() => {

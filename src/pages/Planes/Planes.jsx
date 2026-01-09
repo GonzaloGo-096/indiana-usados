@@ -339,7 +339,8 @@ const ModeloSection = React.forwardRef(({ modelo, planes }, ref) => {
                 image={imagenModelo.url}
                 alt={imagenModelo.alt || `Peugeot ${modeloDisplay}`}
                 variant="fluid"
-                loading="lazy"
+                loading="eager"
+                fetchpriority="high"
                 className={styles.modeloImage}
                 sizes="(max-width: 768px) 320px, 400px"
               />
