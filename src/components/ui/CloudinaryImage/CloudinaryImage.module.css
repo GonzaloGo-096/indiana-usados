@@ -56,5 +56,5 @@
   /* ✅ OPTIMIZADO: Asegurar que ocupe todo el espacio disponible del contenedor padre */
   flex-shrink: 0;
   /* ✅ REMOVIDO: aspect-ratio redundante (ya está en el padre .card__image-container) */
-  /* El padre ya tiene aspect-ratio: 16 / 10, no necesitamos duplicarlo */
+  /* El padre ya tiene aspect-ratio: 16 / 9, no necesitamos duplicarlo */
 }

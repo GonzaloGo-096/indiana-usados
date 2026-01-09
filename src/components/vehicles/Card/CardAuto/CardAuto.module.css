@@ -91,6 +91,7 @@
 }
 
 /* ===== CONTENEDOR DE IMAGEN (FOCO PRINCIPAL) ===== */
+/* ✅ EXACTO: Mismo selector que CardSimilar (que SÍ funciona) */
 .card__image-container {
     position: relative;
     overflow: hidden;
@@ -112,6 +113,7 @@
     z-index: 0 !important;
 }
 
+/* ✅ EXACTO: Mismo selector que CardSimilar (que SÍ funciona) */
 .card__image-container [class*="image"],
 .card__image-container [class*="placeholder"] {
     z-index: 0 !important;
