@@ -13,7 +13,7 @@
  * @version 6.0.0 - Rediseño Premium
  */
 
-import React, { memo, useMemo, useCallback } from 'react'
+import React, { memo, useMemo, useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
     formatPrice, 
