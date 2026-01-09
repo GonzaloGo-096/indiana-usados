@@ -100,6 +100,11 @@
     
     /* Optimización de performance - Removido isolation para permitir z-index del overlay */
     contain: layout style paint;
+    
+    /* ✅ CRÍTICO: Asegurar que el aspect-ratio se calcule incluso con contain y lazy loading */
+    min-height: 0;
+    /* ✅ CRÍTICO: Forzar que el contenedor tenga altura calculada antes de que las imágenes lazy se carguen */
+    flex-shrink: 0;
 }
 
 /* Asegurar que todos los elementos hijos (imágenes, contenedores) estén por debajo */

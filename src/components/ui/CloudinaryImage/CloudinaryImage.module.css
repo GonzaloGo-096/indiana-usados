@@ -51,8 +51,10 @@
   overflow: hidden;
   width: 100%;
   height: 100%;
-  /* Asegurar que herede altura incluso cuando el padre tiene contain: layout style paint */
+  /* ✅ CRÍTICO: Asegurar que herede altura incluso cuando el padre tiene contain: layout style paint */
   min-height: 0;
-  /* Asegurar que ocupe todo el espacio disponible del contenedor padre */
+  /* ✅ CRÍTICO: Asegurar que ocupe todo el espacio disponible del contenedor padre */
   flex-shrink: 0;
+  /* ✅ CRÍTICO: Forzar aspect-ratio igual al padre para calcular altura correctamente con lazy loading */
+  aspect-ratio: 16 / 10;
 }
