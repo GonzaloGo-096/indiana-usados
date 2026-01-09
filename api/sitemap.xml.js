@@ -2,22 +2,39 @@
  * api/sitemap.xml.js - Serverless function para generar sitemap dinámico
  * 
  * Vercel Serverless Function que genera sitemap.xml con vehículos reales
- * Accesible en: https://indianausados.com/sitemap.xml
+ * Accesible en: https://indiana.com.ar/sitemap.xml (solo producción)
  * 
  * Características:
  * - Genera sitemap dinámico con vehículos desde API
  * - Cachea resultado (recomendado por Google: actualizar cada 24h)
  * - Maneja errores gracefully
- * - Retorna solo páginas estáticas si falla la API
+ * - SOLO genera sitemap en producción (preview/dev retornan 404)
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Solo producción genera sitemap
  */
 
-// Configuración (usa variables de entorno, fallback a valores por defecto)
-const SITE_URL = process.env.VITE_SITE_URL || (process.env.VERCEL_URL 
-  ? `https://${process.env.VERCEL_URL}` 
-  : 'https://indianausados.com')
+// Detectar entorno
+const getEnvironment = () => {
+  // VERCEL_ENV tiene prioridad (disponible en Vercel)
+  if (process.env.VERCEL_ENV) {
+    return process.env.VERCEL_ENV.toLowerCase().trim()
+  }
+  // Fallback a VITE_ENVIRONMENT
+  if (process.env.VITE_ENVIRONMENT) {
+    return process.env.VITE_ENVIRONMENT.toLowerCase().trim()
+  }
+  // Por defecto, asumir development
+  return 'development'
+}
+
+const ENVIRONMENT = getEnvironment()
+const IS_PRODUCTION = ENVIRONMENT === 'production'
+
+// Configuración (solo se usa en producción)
+const SITE_URL = IS_PRODUCTION 
+  ? (process.env.VITE_SITE_URL || 'https://indiana.com.ar')
+  : 'https://indiana.com.ar'
 
 const API_URL = process.env.VITE_API_URL || 'http://localhost:3001'
 
@@ -290,6 +307,15 @@ export default async function handler(req, res) {
   // Solo permitir GET
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' })
+  }
+  
+  // POLÍTICA ESTRICTA: Solo generar sitemap en producción
+  // Preview y development retornan 404 para evitar indexación incorrecta
+  if (!IS_PRODUCTION) {
+    return res.status(404).json({ 
+      error: 'Sitemap not available',
+      message: 'Sitemap is only generated in production environment'
+    })
   }
   
   try {

@@ -6,19 +6,37 @@
  * - Validación de variables de entorno
  * - Valores por defecto seguros
  * - Configuración por entorno
+ * - Soporte para Vercel Preview Deployments
  * 
  * @author Indiana Usados
- * @version 1.1.0 - Logger importado directamente
+ * @version 2.0.0 - Soporte para Vercel Preview Deployments
  */
 
 import { logger } from '@utils/logger'
 
 // ===== VALIDACIÓN DE ENTORNO =====
 const validateEnvironment = () => {
-  const rawEnvironment = import.meta.env.VITE_ENVIRONMENT || 'development'
+  // Prioridad 1: VERCEL_ENV (si existe process.env, es serverless/Node.js)
+  // Prioridad 2: VITE_ENVIRONMENT (import.meta.env en cliente Vite)
+  // Prioridad 3: Fallback a 'development'
+  let rawEnvironment
+  
+  // En Node.js/serverless (process.env disponible)
+  if (typeof process !== 'undefined' && process.env && process.env.VERCEL_ENV) {
+    rawEnvironment = process.env.VERCEL_ENV
+  }
+  // En cliente Vite (import.meta.env disponible)
+  else if (import.meta.env && import.meta.env.VITE_ENVIRONMENT) {
+    rawEnvironment = import.meta.env.VITE_ENVIRONMENT
+  }
+  // Fallback
+  else {
+    rawEnvironment = 'development'
+  }
+  
   // Normalizar a minúsculas para evitar errores de case-sensitivity
   const environment = rawEnvironment.toLowerCase().trim()
-  const validEnvironments = ['development', 'staging', 'production']
+  const validEnvironments = ['development', 'preview', 'staging', 'production']
   
   if (!validEnvironments.includes(environment)) {
     logger.warn('config:env', `Entorno inválido: ${rawEnvironment}. Usando 'development'`)
@@ -32,7 +50,7 @@ const validateEnvironment = () => {
 const getApiConfig = () => {
   // Configuración base
   const baseConfig = {
-    timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 15000, // ✅ 15 segundos por defecto
+    timeout: parseInt(import.meta.env?.VITE_API_TIMEOUT) || 15000, // ✅ 15 segundos por defecto
     retries: 2,
     headers: {
       'Content-Type': 'application/json',
@@ -41,11 +59,69 @@ const getApiConfig = () => {
   }
   
   // Backend real
-  const apiURL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+  const apiURL = import.meta.env?.VITE_API_URL || 'http://localhost:3001'
   
   return {
     ...baseConfig,
     baseURL: apiURL
+  }
+}
+
+// ===== CONFIGURACIÓN DE ENTORNO COMPLETA =====
+/**
+ * Resuelve la URL del sitio según el entorno
+ */
+const resolveSiteUrl = (envName) => {
+  // En Node.js/serverless (process.env disponible)
+  if (typeof process !== 'undefined' && process.env) {
+    // Prioridad 1: VITE_SITE_URL explícita
+    if (process.env.VITE_SITE_URL) {
+      return process.env.VITE_SITE_URL
+    }
+    // Prioridad 2: Si es preview, usar VERCEL_URL
+    if (envName === 'preview' && process.env.VERCEL_URL) {
+      return `https://${process.env.VERCEL_URL}`
+    }
+  }
+  
+  // En cliente Vite (import.meta.env disponible)
+  if (import.meta.env) {
+    // Prioridad 1: VITE_SITE_URL explícita
+    if (import.meta.env.VITE_SITE_URL) {
+      return import.meta.env.VITE_SITE_URL
+    }
+    // Prioridad 2: Si es preview, intentar usar VERCEL_URL (solo en browser si está disponible)
+    if (envName === 'preview') {
+      // En preview, usar window.location.origin como fallback
+      if (typeof window !== 'undefined' && window.location) {
+        return window.location.origin
+      }
+    }
+    // Prioridad 3: Si es development, usar window.location.origin
+    if (envName === 'development' && typeof window !== 'undefined' && window.location) {
+      return window.location.origin
+    }
+  }
+  
+  // Fallback final: solo para producción
+  return 'https://indiana.com.ar'
+}
+
+/**
+ * Objeto de entorno completo con flags y URLs resueltas
+ */
+const getEnvironmentConfig = () => {
+  const envName = validateEnvironment()
+  const apiConfig = getApiConfig()
+  
+  return {
+    name: envName,
+    isProduction: envName === 'production',
+    isPreview: envName === 'preview',
+    isDevelopment: envName === 'development',
+    isStaging: envName === 'staging',
+    siteUrl: resolveSiteUrl(envName),
+    apiUrl: apiConfig.baseURL
   }
 }
 
@@ -82,10 +158,13 @@ const getImagesConfig = () => {
   }
 }
 
+// ===== CONFIGURACIÓN DE ENTORNO =====
+export const environment = getEnvironmentConfig()
+
 // ===== CONFIGURACIÓN PRINCIPAL =====
 export const config = {
-  // Entorno
-  environment: validateEnvironment(),
+  // Entorno (mantener compatibilidad con código existente)
+  environment: environment.name,
   
   // API
   api: getApiConfig(),
@@ -101,10 +180,10 @@ export const config = {
   // Imágenes
   images: getImagesConfig(),
   
-  // Utilidades
-  isDevelopment: validateEnvironment() === 'development',
-  isProduction: validateEnvironment() === 'production',
-  isStaging: validateEnvironment() === 'staging'
+  // Utilidades (mantener compatibilidad con código existente)
+  isDevelopment: environment.isDevelopment,
+  isProduction: environment.isProduction,
+  isStaging: environment.isStaging
 }
 
 // ===== LOGGING DE CONFIGURACIÓN (solo en desarrollo) =====
