@@ -36,7 +36,8 @@ export const BRAND_LOGOS = {
   },
   ford: {
     src: '/assets/logos/brands/Ford-logo-1.webp',
-    alt: 'Logo Ford'
+    alt: 'Logo Ford',
+    size: 'large' /* ✅ Logo Ford más grande */
   },
   honda: {
     src: '/assets/logos/brands/Honda_logo_PNG5.webp',

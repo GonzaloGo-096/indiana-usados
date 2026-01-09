@@ -162,21 +162,9 @@ export const CardAuto = memo(({ auto }) => {
 
             {/* ===== CONTENIDO ===== */}
             <div className={styles['card__body']}>
-                {/* CONTENEDOR 1: Logo izquierda + Datos derecha (2 filas comprimidas) + Fila 3 abajo */}
+                {/* CONTENEDOR 1: Datos primero + Logo después (orden invertido) */}
                 <div className={styles.container1}>
-                    {/* Logo a la izquierda (más chico) */}
-                    <div className={styles.container1_left}>
-                        <img 
-                            src={brandLogo.src} 
-                            alt={brandLogo.alt} 
-                            className={`${styles.brand_logo} ${brandLogo.size === 'small' ? styles.brand_logo_small : ''} ${brandLogo.size === 'large' ? styles.brand_logo_large : ''}`}
-                            width="60"
-                            height="60"
-                            loading="lazy"
-                        />
-                    </div>
-                    
-                    {/* Bloque de datos a la derecha */}
+                    {/* Bloque de datos primero */}
                     <div className={styles.container1_right}>
                         {/* Fila 1: Marca + Modelo */}
                         <div className={styles.container1_row1}>
@@ -206,6 +194,18 @@ export const CardAuto = memo(({ auto }) => {
                                 )
                             })}
                         </div>
+                    </div>
+                    
+                    {/* Logo después de los datos */}
+                    <div className={styles.container1_left}>
+                        <img 
+                            src={brandLogo.src} 
+                            alt={brandLogo.alt} 
+                            className={`${styles.brand_logo} ${brandLogo.size === 'small' ? styles.brand_logo_small : ''} ${brandLogo.size === 'large' ? styles.brand_logo_large : ''}`}
+                            width="60"
+                            height="60"
+                            loading="lazy"
+                        />
                     </div>
                 </div>
                 

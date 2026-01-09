@@ -1,63 +1,65 @@
 /**
- * VehiculoDetalle.module.css - Estilos limpios y modernos para la página de detalle
+ * VehiculoDetalle.module.css - Estilos modernos y profesionales
  * 
  * Características:
- * - Diseño limpio y minimalista
+ * - Diseño limpio y espacioso
  * - Layout responsive optimizado
- * - Performance mejorada
- * - Estructura CSS simplificada
+ * - Contenedor con mejor espaciado
+ * - Botón de volver mejorado
  * 
  * @author Indiana Usados
- * @version 3.0.0 - Rediseño completo
+ * @version 4.0.0 - Rediseño profesional
  */
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .container {
-  max-width: var(--container-max-width);
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 2rem 1rem;
-  min-height: 100vh;
+  padding: var(--spacing-6) var(--spacing-4); /* Mobile: 16px padding */
+  min-height: calc(100vh - 200px);
+  background: var(--color-surface);
+  box-sizing: border-box;
+  width: 100%;
 }
 
-/* ===== BOTÓN DE VOLVER - ESTILO UNIFICADO PLANES (OUTLINE) ===== */
+/* ===== BOTÓN DE VOLVER ===== */
 .backButton {
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-6);
+  padding: 0 var(--spacing-4); /* ✅ Separación de los bordes laterales */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .backLink {
-  --button-padding-y: var(--spacing-3);
-  --button-padding-x: var(--spacing-4);
-  --button-font-size: clamp(0.875rem, 2vw, 1rem);
-  --button-letter-spacing: 0.5px;
-  --button-hover-lift: -1px;
-  
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-2);
-  padding: var(--button-padding-y) var(--button-padding-x);
-  background: transparent;
+  padding: var(--spacing-4) var(--spacing-6); /* ✅ Más altura (spacing-4) y más separación lateral (spacing-6) */
+  margin-top: var(--spacing-4); /* ✅ Margin top */
+  margin-left: var(--spacing-4); /* ✅ Margin left */
+  background: var(--color-white);
   color: var(--color-brand-500);
   text-decoration: none;
-  font-size: var(--button-font-size);
-  font-weight: var(--font-weight-semibold);
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  letter-spacing: var(--button-letter-spacing);
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  font-weight: 600;
+  font-family: var(--font-sans);
+  letter-spacing: 0.02em;
   border-radius: var(--border-radius-md);
   border: 2px solid var(--color-brand-500);
   cursor: pointer;
-  transition: 
-    background-color var(--transition-fast),
-    transform var(--transition-fast),
-    border-color var(--transition-fast),
-    color var(--transition-fast);
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  width: fit-content;
+  min-width: 200px;
+  justify-content: center;
 }
 
 .backLink:hover {
   background: var(--color-brand-500-rgba-10);
   color: var(--color-brand-600);
   border-color: var(--color-brand-600);
-  transform: translateY(var(--button-hover-lift));
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .backLink:active {
@@ -70,8 +72,8 @@
 }
 
 .backArrow {
-  font-size: 1em;
-  font-weight: var(--font-weight-bold);
+  font-size: 1.2em;
+  font-weight: 700;
   line-height: 1;
 }
 
@@ -79,36 +81,103 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--spacing-10); /* ✅ Más separación entre elementos */
+  width: 100%;
+  min-width: 0; /* ✅ Evitar desbordamiento */
+  box-sizing: border-box; /* ✅ Asegurar que padding se incluya */
+  padding: 50px 20px 50px 20px; /* ✅ Padding: top/bottom 50px, left/right 20px */
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: var(--breakpoint-md)) {
+@media (min-width: 768px) {
   .container {
-    padding: 1.5rem 0.75rem;
+    padding: var(--spacing-8) clamp(1.5rem, 3vw, 2.5rem); /* Tablet: 24px - 40px */
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .backButton {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-8);
+    padding: 0 var(--spacing-5); /* ✅ Más separación en tablet/desktop */
+    width: 100%;
   }
   
   .backLink {
-    padding: 0.5rem 0.75rem; /* ✅ REDUCIDO: De 0.625rem 1rem a 0.5rem 0.75rem */
-    font-size: 0.75rem; /* ✅ REDUCIDO: De 0.8rem a 0.75rem */
+    padding: var(--spacing-4) var(--spacing-7); /* ✅ Más altura y separación lateral */
+    margin-top: var(--spacing-5); /* ✅ Más margin top en tablet */
+    margin-left: var(--spacing-5); /* ✅ Más margin left en tablet */
+  }
+  
+  .content {
+    width: 100%;
+    min-width: 0;
+    gap: var(--spacing-12); /* ✅ Más separación en tablet */
   }
 }
 
-@media (max-width: var(--breakpoint-sm)) {
+/* Desktop: Desde 992px asegurar padding mínimo de 32px */
+@media (min-width: 992px) {
   .container {
-    padding: 1rem 0.5rem;
+    /* ✅ IMPORTANTE: padding mínimo de 32px desde 992px (incluye 994px) */
+    /* A 994px: 3.5vw = 34.79px, clamp elegirá ese valor (entre 32px y 40px) */
+    padding: var(--spacing-10) clamp(2rem, 3.5vw, 2.5rem); /* 32px mínimo, 40px máximo */
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .backButton {
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-10);
+    padding: 0 var(--spacing-6); /* ✅ Más separación en desktop */
+    width: 100%;
   }
   
   .backLink {
-    padding: 0.375rem 0.625rem; /* ✅ REDUCIDO: De 0.5rem 0.875rem a 0.375rem 0.625rem */
-    font-size: 0.7rem; /* ✅ REDUCIDO: De 0.75rem a 0.7rem */
+    padding: var(--spacing-5) var(--spacing-8); /* ✅ Aún más altura y separación en desktop */
+    margin-top: var(--spacing-6); /* ✅ Más margin top en desktop */
+    margin-left: var(--spacing-6); /* ✅ Más margin left en desktop */
+    font-size: 1rem;
   }
-} 
+  
+  .content {
+    width: 100%;
+    min-width: 0;
+    gap: var(--spacing-14); /* ✅ Más separación en desktop */
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: var(--spacing-4) var(--spacing-3); /* ✅ Padding lateral mobile */
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .backButton {
+    margin-bottom: var(--spacing-4);
+    padding: 0 var(--spacing-3); /* ✅ Separación de bordes en mobile */
+    width: 100%;
+  }
+  
+  .backLink {
+    padding: var(--spacing-3) var(--spacing-5); /* ✅ Más altura y separación en mobile */
+    margin-top: var(--spacing-3); /* ✅ Margin top en mobile */
+    margin-left: var(--spacing-3); /* ✅ Margin left en mobile */
+    font-size: 0.875rem;
+    min-width: 160px;
+  }
+  
+  .content {
+    width: 100%;
+    min-width: 0;
+    gap: var(--spacing-8); /* ✅ Separación en mobile */
+  }
+}
+
+/* Pantallas muy grandes: Padding máximo */
+@media (min-width: 1400px) {
+  .container {
+    padding: var(--spacing-10) clamp(2.5rem, 4vw, 4rem); /* 40px mínimo, 64px máximo */
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

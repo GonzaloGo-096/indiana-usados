@@ -95,9 +95,9 @@
 .vehicleImageMobile {
   display: block;
   /* Altura reducida para mobile - auto más pequeño */
-  height: 35vh;
-  max-height: 240px;
-  min-height: 180px;
+  height: 25vh;
+  max-height: 180px;
+  min-height: 140px;
 }
 
 .vehicleImageDesktop {
@@ -143,16 +143,33 @@
   text-align: center;
 }
 
+/* Versiones mobile y desktop */
+.mobileText {
+  display: block;
+  text-align: center; /* Centrar todo el contenido */
+}
+
+.desktopText {
+  display: none;
+}
+
 /* Mobile: menos espacio entre contenido y auto */
 @media (max-width: 991px) {
   .textContainer {
-    padding: 15px 24px 10px 24px; /* Reducido considerablemente para acercar al auto */
-    margin-bottom: -40px; /* Acercar mucho más al auto */
+    padding: 60px 24px 5px 24px; /* Más padding arriba para bajar el texto */
+    margin-bottom: -60px; /* Acercar mucho más al auto */
   }
   
-  .mainTitle {
-    margin-bottom: 12px; /* Menos espacio entre títulos */
-    font-size: clamp(2rem, 6vw, 3rem); /* Más pequeño en mobile */
+  .hiddenTitle {
+    margin-bottom: 0; /* Sin espacio debajo, pegado al texto */
+    font-size: clamp(1.75rem, 5vw, 2.5rem); /* Más grande para verse mejor */
+  }
+  
+  .mobileText .text {
+    margin-top: 0; /* Pegado al título */
+    font-size: clamp(1.25rem, 4vw, 1.5rem); /* Más grande para verse mejor */
+    font-weight: var(--font-weight-medium); /* Un poco más bold */
+    color: var(--color-white); /* Color blanco para mejor contraste */
   }
   
   .title {
@@ -200,11 +217,75 @@
   backface-visibility: hidden;
 }
 
+/* Título visible en blanco */
+.hiddenTitle {
+  margin: 0 0 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  text-align: center;
+  /* Optimización para animación */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+/* Texto pegado al título en mobile */
+.mobileText .text {
+  margin-top: 0;
+  text-align: center;
+}
+
+/* Botón transparente para planes */
+.planesButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  padding: 12px 32px;
+  font-family: var(--font-poppins);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  background: transparent;
+  border: 2px solid var(--color-white);
+  border-radius: var(--border-radius-md);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.planesButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-white);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.planesButton:active {
+  transform: translateY(0);
+}
+
 /* Desktop: ajustar posición del texto con más espacio */
 @media (min-width: 992px) {
   .textContainer {
     padding: 80px 48px;
     max-width: 800px;
+  }
+  
+  /* Mostrar desktop, ocultar mobile */
+  .mobileText {
+    display: none;
+  }
+  
+  .desktopText {
+    display: block;
   }
 
   .title {

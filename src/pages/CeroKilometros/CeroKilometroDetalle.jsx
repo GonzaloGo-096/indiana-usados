@@ -54,48 +54,8 @@ const CeroKilometroDetalle = () => {
 
   if (!modelo) return null
 
-  // Obtener ícono de marca dinámicamente (usar Peugeot vintage en título)
+  // Obtener ícono de marca dinámicamente
   const BrandIcon = getBrandIcon(modelo.marca)
-  const isPeugeot = (modelo.marca || '').toLowerCase() === 'peugeot'
-
-  // Formatear nombre de versión: GT en rojo, siglas en mayúsculas, resto capitalizado
-  const renderVersionName = () => {
-    const nombre = versionActiva?.nombreCorto || ''
-    
-    // Formatear una palabra: siglas/códigos en mayúscula, resto capitalizado
-    const formatWord = (word) => {
-      const upper = word.toUpperCase()
-      // Códigos alfanuméricos (T200, AM24, GT) o siglas cortas
-      if (word.length <= 2 || /^[A-Z]+\d+$/i.test(word)) {
-        return upper
-      }
-      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    }
-    
-    // Dividir por espacios, formatear cada palabra
-    const palabras = nombre.split(' ')
-    
-    return (
-      <span className={styles.versionName}>
-        {palabras.map((palabra, i) => {
-          const formatted = formatWord(palabra)
-          const upperWord = palabra.toUpperCase()
-          
-          // Si es GT, ponerlo en rojo
-          if (upperWord === 'GT') {
-            return (
-              <span key={i}>
-                {i > 0 && ' '}
-                <span className={styles.gtText}>{formatted}</span>
-              </span>
-            )
-          }
-          
-          return (i > 0 ? ' ' : '') + formatted
-        })}
-      </span>
-    )
-  }
 
   return (
     <>
@@ -127,20 +87,9 @@ const CeroKilometroDetalle = () => {
         {/* Header - Debajo del hero */}
         <header className={styles.header}>
           <h1 className={styles.title}>
-            {isPeugeot ? (
-              <img
-                src="/assets/logos/logos-peugeot/Peugeot_logo_PNG9.webp"
-                alt="Peugeot vintage"
-                className={styles.brandIcon}
-                loading="eager"
-                decoding="async"
-              />
-            ) : (
-              BrandIcon && <BrandIcon className={styles.brandIcon} />
-            )}
+            {BrandIcon && <BrandIcon className={styles.brandIcon} />}
             <span>{modelo.marca}</span>
             <span className={styles.modelName}>{modelo.nombre}</span>
-            {renderVersionName()}
           </h1>
         </header>
 

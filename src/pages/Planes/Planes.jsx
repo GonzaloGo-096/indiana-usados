@@ -150,6 +150,9 @@ const obtenerVersionDelPlan = (plan, modeloSlug) => {
 }
 
 const Planes = () => {
+  // Refs para las secciones de modelos
+  const modeloRefs = React.useRef({})
+  
   // Agrupar planes por modelo
   const planesPorModelo = React.useMemo(() => {
     const grupos = {}
@@ -173,6 +176,17 @@ const Planes = () => {
     return grupos
   }, [])
 
+  // Función para hacer scroll a una sección de modelo
+  const scrollToModelo = (modelo) => {
+    const elemento = modeloRefs.current[modelo]
+    if (elemento) {
+      elemento.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  // Obtener lista de modelos disponibles
+  const modelosDisponibles = Object.keys(planesPorModelo).sort()
+
   return (
     <>
       <SEOHead
@@ -181,136 +195,43 @@ const Planes = () => {
         keywords="planes de financiación, Peugeot, 0km, cuotas, financiación automotriz"
       />
       
-      {/* Iconos de Indiana - Solo para visualización */}
-      <div className={styles.indianaIconsPreview}>
-        <h2 style={{ textAlign: 'center', marginBottom: '20px', fontSize: '24px' }}>Iconos de Indiana</h2>
-        <div className={styles.iconsGrid}>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-indiana/indiana-final.webp" 
-              alt="Indiana Final" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>indiana-final</p>
-          </div>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-indiana/desktop/azul-chico-desktop.webp" 
-              alt="Azul Chico Desktop" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>azul-chico-desktop</p>
-          </div>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-indiana/desktop/azul-solo-desktop.webp" 
-              alt="Azul Solo Desktop" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>azul-solo-desktop</p>
-          </div>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-indiana/desktop/indiana-chico-negro-desktop.webp" 
-              alt="Indiana Chico Negro Desktop" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>indiana-chico-negro-desktop</p>
-          </div>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-indiana/desktop/logo-chico-solid.webp" 
-              alt="Logo Chico Solid" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>logo-chico-solid</p>
-          </div>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-indiana/mobile/azul-solo-mobile.webp" 
-              alt="Azul Solo Mobile" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>azul-solo-mobile</p>
-          </div>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-indiana/mobile/indiana-chico-negro-mobile.webp" 
-              alt="Indiana Chico Negro Mobile" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>indiana-chico-negro-mobile</p>
-          </div>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-indiana/mobile/indiana-grande azul-mobile.webp" 
-              alt="Indiana Grande Azul Mobile" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>indiana-grande azul-mobile</p>
-          </div>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-indiana/mobile/logo-chico-solid-fallback-transparente.webp" 
-              alt="Logo Chico Solid Fallback Transparente" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>logo-chico-solid-fallback-transparente</p>
-          </div>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-indiana/mobile/negro-chico-mobile.webp" 
-              alt="Negro Chico Mobile" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>negro-chico-mobile</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Iconos de Peugeot - Solo para visualización */}
-      <div className={styles.indianaIconsPreview}>
-        <h2 style={{ textAlign: 'center', marginBottom: '20px', fontSize: '24px' }}>Iconos de Peugeot</h2>
-        <div className={styles.iconsGrid}>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
-              alt="Peugeot Logo PNG8" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>Peugeot_logo_PNG8</p>
-          </div>
-          <div className={styles.iconItem}>
-            <img 
-              src="/assets/logos/logos-peugeot/Peugeot_logo_PNG9.webp" 
-              alt="Peugeot Logo PNG9 (Vintage)" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p>Peugeot_logo_PNG9 (vintage)</p>
-          </div>
-          {/* Variante en fondo oscuro para el logo blanco */}
-          <div className={styles.iconItem} style={{ background: '#0a0d14' }}>
-            <img 
-              src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
-              alt="Peugeot Logo Blanco (fondo oscuro)" 
-              style={{ maxWidth: '200px', height: 'auto' }}
-            />
-            <p style={{ color: '#fff' }}>Peugeot blanco (fondo oscuro)</p>
-          </div>
-        </div>
-      </div>
-      
       <div className={styles.planesPage}>
         <div className={styles.header}>
           <h1 className={styles.title}>Planes de Financiación</h1>
           <p className={styles.subtitle}>
-            Encontrá el plan perfecto para tu próximo Peugeot 0km
+            Encontrá el plan perfecto para tu próximo modelo Peugeot
           </p>
+          
+          {/* Botones de modelos */}
+          <div className={styles.modelosButtons}>
+            {modelosDisponibles.map((modelo) => {
+              const modeloDisplay = modelo.charAt(0).toUpperCase() + modelo.slice(1)
+              return (
+                <button
+                  key={modelo}
+                  className={styles.modeloButton}
+                  onClick={() => scrollToModelo(modelo)}
+                  aria-label={`Ver planes de Peugeot ${modeloDisplay}`}
+                >
+                  {modeloDisplay}
+                </button>
+              )
+            })}
+          </div>
         </div>
 
         <div className={styles.content}>
           {Object.entries(planesPorModelo).map(([modelo, planes]) => (
-            <ModeloSection key={modelo} modelo={modelo} planes={planes} />
+            <ModeloSection 
+              key={modelo} 
+              modelo={modelo} 
+              planes={planes}
+              ref={(el) => {
+                if (el) {
+                  modeloRefs.current[modelo] = el
+                }
+              }}
+            />
           ))}
         </div>
       </div>
@@ -321,7 +242,7 @@ const Planes = () => {
 /**
  * Componente para mostrar planes de un modelo específico en un carrusel
  */
-const ModeloSection = ({ modelo, planes }) => {
+const ModeloSection = React.forwardRef(({ modelo, planes }, ref) => {
   const modeloDisplay = modelo.charAt(0).toUpperCase() + modelo.slice(1)
   const scrollContainerRef = useRef(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
@@ -387,7 +308,7 @@ const ModeloSection = ({ modelo, planes }) => {
   }
 
   return (
-    <section className={styles.modeloSection}>
+    <section ref={ref} className={styles.modeloSection}>
       <h2 className={styles.modeloTitle}>
         {PeugeotIcon && <PeugeotIcon className={styles.modeloTitleIcon} size={48} color="#000000" />}
         Peugeot {modeloDisplay}
@@ -466,7 +387,9 @@ const ModeloSection = ({ modelo, planes }) => {
       </div>
     </section>
   )
-}
+})
+
+ModeloSection.displayName = 'ModeloSection'
 
 /**
  * Componente PlanCard - Card individual para cada plan
@@ -481,8 +404,12 @@ const PlanCard = ({ plan, modelo }) => {
   } = plan
   
   const modeloDisplay = modelo.charAt(0).toUpperCase() + modelo.slice(1)
+  const modeloLower = modelo.toLowerCase()
   const version = obtenerVersionDelPlan(plan, modelo)
   const cuotasTotales = caracteristicas?.cuotas_totales || null
+  
+  // Solo mostrar modelo en el título si es 208
+  const mostrarModeloEnVersion = modeloLower === '208'
 
   return (
     <div className={styles.planCard}>
@@ -493,15 +420,18 @@ const PlanCard = ({ plan, modelo }) => {
 
       {/* Información principal */}
       <div className={styles.planContent}>
-        {/* Título del modelo y versión */}
-        <div className={styles.modeloVersionContainer}>
-          <h4 className={styles.modeloVersionTitle}>
-            {modeloDisplay}
-            {version && (
-              <span className={styles.versionSeparator}> {version}</span>
-            )}
-          </h4>
-        </div>
+        {/* Título de versión (con modelo solo para 208) */}
+        {version && (
+          <div className={styles.modeloVersionContainer}>
+            <h4 className={styles.modeloVersionTitle}>
+              {mostrarModeloEnVersion && modeloDisplay}
+              {mostrarModeloEnVersion && version && (
+                <span className={styles.versionSeparator}> {version}</span>
+              )}
+              {!mostrarModeloEnVersion && version}
+            </h4>
+          </div>
+        )}
         
         {/* Cuota desde - Grande, azul, cursiva, con cuotas al lado */}
         <div className={styles.cuotaDesdeContainer}>

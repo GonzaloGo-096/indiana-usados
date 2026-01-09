@@ -82,12 +82,12 @@ html {
   flex: 1;
   width: 100%;
   /* ✅ Padding-top para compensar nav fixed */
-  padding-top: 77px; /* Mobile: logo 65px + padding 12px */
+  padding-top: 92px; /* Mobile: logo 80px + padding 6px arriba + 6px abajo */
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .main-content {
-    padding-top: 96px; /* Desktop: logo 80px + padding 16px */
+    padding-top: 116px; /* Desktop: logo 100px + padding 8px arriba + 8px abajo */
   }
 }
 

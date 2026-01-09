@@ -14,7 +14,6 @@ import { SEOHead } from '@components/SEO'
 import { ModelCard } from '@components/ModelCard'
 import { modelos } from '@assets/ceroKm'
 import styles from './CeroKilometros.module.css'
-import CarouselDots from '@components/ui/CarouselDots/CarouselDots'
 
 const CeroKilometros = () => {
   // Refs independientes para cada carrusel
@@ -35,12 +34,6 @@ const CeroKilometros = () => {
     return { vehiculos: veh, utilitarios: util }
   }, [utilitariosKeys])
 
-  // Paginación basada en viewport (anchura del contenedor visible)
-  const [vehPageCount, setVehPageCount] = useState(1)
-  const [vehActivePage, setVehActivePage] = useState(0)
-  const [vehProgress, setVehProgress] = useState(0)
-  const [utilPageCount, setUtilPageCount] = useState(1)
-  const [utilActivePage, setUtilActivePage] = useState(0)
 
   // Verificar estado de scroll (helper)
   const checkScrollButtons = useCallback((ref, setLeft, setRight) => {
@@ -52,15 +45,6 @@ const CeroKilometros = () => {
     setRight(scrollLeft < scrollWidth - clientWidth - 10)
   }, [])
 
-  const checkPagination = useCallback((ref, setCount, setActive) => {
-    const carousel = ref.current
-    if (!carousel) return
-    const { scrollLeft, scrollWidth, clientWidth } = carousel
-    const pages = Math.max(1, Math.ceil(scrollWidth / clientWidth))
-    const active = Math.min(pages - 1, Math.max(0, Math.round(scrollLeft / clientWidth)))
-    setCount(pages)
-    setActive(active)
-  }, [])
 
   // Efectos: listeners de scroll/resize por carrusel
   useEffect(() => {
@@ -68,24 +52,11 @@ const CeroKilometros = () => {
     if (!carousel) return
 
     checkScrollButtons(vehCarouselRef, setVehCanScrollLeft, setVehCanScrollRight)
-    checkPagination(vehCarouselRef, setVehPageCount, setVehActivePage)
     const onScroll = () => {
       checkScrollButtons(vehCarouselRef, setVehCanScrollLeft, setVehCanScrollRight)
-      checkPagination(vehCarouselRef, setVehPageCount, setVehActivePage)
-      const el = vehCarouselRef.current
-      if (el) {
-        const denom = Math.max(1, el.scrollWidth - el.clientWidth)
-        setVehProgress(el.scrollLeft / denom)
-      }
     }
     const onResize = () => {
       checkScrollButtons(vehCarouselRef, setVehCanScrollLeft, setVehCanScrollRight)
-      checkPagination(vehCarouselRef, setVehPageCount, setVehActivePage)
-      const el = vehCarouselRef.current
-      if (el) {
-        const denom = Math.max(1, el.scrollWidth - el.clientWidth)
-        setVehProgress(el.scrollLeft / denom)
-      }
     }
     carousel.addEventListener('scroll', onScroll)
     window.addEventListener('resize', onResize)
@@ -94,21 +65,18 @@ const CeroKilometros = () => {
       carousel.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
     }
-  }, [checkScrollButtons, checkPagination])
+  }, [checkScrollButtons])
 
   useEffect(() => {
     const carousel = utilCarouselRef.current
     if (!carousel) return
 
     checkScrollButtons(utilCarouselRef, setUtilCanScrollLeft, setUtilCanScrollRight)
-    checkPagination(utilCarouselRef, setUtilPageCount, setUtilActivePage)
     const onScroll = () => {
       checkScrollButtons(utilCarouselRef, setUtilCanScrollLeft, setUtilCanScrollRight)
-      checkPagination(utilCarouselRef, setUtilPageCount, setUtilActivePage)
     }
     const onResize = () => {
       checkScrollButtons(utilCarouselRef, setUtilCanScrollLeft, setUtilCanScrollRight)
-      checkPagination(utilCarouselRef, setUtilPageCount, setUtilActivePage)
     }
     carousel.addEventListener('scroll', onScroll)
     window.addEventListener('resize', onResize)
@@ -117,7 +85,7 @@ const CeroKilometros = () => {
       carousel.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
     }
-  }, [checkScrollButtons, checkPagination])
+  }, [checkScrollButtons])
 
   // Scroll del carrusel (2 cards por click)
   const scroll = (ref, direction) => {
@@ -140,39 +108,44 @@ const CeroKilometros = () => {
       <div className={styles.page}>
         {/* Header */}
         <header className={styles.header}>
-          {/* Logos: Peugeot y Indiana */}
+          <h1 className={styles.title}>
+            15 Años Trabajando Juntos
+          </h1>
+          <p className={styles.subtitle}>Indiana y Peugeot - Descubrí toda la gama de modelos 0 KM</p>
+          
+          {/* Logos: Indiana y Peugeot */}
           <div className={styles.logosContainer}>
-            <img 
-              src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
-              alt="Logo Peugeot" 
-              className={styles.peugeotLogo}
-              loading="eager"
-            />
-            <div className={styles.logoDivider} />
             <img 
               src="/assets/logos/logos-indiana/desktop/azul-chico-desktop.webp" 
               alt="Logo Indiana" 
               className={styles.indianaLogo}
               loading="eager"
             />
+            <img 
+              src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
+              alt="Logo Peugeot" 
+              className={styles.peugeotLogo}
+              loading="eager"
+            />
           </div>
-
-          <h1 className={styles.title}>
-            Peugeot 0 KM
-          </h1>
-          <p className={styles.subtitle}>Descubrí toda la gama de modelos</p>
         </header>
 
         {/* Sección: Gama de Vehículos */}
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>
-            <img 
-              src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
-              alt="Logo Peugeot" 
-              className={styles.sectionLogo}
-            />
-            Gama de Vehículos — Variante 1 (Pill)
-          </h2>
+          <div className={styles.sectionContent}>
+            <div className={styles.sectionLogoWrapper}>
+              <div className={styles.sectionLine}></div>
+              <img 
+                src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
+                alt="Logo Peugeot" 
+                className={styles.sectionLogo}
+              />
+              <div className={styles.sectionLine}></div>
+            </div>
+            <h2 className={styles.sectionTitle}>
+              Gama de Vehículos
+            </h2>
+          </div>
         </div>
         <section className={styles.carouselSection} aria-label="Gama de Vehículos Peugeot 0km">
           <div className={styles.carouselWrapper}>
@@ -219,31 +192,24 @@ const CeroKilometros = () => {
               </svg>
             </button>
           </div>
-
-          {/* Indicador de scroll en mobile */}
-          {/* Indicador Autocity-inspired (azul/blanco) */}
-          <CarouselDots
-            count={vehPageCount}
-            activeIndex={vehActivePage}
-            variant="autocity"
-            onDotClick={(i) => {
-              const el = vehCarouselRef.current
-              if (!el) return
-              el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
-            }}
-          />
         </section>
 
         {/* Sección: Gama de Utilitarios */}
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>
-            <img 
-              src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
-              alt="Logo Peugeot" 
-              className={styles.sectionLogo}
-            />
-            Gama de Utilitarios — Variante 2b (Micro‑Dash)
-          </h2>
+          <div className={styles.sectionContent}>
+            <div className={styles.sectionLogoWrapper}>
+              <div className={styles.sectionLine}></div>
+              <img 
+                src="/assets/logos/logos-peugeot/Peugeot_logo_PNG8.webp" 
+                alt="Logo Peugeot" 
+                className={styles.sectionLogo}
+              />
+              <div className={styles.sectionLine}></div>
+            </div>
+            <h2 className={styles.sectionTitle}>
+              Gama de Utilitarios
+            </h2>
+          </div>
         </div>
         <section className={styles.carouselSection} aria-label="Gama de Utilitarios Peugeot">
           <div className={styles.carouselWrapper}>
@@ -290,29 +256,6 @@ const CeroKilometros = () => {
               </svg>
             </button>
           </div>
-
-          {/* Indicador de scroll en mobile */}
-          <CarouselDots
-            count={utilPageCount}
-            activeIndex={utilActivePage}
-            variant="microDash"
-            onDotClick={(i) => {
-              const el = utilCarouselRef.current
-              if (!el) return
-              el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
-            }}
-          />
-          {/* Indicador Autocity-inspired (azul/blanco) */}
-          <CarouselDots
-            count={utilPageCount}
-            activeIndex={utilActivePage}
-            variant="autocity"
-            onDotClick={(i) => {
-              const el = utilCarouselRef.current
-              if (!el) return
-              el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
-            }}
-          />
         </section>
 
         {/* CTA */}

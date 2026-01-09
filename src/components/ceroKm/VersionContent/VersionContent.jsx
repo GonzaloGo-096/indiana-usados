@@ -85,7 +85,7 @@ export const VersionContent = memo(({
       return (
         <>
           {BrandIcon && <BrandIcon className={styles.brandIcon} />}
-          {modeloNombre} {version.nombre}
+          {modeloNombre} <span className={styles.versionName}>{version.nombre}</span>
         </>
       )
     }
@@ -95,7 +95,7 @@ export const VersionContent = memo(({
       <>
         {BrandIcon && <BrandIcon className={styles.brandIcon} />}
         {modeloNombre && `${modeloNombre} `}
-        {formatVersionName(version.nombre)}
+        <span className={styles.versionName}>{formatVersionName(version.nombre)}</span>
       </>
     )
   }
@@ -178,10 +178,10 @@ export const VersionContent = memo(({
             className={styles.whatsappButton}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Solicitar más información por WhatsApp"
+            aria-label="Contactar asesor por WhatsApp"
           >
-            <WhatsAppIcon size={18} className={styles.actionIcon} />
-            <span>Solicitar más información</span>
+            <WhatsAppIcon size={18} color="#000000" className={styles.actionIcon} />
+            <span>Contactar asesor</span>
           </a>
         </div>
       </article>
@@ -267,10 +267,10 @@ export const VersionContent = memo(({
               className={styles.whatsappButton}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Solicitar más información por WhatsApp"
+              aria-label="Contactar un asesor por WhatsApp"
             >
-              <WhatsAppIcon size={18} className={styles.actionIcon} />
-              <span>Solicitar más información</span>
+              <WhatsAppIcon size={18} color="#000000" className={styles.actionIcon} />
+              <span>Contactar un asesor</span>
             </a>
           </div>
         </div>

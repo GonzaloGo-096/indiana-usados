@@ -15,6 +15,8 @@
   /* ✅ Migrado: Fondo oscuro histórico eliminado → token semántico surface (unificación visual bajo sistema de superficies claras) */
   background-color: var(--color-surface);
   overflow: hidden;
+  padding-top: 60px;
+  padding-bottom: 10px;
 }
 
 /* Sombra en borde inferior para la última FeatureSection (antes de DimensionsSection) */
@@ -191,6 +193,8 @@
     min-height: 70vh;
     display: flex;
     align-items: center;
+    padding-top: 80px;
+    padding-bottom: 15px;
   }
 
   /* Desktop: layout horizontal con grid - imagen más grande */

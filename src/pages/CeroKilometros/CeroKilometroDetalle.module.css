@@ -13,7 +13,7 @@
   min-height: 100vh;
   /* ✅ Migrado: Fondo principal → token semántico surface */
   background-color: var(--color-surface);
-  padding-bottom: 40px;
+  padding-bottom: 0;
 }
 
 /* ===== HEADER ===== */

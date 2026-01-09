@@ -1,14 +1,17 @@
 /**
- * CardDetalle - Componente para mostrar información detallada de un vehículo
+ * CardDetalle - Rediseño completo moderno, elegante y minimalista
  * 
- * Características:
- * - Header 60/40 como CardAuto
- * - Datos principales con clave arriba, valor abajo
- * - Información adicional con mismo estilo
- * - Botones con fondo gris claro e iconos coloridos
+ * Layout 50/50 simétrico:
+ * - Izquierda: Carrusel fijo sin fondo/card
+ * - Derecha: Datos sin fondo/card
+ * 
+ * Jerarquía visual:
+ * 1. Título/Modelo (más importante)
+ * 2. Año, Km, Caja (segunda importancia)
+ * 3. Cilindrada, HP, Tracción (menos importante)
  * 
  * @author Indiana Usados
- * @version 4.0.0 - Optimizado y limpio
+ * @version 5.0.0 - Rediseño completo profesional
  */
 
 import React, { memo, useMemo, useCallback, useState } from 'react'
@@ -19,14 +22,13 @@ import { ImageCarousel } from '@ui/ImageCarousel'
 import { WhatsAppContact } from '@ui'
 import { AnioIcon, KmIcon, CajaIconDetalle } from '@components/ui/icons'
 import { GalleryModal } from '@components/ceroKm/ModelGallery'
+import { PlanesDelAuto } from '../PlanesDelAuto'
 import styles from './CardDetalle.module.css'
 
 /**
- * Componente CardDetalle basado en CardAuto
+ * Componente CardDetalle rediseñado
  */
 export const CardDetalle = memo(({ auto, contactInfo }) => {
-    // Logs de diagnóstico removidos para mantener consola limpia
-    
     // Hooks
     const carouselImages = useCarouselImages(auto)
     
@@ -44,18 +46,14 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
             version: auto.version || '',
             cilindrada: auto.cilindrada || '',
             precio: auto.precio || '',
-            año: auto.anio || auto.año || '', // ✅ CORREGIDO: anio es el campo del backend
-            kms: auto.kilometraje || auto.kms || '', // ✅ CORREGIDO: kilometraje es el campo del backend
+            año: auto.anio || auto.año || '',
+            kms: auto.kilometraje || auto.kms || '',
             caja: formatCaja(auto.caja),
             color: auto.color || '',
-            categoria: auto.segmento || auto.categoria || '', // ✅ CORREGIDO: segmento es el campo del backend
+            categoria: auto.segmento || auto.categoria || '',
             combustible: auto.combustible || '',
-            traccion: auto.traccion || '', // ✅ CORREGIDO: traccion (sin tilde)
+            traccion: auto.traccion || '',
             tapizado: auto.tapizado || '',
-            categoriaVehiculo: auto.categoriaVehiculo || '',
-            frenos: auto.frenos || '',
-            turbo: auto.turbo || '',
-            llantas: auto.llantas || '',
             HP: auto.HP || ''
         }
     }, [auto])
@@ -66,7 +64,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
         return `${formatValue(vehicleData.marca)} ${formatValue(vehicleData.modelo)}`
     }, [vehicleData?.marca, vehicleData?.modelo])
     
-    // ✅ MEMOIZAR LOGO DE MARCA
+    // Memoizar logo de marca
     const brandLogo = useMemo(() => {
         return getBrandLogo(vehicleData?.marca)
     }, [vehicleData?.marca])
@@ -75,17 +73,16 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
     const finalContactInfo = useMemo(() => {
         const defaultInfo = {
             email: 'info@indianausados.com',
-            whatsapp: '543816295959', // Número de WhatsApp para usados
+            whatsapp: '543816295959',
             whatsappMessage: `Hola, me interesa el vehículo ${formatValue(vehicleData?.marca || '')} ${formatValue(vehicleData?.modelo || '')}`
         }
         return contactInfo || defaultInfo
     }, [contactInfo, vehicleData?.marca, vehicleData?.modelo])
 
-    // Transformar imágenes al formato que espera GalleryModal { url, alt }
+    // Transformar imágenes al formato que espera GalleryModal
     const galleryImages = useMemo(() => {
         if (!carouselImages || carouselImages.length === 0) return []
         return carouselImages.map((img, index) => {
-            // img puede ser string o objeto { url, public_id, original_name }
             const url = typeof img === 'string' ? img : (img?.url || '')
             return {
                 url,
@@ -111,113 +108,113 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
     // Validación
     if (!vehicleData) return null
 
-    // ✅ USAR FORMATTERS CENTRALIZADOS (eliminadas funciones duplicadas)
-
-    // Datos principales memoizados con iconos
+    // Datos principales memoizados (Año, Km, Caja) - Segunda importancia
     const mainData = useMemo(() => [
         { label: 'Año', value: vehicleData.año, icon: AnioIcon },
         { label: 'Km', value: formatKilometraje(vehicleData.kms), icon: KmIcon },
         { label: 'Caja', value: formatCaja(vehicleData.caja), icon: CajaIconDetalle }
     ], [vehicleData.año, vehicleData.kms, vehicleData.caja])
 
-    // Información adicional memoizada con formatValue para mostrar "-" si vacío
-    // Removidos: Versión, Cilindrada, HP, Tracción, Llantas, Frenos, Turbo, Categoría, Segmento
+    // Información adicional memoizada
     const additionalInfo = useMemo(() => [
         { label: 'Combustible', value: formatValue(vehicleData.combustible) },
         { label: 'Tapizado', value: formatValue(vehicleData.tapizado) },
-        { label: 'Color', value: formatValue(vehicleData.color) }
+        { label: 'Color', value: formatValue(vehicleData.color) },
+        { label: 'Segmento', value: formatValue(vehicleData.categoria) }
     ], [vehicleData])
 
     return (
         <div className={styles.cardContent} data-testid="vehicle-detail">
-                {/* Sección de carrusel de imágenes */}
-                <div className={styles.imageSection} data-testid="vehicle-images">
-                    <ImageCarousel 
-                        images={carouselImages}
-                        altText={altText}
-                        showArrows={true}
-                        showIndicators={true}
-                        autoPlay={false}
-                        onMainImageClick={handleImageClick}
-                    />
+            {/* Layout 50/50: Carrusel izquierda, Datos derecha */}
+            <div className={styles.mainLayout}>
+                {/* SECCIÓN IZQUIERDA: Carrusel sin fondo/card */}
+                <div className={styles.carouselSection}>
+                    <div className={styles.imageCarouselWrapper}>
+                        <ImageCarousel 
+                            images={carouselImages}
+                            altText={altText}
+                            showArrows={true}
+                            showIndicators={true}
+                            autoPlay={false}
+                            onMainImageClick={handleImageClick}
+                        />
+                    </div>
                 </div>
                 
-                {/* Sección de detalles */}
-                <div className={styles.detailsSection}>
-                    {/* CONTENEDOR 1: Layout en T - Logo + Modelo/Versión/HP/Cilindrada */}
-                    <div className={styles.container1}>
-                        <div className={styles.container1_left}>
-                            <img 
-                                src={brandLogo.src} 
-                                alt={brandLogo.alt} 
-                                className={`${styles.brand_logo} ${brandLogo.size === 'small' ? styles.brand_logo_small : ''} ${brandLogo.size === 'large' ? styles.brand_logo_large : ''}`}
-                                width="120"
-                                height="120"
-                                loading="lazy"
-                            />
-                        </div>
-                        <div className={styles.container1_right}>
-                            {/* Línea 1: Modelo Versión (sin separador) */}
-                            <div className={styles.container1_top}>
-                                <h2 className={styles.modelo_title}>
-                                    {vehicleData.modelo}
-                                </h2>
-                                {formatValue(vehicleData.version) !== '-' && (
-                                    <span className={styles.version_text}>{formatValue(vehicleData.version)}</span>
-                                )}
+                {/* SECCIÓN DERECHA: Datos sin fondo/card */}
+                <div className={styles.dataSection}>
+                    {/* CONTENEDOR 1: Título + Specs */}
+                    <div className={styles.headerSection}>
+                        {/* Datos izquierda */}
+                        <div className={styles.headerData}>
+                            {/* Fila 1: Marca + Modelo (MÁS IMPORTANTE) */}
+                            <div className={styles.titleRow}>
+                                <div className={styles.titleGroup}>
+                                    {formatValue(vehicleData.marca) !== '-' && (
+                                        <span className={styles.marca_text}>{formatValue(vehicleData.marca)}</span>
+                                    )}
+                                    <h1 className={styles.modelo_title}>
+                                        {vehicleData.modelo}
+                                    </h1>
+                                </div>
                             </div>
-                            {/* Línea 2: Cilindrada | HP | Tracción (siempre los 3) */}
-                            <div className={styles.container1_bottom}>
-                                <span className={styles.spec_value}>
-                                    {formatCilindradaDisplay(vehicleData.cilindrada) || '-'}
+                            
+                            {/* Fila 1.5: Versión + Tracción + HP + Cilindrada (todo en una línea, separación sutil entre todos) */}
+                            <div className={styles.versionSection}>
+                                <span className={styles.version_text}>{formatValue(vehicleData.version)}</span>
+                                <span className={styles.versionSpec_separator_subtle}>|</span>
+                                <span className={styles.versionSpec_value}>
+                                    {formatValue(vehicleData.traccion) !== '-' ? formatValue(vehicleData.traccion) : '-'}
                                 </span>
-                                <span className={styles.spec_separator}>|</span>
-                                <span className={styles.spec_value}>
+                                <span className={styles.versionSpec_separator_subtle}>|</span>
+                                <span className={styles.versionSpec_value}>
                                     {formatHPDisplay(vehicleData.HP) || '-'}
                                 </span>
-                                <span className={styles.spec_separator}>|</span>
-                                <span className={styles.spec_value}>
-                                    {formatValue(vehicleData.traccion) !== '-' ? formatValue(vehicleData.traccion) : '-'}
+                                <span className={styles.versionSpec_separator_subtle}>|</span>
+                                <span className={styles.versionSpec_value}>
+                                    {formatCilindradaDisplay(vehicleData.cilindrada) || '-'}
                                 </span>
                             </div>
                         </div>
                     </div>
                     
-                    {/* CONTENEDOR 2: Datos principales (Año | Km | Caja) - Con barras separadoras */}
-                    <div className={styles.container2}>
-                        <div className={styles.main_data_container}>
-                            {mainData.map((item, index) => {
+                    {/* Logo posicionado absolutamente arriba a la derecha */}
+                    <div className={styles.logoContainer}>
+                        <img 
+                            src={brandLogo.src} 
+                            alt={brandLogo.alt} 
+                            className={`${styles.brand_logo} ${brandLogo.size === 'small' ? styles.brand_logo_small : ''} ${brandLogo.size === 'large' ? styles.brand_logo_large : ''}`}
+                            width="120"
+                            height="120"
+                            loading="lazy"
+                        />
+                    </div>
+                    
+                    {/* CONTENEDOR 3: Año, Km, Caja (SEGUNDA IMPORTANCIA) */}
+                    <div className={styles.mainDataSection}>
+                        {/* Fila 2: Año, Km, Caja (SEGUNDA IMPORTANCIA) */}
+                        <div className={styles.mainDataRow}>
+                            {mainData.map((item) => {
                                 const IconComponent = item.icon
-                                // ✅ Año (index 0) cede más espacio, Caja (index 2) cede menos
-                                const flexClass = index === 0 
-                                    ? styles.main_data_item_flex_shrink 
-                                    : index === 2 
-                                    ? styles.main_data_item_flex_rigid 
-                                    : styles.main_data_item
                                 return (
-                                    <React.Fragment key={item.label}>
-                                        <div className={flexClass}>
-                                            <div className={styles.main_data_content}>
-                                                <div className={styles.main_data_label_group}>
-                                                    <div className={styles.main_data_icon}>
-                                                        <IconComponent size={28} color="currentColor" />
-                                                    </div>
-                                                    <span className={styles.main_data_label}>{item.label}</span>
+                                    <div key={item.label} className={styles.mainDataItem}>
+                                        <div className={styles.mainDataContent}>
+                                            <div className={styles.mainDataLabelGroup}>
+                                                <div className={styles.mainDataIcon}>
+                                                    <IconComponent size={24} color="currentColor" />
                                                 </div>
-                                                <span className={styles.main_data_value}>{item.value}</span>
+                                                <span className={styles.mainDataLabel}>{item.label}</span>
                                             </div>
+                                            <span className={styles.mainDataValue}>{item.value}</span>
                                         </div>
-                                        {index < mainData.length - 1 && (
-                                            <span className={styles.main_data_separator}>|</span>
-                                        )}
-                                    </React.Fragment>
+                                    </div>
                                 )
                             })}
                         </div>
                     </div>
                     
-                    {/* CONTENEDOR 3: Información adicional (grid) */}
-                    <div className={styles.container3}>
+                    {/* CONTENEDOR 2: Información adicional (grid) */}
+                    <div className={styles.additionalInfoSection}>
                         <div className={styles.infoContainer}>
                             {additionalInfo.map((item) => (
                                 <div key={item.label} className={styles.infoItem}>
@@ -228,11 +225,14 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                         </div>
                     </div>
                     
-                    {/* CONTENEDOR 4: Precio (30% placeholder / 70% precio) */}
-                    <div className={styles.container4}>
-                        <div className={styles.price_placeholder}>
-                            {/* Espacio reservado para futuro */}
+                    {/* CONTENEDOR 3: Precio (antes del contacto) - Estilo CardAuto */}
+                    <div className={styles.priceSection}>
+                        {/* Contenedor izquierda: "Desde:" */}
+                        <div className={styles.price_label_container}>
+                            <span className={styles.price_label}>desde:</span>
                         </div>
+                        
+                        {/* Contenedor derecha: Precio alineado a la derecha */}
                         <div className={styles.price_display}>
                             <span className={styles.price_value}>
                                 {formatPrice(vehicleData.precio)}
@@ -246,22 +246,26 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                             text="Consultar este vehículo"
                             phone={finalContactInfo.whatsapp}
                             message={finalContactInfo.whatsappMessage}
-                            className={styles.whatsappButtonSmall}
+                            className={styles.whatsappButton}
                         />
                     </div>
                 </div>
-                
-                {/* Modal de galería */}
-                {galleryImages.length > 0 && (
-                    <GalleryModal
-                        isOpen={isModalOpen}
-                        onClose={handleCloseModal}
-                        images={galleryImages}
-                        activeIndex={activeIndex}
-                        onIndexChange={handleIndexChange}
-                        modelName={altText}
-                    />
-                )}
+            </div>
+            
+            {/* Planes de financiación */}
+            <PlanesDelAuto auto={auto} />
+            
+            {/* Modal de galería */}
+            {galleryImages.length > 0 && (
+                <GalleryModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    images={galleryImages}
+                    activeIndex={activeIndex}
+                    onIndexChange={handleIndexChange}
+                    modelName={altText}
+                />
+            )}
         </div>
     )
 })

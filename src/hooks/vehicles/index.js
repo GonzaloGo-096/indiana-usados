@@ -17,3 +17,9 @@ export { useVehicleDetail } from './useVehicleDetail'
 
 // ✅ Hook para prefetch inteligente
 export { useVehiclePrefetch } from './useVehiclePrefetch'
+
+// ✅ Hook para vehículos similares por marca
+export { useSimilarVehicles } from './useSimilarVehicles'
+
+// ✅ Hook para vehículos en rango de precio similar
+export { usePriceRangeVehicles } from './usePriceRangeVehicles'

@@ -1,561 +1,1145 @@
 /**
- * CardDetalle.module.css - Diseño profesional mobile-first
+ * CardDetalle.module.css - Rediseño completo moderno, elegante y minimalista
  * 
- * Características:
- * - Mobile-first responsive design
- * - Variables globales del design system
- * - Grid adaptativo (3→4 columnas)
- * - Tipografía escalable
- * - Sin duplicación de código
- * - Elementos directamente sobre fondo de página
+ * Layout 50/50 simétrico sin fondos/cards:
+ * - Izquierda: Carrusel fijo sin fondo
+ * - Derecha: Datos sin fondo
+ * 
+ * Jerarquía visual:
+ * 1. Título/Modelo (más importante)
+ * 2. Año, Km, Caja (segunda importancia)
+ * 3. Cilindrada, HP, Tracción (menos importante)
  * 
  * @author Indiana Usados
- * @version 8.0.0 - Reestructuración: sin contenedor card
+ * @version 5.0.0 - Rediseño completo profesional
  */
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
-/* ✅ MOBILE-FIRST: Base para mobile (0-768px) */
 .cardContent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-6); /* ✅ Aumentado de spacing-4 para más separación */
-  padding-top: var(--spacing-6); /* ✅ Padding vertical */
-  padding-bottom: var(--spacing-6); /* ✅ Padding vertical */
-  padding-left: var(--spacing-2); /* ✅ Mobile: Padding lateral reducido para imagen más ancha */
-  padding-right: var(--spacing-2); /* ✅ Mobile: Padding lateral reducido para imagen más ancha */
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    margin-bottom: var(--spacing-10); /* ✅ Más espacio abajo para separar de los carruseles */
+    padding: 0; /* ✅ Sin padding aquí, el padding lo maneja el contenedor padre */
+    background: transparent; /* Sin fondo - usa el de la app */
+    box-sizing: border-box; /* ✅ Asegurar que padding se incluya en width */
 }
 
-/* ===== SECCIÓN DE IMAGEN ===== */
-.imageSection {
-  position: relative;
-  border-radius: var(--border-radius-lg);
-  overflow: hidden;
-  /* ✅ ADAPTATIVO: Se adapta al contenido sin altura mínima fija */
-  order: -1; /* Imagen primero en mobile */
-  /* ✅ Mobile: Padding vertical mantenido, lateral reducido para imagen más ancha */
-  padding-top: var(--spacing-4);
-  padding-bottom: var(--spacing-4);
-  padding-left: 0; /* ✅ Sin padding-left */
-  padding-right: var(--spacing-1); /* ✅ Mobile: Padding lateral mínimo */
-  /* ✅ ADAPTATIVO: Altura según contenido */
-  height: fit-content;
-  /* ✅ ANIMACIÓN: Fade-in sutil de la galería */
-  animation: fadeInGallery 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+/* ===== LAYOUT PRINCIPAL 50/50 ===== */
+.mainLayout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6); /* Separación vertical en mobile */
+    width: 100%;
+    min-width: 0; /* ✅ Evitar desbordamiento */
+    min-height: 0;
+    align-items: stretch;
+    box-sizing: border-box; /* ✅ Asegurar que padding se incluya */
 }
 
-@keyframes fadeInGallery {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ===== SECCIÓN IZQUIERDA: CARRUSEL (sin fondo/card) ===== */
+.carouselSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    order: 1;
+    align-items: stretch;
+    justify-content: flex-start;
 }
 
-/* ===== SECCIÓN DE DETALLES - ANIMACIÓN ===== */
-.detailsSection {
-  animation: fadeInDetails 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s forwards;
-  opacity: 0;
+.imageCarouselWrapper {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
-/* ===== SECCIÓN DE DETALLES ===== */
-.detailsSection {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  /* ✅ ADAPTATIVO: Se adapta al contenido sin altura mínima fija */
-  order: 1;
-  /* ✅ EFECTO COMPRESIÓN: Padding interno para más separación */
-  padding-top: var(--spacing-4);
-  padding-bottom: var(--spacing-4);
-  padding-left: var(--spacing-4);
-  padding-right: 0; /* ✅ Sin padding-right */
-  /* ✅ ADAPTATIVO: Altura según contenido */
-  height: fit-content;
+/* Estilos personalizados para el carrusel dentro de CardDetalle */
+.imageCarouselWrapper :global(.carouselContainer) {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: 100%;
 }
 
-@keyframes fadeInDetails {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.imageCarouselWrapper :global(.mainImageContainer) {
+    background: transparent;
+    border-radius: var(--border-radius-lg);
+    height: 500px; /* Tamaño fijo para consistencia */
+    border: none;
+    box-shadow: none;
+    width: 100%;
+    overflow: hidden; /* ✅ Eliminar espacios blancos */
 }
 
-/* ===== CONTENEDOR 1: Layout 50-50 (Logo derecha + Contenido izquierda) ===== */
-.container1 {
-  display: flex;
-  gap: 0; /* ✅ Sin espacio entre contenedores - unidos en el medio */
-  width: 100%;
-  max-width: 800px;
-  margin: 0; /* ✅ Alineado al inicio (izquierda) */
-  align-items: center;
-  justify-content: flex-start; /* ✅ Alineado al inicio */
+.imageCarouselWrapper :global(.mainImageContainer .mainImage) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
-.container1_left {
-  flex: 0 0 auto; /* ✅ Ocupa solo el espacio necesario del logo */
-  display: flex;
-  align-items: center;
-  justify-content: flex-end; /* ✅ Logo alineado a la derecha (hacia el centro) */
-  padding-right: var(--spacing-2); /* ✅ Pequeño espacio interno si es necesario */
+/* Contenedor de miniaturas: mismo ancho que la foto principal */
+.imageCarouselWrapper :global(.thumbnailsContainer) {
+    width: 100%;
+    margin-top: var(--spacing-4);
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    overflow: hidden; /* ✅ Eliminar espacios blancos laterales */
+}
+
+.imageCarouselWrapper :global(.thumbnails) {
+    width: 100%;
+    justify-content: flex-start;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Ocultar flechas de navegación de miniaturas si están fuera */
+.imageCarouselWrapper :global(.thumbnailArrowLeft),
+.imageCarouselWrapper :global(.thumbnailArrowRight) {
+    display: none !important; /* ✅ Ocultar flechas fuera del contenedor */
+}
+
+/* Ocultar controles azules de miniaturas */
+.imageCarouselWrapper :global(.thumbnailControls) {
+    display: none !important; /* ✅ Ocultar controles azules */
+}
+
+.imageCarouselWrapper :global(.thumbnail) {
+    width: 140px !important; /* Miniaturas más grandes */
+    height: 105px !important; /* Mantener proporción 16:9 */
+    border-radius: var(--border-radius-md);
+    border: 1px solid rgba(0, 0, 0, 0.1) !important; /* ✅ Borde gris sutil, no azul */
+    box-shadow: none !important; /* ✅ Sin sombras */
+    transition: border-color var(--transition-fast);
+}
+
+.imageCarouselWrapper :global(.thumbnail:hover) {
+    border-color: rgba(0, 0, 0, 0.2) !important; /* ✅ Hover gris, no azul */
+    box-shadow: none !important; /* ✅ Sin sombras en hover */
+    transform: translateY(-2px);
+}
+
+.imageCarouselWrapper :global(.thumbnail.active) {
+    border-color: rgba(0, 0, 0, 0.1) !important; /* ✅ Borde normal */
+    border-width: 1px !important;
+    box-shadow: none !important; /* ✅ Sin sombras azules */
+    transform: scale(1.2) !important; /* ✅ Aumentar tamaño 20% */
+}
+
+.imageCarouselWrapper :global(.thumbnail.active::after) {
+    display: none !important; /* ✅ Eliminar línea azul debajo */
+}
+
+/* Desktop: Miniaturas aún más grandes */
+@media (min-width: 992px) {
+    .imageCarouselWrapper :global(.thumbnail) {
+        width: 160px !important;
+        height: 120px !important;
+    }
+}
+
+/* ===== SECCIÓN DERECHA: DATOS (sin fondo/card) ===== */
+.dataSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+    order: 2;
+    background: transparent; /* Sin fondo */
+    align-items: stretch;
+    justify-content: flex-start;
+    position: relative; /* ✅ Para que el logo absolute funcione relativo a este contenedor */
+}
+
+/* ===== HEADER: Logo + Título/Modelo + Especificaciones ===== */
+.headerSection {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-5);
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-bottom: var(--spacing-6);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04); /* ✅ Línea más sutil */
+    min-height: 0;
+    padding-right: 34%; /* ✅ El doble más espacio para el logo absolute (mucho más cerca del contenido) */
+}
+
+/* Nueva sección para Año, Km, Caja (fuera del headerSection) */
+.mainDataSection {
+    width: 100%;
+    padding-top: var(--spacing-2); /* ✅ Menos padding ya que la versión está arriba */
+    padding-bottom: var(--spacing-4); /* ✅ Padding inferior para separar de la línea */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04); /* ✅ Línea más sutil */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Logo posicionado absolutamente arriba a la derecha, alineado con el título */
+.logoContainer {
+    position: absolute;
+    top: -1.5rem; /* ✅ Mucho más arriba - alineado con el título */
+    right: 24%; /* ✅ El doble más adentro - mucho más cerca del contenido horizontalmente */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 140px;
+    z-index: 10; /* ✅ Asegurar que esté por encima de otros elementos */
 }
 
 .brand_logo {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  display: block;
+    --logo-size-base: clamp(100px, 20vw, 140px);
+    --logo-opacity: 0.92;
+    
+    width: var(--logo-size-base);
+    height: var(--logo-size-base);
+    display: block;
+    object-fit: contain;
+    opacity: var(--logo-opacity);
+    transition: opacity var(--transition-smooth);
 }
 
-/* ✅ Logo pequeño para Peugeot y Fiat */
 .brand_logo_small {
-  width: 95px;
-  height: 95px;
+    --logo-size-base: clamp(85px, 18vw, 120px);
+    width: var(--logo-size-base);
+    height: var(--logo-size-base);
 }
 
-/* ✅ Logo grande para Honda */
 .brand_logo_large {
-  width: 135px;
-  height: 135px;
+    --logo-size-base: clamp(110px, 22vw, 160px);
+    width: var(--logo-size-base);
+    height: var(--logo-size-base);
 }
 
-.container1_right {
-  flex: 1; /* ✅ Ocupa el espacio restante disponible */
-  display: flex;
-  flex-direction: column;
-  gap: 0; /* ✅ Sin espacio entre las dos cajas verticales */
-  justify-content: center;
-  align-items: flex-start;
-  min-width: 0; /* ✅ Permitir reducción */
-  overflow: hidden; /* ✅ Evitar desbordamiento */
-  padding-left: var(--spacing-2); /* ✅ Pequeño espacio interno si es necesario */
+.headerData {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* ✅ Sin gap - para pegar titleRow y versionSection */
+    justify-content: flex-start;
+    align-items: flex-start;
+    order: 1; /* ✅ Datos primero */
 }
 
-.container1_top {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--spacing-4);
-  width: 100%;
-  flex-wrap: nowrap; /* ✅ Mantener en una línea */
-  min-width: 0; /* ✅ Permitir que los elementos se reduzcan */
+/* FILA 1: Título/Modelo (MÁS IMPORTANTE) */
+.titleRow {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    width: 100%;
+    flex-wrap: nowrap;
+    min-width: 0;
+    margin-bottom: 0; /* Sin margen inferior */
+    padding-bottom: 0; /* Sin padding inferior */
+}
+
+.titleGroup {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--spacing-2);
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.marca_text {
+    --marca-font-size: clamp(2rem, 5.5vw, 3rem); /* ✅ Mismo tamaño que modelo */
+    
+    font-size: var(--marca-font-size);
+    font-weight: var(--font-weight-bold); /* ✅ Mismo peso que modelo */
+    font-family: var(--font-condensed); /* ✅ Misma fuente que modelo */
+    color: var(--color-text-primary); /* ✅ Mismo color que modelo */
+    line-height: 1.15; /* ✅ Mismo line-height que modelo */
+    letter-spacing: -0.5px; /* ✅ Mismo letter-spacing que modelo */
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: var(--spacing-1); /* ✅ Espacio después de la marca */
 }
 
 .modelo_title {
-  font-size: clamp(1.5rem, 4vw, 2rem); /* ✅ Responsive con clamp */
-  font-weight: 700;
-  color: var(--color-text-primary);
-  margin: 0;
-  line-height: 1.3;
-  font-family: var(--font-condensed);
-  text-align: left;
-  flex-shrink: 1;
-  min-width: 0; /* ✅ Permitir reducción */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    --modelo-font-size: clamp(2rem, 5.5vw, 3rem);
+    
+    font-size: var(--modelo-font-size);
+    font-weight: var(--font-weight-bold);
+    font-family: var(--font-condensed);
+    color: var(--color-text-primary);
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 0; /* Sin padding inferior para pegarlo */
+    margin-bottom: 0; /* Sin margen inferior para pegarlo */
+    text-align: left;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* Sección de versión (dentro del header, antes de los 3 datos) - Todo en una línea con separación sutil */
+.versionSection {
+    width: 100%;
+    padding-top: var(--spacing-4);
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: var(--spacing-3); /* ✅ Gap entre elementos */
+    flex-wrap: nowrap;
+}
+
+.versionSpec_value {
+    --spec-font-size: clamp(1rem, 2.5vw, 1.25rem);
+    
+    font-size: var(--spec-font-size);
+    font-weight: var(--font-weight-light);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-500);
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    display: inline-block;
+    white-space: nowrap;
+    min-width: fit-content; /* ✅ Guarda su espacio incluso si está vacío */
+    flex-shrink: 0; /* ✅ No se reduce, mantiene su espacio */
+}
+
+.versionSpec_separator {
+    --separator-opacity: 0.2;
+    --separator-font-size: clamp(1rem, 2.5vw, 1.25rem);
+    
+    font-size: var(--separator-font-size);
+    font-weight: var(--font-weight-light);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-400);
+    opacity: var(--separator-opacity);
+    padding: 0 var(--spacing-2);
+    flex-shrink: 0;
+    user-select: none;
+    display: inline-block;
+}
+
+/* Separador muy sutil entre segundo y tercer dato (HP y Cilindrada) */
+.versionSpec_separator_subtle {
+    --separator-opacity: 0.05; /* ✅ Muy sutil */
+    --separator-font-size: clamp(1rem, 2.5vw, 1.25rem);
+    
+    font-size: var(--separator-font-size);
+    font-weight: var(--font-weight-light);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-400);
+    opacity: var(--separator-opacity);
+    padding: 0 var(--spacing-1); /* ✅ Menos padding para que sea más sutil */
+    flex-shrink: 0;
+    user-select: none;
+    display: inline-block;
+    margin: 0 var(--spacing-1); /* ✅ Separación muy sutil */
 }
 
 .version_text {
-  font-size: clamp(1.25rem, 3vw, 1.5rem); /* ✅ Responsive con clamp */
-  font-weight: 600;
-  color: var(--color-text-secondary);
-  font-family: var(--font-condensed);
-  flex-shrink: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    --version-font-size: clamp(1.5rem, 4vw, 2rem);
+    
+    font-size: var(--version-font-size);
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-600);
+    line-height: 1.15;
+    letter-spacing: -0.3px;
+    display: inline-block;
+    white-space: nowrap;
+    min-width: fit-content; /* ✅ Guarda su espacio incluso si está vacío */
+    flex-shrink: 0; /* ✅ No se reduce, mantiene su espacio */
 }
 
-.container1_bottom {
-  display: flex;
-  gap: clamp(0.5rem, 1.5vw, 1rem); /* ✅ Gap responsive */
-  flex-wrap: nowrap; /* ✅ Mantener en una línea */
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  min-width: 0; /* ✅ Permitir reducción */
+/* FILA 2: Año, Km, Caja (SEGUNDA IMPORTANCIA) - Distribución igual a specsRow pero sin separadores */
+.mainDataRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* ✅ Alineados a la izquierda con gap entre ellos */
+    align-items: baseline; /* ✅ Igual que specsRow */
+    gap: clamp(2rem, 4vw, 5rem); /* ✅ Gap responsive - se adapta al tamaño de pantalla */
+    flex-wrap: nowrap; /* ✅ Nunca se pasan abajo - siempre al lado */
+    width: 100%;
+    min-width: 0;
+    align-self: flex-start;
+}
+
+.mainDataItem {
+    display: flex;
+    align-items: baseline; /* ✅ Igual que specsRow */
+    justify-content: flex-start;
+    flex: 1 1 0%; /* ✅ Se achican proporcionalmente cuando no hay espacio */
+    min-width: 0; /* ✅ Permite que se reduzca más allá del contenido */
+}
+
+/* El primer dato (Año) cede más espacio al achicarse */
+.mainDataItem:first-child {
+    flex: 1 2 0%; /* ✅ flex-shrink: 2 - se achica el doble que los otros */
+}
+
+/* Separador entre datos (igual que specsRow) */
+.mainDataSeparator {
+    --separator-opacity: 0.2;
+    --separator-font-size: clamp(1.5rem, 4vw, 2rem); /* ✅ Tamaño similar a los valores */
+    
+    font-size: var(--separator-font-size);
+    font-weight: var(--font-weight-light);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-400);
+    opacity: var(--separator-opacity);
+    padding: 0 var(--spacing-3); /* ✅ Espaciado similar a specsRow */
+    flex-shrink: 0;
+    user-select: none;
+    display: inline-block;
+    align-self: baseline;
+}
+
+.mainDataContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2); /* ✅ Más espacio entre label y value */
+    align-items: flex-start;
+    justify-content: flex-end;
+    text-align: left;
+    width: 100%;
+    min-width: 0; /* ✅ Permite que se reduzca más allá del contenido */
+}
+
+.mainDataLabelGroup {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3); /* ✅ Más espacio entre ícono y label */
+    justify-content: flex-start;
+}
+
+.mainDataIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-neutral-600);
+    opacity: 0.8;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.mainDataIcon svg {
+    width: 24px; /* ✅ Íconos más grandes */
+    height: 24px; /* ✅ Íconos más grandes */
+}
+
+.mainDataLabel {
+    --label-font-size: clamp(1.125rem, 3vw, 1.5rem); /* ✅ Labels más grandes */
+    
+    font-size: var(--label-font-size);
+    font-weight: var(--font-weight-medium);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-600);
+    letter-spacing: 0.2px;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.mainDataValue {
+    --value-font-size: clamp(2.5rem, 6vw, 3.25rem); /* ✅ Valores más grandes */
+    
+    font-size: var(--value-font-size);
+    font-weight: var(--font-weight-light);
+    font-family: var(--font-condensed);
+    color: var(--color-text-primary);
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+    
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Remover estilos específicos de specsRow dentro de titleRow (ya no se usa) */
+
+/* FILA 1.5: Cilindrada | HP | Tracción (pegado al título, sin separación superior) */
+.specsRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start; /* ✅ Alineado hacia arriba */
+    gap: 0;
+    flex-wrap: wrap;
+    width: 100%;
+    min-width: 0;
+    padding-top: 0; /* ✅ Sin padding superior - pegado al título */
+    margin-top: 0; /* ✅ Sin margen superior */
+    margin-bottom: 0;
+    padding-bottom: 0;
+    align-self: flex-start;
+    line-height: 1.2; /* ✅ Reducir line-height para acercarlo más */
 }
 
 .spec_value {
-  font-size: clamp(1rem, 2.5vw, 1.25rem); /* ✅ Responsive con clamp */
-  font-weight: 700;
-  color: var(--color-text-primary);
-  font-family: var(--font-condensed);
-  text-align: left;
-  display: inline-block;
-  flex-shrink: 1; /* ✅ Permitir reducción */
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    --spec-font-size: clamp(1rem, 2.5vw, 1.25rem);
+    
+    font-size: var(--spec-font-size);
+    font-weight: var(--font-weight-light);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-500);
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    text-align: left;
+    display: inline-block;
+    flex-shrink: 1;
+    min-width: 0;
+    white-space: nowrap;
 }
 
+/* Separador de specs */
 .spec_separator {
-  font-size: clamp(1rem, 2.5vw, 1.25rem); /* ✅ Responsive con clamp */
-  font-weight: 400;
-  color: var(--color-text-secondary);
-  font-family: var(--font-condensed);
-  padding: 0 clamp(0.25rem, 0.75vw, 0.5rem); /* ✅ Padding responsive */
-  opacity: 0.4;
-  user-select: none;
-  flex-shrink: 0; /* ✅ Separador no se reduce */
+    --separator-opacity: 0.2;
+    --separator-font-size: clamp(1rem, 2.5vw, 1.25rem);
+    
+    font-size: var(--separator-font-size);
+    font-weight: var(--font-weight-light);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-400);
+    opacity: var(--separator-opacity);
+    padding: 0 var(--spacing-2);
+    flex-shrink: 0;
+    user-select: none;
+    display: inline-block;
 }
 
-/* ===== CONTENEDOR 2: Datos principales (Año, Km, Caja) - Iconos y texto más grandes ===== */
-.container2 {
-  margin-top: var(--spacing-4);
-  width: 100%;
-  max-width: 800px; /* ✅ Mismo ancho máximo que container1 */
-  margin-left: 0; /* ✅ Alineado al inicio (izquierda) */
-  margin-right: auto;
+/* ===== SECCIÓN PRECIO ===== */
+/* ===== SECCIÓN DE PRECIO - Estilo CardAuto ===== */
+.priceSection {
+    --price-border-opacity: 0.05;
+    --price-border-radius: var(--border-radius-lg);
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: var(--spacing-2);
+    margin-top: 0;
+    padding-top: var(--spacing-4);
+    padding-bottom: var(--spacing-4);
+    border-top: 1px solid rgba(0, 0, 0, 0.04); /* ✅ Línea más sutil */
+    border-left: 1px solid rgba(0, 0, 0, var(--price-border-opacity));
+    border-radius: var(--price-border-radius) 0 0 0;
 }
 
-.main_data_container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(0.5rem, 1.5vw, 1rem); /* ✅ Gap responsive */
-  flex-wrap: nowrap; /* ✅ Mantener en una línea */
-  width: 100%;
-  min-width: 0; /* ✅ Permitir reducción */
-  overflow: hidden; /* ✅ Evitar desbordamiento */
+.price_label_container {
+    --label-width: 30%;
+    --label-padding-left: var(--spacing-2);
+    
+    flex: 0 0 var(--label-width);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    padding-left: var(--label-padding-left);
+    background: transparent;
 }
 
-.main_data_item {
-  flex: 1 1 0; /* ✅ Distribución equitativa (Km - medio) */
-  min-width: clamp(80px, 20vw, 120px); /* ✅ Tamaño mínimo */
-  max-width: 100%;
-  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(0.5rem, 1vw, 0.75rem); /* ✅ Padding aumentado */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Label "desde": Más legible y menos cursiva */
+.price_label {
+    --label-font-size: clamp(1.125rem, 2.8vw, 1.375rem);
+    
+    font-size: var(--label-font-size);
+    font-weight: var(--font-weight-medium);
+    font-style: normal;
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-600);
+    text-align: left;
+    text-transform: lowercase;
+    letter-spacing: 0.5px;
 }
 
-.main_data_item_flex_shrink {
-  flex: 0 2 0; /* ✅ Año: Cede más espacio (shrink: 2, grow: 0) */
-  min-width: clamp(70px, 18vw, 100px); /* ✅ Tamaño mínimo más pequeño */
-  max-width: 100%;
-  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(0.5rem, 1vw, 0.75rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Contenedor derecha: Precio */
+.price_display {
+    --price-width: 70%;
+    --price-padding-right: var(--spacing-3);
+    
+    flex: 0 0 var(--price-width);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0;
+    padding-top: var(--spacing-1);
+    padding-right: var(--price-padding-right);
+    background: transparent;
 }
 
-.main_data_item_flex_rigid {
-  flex: 1.5 0.5 0; /* ✅ Caja: Cede menos espacio (shrink: 0.5, grow: 1.5) */
-  min-width: clamp(90px, 22vw, 140px); /* ✅ Tamaño mínimo más grande */
-  max-width: 100%;
-  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(0.5rem, 1vw, 0.75rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Precio destacado: Más legible, menos cursiva */
+.price_value {
+    --price-font-size: clamp(2.5rem, 6.5vw, 3.25rem); /* ✅ Precio más grande */
+    --price-letter-spacing: -0.4px;
+    --price-line-height: 1.15;
+    --price-symbol-size: 0.7em;
+    
+    font-size: var(--price-font-size);
+    font-weight: var(--font-weight-bold);
+    font-style: normal;
+    font-family: var(--font-condensed);
+    color: var(--color-brand-500);
+    line-height: var(--price-line-height);
+    letter-spacing: var(--price-letter-spacing);
+    text-align: right;
 }
 
-.main_data_separator {
-  font-size: clamp(2rem, 5vw, 2.75rem); /* ✅ Separador más grande para coincidir con valores */
-  font-weight: 300;
-  color: var(--color-text-secondary);
-  font-family: var(--font-condensed);
-  padding: 0 clamp(0.5rem, 1vw, 0.75rem); /* ✅ Padding aumentado */
-  opacity: 0.4;
-  user-select: none;
-  align-self: center;
-  flex-shrink: 0; /* ✅ Separador no se reduce */
+.price_value::first-letter {
+    font-size: var(--price-symbol-size);
 }
 
-.main_data_content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  align-items: center;
-  text-align: center;
-}
-
-.main_data_label_group {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-}
-
-.main_data_icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-neutral-600);
-  opacity: 0.9;
-  transition: all var(--transition-fast);
-  flex-shrink: 0;
-}
-
-.main_data_icon svg {
-  width: clamp(32px, 4vw, 40px); /* ✅ Iconos más grandes */
-  height: clamp(32px, 4vw, 40px);
-}
-
-.main_data_item:hover .main_data_icon {
-  opacity: 1;
-  color: var(--color-neutral-900);
-  transform: scale(1.1);
-}
-
-.main_data_label {
-  font-size: clamp(1rem, 2.5vw, 1.375rem); /* ✅ Labels más grandes */
-  font-weight: 600;
-  color: var(--color-neutral-600);
-  letter-spacing: 0.5px;
-  font-family: var(--font-condensed);
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.main_data_value {
-  font-size: clamp(2rem, 5vw, 2.75rem); /* ✅ Valores mucho más grandes */
-  font-weight: 700;
-  color: var(--color-text-primary);
-  font-family: var(--font-condensed);
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-  text-align: center;
-}
-
-/* ===== CONTENEDOR 3: Información adicional ===== */
-.container3 {
-  margin-bottom: var(--spacing-6);
+/* ===== SECCIÓN INFORMACIÓN ADICIONAL ===== */
+.additionalInfoSection {
+    width: 100%;
+    padding-top: var(--spacing-4);
+    margin-bottom: var(--spacing-4); /* ✅ Margin bottom agregado */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .infoContainer {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-2);
-  margin: 0 calc(var(--spacing-1) * -1);
-  min-height: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-4) 0; /* ✅ Sin gap horizontal, solo vertical */
+    width: 100%;
+    align-items: start;
 }
 
 .infoItem {
-  text-align: center;
-  padding: var(--spacing-2) var(--spacing-2);
-  background: transparent;
-  border-radius: 0;
-  border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* ✅ Sin gap - clave y valor pegados */
+    text-align: left;
 }
 
 .infoKey {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--color-neutral-400);
-  letter-spacing: 0.05em;
-  margin-bottom: 0;
-  display: block;
+    --label-font-size: clamp(0.9375rem, 2.5vw, 1.125rem); /* ✅ Más grande: 15px - 18px */
+    
+    font-size: var(--label-font-size);
+    font-weight: var(--font-weight-medium);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-600);
+    letter-spacing: 0.2px;
+    text-transform: capitalize;
+    white-space: nowrap;
 }
 
 .infoValue {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--color-neutral-900);
-  margin: 0;
-  display: block;
-  min-height: 1.2rem;
-  line-height: 1.3;
-}
-
-/* ===== CONTENEDOR 4: Precio (30% placeholder / 70% precio) ===== */
-.container4 {
-  display: flex;
-  gap: var(--spacing-4);
-  margin-bottom: var(--spacing-6);
-  align-items: center;
-}
-
-.price_placeholder {
-  flex: 0 0 30%;
-  /* Espacio reservado para futuro - sin estilos visuales */
-}
-
-.price_display {
-  flex: 0 0 70%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.price_value {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--color-text-primary);
-  font-family: var(--font-condensed);
-  line-height: 1.2;
+    --value-font-size: clamp(1.25rem, 3.5vw, 1.5rem); /* ✅ Más grande: 20px - 24px */
+    
+    font-size: var(--value-font-size);
+    font-weight: var(--font-weight-light);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-600); /* ✅ Gris - igual que la clave */
+    line-height: 1.2; /* ✅ Menos interlineado */
+    letter-spacing: -0.2px;
+    
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 /* ===== SECCIÓN DE CONTACTO ===== */
 .contactSection {
-  margin-top: var(--spacing-4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+    width: 100%;
+    padding-top: var(--spacing-6); /* ✅ Más espacio arriba */
+    display: flex;
+    justify-content: center; /* ✅ Centrado */
+    align-items: center;
 }
 
-/* ✅ Botón WhatsApp - Tamaño aumentado especialmente en desktop */
-.whatsappButtonSmall {
-  margin-top: var(--spacing-3); /* ✅ Agregado: Un poco de espacio arriba */
-  padding-top: 0.875rem; /* ✅ Reducido sutilmente: Padding vertical (14px) */
-  padding-bottom: 0.875rem; /* ✅ Reducido sutilmente: Padding vertical (14px) */
-  padding-left: 1.5rem; /* ✅ Reducido sutilmente: Padding horizontal (24px) */
-  padding-right: 1.5rem; /* ✅ Reducido sutilmente: Padding horizontal (24px) */
-  font-size: 1rem; /* ✅ Reducido sutilmente: Texto (16px) */
-  gap: 0.5rem; /* ✅ Aumentado: Más espacio entre icono y texto */
-}
-
-.whatsappButtonSmall .whatsappIcon {
-  width: 19px; /* ✅ Reducido sutilmente: Icono (19px) */
-  height: 19px; /* ✅ Reducido sutilmente: Icono (19px) */
+.whatsappButton {
+    width: 100%;
+    max-width: 400px;
+    padding: var(--spacing-4) var(--spacing-6);
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* ===== RESPONSIVE DESIGN - MOBILE FIRST ===== */
 
-/* Tablet: 769px - 991px - Layout vertical pero con mejor espaciado */
-/* ✅ Usa breakpoints del sistema: --tablet-min (768px) y --desktop-min (992px) */
-@media (min-width: 769px) and (max-width: 991px) {
-  .cardContent {
-    display: flex; /* ✅ Flex vertical en tablet */
-    flex-direction: column;
-    gap: var(--spacing-6); /* ✅ Gap intermedio */
-    padding: var(--spacing-6); /* ✅ Padding intermedio */
-  }
-  
-  .imageSection {
-    order: -1; /* ✅ Imagen arriba */
-    padding: var(--spacing-4);
-  }
-  
-  .detailsSection {
-    order: 1;
-    padding-top: var(--spacing-4);
-    padding-bottom: var(--spacing-4);
-    padding-left: var(--spacing-4);
-    padding-right: 0; /* ✅ Sin padding-right */
-  }
+/* Mobile: Stack vertical con alineación profesional */
+@media (max-width: 767px) {
+    .cardContent {
+        padding: 0; /* ✅ Sin padding aquí, lo maneja el padre */
+        min-width: 0; /* ✅ Evitar desbordamiento */
+        margin-bottom: var(--spacing-8); /* ✅ Espacio abajo en mobile */
+    }
+    
+    .mainLayout {
+        gap: var(--spacing-5); /* Separación vertical mobile */
+        align-items: stretch;
+    }
+    
+    .carouselSection {
+        width: 100%;
+        align-items: stretch;
+    }
+    
+    .dataSection {
+        width: 100%;
+        align-items: stretch;
+    }
+    
+    .headerSection {
+        flex-direction: row;
+        gap: var(--spacing-4);
+        padding-bottom: var(--spacing-4);
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+    
+    .logoContainer {
+        max-width: 80px;
+        position: absolute; /* ✅ Mantener absolute en mobile */
+        top: -1rem; /* ✅ Mucho más arriba en mobile - alineado con título */
+        right: 18%; /* ✅ El doble más adentro en mobile - mucho más cerca del contenido */
+        z-index: 10;
+    }
+    
+    .headerSection {
+        padding-right: 28%; /* ✅ El doble más espacio para el logo en mobile */
+    }
+    
+    .headerData {
+        gap: var(--spacing-3);
+        flex: 1 1 auto;
+        min-width: 0;
+        align-items: flex-start;
+        order: 1;
+    }
+    
+    .mainDataRow {
+        flex-direction: row; /* ✅ Siempre horizontal - nunca vertical */
+        gap: clamp(1.5rem, 3vw, 2.5rem); /* ✅ Gap responsive reducido en mobile */
+        width: 100%;
+        justify-content: flex-start; /* ✅ Alineados a la izquierda */
+        align-items: baseline; /* ✅ Baseline alignment */
+        flex-wrap: nowrap; /* ✅ Nunca se pasan abajo */
+    }
+    
+    .mainDataItem {
+        flex: 1 1 0%; /* ✅ Se achican proporcionalmente en mobile */
+        min-width: 0; /* ✅ Permite reducción */
+    }
+    
+    .mainDataItem:first-child {
+        flex: 1 2 0%; /* ✅ El primero cede más espacio en mobile */
+    }
+    
+    /* En mobile, titleRow puede hacer wrap si es necesario */
+    .titleRow {
+        flex-wrap: wrap;
+        gap: var(--spacing-2);
+        align-items: flex-start;
+    }
+    
+    .titleGroup {
+        flex-wrap: nowrap;
+        flex-basis: auto;
+    }
+    
+    .titleSeparator {
+        display: none; /* Ocultar guion en mobile */
+    }
+    
+    /* Tamaños de fuente más grandes en mobile */
+    .marca_text {
+        --marca-font-size: clamp(2.5rem, 7vw, 3.5rem); /* ✅ Mismo tamaño que modelo en mobile */
+        font-size: var(--marca-font-size);
+    }
+    
+    .modelo_title {
+        --modelo-font-size: clamp(2.5rem, 7vw, 3.5rem); /* ✅ Más grande en mobile */
+        font-size: var(--modelo-font-size);
+    }
+    
+    .version_text {
+        --version-font-size: clamp(2rem, 5.5vw, 2.5rem); /* ✅ Más grande en mobile */
+        font-size: var(--version-font-size);
+    }
+    
+    .mainDataValue {
+        --value-font-size: clamp(2.75rem, 7vw, 3.5rem); /* ✅ Más grande en mobile */
+        font-size: var(--value-font-size);
+    }
+    
+    .mainDataLabel {
+        --label-font-size: clamp(1.25rem, 3.5vw, 1.75rem); /* ✅ Más grande en mobile */
+        font-size: var(--label-font-size);
+    }
+    
+    .spec_value {
+        --spec-font-size: clamp(1.25rem, 3.5vw, 1.5rem); /* ✅ Más grande en mobile */
+        font-size: var(--spec-font-size);
+    }
+    
+    .titleRow .specsRow {
+        width: 100%;
+        padding-top: var(--spacing-1);
+        justify-content: flex-start;
+    }
+    
+    .specsRow {
+        padding-top: var(--spacing-1);
+        width: 100%;
+    }
+    
+    .imageCarouselWrapper {
+        width: 100%;
+    }
+    
+    .imageCarouselWrapper :global(.mainImageContainer) {
+        height: 350px; /* Más bajo en mobile */
+        width: 100%;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail) {
+        width: 110px !important;
+        height: 82px !important;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail.active) {
+        transform: scale(1.2) !important; /* ✅ Aumentar tamaño en mobile */
+    }
+    
+    .priceSection,
+    .additionalInfoSection,
+    .contactSection {
+        width: 100%;
+        align-items: stretch;
+        justify-content: center; /* ✅ Centrado en mobile */
+        padding-top: var(--spacing-6); /* ✅ Más espacio arriba en mobile */
+    }
+    
+    .price_display {
+        justify-content: flex-end; /* ✅ Mantener alineación a la derecha en mobile */
+    }
+    
+    .infoContainer {
+        width: 100%;
+        grid-template-columns: repeat(4, 1fr); /* ✅ 4 columnas en mobile - todos en una fila */
+        gap: var(--spacing-4) 0; /* ✅ Sin gap horizontal en mobile */
+    }
+    
+    .whatsappButton {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    /* Precio más grande en mobile */
+    .price_value {
+        --price-font-size: clamp(2.75rem, 7.5vw, 3.5rem); /* ✅ Más grande en mobile */
+    }
 }
 
-/* Desktop: 992px+ - Layout 2 columnas (usa --desktop-min del design system) */
+/* Tablet y Desktop: Layout 50/50 con separación profesional */
+@media (min-width: 768px) {
+    .cardContent {
+        padding: 0; /* ✅ Sin padding aquí, lo maneja el padre */
+        min-width: 0; /* ✅ Evitar desbordamiento */
+        margin-bottom: var(--spacing-12); /* ✅ Más espacio abajo en tablet */
+    }
+    
+    .mainLayout {
+        flex-direction: row;
+        gap: clamp(2.5rem, 4vw, 3rem); /* ✅ Separación responsiva más generosa (40px - 48px) */
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .carouselSection {
+        flex: 0 1 calc(50% - clamp(1.25rem, 2vw, 1.5rem)); /* ✅ Ajuste dinámico (20px - 24px) */
+        min-width: 0;
+        max-width: calc(50% - clamp(1.25rem, 2vw, 1.5rem)); /* ✅ Ajuste dinámico */
+        order: 1;
+        position: sticky;
+        top: calc(77px + var(--spacing-6)); /* Navbar height + padding */
+        align-self: flex-start;
+        max-height: calc(100vh - 120px);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .dataSection {
+        flex: 0 1 calc(50% - clamp(1.25rem, 2vw, 1.5rem)); /* ✅ Ajuste dinámico (20px - 24px) */
+        min-width: 0;
+        max-width: calc(50% - clamp(1.25rem, 2vw, 1.5rem)); /* ✅ Ajuste dinámico */
+        order: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-6);
+    }
+    
+    .headerSection {
+        gap: var(--spacing-6);
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    
+    .logoContainer {
+        position: absolute; /* ✅ Mantener absolute en tablet */
+        top: -1.3rem; /* ✅ Mucho más arriba en tablet - alineado con título */
+        right: 21%; /* ✅ El doble más adentro en tablet - mucho más cerca del contenido */
+        z-index: 10;
+    }
+    
+    .headerSection {
+        padding-right: 31%; /* ✅ El doble más espacio para el logo en tablet */
+    }
+    
+    .headerData {
+        flex: 1;
+        min-width: 0;
+        align-items: flex-start;
+    }
+    
+    .mainDataRow {
+        flex-direction: row; /* ✅ Horizontal en tablet */
+        justify-content: flex-start; /* ✅ Alineados a la izquierda en tablet */
+        align-items: baseline; /* ✅ Baseline alignment en tablet */
+        gap: clamp(3rem, 4vw, 4.5rem); /* ✅ Gap responsive en tablet */
+        flex-wrap: nowrap; /* ✅ Nunca se pasan abajo */
+    }
+    
+    .mainDataItem {
+        flex: 1 1 0%; /* ✅ Se achican proporcionalmente en tablet */
+        min-width: 0;
+    }
+    
+    .mainDataItem:first-child {
+        flex: 1 2 0%; /* ✅ El primero cede más espacio en tablet */
+    }
+    
+    .imageCarouselWrapper {
+        width: 100%;
+        align-items: stretch;
+    }
+    
+    .imageCarouselWrapper :global(.mainImageContainer) {
+        height: 500px;
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail) {
+        width: 140px !important;
+        height: 105px !important;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        box-shadow: none !important;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail:hover) {
+        border-color: rgba(0, 0, 0, 0.2) !important;
+        box-shadow: none !important;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail.active) {
+        border-color: rgba(0, 0, 0, 0.1) !important;
+        box-shadow: none !important;
+        transform: scale(1.2) !important; /* ✅ Aumentar tamaño en tablet */
+    }
+    
+    .priceSection,
+    .additionalInfoSection {
+        width: 100%;
+        align-self: stretch;
+    }
+    
+    .contactSection {
+        width: 100%;
+        align-items: flex-start;
+        justify-content: center; /* ✅ Centrado en tablet */
+        padding-top: var(--spacing-6); /* ✅ Más espacio arriba en tablet */
+    }
+}
+
+/* Desktop grande: Más espaciado y alineación profesional */
 @media (min-width: 992px) {
-  .cardContent {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-8);
-    padding: var(--spacing-8);
-    /* ✅ ADAPTATIVO: Alinea contenido arriba y se adapta a altura natural */
-    align-items: start;
-  }
-  
-  .imageSection {
-    /* ✅ ADAPTATIVO: Sin altura mínima, se adapta al contenido */
-    order: 0; /* Orden normal en desktop */
-    /* ✅ DESKTOP: Padding más grande para efecto compresión */
-    padding: var(--spacing-6);
-  }
-  
-  .detailsSection {
-    order: 0;
-    /* ✅ DESKTOP: Padding más grande para efecto compresión */
-    padding-top: var(--spacing-6);
-    padding-bottom: var(--spacing-6);
-    padding-left: var(--spacing-6);
-    padding-right: 0; /* ✅ Sin padding-right */
-  }
-  
-  .brand_logo {
-    width: 168px;
-    height: 168px;
-  }
-  
-  .modelo_title {
-    font-size: clamp(2rem, 4vw, 2.5rem); /* ✅ Mantener clamp para responsive */
-  }
-  
-  .spec_value {
-    font-size: clamp(1.25rem, 2.5vw, 1.5rem); /* ✅ Mantener clamp para responsive */
-  }
-  
-  .container1_bottom {
-    gap: clamp(0.75rem, 2vw, 1.5rem); /* ✅ Gap responsive */
-  }
-  
-  .container2 {
-    margin-top: var(--spacing-2);
-  }
-  
-  .main_data_icon svg {
-    width: clamp(28px, 3vw, 32px); /* ✅ Iconos responsive */
-    height: clamp(28px, 3vw, 32px);
-  }
-  
-  .main_data_label {
-    font-size: clamp(1rem, 2vw, 1.25rem); /* ✅ Mantener clamp para responsive */
-  }
-  
-  .main_data_value {
-    font-size: clamp(2rem, 4vw, 2.5rem); /* ✅ Mantener clamp para responsive */
-  }
-  
-  .price_value {
-    font-size: 2.5rem;
-  }
-  
-  .infoContainer {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.15rem 0.5rem;
-    margin-top: var(--spacing-6);
-    margin-bottom: var(--spacing-6);
-  }
-  
-  .infoItem {
-    padding: 0.4rem 0.6rem;
-  }
-  
-  .infoKey {
-    font-size: 0.8rem;
-  }
-  
-  .infoValue {
-    font-size: 1rem;
-  }
-  
-  .whatsappButtonSmall {
-    margin-top: var(--spacing-4); /* ✅ Desktop: Un poco más de espacio arriba */
-    padding-top: 1.125rem; /* ✅ Desktop: Reducido sutilmente: Padding vertical (18px) */
-    padding-bottom: 1.125rem; /* ✅ Desktop: Reducido sutilmente: Padding vertical (18px) */
-    padding-left: 2.25rem; /* ✅ Desktop: Reducido sutilmente: Padding horizontal (36px) */
-    padding-right: 2.25rem; /* ✅ Desktop: Reducido sutilmente: Padding horizontal (36px) */
-    font-size: 1.125rem; /* ✅ Desktop: Reducido sutilmente: Texto (18px) */
-    gap: 0.625rem; /* ✅ Desktop: Más espacio entre icono y texto */
-  }
-  
-  .whatsappButtonSmall .whatsappIcon {
-    width: 23px; /* ✅ Desktop: Reducido sutilmente: Icono (23px) */
-    height: 23px; /* ✅ Desktop: Reducido sutilmente: Icono (23px) */
-  }
-  
-  .contactSection {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-top: var(--spacing-8); /* ✅ Desktop: Más espacio antes del border-top */
-    padding-top: var(--spacing-10); /* ✅ Desktop: Espacio grande arriba después del border */
-    padding-bottom: var(--spacing-10); /* ✅ Desktop: Mismo espacio abajo para centrado vertical */
-  }
+    .cardContent {
+        padding: 0; /* ✅ Sin padding aquí, lo maneja el padre */
+        min-width: 0; /* ✅ Evitar desbordamiento */
+        margin-bottom: var(--spacing-14); /* ✅ Más espacio abajo en desktop */
+    }
+    
+    .mainLayout {
+        gap: clamp(3rem, 4.5vw, 4rem); /* ✅ Separación aún más generosa en desktop (48px - 64px) */
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+    
+    .carouselSection {
+        flex: 0 1 calc(50% - clamp(1.5rem, 2.25vw, 2rem)); /* ✅ Ajuste dinámico (24px - 32px) */
+        max-width: calc(50% - clamp(1.5rem, 2.25vw, 2rem)); /* ✅ Ajuste dinámico */
+        min-width: 0;
+        top: calc(77px + var(--spacing-8));
+    }
+    
+    .dataSection {
+        flex: 0 1 calc(50% - clamp(1.5rem, 2.25vw, 2rem)); /* ✅ Ajuste dinámico (24px - 32px) */
+        max-width: calc(50% - clamp(1.5rem, 2.25vw, 2rem)); /* ✅ Ajuste dinámico */
+        min-width: 0;
+        gap: var(--spacing-8); /* Más espacio entre secciones */
+    }
+    
+    .headerSection {
+        gap: var(--spacing-6);
+        padding-bottom: var(--spacing-6);
+        align-items: flex-start;
+    }
+    
+    .mainDataRow {
+        gap: clamp(4.5rem, 5vw, 6rem); /* ✅ Gap responsive en desktop grande */
+        justify-content: flex-start; /* ✅ Alineados a la izquierda en desktop */
+        align-items: baseline; /* ✅ Baseline alignment consistente */
+        flex-wrap: nowrap; /* ✅ Nunca se pasan abajo */
+    }
+    
+    .mainDataItem {
+        flex: 1 1 0%; /* ✅ Se achican proporcionalmente en desktop */
+        min-width: 0;
+    }
+    
+    .mainDataItem:first-child {
+        flex: 1 2 0%; /* ✅ El primero cede más espacio en desktop */
+    }
+    
+    /* ✅ Desktop: Reducir tamaño de valores y labels de Km, Caja, Año */
+    .mainDataValue {
+        --value-font-size: clamp(2rem, 5vw, 2.75rem); /* ✅ Reducido de 2.5-3.25rem a 2-2.75rem */
+    }
+    
+    .mainDataLabel {
+        --label-font-size: clamp(1rem, 2.5vw, 1.25rem); /* ✅ Reducido de 1.125-1.5rem a 1-1.25rem */
+    }
+    
+    .specsRow {
+        padding-top: var(--spacing-2);
+    }
+    
+    .priceSection {
+        padding-top: var(--spacing-5);
+        padding-bottom: var(--spacing-5);
+    }
+    
+    .additionalInfoSection {
+        padding-top: var(--spacing-5);
+    }
+    
+    .infoContainer {
+        gap: var(--spacing-4) 0; /* ✅ Sin gap horizontal en desktop */
+    }
+    
+    .imageCarouselWrapper :global(.mainImageContainer) {
+        height: 600px; /* Más alto en desktop */
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail) {
+        width: 160px !important;
+        height: 120px !important;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        box-shadow: none !important;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail:hover) {
+        border-color: rgba(0, 0, 0, 0.2) !important;
+        box-shadow: none !important;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail.active) {
+        border-color: rgba(0, 0, 0, 0.1) !important;
+        box-shadow: none !important;
+        transform: scale(1.2) !important; /* ✅ Aumentar tamaño en tablet */
+    }
+}
+
+/* Pantallas muy grandes: Alineación perfecta y espaciado máximo */
+@media (min-width: 1400px) {
+    .cardContent {
+        padding: 0; /* ✅ Sin padding aquí, lo maneja el padre */
+        max-width: 1600px; /* Limitar ancho máximo para legibilidad */
+        min-width: 0; /* ✅ Evitar desbordamiento */
+    }
+    
+    .mainLayout {
+        gap: clamp(3rem, 5vw, 4rem); /* ✅ Separación máxima responsiva (48px - 64px) */
+        align-items: flex-start;
+        justify-content: center; /* Centrar el contenido */
+        max-width: 100%;
+    }
+    
+    .carouselSection {
+        flex: 0 1 calc(50% - clamp(1.5rem, 2.5vw, 2rem)); /* ✅ Ajuste dinámico (24px - 32px) */
+        max-width: calc(50% - clamp(1.5rem, 2.5vw, 2rem)); /* ✅ Ajuste dinámico */
+        min-width: 500px; /* ✅ Reducido: Ancho mínimo más flexible */
+    }
+    
+    .dataSection {
+        flex: 0 1 calc(50% - clamp(1.5rem, 2.5vw, 2rem)); /* ✅ Ajuste dinámico (24px - 32px) */
+        max-width: calc(50% - clamp(1.5rem, 2.5vw, 2rem)); /* ✅ Ajuste dinámico */
+        min-width: 500px; /* ✅ Reducido: Ancho mínimo más flexible */
+    }
+    
+    .headerSection {
+        gap: var(--spacing-8); /* Más espacio en pantallas grandes */
+    }
+    
+    .logoContainer {
+        max-width: 160px;
+        position: absolute; /* ✅ Mantener absolute en pantallas grandes */
+        top: -1.5rem; /* ✅ Mucho más arriba en pantallas grandes - alineado con título */
+        right: 24%; /* ✅ El doble más adentro en pantallas grandes - mucho más cerca del contenido */
+        z-index: 10;
+    }
+    
+    .headerSection {
+        padding-right: 34%; /* ✅ El doble más espacio para el logo en pantallas grandes */
+    }
+    
+    .imageCarouselWrapper :global(.mainImageContainer) {
+        height: 650px; /* Altura óptima para pantallas grandes */
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail) {
+        width: 170px !important;
+        height: 127px !important;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        box-shadow: none !important;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail:hover) {
+        border-color: rgba(0, 0, 0, 0.2) !important;
+        box-shadow: none !important;
+    }
+    
+    .imageCarouselWrapper :global(.thumbnail.active) {
+        border-color: rgba(0, 0, 0, 0.1) !important;
+        box-shadow: none !important;
+        transform: scale(1.2) !important; /* ✅ Aumentar tamaño en tablet */
+    }
+}
+
+/* ===== ACCESIBILIDAD: REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    .brand_logo,
+    .mainDataIcon,
+    .imageCarouselWrapper :global(.thumbnailItem) {
+        transition: none;
+    }
 }

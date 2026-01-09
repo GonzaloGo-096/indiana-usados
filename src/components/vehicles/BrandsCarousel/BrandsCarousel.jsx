@@ -1,8 +1,8 @@
 /**
- * BrandsCarousel - Carrusel de logos de marcas con navegación manual
+ * BrandsCarousel - Carrusel de logos de marcas
  * 
  * Muestra las marcas disponibles en un carrusel horizontal
- * con flechas de navegación y logos seleccionables.
+ * con logos seleccionables.
  * 
  * ✅ ACTUALIZADO: Integrado con sistema de filtros
  * - Recibe selectedBrands desde URL (fuente de verdad)
@@ -10,13 +10,11 @@
  * - Estado visual basado en selectedBrands (no estado interno)
  * 
  * @author Indiana Usados
- * @version 2.0.0 - Integración con filtros
+ * @version 2.1.0 - Sin indicadores de navegación
  */
 
-import React, { useRef, useState, useEffect } from 'react'
-import CarouselDots from '@components/ui/CarouselDots/CarouselDots'
+import React, { useRef } from 'react'
 import { BRAND_LOGOS } from '@config/brandLogos'
-import { ChevronIcon } from '@components/ui/icons'
 import styles from './BrandsCarousel.module.css'
 
 const BrandsCarouselComponent = ({ selectedBrands = [], onBrandSelect, isFiltersVisible = false }) => {
@@ -30,56 +28,6 @@ const BrandsCarouselComponent = ({ selectedBrands = [], onBrandSelect, isFilters
   )
 
   const scrollContainerRef = useRef(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(true)
-  const [pageCount, setPageCount] = useState(1)
-  const [activePage, setActivePage] = useState(0)
-
-  // Verificar si se puede scrollear
-  const checkScrollability = () => {
-    if (!scrollContainerRef.current) return
-    
-    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current
-    setCanScrollLeft(scrollLeft > 0)
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10) // 10px de tolerancia
-
-    // Paginación por viewport
-    const pages = Math.max(1, Math.ceil(scrollWidth / clientWidth))
-    const active = Math.min(pages - 1, Math.max(0, Math.round(scrollLeft / clientWidth)))
-    setPageCount(pages)
-    setActivePage(active)
-  }
-
-  useEffect(() => {
-    checkScrollability()
-    const container = scrollContainerRef.current
-    if (container) {
-      container.addEventListener('scroll', checkScrollability)
-      window.addEventListener('resize', checkScrollability)
-      return () => {
-        container.removeEventListener('scroll', checkScrollability)
-        window.removeEventListener('resize', checkScrollability)
-      }
-    }
-  }, [])
-
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: -500,
-        behavior: 'smooth'
-      })
-    }
-  }
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({
-        left: 500,
-        behavior: 'smooth'
-      })
-    }
-  }
 
   // ✅ ACTUALIZADO: Obtener nombre de marca desde alt (ej: "Logo Toyota" → "Toyota")
   const getBrandName = (brand) => {
@@ -104,17 +52,6 @@ const BrandsCarouselComponent = ({ selectedBrands = [], onBrandSelect, isFilters
 
   return (
     <div className={`${styles.carouselContainer} ${hasSelectedBrand ? styles.hasSelection : ''}`}>
-      {/* Flecha izquierda */}
-      {canScrollLeft && (
-        <button 
-          className={styles.arrowButton}
-          onClick={scrollLeft}
-          aria-label="Marca anterior"
-        >
-          <ChevronIcon direction="left" />
-        </button>
-      )}
-
       {/* Contenedor de logos con scroll */}
       <div 
         ref={scrollContainerRef}
@@ -127,6 +64,7 @@ const BrandsCarouselComponent = ({ selectedBrands = [], onBrandSelect, isFilters
           // Detectar el tamaño del logo desde la configuración
           const isSmallLogo = brand.size === 'small'
           const isLargeLogo = brand.size === 'large'
+          const isFord = brandName.toLowerCase() === 'ford'
           return (
             <div 
               key={index} 
@@ -136,7 +74,7 @@ const BrandsCarouselComponent = ({ selectedBrands = [], onBrandSelect, isFilters
               <img
                 src={brand.src}
                 alt={brand.alt}
-                className={`${styles.brandLogo} ${isSelected ? styles.brandLogoSelected : ''} ${isSmallLogo ? styles.brandLogoSmall : ''} ${isLargeLogo ? styles.brandLogoLarge : ''}`}
+                className={`${styles.brandLogo} ${isSelected ? styles.brandLogoSelected : ''} ${isSmallLogo ? styles.brandLogoSmall : ''} ${isLargeLogo && !isFord ? styles.brandLogoLarge : ''} ${isFord ? styles.brandLogoFord : ''}`}
                 loading="lazy"
               />
               {/* ✅ Tilde verde cuando está seleccionado */}
@@ -152,28 +90,6 @@ const BrandsCarouselComponent = ({ selectedBrands = [], onBrandSelect, isFilters
           )
         })}
       </div>
-
-      <CarouselDots
-        count={pageCount}
-        activeIndex={activePage}
-        variant="autocity"
-        onDotClick={(i) => {
-          if (!scrollContainerRef.current) return
-          const el = scrollContainerRef.current
-          el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' })
-        }}
-      />
-
-      {/* Flecha derecha */}
-      {canScrollRight && (
-        <button 
-          className={`${styles.arrowButton} ${styles.arrowRight}`}
-          onClick={scrollRight}
-          aria-label="Marca siguiente"
-        >
-          <ChevronIcon direction="right" />
-        </button>
-      )}
     </div>
   )
 }

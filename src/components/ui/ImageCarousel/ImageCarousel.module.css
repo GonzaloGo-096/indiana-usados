@@ -228,8 +228,8 @@
     border-radius: 0;
     padding-top: 0; /* ✅ Sin padding-top */
     padding-bottom: 16px; /* ✅ Mantener padding-bottom */
-    padding-left: 40px; /* ✅ Espacio para flecha izquierda flotante */
-    padding-right: 40px; /* ✅ Espacio para flecha derecha flotante */
+    padding-left: 0 !important; /* ✅ Sin padding left */
+    padding-right: 0 !important; /* ✅ Sin padding right */
     margin-top: 16px;
     opacity: 1;
     visibility: visible;
@@ -346,12 +346,7 @@
 
 .thumbnailControls:hover {
     opacity: 1;
-    background: var(--color-brand-500);
-    color: white;
-    transform: translateY(-50%) scale(1.1); /* ✅ SIMPLIFICADO: Menos escala */
-    /* ✅ Migrado: Usa variables rgba derivadas del sistema */
-    box-shadow: 0 6px 20px var(--color-brand-500-rgba-40);
-    border-color: var(--color-brand-500); /* ✅ NUEVO: Azul Francia */
+    transform: translateY(-50%) scale(1.1);
 }
 
 .thumbnailControlsLeft {
@@ -397,35 +392,19 @@
 }
 
 .thumbnail:hover {
-    border-color: var(--color-brand-500); /* ✅ Borde azul en hover */
     transform: translateY(-3px); /* ✅ Más elevación */
-    /* ✅ Migrado: Usa variables rgba derivadas del sistema */
-    box-shadow: 0 6px 16px var(--color-brand-500-rgba-30);
     z-index: 10;
 }
 
 .thumbnail.active {
-    border-color: var(--color-brand-500); /* ✅ Borde azul sólido para activa */
-    border-width: 4px; /* ✅ Borde más grueso para activa */
-    transform: translateY(-4px); /* ✅ Más elevación */
-    /* ✅ Migrado: Usa variables rgba derivadas del sistema */
-    box-shadow: 0 8px 24px var(--color-brand-500-rgba-40);
+    /* ✅ Estilos azules eliminados - solo aumento de tamaño */
+    transform: scale(1.15); /* ✅ Aumentar tamaño 15% */
     position: relative;
     z-index: 5;
 }
 
 .thumbnail.active::after {
-    content: '';
-    position: absolute;
-    bottom: -10px; /* ✅ Debajo de la miniatura */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px; /* ✅ Línea más larga */
-    height: 3px; /* ✅ Línea más gruesa */
-    background: var(--color-brand-500); /* ✅ Azul sólido */
-    border-radius: 2px;
-    /* ✅ Migrado: Usa variables rgba derivadas del sistema */
-    box-shadow: 0 2px 4px var(--color-brand-500-rgba-40);
+    display: none; /* ✅ Eliminar línea azul */
 }
 
 .thumbnailImage {
@@ -455,8 +434,8 @@
         margin-top: 12px;
         padding-top: 0; /* ✅ Sin padding-top */
         padding-bottom: 12px; /* ✅ Mantener padding-bottom */
-        padding-left: 0;
-        padding-right: 0;
+        padding-left: 0 !important; /* ✅ Sin padding left */
+        padding-right: 0 !important; /* ✅ Sin padding right */
         gap: 6px;
         overflow: visible; /* ✅ Permitir que se vean los bordes */
     }
@@ -504,8 +483,8 @@
         margin-top: 12px;
         padding-top: 0; /* ✅ Sin padding-top */
         padding-bottom: 10px; /* ✅ Mantener padding-bottom */
-        padding-left: 0;
-        padding-right: 0;
+        padding-left: 0 !important; /* ✅ Sin padding left */
+        padding-right: 0 !important; /* ✅ Sin padding right */
         gap: 6px;
         overflow: visible; /* ✅ Permitir que se vean los bordes */
         /* ✅ MOBILE: Mostrar miniaturas */
@@ -543,8 +522,8 @@
         margin-top: 10px;
         padding-top: 0; /* ✅ Sin padding-top */
         padding-bottom: 8px; /* ✅ Mantener padding-bottom */
-        padding-left: 0;
-        padding-right: 0;
+        padding-left: 0 !important; /* ✅ Sin padding left */
+        padding-right: 0 !important; /* ✅ Sin padding right */
         gap: 4px;
         overflow: visible; /* ✅ Permitir que se vean los bordes */
     }
@@ -562,8 +541,11 @@
     }
     
     .thumbnail.active::after {
-        width: 30px; /* ✅ Reducido: Línea más corta en mobile */
-        bottom: -6px;
+        display: none; /* ✅ Eliminar línea azul en mobile */
+    }
+    
+    .thumbnail.active {
+        transform: scale(1.12); /* ✅ Aumento de tamaño en mobile */
     }
     
     .thumbnailArrowLeft,

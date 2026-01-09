@@ -147,6 +147,14 @@
     width: 100%; /* ✅ CAPA 4: Ocupar ancho disponible sin desbordar */
 }
 
+/* Mobile: Asegurar que el grid esté centrado */
+@media (max-width: var(--mobile-max)) {
+    .grid {
+        justify-items: center; /* ✅ Centrar items del grid */
+        align-items: center; /* ✅ Centrar verticalmente */
+    }
+}
+
 /* Tablet: 2 columnas con tamaño fijo (desde 768px) */
 @media (min-width: 768px) {
     .grid {
@@ -194,6 +202,20 @@
 .cardWrapper :global(.card) {
     width: 100%;
     max-width: 100%;
+}
+
+/* Mobile: Centrar las cards */
+@media (max-width: var(--mobile-max)) {
+    .cardWrapper {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .cardWrapper :global(.card) {
+        max-width: 360px; /* ✅ Ancho máximo de la card */
+        margin: 0 auto; /* ✅ Centrar la card */
+    }
 }
 
 @media (max-width: var(--mobile-max)) {

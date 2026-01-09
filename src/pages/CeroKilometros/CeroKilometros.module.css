@@ -46,13 +46,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(16px, 3vw, 24px);
-  margin-bottom: clamp(24px, 4vw, 32px);
+  gap: 0; /* ✅ Sin gap - logos pegados */
+  margin-top: clamp(24px, 4vw, 32px); /* ✅ Margin arriba en lugar de abajo */
+  margin-bottom: 0;
   z-index: 1;
 }
 
 .peugeotLogo {
-  height: clamp(40px, 5vw, 60px);
+  height: clamp(60px, 7vw, 85px); /* ✅ Más chico */
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.08));
@@ -60,12 +61,12 @@
 }
 
 .peugeotLogo:hover {
-  transform: scale(1.05);
+  transform: scale(1.05); /* ✅ Solo escalar en hover, el margin ya maneja el offset */
 }
 
 .logoDivider {
   width: 1px;
-  height: clamp(32px, 4vw, 48px);
+  height: clamp(60px, 7vw, 85px);
   background: linear-gradient(
     to bottom,
     transparent 0%,
@@ -74,12 +75,15 @@
     transparent 100%
   );
   opacity: 0.5;
+  flex-shrink: 0;
 }
 
 .indianaLogo {
-  height: clamp(32px, 4vw, 48px);
-  width: auto;
+  height: clamp(90px, 11vw, 130px); /* ✅ Más chico */
+  width: auto; /* ✅ Se adapta al ancho del icono - contenedor fino */
   object-fit: contain;
+  flex-shrink: 0; /* ✅ No se achica */
+  display: block; /* ✅ Elimina espacios extra */
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.08));
   transition: transform var(--transition-smooth);
 }
@@ -127,20 +131,34 @@
   z-index: 1;
 }
 
-/* ===== SECTION HEADERS - Diseño Minimalista Elegante ===== */
+/* ===== SECTION HEADERS - Diseño Elegante con Logo Arriba ===== */
 .sectionHeader {
   position: relative;
   max-width: var(--container-max-width);
   margin: clamp(48px, 6vw, 80px) auto clamp(16px, 2vw, 24px);
   padding: 0 clamp(16px, 4vw, 32px) 16px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
 }
 
-/* Línea decorativa sutil */
-.sectionHeader::before {
-  content: '';
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(16px, 2.5vw, 24px);
+  width: 100%;
+}
+
+.sectionLogoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 2.5vw, 24px);
+  width: 100%;
+}
+
+.sectionLine {
   flex: 1;
   height: 1px;
   background: linear-gradient(
@@ -150,12 +168,20 @@
     var(--color-neutral-300) 80%,
     transparent 100%
   );
+  max-width: 120px;
 }
 
-.sectionHeader::after {
-  content: '';
-  flex: 1;
-  height: 1px;
+.sectionLogoWrapper .sectionLine:first-child {
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--color-neutral-300) 20%,
+    var(--color-neutral-300) 80%,
+    transparent 100%
+  );
+}
+
+.sectionLogoWrapper .sectionLine:last-child {
   background: linear-gradient(
     to left,
     transparent 0%,
@@ -165,53 +191,24 @@
   );
 }
 
+/* Logo de Peugeot en títulos de sección */
+.sectionLogo {
+  height: clamp(40px, 5vw, 60px);
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .sectionTitle {
   position: relative;
   margin: 0;
   font-size: clamp(1.5rem, 4vw, 2.25rem);
   font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
+  color: var(--color-neutral-600);
   font-family: var(--font-display);
   text-transform: uppercase;
   letter-spacing: clamp(1px, 0.3vw, 2px);
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: clamp(12px, 2vw, 20px);
-}
-
-/* Logo de Peugeot en títulos de sección */
-.sectionLogo {
-  height: clamp(32px, 4vw, 48px);
-  width: auto;
-  object-fit: contain;
-  opacity: 0.9;
-  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.06));
-  transition: 
-    opacity var(--transition-smooth),
-    transform var(--transition-smooth),
-    filter var(--transition-smooth);
-}
-
-.sectionHeader:hover .sectionLogo {
-  opacity: 1;
-  transform: scale(1.05);
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
-}
-
-/* Badge decorativo para secciones */
-.sectionTitle::before {
-  content: '';
-  width: 4px;
-  height: clamp(28px, 4vw, 40px);
-  background: linear-gradient(
-    to bottom,
-    var(--color-brand-500) 0%,
-    var(--color-brand-600) 100%
-  );
-  border-radius: 2px;
-  box-shadow: 0 2px 8px var(--color-brand-500-rgba-20);
-  flex-shrink: 0;
+  text-align: center;
 }
 
 /* ===== CARRUSEL SECTION - Diseño Moderno ===== */
@@ -290,12 +287,12 @@
 }
 
 .scrollButton:hover:not(:disabled) {
-  background: var(--color-brand-500);
+  background: #000000;
   color: var(--color-white);
   transform: scale(1.08) translateY(-1px);
   box-shadow: 
-    0 8px 24px var(--color-brand-500-rgba-30),
-    0 4px 8px var(--color-brand-500-rgba-20),
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -484,7 +481,7 @@
 }
 
 .backLink:hover {
-  color: var(--color-brand-500);
+  color: #000000;
   transform: translateX(-4px);
 }
 
@@ -602,7 +599,6 @@
   .ctaButton,
   .backLink,
   .logo,
-  .sectionLogo,
   .card,
   .image {
     transition: none;
@@ -634,10 +630,6 @@
   .card {
     border-width: 2px;
     border-color: var(--color-neutral-400);
-  }
-  
-  .sectionTitle::before {
-    width: 6px;
   }
   
   .scrollButton {

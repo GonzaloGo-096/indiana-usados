@@ -14,6 +14,7 @@
 // ===== CARD COMPONENTS =====
 export { CardAuto } from './Card/CardAuto/CardAuto'
 export { CardAutoCompact } from './Card/CardAutoCompact/CardAutoCompact'
+export { CardSimilar } from './Card/CardSimilar'
 
 // ===== LIST COMPONENTS =====
 export { default as AutosGrid } from './List/ListAutos/AutosGrid'
@@ -25,4 +26,10 @@ export { CardDetalle } from './Detail/CardDetalle/CardDetalle'
 export { default as FeaturedVehicles } from './FeaturedVehicles'
 
 // ===== BRANDS CAROUSEL =====
-export { default as BrandsCarousel } from './BrandsCarousel/BrandsCarousel' 
+export { default as BrandsCarousel } from './BrandsCarousel/BrandsCarousel'
+
+// ===== SIMILAR VEHICLES CAROUSEL =====
+export { SimilarVehiclesCarousel } from './SimilarVehiclesCarousel'
+
+// ===== PRICE RANGE CAROUSEL =====
+export { PriceRangeCarousel } from './PriceRangeCarousel' 

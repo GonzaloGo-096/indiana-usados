@@ -25,12 +25,15 @@ const MODELO_MAP = {
   'nuevo 2008': ['2008'],
   'nuevo 2008 allure t200 am26': ['2008'],
   'nuevo 2008 active t200 am24': ['2008'],
+  'peugeot 2008 active t200': ['2008'],
   
   // 208 - Variaciones del nombre en planes
   '208': ['208'],
   'nuevo 208': ['208'],
   'nuevo 208 allure': ['208'],
   'nuevo 208 allure at': ['208'],
+  'peugeot 208 allure': ['208'],
+  'peugeot 208 allure at': ['208'],
   
   // Expert - Variaciones del nombre en planes
   'expert': ['expert'],
@@ -131,9 +134,9 @@ export const PLANES = [
     id: "2008-allure-t200",
     plan: "2008 ALLURE T200",
     modelos: ["Nuevo 2008 Allure T200 AM26"],
-    cuotas_desde: 414716,
-    valor_movil_con_imp: 47560000,
-    valor_movil_sin_imp: 39305785,
+    cuotas_desde: 477782,
+    valor_movil_con_imp: 48760000,
+    valor_movil_sin_imp: 40297521,
     caracteristicas: {
       cuotas_totales: 84,
       tipo_plan: "70/30",
@@ -147,11 +150,11 @@ export const PLANES = [
   },
   {
     id: "expert-carga",
-    plan: "EXPERT (Carga)",
+    plan: "EXPERT",
     modelos: ["EXPERT L3 HDI 120 - Carga"],
-    cuotas_desde: 492995,
-    valor_movil_con_imp: 56530000,
-    valor_movil_sin_imp: 51158371,
+    cuotas_desde: 492994,
+    valor_movil_con_imp: 57500000,
+    valor_movil_sin_imp: 52036199,
     caracteristicas: {
       cuotas_totales: 84,
       tipo_plan: "70/30",
@@ -167,9 +170,9 @@ export const PLANES = [
     id: "easy",
     plan: "EASY",
     modelos: ["NUEVO 208 Allure"],
-    cuotas_desde: 236591,
-    valor_movil_con_imp: 35530000,
-    valor_movil_sin_imp: 29363636,
+    cuotas_desde: 238502,
+    valor_movil_con_imp: 36180000,
+    valor_movil_sin_imp: 29900826,
     caracteristicas: {
       cuotas_totales: 120,
       tipo_plan: "70/30",
@@ -183,9 +186,9 @@ export const PLANES = [
     id: "partner-hdi",
     plan: "PARTNER HDI",
     modelos: ["Partner Confort 1.6 HDI 92"],
-    cuotas_desde: 313934,
-    valor_movil_con_imp: 35700000,
-    valor_movil_sin_imp: 32307692,
+    cuotas_desde: 326542,
+    valor_movil_con_imp: 38070000,
+    valor_movil_sin_imp: 34452489,
     caracteristicas: {
       cuotas_totales: 84,
       tipo_plan: "70/30",
@@ -200,10 +203,10 @@ export const PLANES = [
   {
     id: "2008-active-t200",
     plan: "2008 ACTIVE T200",
-    modelos: ["NUEVO 2008 Active T200 AM24"],
-    cuotas_desde: 341459,
-    valor_movil_con_imp: 43410000,
-    valor_movil_sin_imp: 35876033,
+    modelos: ["Peugeot 2008 Active T200"],
+    cuotas_desde: 393421,
+    valor_movil_con_imp: 44510000,
+    valor_movil_sin_imp: 36785124,
     caracteristicas: {
       cuotas_totales: 84,
       tipo_plan: "70/30",
@@ -218,10 +221,10 @@ export const PLANES = [
   {
     id: "plus-at",
     plan: "PLUS AT",
-    modelos: ["Nuevo 208 Allure AT"],
-    cuotas_desde: 323712,
-    valor_movil_con_imp: 37360000,
-    valor_movil_sin_imp: 30876033,
+    modelos: ["Peugeot 208 Allure AT"],
+    cuotas_desde: 372995,
+    valor_movil_con_imp: 38050000,
+    valor_movil_sin_imp: 31446281,
     caracteristicas: {
       cuotas_totales: 84,
       tipo_plan: "70/30",
@@ -236,10 +239,10 @@ export const PLANES = [
   {
     id: "plus-208",
     plan: "PLUS 208",
-    modelos: ["NUEVO 208 Allure", "Nuevo 208 Allure AT"],
-    cuotas_desde: 277693,
-    valor_movil_con_imp: 35530000,
-    valor_movil_sin_imp: 29363636,
+    modelos: ["Peugeot 208 Allure"],
+    cuotas_desde: 319927,
+    valor_movil_con_imp: 36180000,
+    valor_movil_sin_imp: 29900826,
     caracteristicas: {
       cuotas_totales: 84,
       tipo_plan: "70/30",

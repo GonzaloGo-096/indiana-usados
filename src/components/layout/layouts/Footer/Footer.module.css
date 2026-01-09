@@ -16,7 +16,7 @@
   /* ✅ Migrado: Fondo oscuro de sección → surface-dark */
   background-color: var(--color-surface-dark);
   color: var(--color-white);
-  padding: 2.5rem 0 2rem 0;
+  padding: 1rem 0 2rem 0; /* ✅ Reducido padding-top para acercar logo al borde superior */
   margin-top: 0;
   position: relative;
   /* Borde superior sutil para separación visual */
@@ -37,15 +37,18 @@
   justify-content: center;
   align-items: center;
   margin-bottom: var(--spacing-8);
+  margin-top: 0; /* ✅ Sin margen superior para pegar al borde */
   padding-bottom: var(--spacing-6);
+  padding-top: 0; /* ✅ Sin padding superior */
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .logo {
-  width: clamp(100px, 20vw, 140px);
+  width: clamp(250px, 45vw, 350px); /* ✅ MUCHO MÁS GRANDE: Logo del footer aumentado aún más */
   height: auto;
   opacity: 0.9;
   transition: opacity var(--transition-fast);
+  display: block; /* ✅ Visible por defecto en mobile */
 }
 
 .logo:hover {
@@ -74,12 +77,16 @@
 
 @media (min-width: 640px) {
   .footer {
-    padding: 3.5rem 0 2.5rem 0;
+    padding: 1.5rem 0 2.5rem 0; /* ✅ Reducido padding-top para acercar logo al borde superior */
     margin-top: 0;
   }
   
   .container {
     padding: 0 var(--spacing-6);
+  }
+  
+  .logo {
+    display: none; /* ✅ Ocultar logo en tablet/desktop - solo visible en mobile */
   }
   
   .bottom {
@@ -94,7 +101,7 @@
 
 @media (min-width: 992px) {
   .footer {
-    padding: 5rem 0 3.5rem 0;
+    padding: 2rem 0 3.5rem 0; /* ✅ Reducido padding-top para acercar logo al borde superior */
     margin-top: 0;
   }
 

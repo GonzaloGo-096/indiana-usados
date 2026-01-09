@@ -42,6 +42,7 @@ const WhatsAppContact = ({
     >
       <WhatsAppIcon 
         size={20} 
+        color="#000000"
         className={styles.whatsappIcon}
       />
       <span className={styles.buttonText}>{text}</span>

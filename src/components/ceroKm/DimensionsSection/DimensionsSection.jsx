@@ -19,6 +19,7 @@ export const DimensionsSection = memo(() => {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
+        <h2 className={styles.title}>Dimensiones</h2>
         <img
           src={mobileUrl}
           alt="Dimensiones del vehículo"

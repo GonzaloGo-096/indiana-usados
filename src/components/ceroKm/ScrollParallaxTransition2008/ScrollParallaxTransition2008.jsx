@@ -19,6 +19,7 @@
  */
 
 import React, { useEffect, useRef, useState, useCallback, memo } from 'react'
+import { Link } from 'react-router-dom'
 import styles from './ScrollParallaxTransition2008.module.css'
 
 // URLs de imágenes reales para 2008
@@ -37,7 +38,7 @@ const CONFIG = {
     startXPercent: 50,   // Fuera a la derecha (50% del viewport) - Más afuera del viewport
     endXPercent: -10,    // Más a la izquierda del centro (-10% del viewport) - Aumenta desplazamiento total
     startProgress: 0.0,  // El movimiento empieza inmediatamente (0% del scroll) - Arranca mucho antes
-    endProgress: 0.95,    // El movimiento termina cuando está al 95% del scroll - Arranca más arriba
+    endProgress: 0.5,    // El movimiento termina cuando está al 50% del scroll - Llega antes al destino
   },
   desktop: {
     startXPercent: 35,   // Fuera a la derecha (35% del viewport) - Reducido considerablemente
@@ -76,6 +77,9 @@ const ScrollParallaxTransition2008Component = () => {
   const mainTitleRef = useRef(null)
   const titleRef = useRef(null)
   const textRef = useRef(null)
+  // Refs para mobile
+  const hiddenTitleMobileRef = useRef(null)
+  const textMobileRef = useRef(null)
   
   // Estado
   const [isActive, setIsActive] = useState(false)
@@ -240,7 +244,7 @@ const ScrollParallaxTransition2008Component = () => {
       // Aplicar transform al vehículo directamente al DOM (sin estado React)
       vehicleWrapperRef.current.style.transform = `translate3d(${translateX}px, 0, 0)`
       
-      // Aplicar animación al título principal, título y texto
+      // Aplicar animación al título principal, título y texto (desktop)
       if (mainTitleRef.current) {
         mainTitleRef.current.style.opacity = textAnimation.opacity
         mainTitleRef.current.style.transform = `translateY(${textAnimation.translateY}px)`
@@ -263,6 +267,22 @@ const ScrollParallaxTransition2008Component = () => {
         textRef.current.style.opacity = textProgress
         textRef.current.style.transform = `translateY(${textTranslateY}px)`
         textRef.current.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out'
+      }
+      
+      // Aplicar animación al título y texto (mobile)
+      if (hiddenTitleMobileRef.current) {
+        hiddenTitleMobileRef.current.style.opacity = textAnimation.opacity
+        hiddenTitleMobileRef.current.style.transform = `translateY(${textAnimation.translateY}px)`
+        hiddenTitleMobileRef.current.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out'
+      }
+      if (textMobileRef.current) {
+        // El texto aparece un poco después del título
+        const textDelay = 0.03 // 3% de delay
+        const textProgress = Math.max(0, textAnimation.opacity - textDelay)
+        const textTranslateY = textAnimation.translateY + (textDelay * 10)
+        textMobileRef.current.style.opacity = textProgress
+        textMobileRef.current.style.transform = `translateY(${textTranslateY}px)`
+        textMobileRef.current.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out'
       }
       
       // Continuar loop solo si está activo
@@ -325,15 +345,29 @@ const ScrollParallaxTransition2008Component = () => {
 
       {/* Contenedor de texto */}
       <div className={styles.textContainer}>
-        <h1 ref={mainTitleRef} className={styles.mainTitle} style={{ opacity: 0, transform: 'translateY(20px)' }}>
-          Peugeot 2008
-        </h1>
-        <h2 ref={titleRef} className={styles.title} style={{ opacity: 0, transform: 'translateY(20px)' }}>
-          Título del Contenido
-        </h2>
-        <p ref={textRef} className={styles.text} style={{ opacity: 0, transform: 'translateY(20px)' }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
+        {/* Versión Mobile */}
+        <div className={styles.mobileText}>
+          <h2 ref={hiddenTitleMobileRef} className={styles.hiddenTitle}>Planes de Financiación</h2>
+          <p ref={textMobileRef} className={styles.text}>
+            Consultá los planes disponibles y empezá hoy.
+          </p>
+          <Link to="/planes" className={styles.planesButton}>
+            Ver Planes
+          </Link>
+        </div>
+        
+        {/* Versión Desktop */}
+        <div className={styles.desktopText}>
+          <h1 ref={mainTitleRef} className={styles.mainTitle}>
+            Peugeot 2008
+          </h1>
+          <h2 ref={titleRef} className={styles.title}>
+            Título del Contenido
+          </h2>
+          <p ref={textRef} className={styles.text}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+        </div>
       </div>
 
     </section>

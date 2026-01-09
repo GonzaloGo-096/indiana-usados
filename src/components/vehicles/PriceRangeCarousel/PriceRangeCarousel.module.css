@@ -1,0 +1,278 @@
+/**
+ * PriceRangeCarousel.module.css - Carrusel horizontal mobile-first
+ * 
+ * Diseño mobile-first con scroll horizontal suave.
+ * Cards adaptadas para tamaño más compacto en carrusel.
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== SECCIÓN PRINCIPAL ===== */
+.section {
+  width: 100%;
+  margin-top: var(--spacing-12); /* ✅ Más espacio arriba para separar del carrusel anterior */
+  padding: var(--spacing-6) 0;
+  background: var(--color-surface);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+}
+
+/* ===== HEADER (Título y subtítulo) ===== */
+.header {
+  margin-bottom: var(--spacing-5);
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-2) 0;
+  font-family: var(--font-display);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-size: clamp(0.8rem, 2.5vw, 0.9375rem);
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* ===== CARRUSEL WRAPPER ===== */
+.carouselWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ===== CONTENEDOR DE CARRUSEL (scroll horizontal) ===== */
+.carouselContainer {
+  display: flex;
+  gap: var(--spacing-4);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: var(--spacing-2) var(--spacing-2) var(--spacing-4) var(--spacing-2);
+  
+  /* Ocultar scrollbar pero mantener funcionalidad */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  
+  /* Webkit scrollbar styling */
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Touch scrolling optimizado para mobile */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+/* ===== WRAPPER DE CADA CARD ===== */
+.cardWrapper {
+  flex: 0 0 auto;
+  min-width: 240px; /* Ancho mínimo - CardSimilar se adapta al contenido */
+  max-width: 300px; /* Ancho máximo para mantener consistencia */
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* CardSimilar dentro del wrapper - adapta al contenido */
+.cardWrapper :global(.card) {
+  width: 100%;
+  min-width: 240px;
+}
+
+/* ===== SKELETON LOADING ===== */
+.skeletonCard {
+  flex: 0 0 auto;
+  width: 280px;
+  height: 380px;
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.skeletonImage {
+  width: 100%;
+  height: 175px;
+  background: linear-gradient(
+    90deg,
+    var(--color-neutral-100) 25%,
+    var(--color-neutral-50) 50%,
+    var(--color-neutral-100) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonContent {
+  flex: 1;
+  padding: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.skeletonText {
+  height: 12px;
+  background: linear-gradient(
+    90deg,
+    var(--color-neutral-100) 25%,
+    var(--color-neutral-50) 50%,
+    var(--color-neutral-100) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ===== ERROR STATE ===== */
+.errorState {
+  width: 100%;
+  padding: var(--spacing-6);
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+/* ===== RESPONSIVE: TABLET Y DESKTOP ===== */
+@media (min-width: 768px) {
+  .section {
+    margin-top: var(--spacing-14); /* ✅ Más espacio arriba en tablet */
+    padding: var(--spacing-8) 0;
+  }
+  
+  .container {
+    padding: 0 var(--spacing-6);
+  }
+  
+  .header {
+    margin-bottom: var(--spacing-6);
+    text-align: left;
+  }
+  
+  .carouselContainer {
+    gap: var(--spacing-5);
+    padding: var(--spacing-3) var(--spacing-3) var(--spacing-5) var(--spacing-3);
+  }
+  
+  .cardWrapper {
+    min-width: 260px;
+    max-width: 320px;
+  }
+  
+  .skeletonCard {
+    width: 300px;
+    height: 400px;
+  }
+}
+
+@media (min-width: 992px) {
+  .section {
+    margin-top: var(--spacing-16); /* ✅ Más espacio arriba en desktop */
+    padding: var(--spacing-10) 0;
+  }
+  
+  .container {
+    padding: 0 var(--spacing-8);
+  }
+  
+  .carouselContainer {
+    gap: var(--spacing-6);
+    /* En desktop, mostrar scrollbar más visible */
+    scrollbar-width: auto;
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  }
+  
+  .cardWrapper {
+    min-width: 280px;
+    max-width: 340px;
+  }
+  
+  .skeletonCard {
+    width: 320px;
+    height: 420px;
+  }
+}
+
+/* ===== MOBILE: Ajustes específicos para pantallas pequeñas ===== */
+@media (max-width: 576px) {
+  .section {
+    margin-top: var(--spacing-10); /* ✅ Más espacio arriba en mobile */
+    padding: var(--spacing-4) 0;
+  }
+  
+  .container {
+    padding: 0 var(--spacing-3);
+  }
+  
+  .header {
+    margin-bottom: var(--spacing-4);
+  }
+  
+  .title {
+    font-size: 1.125rem;
+  }
+  
+  .subtitle {
+    font-size: 0.75rem;
+  }
+  
+  .carouselContainer {
+    gap: var(--spacing-3);
+    padding: var(--spacing-2) var(--spacing-2) var(--spacing-3) var(--spacing-2);
+  }
+  
+  .cardWrapper {
+    min-width: 220px;
+    max-width: 280px;
+  }
+  
+  .skeletonCard {
+    width: 260px;
+    height: 360px;
+  }
+  
+  /* Snap más agresivo en mobile */
+  .carouselContainer {
+    scroll-snap-type: x mandatory;
+  }
+}

@@ -8,7 +8,7 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useVehicleDetail } from '@hooks/vehicles'
-import { CardDetalle } from '@vehicles'
+import { CardDetalle, SimilarVehiclesCarousel, PriceRangeCarousel } from '@vehicles'
 import { ErrorState } from '@ui'
 import { DetalleSkeleton } from '@shared'
 import { useScrollPosition } from '@hooks'
@@ -96,6 +96,12 @@ const VehiculoDetalle = () => {
             {/* Contenido principal */}
             <div className={styles.content}>
                 <CardDetalle auto={auto} />
+                
+                {/* Carrusel de vehículos de la misma marca */}
+                <SimilarVehiclesCarousel currentVehicle={auto} />
+                
+                {/* Carrusel de vehículos en rango de precio similar */}
+                <PriceRangeCarousel currentVehicle={auto} />
             </div>
             </div>
         </>

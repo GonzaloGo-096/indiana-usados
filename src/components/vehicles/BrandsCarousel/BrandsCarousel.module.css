@@ -80,6 +80,12 @@
   max-width: 190px;
 }
 
+/* ✅ Logo específico para Ford (más pequeño) */
+.brandLogoFord {
+  max-height: 70px; /* ✅ Más pequeño que el logo grande estándar */
+  max-width: 140px; /* ✅ Más pequeño que el logo grande estándar */
+}
+
 .brandItem:hover .brandLogo {
   opacity: 0.8; /* ✅ Efecto hover sutil */
   transform: scale(1.05);
@@ -139,19 +145,19 @@
   margin-left: auto;
 }
 
-/* ✅ Ocultar flechas en mobile y reducir espacio entre logos */
+/* ✅ Ocultar flechas en mobile y aumentar espacio entre logos */
 @media (max-width: 768px) {
   .arrowButton {
     display: none;
   }
   
   .carouselTrack {
-    gap: 16px; /* ✅ Reducido de 48px a 16px en mobile para todos los logos */
+    gap: 24px; /* ✅ Aumentado de 16px a 24px en mobile para más separación */
     padding: 8px 12px; /* ✅ Reducido padding lateral de 24px a 12px */
   }
   
   .brandItem {
-    padding: 0 4px; /* ✅ Reducido padding lateral de 16px a 4px para todos los logos */
+    padding: 0 6px; /* ✅ Aumentado de 4px a 6px para más separación */
   }
 }
 

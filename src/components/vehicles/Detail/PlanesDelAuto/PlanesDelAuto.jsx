@@ -109,6 +109,10 @@ const PlanCard = ({ plan, auto }) => {
   // Obtener modelo y versión del auto o del plan
   const modelo = auto?.modelo || ''
   const modeloDisplay = modelo.charAt(0).toUpperCase() + modelo.slice(1)
+  const modeloLower = modelo.toLowerCase()
+  
+  // Solo mostrar modelo en el título si es 208
+  const mostrarModeloEnTitulo = modeloLower === '208'
   
   // Intentar obtener versión del auto primero, si no del plan
   let version = auto?.version || ''
@@ -118,59 +122,61 @@ const PlanCard = ({ plan, auto }) => {
     version = obtenerVersionDelPlan(plan, modeloSlug)
   }
 
+  // Calcular impuestos (diferencia entre con imp y sin imp)
+  const impuestos = valor_movil_con_imp - valor_movil_sin_imp
+
   return (
     <div className={styles.planCard}>
-      {/* Header del plan - Alineado a la izquierda */}
+      {/* Header unificado: Plan + Modelo + Versión (solo para 208) */}
       <div className={styles.planHeader}>
-        <h3 className={styles.planTitle}>Plan {nombrePlan}</h3>
+        <h3 className={styles.planTitle}>
+          Plan {nombrePlan}
+          {mostrarModeloEnTitulo && modelo && (
+            <>
+              <span className={styles.titleSeparator}> • </span>
+              <span className={styles.modeloInTitle}>{modeloDisplay}</span>
+              {version && (
+                <span className={styles.versionInTitle}> {version}</span>
+              )}
+            </>
+          )}
+        </h3>
       </div>
 
       {/* Información principal */}
       <div className={styles.planContent}>
-        {/* Título del modelo y versión */}
-        {modelo && (
-          <div className={styles.modeloVersionContainer}>
-            <h4 className={styles.modeloVersionTitle}>
-              {modeloDisplay}
-              {version && (
-                <span className={styles.versionSeparator}> {version}</span>
-              )}
-            </h4>
-          </div>
-        )}
-        
         {/* Cuota desde - Grande, azul, cursiva, en su propia fila */}
         <div className={styles.cuotaDesdeContainer}>
           <span className={styles.cuotaDesdeLabel}>Valor cuota</span>
           <span className={styles.cuotaDesdeValue}>{formatPrice(cuotas_desde)}</span>
         </div>
 
-        {/* Valor móvil y otro dato - Contenedor de 2 columnas */}
+        {/* Valor móvil e impuestos - Contenedor de 2 columnas */}
         <div className={styles.infoBottomRow}>
           {/* Valor móvil */}
           <div className={styles.infoBottomItem}>
             <span className={styles.infoBottomLabel}>Valor móvil</span>
-            <div className={styles.infoBottomValueGroup}>
-              <span className={styles.infoBottomValue}>
-                Con imp: {formatPrice(valor_movil_con_imp)}
-              </span>
-              <span className={styles.infoBottomValue}>
-                Sin imp: {formatPrice(valor_movil_sin_imp)}
-              </span>
-            </div>
+            <span className={styles.infoBottomValue}>{formatPrice(valor_movil_con_imp)}</span>
           </div>
 
-          {/* Otro dato relevante - Tipo de plan */}
-          {caracteristicas?.tipo_plan && (
-            <div className={styles.infoBottomItem}>
-              <span className={styles.infoBottomLabel}>Tipo de plan</span>
-              <span className={styles.infoBottomValue}>{caracteristicas.tipo_plan}</span>
-            </div>
-          )}
+          {/* Impuestos */}
+          <div className={styles.infoBottomItem}>
+            <span className={styles.infoBottomLabel}>Imp</span>
+            <span className={styles.infoBottomValue}>{formatPrice(impuestos)}</span>
+          </div>
         </div>
 
-        {/* Botones de acción */}
-        <div className={styles.planActions}>
+        {/* Tipo de plan */}
+        {caracteristicas?.tipo_plan && (
+          <div className={styles.infoBottomItem}>
+            <span className={styles.infoBottomLabel}>Tipo de plan</span>
+            <span className={styles.infoBottomValue}>{caracteristicas.tipo_plan}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Botones de acción - Movidos fuera del planContent para estar abajo */}
+      <div className={styles.planActions}>
           {modelo && (
             <Link 
               to={`/0km/${modelo.toLowerCase()}`} 
@@ -186,7 +192,6 @@ const PlanCard = ({ plan, auto }) => {
             Ver plan
           </Link>
         </div>
-      </div>
     </div>
   )
 }
