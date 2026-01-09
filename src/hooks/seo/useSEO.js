@@ -5,14 +5,16 @@
  * - Actualiza title, description, keywords dinámicamente
  * - Soporta Open Graph y Twitter Cards
  * - Maneja canonical URLs
+ * - Política SEO por entorno (noindex en preview/development)
  * - Limpia tags al desmontar
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Política SEO por entorno
  */
 
 import { useEffect } from 'react'
 import { SEO_CONFIG } from '@config/seo'
+import { environment } from '@config'
 import { normalizeImageUrlSync } from '@utils/seo/normalizeImageUrl'
 
 /**
@@ -168,15 +170,22 @@ export const useSEO = (seoConfig = {}) => {
       setMetaTag('keywords', keywords)
     }
     
-    // Robots meta tag
-    if (noindex) {
-      setMetaTag('robots', 'noindex, nofollow')
-    } else {
-      setMetaTag('robots', 'index, follow')
+    // Robots meta tag - Política SEO por entorno
+    // Production: index, follow (o según noindex prop)
+    // Preview/Development: SIEMPRE noindex, nofollow
+    let robotsContent = 'index, follow'
+    if (noindex || environment.isPreview || environment.isDevelopment) {
+      robotsContent = 'noindex, nofollow'
     }
+    setMetaTag('robots', robotsContent)
 
     // 3. Canonical URL
-    const canonicalUrl = url ? generateUrl(url) : window.location.href.split('?')[0]
+    // En preview/development, usar el siteUrl del entorno (puede ser VERCEL_URL o window.location.origin)
+    // En production, usar el siteUrl configurado
+    const canonicalBaseUrl = environment.siteUrl || DEFAULT_SEO.siteUrl
+    const canonicalUrl = url 
+      ? generateUrl(url, canonicalBaseUrl) 
+      : window.location.href.split('?')[0]
     setLinkTag('canonical', canonicalUrl)
 
     // 4. Open Graph Tags (imagen normalizada a URL absoluta)

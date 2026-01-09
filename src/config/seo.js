@@ -3,37 +3,77 @@
  * 
  * Centraliza toda la configuración SEO para evitar duplicación
  * y facilitar mantenimiento.
+ * Soporta Vercel Preview Deployments.
  * 
  * @author Indiana Usados
- * @version 1.0.0
+ * @version 2.0.0 - Soporte para Vercel Preview Deployments
  */
 
 /**
- * Obtiene la URL del sitio desde variables de entorno o usa valor por defecto
+ * Obtiene la URL del sitio según reglas de prioridad:
+ * 1. VITE_SITE_URL (si existe)
+ * 2. Si es preview: https://${VERCEL_URL} (serverless) o window.location.origin (browser)
+ * 3. Si es development: window.location.origin (browser)
+ * 4. Fallback solo para producción: https://indiana.com.ar
  */
 const getSiteUrl = () => {
-  // En Node.js (serverless functions), usar process.env
-  if (typeof process !== 'undefined' && process.env) {
-    if (process.env.VITE_SITE_URL) {
-      return process.env.VITE_SITE_URL
-    }
-    if (process.env.VERCEL_URL) {
+  // Guard: Verificar si estamos en Node.js/serverless
+  const isNode = typeof process !== 'undefined' && process.env
+  // Guard: Verificar si estamos en browser
+  const isBrowser = typeof window !== 'undefined' && window.location
+  
+  // Prioridad 1: VITE_SITE_URL explícita
+  // En Node.js (serverless functions)
+  if (isNode && process.env.VITE_SITE_URL) {
+    return process.env.VITE_SITE_URL
+  }
+  
+  // En browser (Vite)
+  if (import.meta?.env?.VITE_SITE_URL) {
+    return import.meta.env.VITE_SITE_URL
+  }
+  
+  // Prioridad 2: Detectar si es preview
+  // En Node.js/serverless: usar VERCEL_ENV
+  // En browser: usar VITE_ENVIRONMENT
+  let isPreview = false
+  if (isNode && process.env.VERCEL_ENV === 'preview') {
+    isPreview = true
+  } else if (import.meta?.env?.VITE_ENVIRONMENT?.toLowerCase() === 'preview') {
+    isPreview = true
+  }
+  
+  if (isPreview) {
+    // En Node.js/serverless: usar VERCEL_URL
+    if (isNode && process.env.VERCEL_URL) {
       return `https://${process.env.VERCEL_URL}`
     }
-  }
-  
-  // En browser (Vite), usar import.meta.env
-  // import.meta siempre está disponible en módulos ES6 de Vite
-  try {
-    if (import.meta?.env?.VITE_SITE_URL) {
-      return import.meta.env.VITE_SITE_URL
+    // En browser: usar window.location.origin
+    if (isBrowser) {
+      return window.location.origin
     }
-  } catch (e) {
-    // Si no está disponible, continuar con valor por defecto
   }
   
-  // Valor por defecto (debe actualizarse en producción)
-  return 'https://indianausados.com'
+  // Prioridad 3: Detectar si es development
+  // En Node.js/serverless: usar VERCEL_ENV
+  // En browser: usar VITE_ENVIRONMENT o asumir development si no hay nada configurado
+  let isDevelopment = false
+  if (isNode && process.env.VERCEL_ENV === 'development') {
+    isDevelopment = true
+  } else if (import.meta?.env?.VITE_ENVIRONMENT?.toLowerCase() === 'development') {
+    isDevelopment = true
+  } else if (!import.meta?.env?.VITE_ENVIRONMENT && isBrowser) {
+    // Fallback: si no hay VITE_ENVIRONMENT configurado y estamos en browser, asumir development
+    isDevelopment = true
+  }
+  
+  if (isDevelopment && isBrowser) {
+    return window.location.origin
+  }
+  
+  // Prioridad 4: Fallback FINAL solo para producción
+  // NO usar dominios hardcodeados fuera de producción
+  return 'https://indiana.com.ar'
 }
 
 /**
@@ -69,7 +109,10 @@ export const SEO_CONFIG = {
 /**
  * Notas de configuración:
  * 
- * 1. siteUrl: Actualizar en producción con variable de entorno VITE_SITE_URL
+ * 1. siteUrl: Se resuelve automáticamente según el entorno
+ *    - Preview: Usa VERCEL_URL
+ *    - Development: Usa window.location.origin
+ *    - Production: Usa VITE_SITE_URL o fallback a https://indiana.com.ar
  * 2. defaultImage: Crear imagen OG de 1200x630px en /public/images/og-image.jpg
  * 3. twitterHandle: Actualizar si tienen cuenta de Twitter oficial
  */
