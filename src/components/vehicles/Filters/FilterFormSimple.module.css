@@ -143,13 +143,15 @@
 }
 
 .rangesSection {
-  z-index: 20;
+  z-index: 1; /* ✅ Z-index bajo - debe estar por debajo de selects */
   position: relative;
   margin-bottom: 1.5rem; /* ✅ Espacio entre secciones */
 }
 
 .rangesSection .formGroup { 
   margin-bottom: 0; 
+  position: relative;
+  z-index: 1; /* ✅ Z-index bajo para que no interfiera */
 }
 
 .rangesSection .formGroup label { 
@@ -165,13 +167,17 @@
   border-radius: 0;
   border: none;
   position: relative;
-  z-index: 1;
+  z-index: 100; /* ✅ Z-index alto para que toda la sección esté por encima */
 }
 
 /* ✅ Orden inverso de z-index para que el primer select tenga prioridad sobre los de abajo */
 /* ✅ NOTA: Botones ahora son el primer elemento (nth-child(1)), entonces los selects son nth-child(2) y nth-child(3) */
-.selectsSection .formGroup:nth-child(2) { z-index: 30; } /* Caja */
-.selectsSection .formGroup:nth-child(3) { z-index: 20; } /* Combustible */
+.selectsSection .formGroup {
+  position: relative;
+}
+
+.selectsSection .formGroup:nth-child(2) { z-index: 103; } /* Caja - Mayor z-index porque está arriba */
+.selectsSection .formGroup:nth-child(3) { z-index: 102; } /* Combustible - Menor z-index porque está abajo */
 
 .formGroup {
   display: flex;
@@ -325,49 +331,6 @@
   width: 100%; /* ✅ Ancho completo dentro del flex */
 }
 
-.sortDropdown {
-  position: absolute;
-  top: 100%;
-  left: 8px;
-  right: 8px;
-  background: rgba(18, 18, 18, 0.95);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  padding: 8px 0;
-  margin-top: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  z-index: 1300;
-  animation: fadeInDown 0.2s ease-out;
-  max-height: 240px;
-  overflow: auto;
-}
-
-.sortDropdown button {
-  width: 100%;
-  padding: 12px 20px;
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 16px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 400;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sortDropdown button:hover { background: rgba(255, 255, 255, 0.08); }
-.sortDropdown button.active { background: rgba(255, 255, 255, 0.08); font-weight: 600; }
-
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 
 /* ===== DESKTOP VISIBILITY STATES ===== */
 .desktopVisible {
@@ -414,8 +377,7 @@
     max-width: none;
     justify-content: flex-start;
   }
-  .mobileButtons,
-  .mobileActionsContainer { display: none; }
+  .mobileButtons { display: none; }
   
   /* ✅ Mostrar botones abajo en desktop */
   .desktopButtons {
@@ -424,7 +386,14 @@
 }
 
 @media (max-width: 768px) {
-  .filterContainer { margin-top: 1.5rem; padding-bottom: 0; }
+  .filterContainer { 
+    margin-top: 0; /* ✅ Sin margen en mobile */
+    padding-bottom: 0; 
+    /* ✅ No ocupar espacio - el drawer es fixed, no necesita estar en el flow */
+    height: 0;
+    overflow: visible; /* ✅ Permitir que el drawer (fixed) salga */
+  }
+  
   .filterButtonMobile { display: none; }
   
   .overlay {
@@ -437,33 +406,38 @@
   
   .formWrapper {
     position: fixed;
-    top: 0;
+    bottom: 0;
+    left: 0;
     right: 0;
-    bottom: 0; /* Anclar al fondo */
-    width: 55%;
+    max-height: 85vh; /* ✅ Máximo 85% de la altura de la pantalla */
     z-index: 1001;
-    transform: translateX(100%);
+    transform: translateY(100%); /* ✅ Oculto hacia abajo */
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 0.5rem 0 0 0.5rem;
+    border-radius: 16px 16px 0 0; /* ✅ Redondeado arriba */
     background: #ffffff;
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
+    width: 100%; /* ✅ Ancho completo */
+    overflow-y: auto; /* ✅ Scroll vertical */
+    overflow-x: visible; /* ✅ Permitir que dropdowns salgan */
   }
   
-  .filterContainer.open .formWrapper { transform: translateX(0); }
+  .filterContainer.open .formWrapper { transform: translateY(0); }
   
   .form {
     flex: 1;
     overflow-y: auto;
+    overflow-x: visible; /* ✅ Permitir que dropdowns salgan horizontalmente */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain; /* Evita que el scroll se propague al body */
     touch-action: pan-y; /* Solo permite scroll vertical, bloquea movimiento horizontal */
-    padding: 0.75rem 0.5rem;
-    padding-bottom: 2rem;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0;
+    min-height: 0; /* ✅ Permitir que el flex funcione correctamente */
+    position: relative; /* ✅ Contexto de posicionamiento */
   }
   
   /* Bloquear movimiento del formWrapper al tocar fuera de inputs */
@@ -478,31 +452,201 @@
 
   .form::-webkit-scrollbar { display: none; }
 
+  /* ✅ Mobile: Contenido con scroll con padding aumentado */
   .rangesSection,
-  .selectsSection { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem; }
+  .selectsSection {
+    padding: 1.5rem; /* ✅ Aumentado de 1rem a 1.5rem */
+    padding-bottom: 0.75rem;
+  }
+
+  /* ✅ Mobile: Una columna vertical para los filtros */
+  .rangesSection {
+    display: flex;
+    flex-direction: column; /* ✅ Una columna vertical */
+    gap: 1.5rem; /* ✅ Aumentado de 1rem a 1.5rem */
+    margin-bottom: 0.75rem;
+  }
+
+  .selectsSection { 
+    display: flex;
+    flex-direction: column; /* ✅ Una columna vertical */
+    gap: 1.5rem; /* ✅ Aumentado de 1rem a 1.5rem */
+    margin-bottom: 0;
+    padding-bottom: 1.5rem; /* ✅ Aumentado de 1rem a 1.5rem */
+  }
+
+  /* ✅ Ocultar botones desktop en mobile */
+  .desktopButtons {
+    display: none !important;
+  }
+  
+  /* ✅ Mobile: Asegurar que selectsSection esté por encima de rangesSection */
+  .selectsSection {
+    z-index: 500 !important; /* ✅ Z-index muy alto para toda la sección */
+    position: relative;
+  }
+  
+  .rangesSection {
+    z-index: 1 !important; /* ✅ Z-index bajo - debe estar por debajo */
+    position: relative;
+  }
   
   /* ✅ En mobile: orden inverso de z-index para que el primer select tenga prioridad */
-  .selectsSection .formGroup:nth-child(1) { z-index: 30; }
-  .selectsSection .formGroup:nth-child(2) { z-index: 20; }
-  .selectsSection .formGroup:nth-child(3) { z-index: 10; }
+  /* ✅ Nota: Ahora desktopButtons es nth-child(1), entonces los selects son nth-child(2) y nth-child(3) */
+  .selectsSection .formGroup {
+    position: relative !important;
+    z-index: 500 !important; /* ✅ Z-index base muy alto para todos los selects */
+  }
   
-  .formGroup { width: 100%; max-width: none; padding: 0; margin-bottom: 1rem; position: relative; }
+  .selectsSection .formGroup:nth-child(2) { 
+    z-index: 502 !important; /* Caja - Mayor z-index porque está arriba */
+  }
+  
+  .selectsSection .formGroup:nth-child(3) { 
+    z-index: 501 !important; /* Combustible - Menor z-index porque está abajo */
+  }
+  
+  /* ✅ Mobile: Asegurar que los RangeSliders tengan z-index menor que los selects */
+  .rangesSection .formGroup {
+    position: relative !important;
+    z-index: 1 !important; /* ✅ Z-index muy bajo para que los selects queden por encima */
+  }
+  
+  /* ✅ Mobile: El dropdown del MultiSelect necesita z-index extremadamente alto */
+  .selectsSection .formGroup .multiSelect {
+    position: relative !important;
+    z-index: inherit !important; /* ✅ Heredar z-index del formGroup */
+  }
+  
+  /* ✅ Mobile: Contenedor del MultiSelect con z-index alto */
+  .selectsSection .formGroup .multiSelect .container {
+    position: relative !important;
+    z-index: inherit !important;
+  }
+  
+  /* ✅ Mobile: Dropdown con z-index extremadamente alto - debe estar por encima de todo */
+  .selectsSection .formGroup .multiSelect .dropdown {
+    z-index: 10000 !important; /* ✅ Z-index extremadamente alto para el dropdown */
+    position: absolute !important; /* ✅ Asegurar position absolute */
+  }
+  
+  /* ✅ Mobile: FormGroup en una columna (ancho completo) - Más grande */
+  .formGroup { 
+    width: 100%; /* ✅ Ancho completo */
+    max-width: none;
+    padding: 0;
+    margin-bottom: 0;
+    position: relative;
+    gap: 1rem !important; /* ✅ Más espacio entre label e input */
+  }
+
+  /* ✅ Mobile: Labels más grandes y notables */
+  .formGroup label {
+    font-size: 1.125rem !important; /* ✅ 18px - más grande */
+    font-weight: 600 !important; /* ✅ Más bold */
+    margin-bottom: 0.75rem !important; /* ✅ Más espacio debajo */
+    color: var(--color-text-primary) !important;
+  }
+
+  /* ✅ Mobile: RangeSlider más grande */
+  .formGroup .rangeSlider {
+    font-size: 1rem !important;
+  }
+
+  /* ✅ Mobile: Valores del RangeSlider más grandes y notables */
+  .formGroup .rangeSlider .values {
+    font-size: 1.25rem !important; /* ✅ 20px - Valores más grandes */
+    font-weight: 700 !important; /* ✅ Más bold */
+    margin-top: 0 !important; /* ✅ Sin margin top */
+    margin-bottom: 0 !important; /* ✅ Sin margin bottom */
+    gap: 0.5rem; /* ✅ Más espacio entre valores */
+  }
+
+  /* ✅ Mobile: Valor individual del RangeSlider */
+  .formGroup .rangeSlider .values .value {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: var(--color-text-primary) !important;
+  }
+
+  /* ✅ Mobile: Tooltip del RangeSlider más grande y notable */
+  .formGroup .rangeSlider .tooltip {
+    font-size: 1.125rem !important; /* ✅ 18px - Mucho más grande */
+    padding: 8px 14px !important; /* ✅ Más padding */
+    font-weight: 600 !important; /* ✅ Más bold */
+  }
+
+  /* ✅ Mobile: Thumb del RangeSlider mucho más grande */
+  .formGroup .rangeSlider .thumb {
+    width: 32px !important; /* ✅ Aumentado de 24px a 32px */
+    height: 32px !important; /* ✅ Aumentado de 24px a 32px */
+    border-width: 3px !important; /* ✅ Borde más grueso */
+  }
+
+  /* ✅ Mobile: Track del RangeSlider más grueso */
+  .formGroup .rangeSlider .track {
+    height: 10px !important; /* ✅ Aumentado de 8px a 10px */
+  }
+
+  /* ✅ Mobile: MultiSelect más grande */
+  .formGroup .multiSelect .trigger {
+    padding: 14px 16px !important; /* ✅ Más padding: aumentado significativamente */
+    min-height: 52px !important; /* ✅ Más alto: aumentado de 28px a 52px */
+    font-size: 1rem !important; /* ✅ Texto más grande */
+    border-width: 2px !important; /* ✅ Borde más visible */
+  }
+
+  /* ✅ Mobile: Texto del MultiSelect más grande */
+  .formGroup .multiSelect .trigger .text {
+    font-size: 1rem !important; /* ✅ Texto más grande */
+    font-weight: 500 !important;
+  }
+
+  /* ✅ Mobile: Icono del MultiSelect más grande */
+  .formGroup .multiSelect .trigger .arrow {
+    width: 20px !important; /* ✅ Icono más grande */
+    height: 20px !important;
+  }
   .formGroup > div { width: 100%; max-width: none; padding: 0; }
   .titleActions { display: flex; gap: 0.5rem; align-items: center; }
   
+  .formTitle {
+    /* ✅ Barra de arrastre visual en top - más grande */
+    padding: 1rem 0; /* ✅ Aumentado de 0.75rem a 1rem */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-bottom: 1px solid #e5e7eb;
+    min-height: 56px; /* ✅ Altura mínima más grande */
+  }
+
+  /* ✅ Barra de arrastre visual - más grande */
+  .formTitle::before {
+    content: '';
+    position: absolute;
+    width: 48px; /* ✅ Aumentado de 40px a 48px */
+    height: 5px; /* ✅ Aumentado de 4px a 5px */
+    background: #d1d5db;
+    border-radius: 3px; /* ✅ Aumentado de 2px a 3px */
+    top: 0.75rem; /* ✅ Ajustado para centrar mejor */
+  }
+
   .closeButtonMobile {
+    position: absolute;
+    right: 1rem;
     background: none;
     border: none;
     color: #6b7280;
     cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
+    padding: 0.75rem; /* ✅ Aumentado de 0.5rem a 0.75rem */
+    border-radius: 0.375rem; /* ✅ Aumentado de 0.25rem a 0.375rem */
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 2.5rem;
-    min-height: 2.5rem;
+    min-width: 3rem; /* ✅ Aumentado de 2.5rem a 3rem */
+    min-height: 3rem; /* ✅ Aumentado de 2.5rem a 3rem */
   }
   
   .closeButtonMobile:hover { background: rgba(0, 0, 0, 0.05); color: #374151; }
@@ -510,13 +654,19 @@
   .titleActions .applyButton,
   .titleActions .clearButton { display: none; }
 
+  /* ✅ Botones fijos abajo del drawer */
   .mobileButtons {
+    position: sticky;
+    bottom: 0;
     display: flex;
     flex-direction: row;
     gap: 0.75rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem;
+    margin-top: auto; /* ✅ Empujar al final */
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+    z-index: 10;
   }
 
   .mobileButtons .applyButton,
@@ -535,63 +685,6 @@
   .mobileButtons .applyButton:hover { background-color: var(--color-brand-600); }
   .mobileButtons .clearButton { background: transparent; color: #6b7280; border: 1px solid #d1d5db; }
   .mobileButtons .clearButton:hover { background: #f3f4f6; }
-
-  .mobileActionsContainer {
-    position: fixed;
-    top: 65px;
-    left: 0;
-    right: 0;
-    display: flex;
-    background: rgba(18, 18, 18, 0.8);
-    backdrop-filter: blur(12px);
-    border-bottom: 3px solid rgba(255, 255, 255, 0.2);
-    z-index: 999;
-    transform: translateY(-100%);
-    transition: transform 0.3s ease;
-    -webkit-overflow-scrolling: touch;
-    touch-action: manipulation;
-  }
-
-  .mobileActionsContainer > *:first-child { border-right: 1px solid rgba(255, 255, 255, 0.3); }
-
-  .actionItem {
-    position: relative;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-  }
-
-  .mobileActionsContainer.visible { transform: translateY(0); }
-
-  .mobileActionButton {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1.25rem 1rem 1rem;
-    background: transparent;
-    color: white;
-    border: none;
-    font-weight: 500;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-    min-height: 44px;
-  }
-
-  .mobileActionButton span { text-align: center; display: flex; align-items: center; justify-content: center; }
-  .mobileActionButton svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .mobileActionButton.active { background: rgba(255, 255, 255, 0.08); }
-  /* border ahora aplicado al contenedor para uniformidad */
-  .mobileActionButton:hover { background: rgba(255, 255, 255, 0.03); }
-  .mobileActionButton:active { background: rgba(255, 255, 255, 0.05); }
-  .mobileActionButton:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 
 @media (hover: none) and (pointer: coarse) {

@@ -7,9 +7,12 @@
 
 .rangeSlider {
   width: 75%; /* Reducido en 25% */
-  margin-bottom: var(--spacing-md);
+  margin-bottom: 0; /* ✅ Sin margin bottom */
+  margin-top: 0; /* ✅ Sin margin top */
   margin-left: auto;
   margin-right: auto;
+  padding-top: 0; /* ✅ Sin padding top */
+  padding-bottom: 0; /* ✅ Sin padding bottom */
 }
 
 .label {
@@ -17,8 +20,11 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   color: var(--color-neutral-700);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 0; /* ✅ Sin margin bottom */
+  margin-top: 0; /* ✅ Sin margin top */
   text-align: center;
+  padding-top: 0; /* ✅ Sin padding top */
+  padding-bottom: 0; /* ✅ Sin padding bottom */
 }
 
 .container {
@@ -115,7 +121,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0.75rem;
+  margin-top: 0; /* ✅ Sin margin top */
+  margin-bottom: 0; /* ✅ Sin margin bottom */
   gap: 1rem;
 }
 
@@ -142,37 +149,52 @@
   }
   
   .track {
-    height: 5px;
+    height: 10px; /* ✅ Más grueso */
   }
   
   .thumb {
-    width: 14px;
-    height: 14px;
+    width: 32px; /* ✅ Más grande */
+    height: 32px; /* ✅ Más grande */
+    border-width: 3px; /* ✅ Borde más grueso */
   }
   
   .values {
-    font-size: var(--font-size-sm);
+    font-size: 1.25rem; /* ✅ Más grande - 20px */
+  }
+  
+  .value {
+    font-size: 1.25rem; /* ✅ Más grande - 20px */
+    font-weight: 700; /* ✅ Más bold */
+  }
+  
+  .separator {
+    font-size: 1.25rem; /* ✅ Más grande también */
   }
   
   .tooltip {
-    font-size: var(--font-size-sm);
-    padding: 6px 10px;
+    font-size: 1.125rem; /* ✅ Mucho más grande - 18px */
+    padding: 8px 14px; /* ✅ Más padding */
+    font-weight: 600; /* ✅ Más bold */
+    bottom: 35px; /* ✅ Ajustado para la bolilla más grande */
   }
 }
 
 /* Touch optimizations */
 @media (hover: none) and (pointer: coarse) {
   .thumb {
-    width: 16px;
-    height: 16px;
+    width: 32px; /* ✅ Más grande para touch */
+    height: 32px; /* ✅ Más grande para touch */
+    border-width: 3px; /* ✅ Borde más grueso */
   }
   
   .track {
-    height: 6px;
+    height: 10px; /* ✅ Más grueso */
   }
   
   .tooltip {
-    font-size: var(--font-size-sm);
-    padding: 8px 12px;
+    font-size: 1.125rem; /* ✅ Mucho más grande - 18px */
+    padding: 8px 14px; /* ✅ Más padding */
+    font-weight: 600; /* ✅ Más bold */
+    bottom: 35px; /* ✅ Ajustado para la bolilla más grande */
   }
 } 

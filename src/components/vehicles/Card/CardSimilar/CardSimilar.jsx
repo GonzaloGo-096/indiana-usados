@@ -183,3 +183,4 @@ export const CardSimilar = memo(({ auto }) => {
 CardSimilar.displayName = 'CardSimilar'
 
 export default CardSimilar
+

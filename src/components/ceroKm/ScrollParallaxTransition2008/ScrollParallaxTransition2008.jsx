@@ -20,6 +20,9 @@
 
 import React, { useEffect, useRef, useState, useCallback, memo } from 'react'
 import { Link } from 'react-router-dom'
+import { getPlanesPorModelo } from '@data/planes'
+import { formatPrice } from '@utils/formatters'
+import { getModelo } from '@data/modelos'
 import styles from './ScrollParallaxTransition2008.module.css'
 
 // URLs de imágenes reales para 2008
@@ -67,15 +70,109 @@ const lerp = (start, end, t) => start + (end - start) * t
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value))
 
 /**
+ * Componente PlanCardDesktop - Card del plan (misma estructura que página de planes)
+ */
+const PlanCardDesktop = ({ plan, modelo, obtenerVersionDelPlan }) => {
+  const {
+    plan: nombrePlan,
+    cuotas_desde,
+    valor_movil_con_imp,
+    caracteristicas
+  } = plan
+  
+  const modeloDisplay = modelo.charAt(0).toUpperCase() + modelo.slice(1)
+  const modeloLower = modelo.toLowerCase()
+  const version = obtenerVersionDelPlan(plan, modelo)
+  const cuotasTotales = caracteristicas?.cuotas_totales || null
+  const mostrarModeloEnVersion = modeloLower === '2008'
+  
+  return (
+    <div className={styles.planCardDesktop}>
+      {/* Header del plan */}
+      <div className={styles.planHeaderDesktop}>
+        <h3 className={styles.planTitleDesktop}>Plan {nombrePlan}</h3>
+      </div>
+
+      {/* Información principal */}
+      <div className={styles.planContentDesktop}>
+        {/* Título de versión */}
+        {version && (
+          <div className={styles.modeloVersionContainerDesktop}>
+            <h4 className={styles.modeloVersionTitleDesktop}>
+              {mostrarModeloEnVersion && modeloDisplay}
+              {mostrarModeloEnVersion && version && (
+                <span className={styles.versionSeparatorDesktop}> {version}</span>
+              )}
+              {!mostrarModeloEnVersion && version}
+            </h4>
+          </div>
+        )}
+        
+        {/* Cuota desde */}
+        <div className={styles.cuotaDesdeContainerDesktop}>
+          <span className={styles.cuotaDesdeLabelDesktop}>Valor cuota</span>
+          <div className={styles.cuotaDesdeRowDesktop}>
+            <span className={styles.cuotaDesdeValueDesktop}>{formatPrice(cuotas_desde)}</span>
+            {cuotasTotales && (
+              <span className={styles.cuotasTotalesDesktop}>{cuotasTotales} cuotas</span>
+            )}
+          </div>
+        </div>
+
+        {/* Valor móvil y otro dato */}
+        <div className={styles.infoBottomRowDesktop}>
+          <div className={styles.infoBottomItemDesktop}>
+            <span className={styles.infoBottomLabelDesktop}>Valor móvil</span>
+            <span className={styles.infoBottomValueDesktop}>
+              {formatPrice(valor_movil_con_imp)}
+            </span>
+          </div>
+
+          <div className={styles.infoBottomColumnDesktop}>
+            {caracteristicas?.tipo_plan && (
+              <div className={styles.infoBottomItemDesktop}>
+                <span className={styles.infoBottomLabelDesktop}>Tipo de plan</span>
+                <span className={styles.infoBottomValueDesktop}>{caracteristicas.tipo_plan}</span>
+              </div>
+            )}
+            
+            {caracteristicas?.adjudicacion_pactada && caracteristicas.adjudicacion_pactada.length > 0 && (
+              <div className={styles.infoBottomItemDesktop}>
+                <span className={styles.infoBottomLabelDesktop}>Adjudicación pactada</span>
+                <span className={styles.infoBottomValueDesktop}>
+                  Cuota {caracteristicas.adjudicacion_pactada.join(', ')}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Botón de acción */}
+        <div className={styles.planActionsDesktop}>
+          <Link 
+            to={`/planes/${plan.id}`} 
+            className={styles.actionButtonDesktop}
+          >
+            Ver plan
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/**
  * Componente ScrollParallaxTransition2008
  * Memoizado para evitar re-renders innecesarios
+ * 
+ * @param {Object} props
+ * @param {string} props.modelo - Modelo del vehículo (ej: '208', '2008')
  */
-const ScrollParallaxTransition2008Component = () => {
+const ScrollParallaxTransition2008Component = ({ modelo = '2008' }) => {
   // Refs
   const containerRef = useRef(null)
   const vehicleWrapperRef = useRef(null)
   const mainTitleRef = useRef(null)
-  const titleRef = useRef(null)
   const textRef = useRef(null)
   // Refs para mobile
   const hiddenTitleMobileRef = useRef(null)
@@ -83,9 +180,56 @@ const ScrollParallaxTransition2008Component = () => {
   
   // Estado
   const [isActive, setIsActive] = useState(false)
+  const [planSeleccionado, setPlanSeleccionado] = useState(null)
   
   // RAF ID para cleanup
   const rafIdRef = useRef(null)
+  
+  // Obtener planes del modelo
+  const planes = getPlanesPorModelo(modelo)
+  
+  // Seleccionar el primer plan por defecto
+  useEffect(() => {
+    if (planes.length > 0 && !planSeleccionado) {
+      setPlanSeleccionado(planes[0])
+    }
+  }, [planes, planSeleccionado])
+  
+  // Función para obtener versión del plan
+  const obtenerVersionDelPlan = (plan, modeloSlug) => {
+    const modeloData = getModelo(modeloSlug)
+    if (!modeloData || !modeloData.versiones) return ''
+    
+    const nombrePlan = plan.plan.toLowerCase()
+    const modelosPlan = plan.modelos.map(m => m.toLowerCase())
+    
+    const mapeoVersiones = {
+      '2008-allure-t200': 'ALLURE',
+      '2008-active-t200': 'ACTIVE',
+      'easy': 'ALLURE',
+      'plus-at': 'ALLURE AT',
+      'plus-208': 'ALLURE',
+      'expert-carga': 'L3 HDI 120 - Carga',
+      'partner-hdi': 'CONFORT 1.6 HDI 92'
+    }
+    
+    if (mapeoVersiones[plan.id]) {
+      return mapeoVersiones[plan.id]
+    }
+    
+    for (const nombreModelo of modelosPlan) {
+      for (const version of modeloData.versiones) {
+        const versionNombre = version.nombre.toLowerCase()
+        const versionNombreCorto = version.nombreCorto.toLowerCase()
+        
+        if (nombreModelo.includes(versionNombre) || nombreModelo.includes(versionNombreCorto)) {
+          return version.nombreCorto || version.nombre
+        }
+      }
+    }
+    
+    return ''
+  }
 
   /**
    * Calcular progreso normalizado (0 a 1) basado en la posición del contenedor
@@ -216,15 +360,11 @@ const ScrollParallaxTransition2008Component = () => {
       }
       // Resetear texto
       if (mainTitleRef.current) {
-        mainTitleRef.current.style.opacity = '0'
+        mainTitleRef.current.style.opacity = '0.3'
         mainTitleRef.current.style.transform = 'translateY(20px)'
       }
-      if (titleRef.current) {
-        titleRef.current.style.opacity = '0'
-        titleRef.current.style.transform = 'translateY(20px)'
-      }
       if (textRef.current) {
-        textRef.current.style.opacity = '0'
+        textRef.current.style.opacity = '0.3'
         textRef.current.style.transform = 'translateY(20px)'
       }
       return
@@ -244,24 +384,15 @@ const ScrollParallaxTransition2008Component = () => {
       // Aplicar transform al vehículo directamente al DOM (sin estado React)
       vehicleWrapperRef.current.style.transform = `translate3d(${translateX}px, 0, 0)`
       
-      // Aplicar animación al título principal, título y texto (desktop)
+      // Aplicar animación al título principal y texto (desktop)
       if (mainTitleRef.current) {
         mainTitleRef.current.style.opacity = textAnimation.opacity
         mainTitleRef.current.style.transform = `translateY(${textAnimation.translateY}px)`
         mainTitleRef.current.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out'
       }
-      if (titleRef.current) {
-        // El subtítulo aparece un poco después del título principal
-        const subtitleDelay = 0.05 // 5% de delay
-        const subtitleProgress = Math.max(0, textAnimation.opacity - subtitleDelay)
-        const subtitleTranslateY = textAnimation.translateY + (subtitleDelay * 10)
-        titleRef.current.style.opacity = subtitleProgress
-        titleRef.current.style.transform = `translateY(${subtitleTranslateY}px)`
-        titleRef.current.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out'
-      }
       if (textRef.current) {
-        // El texto aparece después del subtítulo
-        const textDelay = 0.1 // 10% de delay
+        // El texto aparece después del título
+        const textDelay = 0.05 // 5% de delay
         const textProgress = Math.max(0, textAnimation.opacity - textDelay)
         const textTranslateY = textAnimation.translateY + (textDelay * 10)
         textRef.current.style.opacity = textProgress
@@ -320,6 +451,14 @@ const ScrollParallaxTransition2008Component = () => {
         ref={vehicleWrapperRef}
         className={styles.vehicleWrapper}
       >
+        {/* Botón "Ver todos los planes" - Solo desktop, arriba del auto */}
+        <Link 
+          to="/planes"
+          className={styles.verTodosPlanesButton}
+        >
+          Ver todos los planes
+        </Link>
+        
         {/* Imagen mobile */}
         <img
           src={IMAGE_MOBILE}
@@ -358,15 +497,37 @@ const ScrollParallaxTransition2008Component = () => {
         
         {/* Versión Desktop */}
         <div className={styles.desktopText}>
-          <h1 ref={mainTitleRef} className={styles.mainTitle}>
-            Peugeot 2008
-          </h1>
-          <h2 ref={titleRef} className={styles.title}>
-            Título del Contenido
-          </h2>
-          <p ref={textRef} className={styles.text}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </p>
+          <div className={styles.desktopContent}>
+            {/* Columna Izquierda: Título, Texto y Botones */}
+            <div className={styles.leftColumn}>
+              <h1 ref={mainTitleRef} className={styles.mainTitle}>
+                PEUGEOT PLAN
+              </h1>
+              <p ref={textRef} className={styles.text}>
+                Compra un PEUGEOT {modelo} en cuotas en pesos
+              </p>
+              
+              {/* Botones de planes */}
+              <div className={styles.planesButtons}>
+                {planes.map((plan) => (
+                  <button
+                    key={plan.id}
+                    className={`${styles.planButton} ${planSeleccionado?.id === plan.id ? styles.planButtonActive : ''}`}
+                    onClick={() => setPlanSeleccionado(plan)}
+                  >
+                    {plan.plan}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Columna Derecha: Card del Plan Seleccionado (misma que página de planes) */}
+            {planSeleccionado && (
+              <div className={styles.rightColumn}>
+                <PlanCardDesktop plan={planSeleccionado} modelo={modelo} obtenerVersionDelPlan={obtenerVersionDelPlan} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

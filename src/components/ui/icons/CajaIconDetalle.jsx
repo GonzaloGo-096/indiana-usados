@@ -24,3 +24,4 @@ export const CajaIconDetalle = ({ className = '', size = 24, color = 'currentCol
 export default CajaIconDetalle
 
 
+

@@ -151,6 +151,13 @@
     display: none;
   }
   
+  /* ✅ Mobile: border-radius solo arriba para que los botones queden pegados abajo */
+  .carouselContainer {
+    border-radius: 12px 12px 0 0; /* ✅ Solo redondeado arriba */
+    padding-bottom: 0; /* ✅ Sin padding bottom para quedar pegado a los botones */
+    margin-bottom: 0;
+  }
+  
   .carouselTrack {
     gap: 24px; /* ✅ Aumentado de 16px a 24px en mobile para más separación */
     padding: 8px 12px; /* ✅ Reducido padding lateral de 24px a 12px */

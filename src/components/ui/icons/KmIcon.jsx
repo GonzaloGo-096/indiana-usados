@@ -24,3 +24,4 @@ export const KmIcon = ({ className = '', size = 24, color = 'currentColor' }) =>
 export default KmIcon
 
 
+

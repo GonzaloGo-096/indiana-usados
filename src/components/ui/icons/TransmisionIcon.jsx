@@ -52,3 +52,4 @@ export const TransmisionIcon = ({ className = '', size = 24, color = 'currentCol
 export default TransmisionIcon
 
 
+

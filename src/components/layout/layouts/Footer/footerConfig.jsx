@@ -89,17 +89,69 @@ const createModuleItems = (whatsappNumber, message = '', instagramUser = '', pho
 }
 
 // Crear módulos con mensajes, Instagram, teléfonos y ubicaciones personalizadas
-// Para 0km: dos direcciones separadas por salto de línea
-const peugeotLocation = 'Salta 160, San Miguel de Tucumán\nAv. Aconquija y Bascary, Yerba Buena'
-const peugeotItems = createModuleItems('543816295959', 'Hola, estoy interesado en vehículos 0KM', 'peugeotindiana', '(0381) 421-2000', peugeotLocation)
+
+// ✅ PEUGEOT: Ahora con 2 sedes separadas
+const peugeotSanMiguelItems = createModuleItems(
+  '543816295959', 
+  'Hola, estoy interesado en vehículos 0KM - Sede San Miguel', 
+  'peugeotindiana', 
+  '(0381) 421-2000', 
+  'Salta 160, San Miguel de Tucumán'
+)
+
+const peugeotYerbabuenaItems = createModuleItems(
+  '543816295959', 
+  'Hola, estoy interesado en vehículos 0KM - Sede Yerba Buena', 
+  'peugeotindiana', 
+  '(0381) 421-2000', 
+  'Av. Aconquija y Bascary, Yerba Buena'
+)
+
 const usadosItems = createModuleItems('543816295959', 'Hola, estoy interesado en autos usados', 'usadosindiana', '(0381) 231-3107', 'Santa Fe 2145, San Miguel de Tucumán')
 const postventaItems = createModuleItems('543816295959', 'Hola, quiero información sobre servicios de postventa', 'peugeotindiana', '(0381) 434-7700', 'Italia 2945, San Miguel de Tucumán')
 
-export const footerModules = [
+// ✅ MÓDULO SITIO: Enlaces a páginas del sitio
+const sitioItems = [
+  {
+    type: 'text-link',
+    text: 'Peugeot | 0km',
+    href: '/0km'
+  },
+  {
+    type: 'text-link',
+    text: 'Planes',
+    href: '/planes'
+  },
+  {
+    type: 'text-link',
+    text: 'Usados | multimarca',
+    href: '/usados'
+  },
+  {
+    type: 'text-link',
+    text: 'Postventa',
+    href: '/postventa'
+  }
+]
+
+// ✅ COLUMNA 1: CONTACTO - Módulos de redes
+export const contactoModules = [
   {
     id: 'peugeot-oficial',
     title: 'Peugeot oficial | 0 km',
-    items: peugeotItems
+    // ✅ NUEVO: Array de sedes en lugar de items directos
+    sedes: [
+      {
+        id: 'peugeot-san-miguel',
+        name: 'Sede San Miguel de Tucumán',
+        items: peugeotSanMiguelItems
+      },
+      {
+        id: 'peugeot-yerbabuena',
+        name: 'Sede Yerba Buena - Tucumán',
+        items: peugeotYerbabuenaItems
+      }
+    ]
   },
   {
     id: 'multimarca-usados',
@@ -110,6 +162,30 @@ export const footerModules = [
     id: 'posventa-taller',
     title: 'Posventa / Taller',
     items: postventaItems
+  }
+]
+
+// ✅ COLUMNA 2: SITIO - Enlaces internos
+export const sitioModule = {
+  id: 'sitio',
+  title: 'Sitio',
+  items: sitioItems,
+  isTextLinks: true
+}
+
+// Mantener compatibilidad con el export anterior
+export const footerModules = [
+  {
+    id: 'contacto',
+    title: 'Contacto',
+    isColumn: true,
+    modules: contactoModules
+  },
+  {
+    id: 'sitio',
+    title: 'Sitio',
+    items: sitioItems,
+    isTextLinks: true
   }
 ]
 

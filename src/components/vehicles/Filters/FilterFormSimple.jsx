@@ -17,8 +17,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { RangeSlider } from '@ui'
 import { MultiSelect } from '@ui'
-import { SortIcon, FilterIcon, CloseIcon } from '@components/ui/icons'
-import { marcas, combustibles, cajas, FILTER_DEFAULTS, SORT_OPTIONS } from '@constants'
+import { CloseIcon } from '@components/ui/icons'
+import { marcas, combustibles, cajas, FILTER_DEFAULTS } from '@constants'
 import { parseFilters } from '@utils'
 import { logger } from '@utils/logger'
 import { useDevice } from '@hooks'
@@ -40,11 +40,6 @@ const FilterFormSimpleComponent = React.forwardRef(({
   // Estado para drawer en mobile
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [showMobileActions, setShowMobileActions] = useState(false)
-  const triggerRef = useRef(null)
-  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
-  const sortDropdownRef = useRef(null)
-  const sortButtonRef = useRef(null)
   const timeoutRef = useRef(null)
 
   // ✅ FILTROS - ESTADO SIMPLE
@@ -58,7 +53,6 @@ const FilterFormSimpleComponent = React.forwardRef(({
   })
 
   const [searchParams, setSearchParams] = useSearchParams()
-  const selectedSort = searchParams.get('sort')
 
   // ✅ SINCRONIZACIÓN DE ESTADOS AL CAMBIAR DISPOSITIVO
   useEffect(() => {
@@ -112,16 +106,6 @@ const FilterFormSimpleComponent = React.forwardRef(({
     // sort se maneja en la página Vehiculos
   }, [searchParams])
 
-  // ✅ DETECCIÓN DE SCROLL PARA BOTONES MÓVILES
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowMobileActions(window.scrollY > 100)
-    }
-    // Inicializar estado
-    handleScroll()
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   // ✅ HANDLERS UNIFICADOS (funcionan en ambos contextos)
   const toggleVisibility = useCallback(() => {
@@ -143,38 +127,6 @@ const FilterFormSimpleComponent = React.forwardRef(({
   // ✅ HANDLERS SIMPLES (mantener para compatibilidad)
   const toggleDrawer = useCallback(() => setIsDrawerOpen(prev => !prev), [])
   const closeDrawer = useCallback(() => setIsDrawerOpen(false), [])
-  const toggleSortDropdown = useCallback(() => setIsSortDropdownOpen(prev => !prev), [])
-  const handleSortChange = useCallback((sortOption) => {
-    setIsSortDropdownOpen(false)
-    const newParams = new URLSearchParams(searchParams)
-    if (sortOption) {
-      newParams.set('sort', sortOption)
-    } else {
-      newParams.delete('sort')
-    }
-    setSearchParams(newParams)
-  }, [searchParams, setSearchParams])
-
-  // Cerrar dropdown cuando cambia el sort (desde URL o selección)
-  useEffect(() => {
-    setIsSortDropdownOpen(false)
-  }, [selectedSort])
-
-  // Cerrar dropdown al hacer click fuera (excluyendo el botón de toggle)
-  useEffect(() => {
-    if (!isSortDropdownOpen) return
-    const handleClickOutside = (e) => {
-      const isClickOnDropdown = sortDropdownRef.current?.contains(e.target)
-      const isClickOnButton = sortButtonRef.current?.contains(e.target)
-      
-      // Solo cerrar si el click NO es en el dropdown NI en el botón
-      if (!isClickOnDropdown && !isClickOnButton) {
-        setIsSortDropdownOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [isSortDropdownOpen])
 
   // ✅ HANDLERS DE FILTROS
   const handleFilterChange = useCallback((key, value) => {
@@ -205,12 +157,6 @@ const FilterFormSimpleComponent = React.forwardRef(({
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [isDrawerOpen])
 
-  // Devolver foco al trigger al cerrar
-  useEffect(() => {
-    if (!isDrawerOpen && triggerRef.current) {
-      try { triggerRef.current.focus() } catch (_) {}
-    }
-  }, [isDrawerOpen])
 
   // ✅ SUBMIT
   const onSubmit = async (e) => {
@@ -273,54 +219,6 @@ const FilterFormSimpleComponent = React.forwardRef(({
   // ✅ CONTENIDO DEL FORMULARIO (reutilizable)
   const formContent = (
     <div className={`${styles.filterContainer} ${isDrawerOpen ? styles.open : ''}`}>
-      {/* Mobile Actions */}
-      <div className={`${styles.mobileActionsContainer} ${showMobileActions ? styles.visible : ''}`}>
-          <div className={styles.actionItem}>
-            <button
-              ref={sortButtonRef}
-              className={`${styles.mobileActionButton} ${selectedSort ? styles.active : ''}`}
-              onClick={toggleSortDropdown}
-              disabled={isLoading || isSubmitting}
-              type="button"
-            >
-              <SortIcon size={20} />
-              <span>Ordenar</span>
-            </button>
-            {isSortDropdownOpen && (
-              <div className={styles.sortDropdown} ref={sortDropdownRef}>
-                <button onClick={() => handleSortChange(null)} className={!selectedSort ? styles.active : ''} type="button">
-                  Sin ordenamiento
-                </button>
-                {SORT_OPTIONS.map(option => (
-                  <button
-                    key={option.value}
-                    onClick={() => handleSortChange(option.value)}
-                    className={selectedSort === option.value ? styles.active : ''}
-                    type="button"
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <div className={styles.actionItem}>
-            <button
-              ref={triggerRef}
-              className={styles.mobileActionButton}
-              onClick={toggleDrawer}
-              disabled={isLoading || isSubmitting}
-              type="button"
-            >
-              <FilterIcon size={20} />
-              <span>Filtrar</span>
-              {activeFiltersCount > 0 && (
-                <span className={styles.badge}>{activeFiltersCount}</span>
-              )}
-            </button>
-          </div>
-        </div>
-
       {/* Error Messages */}
       {isError && error && (
         <div className={styles.errorMessage}>
@@ -343,21 +241,45 @@ const FilterFormSimpleComponent = React.forwardRef(({
           {/* Título y botones de cierre solo en mobile */}
           <div className={styles.formTitle}>
             <button type="button" onClick={closeDrawer} className={styles.closeButtonMobile}>
-              <CloseIcon size={24} />
+              <CloseIcon size={28} />
             </button>
           </div>
 
-          {/* Botones - Arriba de los inputs en mobile */}
-          <div className={styles.mobileButtons}>
-            <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
-              Limpiar
-            </button>
-            <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
-              Aplicar
-            </button>
+          {/* MultiSelects - Primero los selects */}
+          {/* ✅ ELIMINADO: Input de marca - ahora se usa el carrusel de marcas */}
+          <div className={styles.selectsSection}>
+            {/* ✅ Botones dentro del grid ocupando el espacio del input faltante */}
+            <div className={styles.desktopButtons}>
+              <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
+                Limpiar
+              </button>
+              <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
+                {isSubmitting ? 'Aplicando...' : 'Aplicar'}
+              </button>
+            </div>
+            
+            <div className={styles.formGroup}>
+              <MultiSelect
+                label="Caja"
+                options={cajas}
+                value={filters.caja}
+                onChange={(val) => handleFilterChange('caja', val)}
+                placeholder="Todas las cajas"
+              />
+            </div>
+            
+            <div className={styles.formGroup}>
+              <MultiSelect
+                label="Combustible"
+                options={combustibles}
+                value={filters.combustible}
+                onChange={(val) => handleFilterChange('combustible', val)}
+                placeholder="Seleccionar combustibles"
+              />
+            </div>
           </div>
 
-          {/* Range Sliders */}
+          {/* Range Sliders - Después los rangos */}
           <div className={styles.rangesSection}>
             <div className={styles.formGroup}>
               <RangeSlider
@@ -394,38 +316,14 @@ const FilterFormSimpleComponent = React.forwardRef(({
             </div>
           </div>
 
-          {/* MultiSelects */}
-          {/* ✅ ELIMINADO: Input de marca - ahora se usa el carrusel de marcas */}
-          <div className={styles.selectsSection}>
-            {/* ✅ Botones dentro del grid ocupando el espacio del input faltante */}
-            <div className={styles.desktopButtons}>
-              <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
-                Limpiar
-              </button>
-              <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
-                {isSubmitting ? 'Aplicando...' : 'Aplicar'}
-              </button>
-            </div>
-            
-            <div className={styles.formGroup}>
-              <MultiSelect
-                label="Caja"
-                options={cajas}
-                value={filters.caja}
-                onChange={(val) => handleFilterChange('caja', val)}
-                placeholder="Todas las cajas"
-              />
-            </div>
-            
-            <div className={styles.formGroup}>
-              <MultiSelect
-                label="Combustible"
-                options={combustibles}
-                value={filters.combustible}
-                onChange={(val) => handleFilterChange('combustible', val)}
-                placeholder="Seleccionar combustibles"
-              />
-            </div>
+          {/* ✅ Botones - Al final del formulario en mobile */}
+          <div className={styles.mobileButtons}>
+            <button type="button" onClick={handleClear} className={styles.clearButton} disabled={isLoading || isSubmitting}>
+              Limpiar
+            </button>
+            <button type="submit" className={styles.applyButton} disabled={isLoading || isSubmitting}>
+              {isSubmitting ? 'Aplicando...' : 'Aplicar'}
+            </button>
           </div>
         </form>
       </div>

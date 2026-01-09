@@ -158,45 +158,74 @@
 }
 
 .actionButtons {
-  /* ✅ MOBILE-FIRST: Oculto por defecto en móvil */
-  display: none;
-  gap: 12px; /* ✅ Espaciado claro entre botones */
-  align-items: center;
+  /* ✅ MOBILE-FIRST: Visible por defecto en mobile */
+  display: flex;
+  gap: 0; /* ✅ Mobile: sin gap, pegados entre sí */
+  align-items: stretch; /* ✅ Mobile: estirar para ocupar toda la altura */
   position: relative;
   border: none;
   border-radius: 0 0 12px 12px; /* ✅ Redondeado abajo como parte del carrusel */
-  /* ✅ No block: solo el ancho necesario para los botones */
-  width: fit-content;
+  /* ✅ Mobile: ancho completo */
+  width: 100%;
   /* ✅ Mismo fondo y sombra que el carrusel para efecto sobresalido */
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.02);
-  margin-top: 0;
-  padding-left: 24px; /* ✅ Pegado a la izquierda como el carrusel */
-  padding-right: 24px;
-  padding-top: 10px; /* ✅ Padding vertical equilibrado */
-  padding-bottom: 10px; /* ✅ Padding inferior equilibrado */
+  margin-top: 0; /* ✅ Pegado al carrusel */
+  /* ✅ Mobile: padding adaptado, sin padding lateral para que quede pegado */
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0; /* ✅ Sin padding superior para quedar pegado al carrusel */
+  padding-bottom: 12px; /* ✅ Padding inferior touch-friendly */
+}
+
+/* ✅ Mobile: Contenedores de botones (para dropdown) también ocupan 50% */
+.actionButtons > div {
+  flex: 1;
+  display: flex;
+  position: relative;
 }
 
 .actionButton {
+  /* ✅ Mobile: ocupa exactamente 50% del espacio (flex: 1 en su contenedor) */
+  flex: 1;
+  width: 100%; /* ✅ Ancho completo del contenedor */
   background: transparent;
   border: none;
-  font-size: 0.9375rem; /* ✅ Tamaño de texto más legible (15px) */
+  font-size: 0.875rem; /* ✅ Mobile: tamaño más pequeño para mejor legibilidad */
   font-weight: var(--font-weight-semibold);
   /* ✅ Migrado: Texto principal oscuro → text-primary */
   color: var(--color-text-primary);
   text-transform: none; /* ✅ Sin mayúsculas forzadas */
   letter-spacing: 0.3px;
   cursor: pointer;
-  padding: 8px 16px; /* ✅ Padding más generoso para mejor área de click */
-  border-radius: 6px; /* ✅ Bordes redondeados */
+  padding: 12px 8px; /* ✅ Mobile: padding touch-friendly, menos lateral para aprovechar espacio */
+  min-height: 48px; /* ✅ Mobile: altura mínima touch-friendly aumentada */
+  border-radius: 0; /* ✅ Sin bordes redondeados en mobile para que quede pegado */
+  /* ✅ Mobile: borde derecho para separar visualmente los botones */
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
   /* ✅ Optimizado: solo transicionar propiedades específicas (mejor rendimiento) */
   transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
               color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  gap: 8px; /* ✅ Espaciado entre icono y texto */
+  justify-content: center; /* ✅ Mobile: centrar contenido */
+  gap: 6px; /* ✅ Espaciado entre icono y texto reducido para mobile */
   font-family: var(--font-display);
   white-space: nowrap; /* ✅ Evitar que el texto se parta */
+}
+
+/* ✅ Eliminar borde del contenedor del último botón */
+.actionButtons > div:last-child .actionButton {
+  border-right: none;
+}
+
+/* ✅ También aplicar a botones directos (sin contenedor) */
+.actionButtons > button:first-child {
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.actionButtons > button:last-child {
+  border-right: none;
 }
 
 .actionButton:hover {
@@ -241,6 +270,16 @@
   padding-right: 0;
   padding-top: 0;
   padding-bottom: 0;
+}
+
+/* ✅ Mobile: El wrapper no debe ocupar espacio ya que el drawer es fixed */
+@media (max-width: 768px) {
+  .filtersWrapper {
+    /* ✅ No ocupar altura - el drawer es fixed y no necesita espacio en el flow */
+    height: 0;
+    overflow: visible; /* ✅ Permitir que el drawer (fixed) salga */
+    min-height: 0;
+  }
 }
 
 /* ✅ NUEVO: Grid de vehículos con margin-top */
@@ -316,14 +355,38 @@
     display: none; /* ✅ Oculto ya que no hay botones en el título */
   }
   
-  /* ✅ Desktop: Mostrar botones cuando están en carouselSection */
+  /* ✅ Desktop: Ajustes específicos para botones */
   .carouselSection .actionButtons {
-    display: flex;
+    /* ✅ Desktop: ancho natural (fit-content) */
+    width: fit-content;
+    gap: 12px; /* ✅ Desktop: espacio entre botones */
+    padding-left: 24px; /* ✅ Desktop: más padding lateral */
+    padding-right: 24px;
+    padding-top: 10px; /* ✅ Desktop: menos padding vertical */
+    padding-bottom: 10px;
+  }
+  
+  /* ✅ Desktop: Contenedores de botones no ocupan espacio extra */
+  .actionButtons > div {
+    flex: 0 1 auto;
+    width: auto;
   }
   
   .actionButton {
-    /* ✅ Desktop: Más chico aún */
-    font-size: 1.6rem; /* ✅ Más chico */
+    /* ✅ Desktop: ancho natural (no flex: 1) */
+    flex: 0 1 auto;
+    width: auto; /* ✅ Desktop: ancho natural */
+    font-size: 0.9375rem; /* ✅ Desktop: tamaño estándar (15px) */
+    padding: 8px 16px; /* ✅ Desktop: menos padding */
+    min-height: auto; /* ✅ Desktop: sin restricción de altura */
+    border-radius: 6px; /* ✅ Desktop: bordes redondeados */
+    border-right: none; /* ✅ Desktop: sin borde entre botones */
+    gap: 8px; /* ✅ Desktop: más espacio entre icono y texto */
+  }
+  
+  /* ✅ Desktop: sin bordes entre botones */
+  .actionButtons > button:first-child {
+    border-right: none;
   }
   
   /* ✅ Desktop: Expandir grid a todo el ancho de la pantalla */

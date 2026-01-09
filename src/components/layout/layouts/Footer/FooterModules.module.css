@@ -38,6 +38,35 @@
   width: 100%;
 }
 
+/* ===== COLUMNA ===== */
+.column {
+  width: 100%;
+  margin-bottom: var(--spacing-6);
+}
+
+.column:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== TÍTULO DE COLUMNA ===== */
+.columnTitle {
+  font-family: var(--font-condensed);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+  margin: 0 0 var(--spacing-5) 0;
+  padding: 0 var(--spacing-2);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* ===== CONTENIDO DE COLUMNA ===== */
+.columnContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
 /* ===== MÓDULO INDIVIDUAL ===== */
 .module {
   width: 100%;
@@ -52,7 +81,7 @@
 .moduleHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* ✅ Cambiado de space-between a flex-start */
   width: 100%;
   padding: var(--spacing-5) var(--spacing-2);
   background: transparent;
@@ -60,6 +89,7 @@
   cursor: pointer;
   text-align: left;
   -webkit-tap-highlight-color: transparent;
+  gap: var(--spacing-2); /* ✅ Gap entre título y chevron */
 }
 
 .moduleHeader:focus {
@@ -91,9 +121,22 @@
   flex-shrink: 0;
 }
 
-/* Rotar chevron cuando está abierto */
-.moduleOpen .chevron {
+/* Rotar chevron cuando está abierto (módulos principales) */
+.moduleOpen .moduleHeader .chevron {
   transform: rotate(180deg);
+  color: var(--color-brand-500);
+}
+
+/* Chevron para sede - estado inicial (cerrado) apunta hacia abajo (igual que el padre) */
+.sede .sedeHeader .chevron {
+  transform: rotate(0deg); /* ✅ Estado inicial: apunta hacia abajo (cerrado) */
+  transition: transform 0.25s ease;
+  color: var(--color-neutral-400);
+}
+
+/* Chevron para sede - cuando está abierto, rota 180 grados (apunta hacia arriba) */
+.sedeOpen .sedeHeader .chevron {
+  transform: rotate(180deg); /* ✅ Cuando está abierto: apunta hacia arriba */
   color: var(--color-brand-500);
 }
 
@@ -120,6 +163,85 @@
   gap: var(--spacing-1);
 }
 
+/* ===== WRAPPER DE SEDES (ACCORDION ANIDADO) ===== */
+.sedesWrapper {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ===== SEDE INDIVIDUAL ===== */
+.sede {
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sede:last-child {
+  border-bottom: none;
+}
+
+/* ===== HEADER DE LA SEDE (CLICKABLE) ===== */
+.sedeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* ✅ Cambiado de space-between a flex-start */
+  width: 100%;
+  padding: var(--spacing-4) var(--spacing-3);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  gap: var(--spacing-2); /* ✅ Gap entre título y chevron */
+}
+
+.sedeHeader:focus {
+  outline: none;
+}
+
+.sedeHeader:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: -2px;
+  border-radius: var(--border-radius-sm);
+}
+
+/* ===== TÍTULO DE SEDE ===== */
+.sedeTitle {
+  font-family: var(--font-condensed);
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-neutral-100);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+}
+
+/* ===== CONTENIDO COLAPSABLE DE SEDE ===== */
+.sedeContent {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+/* Contenido abierto */
+.sedeOpen .sedeContent {
+  max-height: 300px;
+  transition: max-height 0.35s ease-in;
+}
+
+/* Chevron para sede - rotación correcta */
+.sede .sedeHeader .chevron {
+  transition: transform 0.25s ease;
+  color: var(--color-neutral-400);
+}
+
+.sedeOpen .sedeHeader .chevron {
+  transform: rotate(180deg);
+  color: var(--color-brand-500);
+}
+
 /* ===== LISTA DE ÍCONOS HORIZONTAL ===== */
 .iconsList {
   list-style: none;
@@ -131,6 +253,45 @@
   gap: var(--spacing-2);
   align-items: center;
   justify-content: flex-start;
+}
+
+/* ===== LISTA DE ENLACES DE TEXTO (MÓDULO SITIO) ===== */
+.textLinksList {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-3) var(--spacing-2) var(--spacing-4) var(--spacing-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.textLinkItem {
+  margin: 0;
+}
+
+.textLink {
+  display: block;
+  color: var(--color-neutral-200);
+  text-decoration: none;
+  font-family: var(--font-condensed);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  padding: var(--spacing-2) 0;
+  transition: color var(--transition-fast);
+  line-height: 1.5;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+}
+
+.textLink:hover,
+.textLink:focus {
+  color: var(--color-white);
+}
+
+.textLink:focus {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-sm);
 }
 
 .moduleItem {
@@ -186,14 +347,20 @@
   display: block;
 }
 
+/* ✅ Instagram más pequeño - usando clase específica */
+.iconImageInstagram {
+  width: 42px !important;
+  height: 42px !important;
+}
+
 .iconImageMaps {
   width: 62.5px;
   height: 62.5px;
 }
 
 .iconSvg {
-  width: 50px;
-  height: 50px;
+  width: 42px; /* ✅ Teléfono más pequeño: de 50px a 42px */
+  height: 42px; /* ✅ Teléfono más pequeño: de 50px a 42px */
   color: #34A853; /* Verde teléfono */
   transition: transform var(--transition-fast), color var(--transition-fast);
   flex-shrink: 0;
@@ -257,8 +424,16 @@
 
   .modulesGrid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr auto 1fr; /* ✅ 3 columnas: Contacto, Sitio (medio), espacio reservado */
     gap: var(--spacing-8);
+  }
+
+  .column {
+    margin-bottom: 0;
+  }
+
+  .columnTitle {
+    margin-bottom: var(--spacing-6);
   }
   
   .module {
@@ -327,18 +502,68 @@
     height: 55px;
   }
 
+  /* ✅ Instagram más pequeño en desktop */
+  .iconImageInstagram {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
   .iconImageMaps {
     width: 68.75px;
     height: 68.75px;
   }
 
   .iconSvg {
-    width: 55px;
-    height: 55px;
+    width: 46px; /* ✅ Teléfono más pequeño en desktop: de 55px a 46px */
+    height: 46px; /* ✅ Teléfono más pequeño en desktop: de 55px a 46px */
   }
 
   .iconLink {
     padding: var(--spacing-2);
+  }
+
+  /* ===== ENLACES DE TEXTO EN DESKTOP ===== */
+  .textLinksList {
+    padding: var(--spacing-4) 0 0 0;
+    gap: var(--spacing-2);
+  }
+
+  .textLink {
+    font-size: var(--font-size-base);
+    padding: var(--spacing-1) 0;
+    text-transform: none;
+    letter-spacing: 0.2px;
+  }
+
+  /* ===== SEDES EN DESKTOP ===== */
+  .sedesWrapper {
+    padding: 0;
+  }
+
+  .sede {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .sede:last-child {
+    border-bottom: none;
+  }
+
+  .sedeHeader {
+    padding: var(--spacing-4) var(--spacing-2);
+  }
+
+  .sedeTitle {
+    font-size: 0.9375rem;
+    letter-spacing: 0.4px;
+  }
+
+  .sedeContent {
+    padding: 0;
+  }
+
+  .sedeOpen .sedeContent {
+    max-height: 300px;
+    overflow: visible;
   }
 }
 

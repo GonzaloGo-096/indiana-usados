@@ -166,10 +166,10 @@ const CeroKilometroDetalle = () => {
 
         {/* Sección premium de transición parallax (solo para modelos 208 y 2008) */}
         {autoSlug === '208' && (
-          <ScrollParallaxTransition208 />
+          <ScrollParallaxTransition208 modelo={modelo.nombre} />
         )}
         {autoSlug === '2008' && (
-          <ScrollParallaxTransition2008 />
+          <ScrollParallaxTransition2008 modelo={autoSlug} />
         )}
 
         {/* Sección de dimensiones (fija para todos los modelos) */}
