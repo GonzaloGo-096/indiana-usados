@@ -99,6 +99,11 @@
     aspect-ratio: 16 / 9; /* ✅ Igual que CardSimilar */
     background: var(--color-neutral-50);
     
+    /* ✅ CRÍTICO: Prevenir contracción en flexbox - asegura que aspect-ratio funcione */
+    /* En flexbox column, sin flex-shrink: 0, el contenedor puede colapsar en producción */
+    /* cuando hay wrappers adicionales (placeholder blur, doble img) que no aportan altura */
+    flex-shrink: 0;
+    
     /* ✅ ESTÁNDAR: Usar contain completo como CardSimilar (que SÍ funciona) */
     contain: layout style paint;
 }
