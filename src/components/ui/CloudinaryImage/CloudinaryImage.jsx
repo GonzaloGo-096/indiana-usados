@@ -8,7 +8,7 @@
  * @version 2.0.0 - Auto-detección y API simplificada
  */
 
-import React, { memo, useState } from 'react'
+import React, { memo, useState, useRef, useEffect } from 'react'
 import { cldUrl, cldSrcset, cldPlaceholderUrl } from '@utils/cloudinaryUrl'
 import { IMAGE_WIDTHS } from '@constants/imageSizes'
 import { extractPublicIdFromUrl, isCloudinaryUrl } from '@utils/extractPublicId'
@@ -49,6 +49,7 @@ export const CloudinaryImage = memo(({
   ...props
 }) => {
   const [isLoaded, setIsLoaded] = useState(false)
+  const imgRef = useRef(null)
   
   // ✅ AUTO-DETECCIÓN: Determinar public_id y fallbackUrl desde prop 'image'
   const { finalPublicId, finalFallbackUrl } = React.useMemo(() => {
@@ -178,6 +179,44 @@ export const CloudinaryImage = memo(({
     }, 100)
   }
 
+  // ✅ SOLUCIÓN 1: Verificar si la imagen ya está cargada al montar (imágenes cacheadas)
+  // Esto resuelve el problema en producción donde onLoad no se dispara para imágenes en caché
+  useEffect(() => {
+    // Solo verificar si estamos usando placeholder (tiene el sistema de fade)
+    if (!placeholderSrc || !showPlaceholder) return
+    
+    // Resetear estado cuando cambia la imagen
+    setIsLoaded(false)
+    
+    // Usar setTimeout para asegurar que el DOM esté completamente renderizado
+    // Esto es necesario porque el ref puede no estar disponible inmediatamente
+    const checkImageLoaded = () => {
+      const img = imgRef.current
+      if (!img) return false
+      
+      // Verificar si la imagen ya está cargada (caché del navegador)
+      // complete = true significa que la imagen terminó de cargar
+      // naturalWidth > 0 confirma que realmente tiene dimensiones válidas
+      if (img.complete && img.naturalWidth > 0) {
+        setIsLoaded(true)
+        return true
+      }
+      
+      return false
+    }
+    
+    // Verificar inmediatamente (por si el ref ya está disponible)
+    if (checkImageLoaded()) return
+    
+    // Si no está disponible, intentar de nuevo en el siguiente tick
+    // Esto maneja el caso donde el DOM aún no está completamente renderizado
+    const timeoutId = setTimeout(() => {
+      checkImageLoaded()
+    }, 0)
+    
+    return () => clearTimeout(timeoutId)
+  }, [placeholderSrc, showPlaceholder, finalPublicId])
+
   // Si no hay publicId, renderizar imagen simple
   if (!finalPublicId) {
     return (
@@ -206,6 +245,7 @@ export const CloudinaryImage = memo(({
         />
         {/* Imagen principal */}
         <img
+          ref={imgRef}
           src={src}
           srcSet={srcSet}
           sizes={sizes}
