@@ -53,8 +53,10 @@
   overflow: hidden;
   width: 100%;
   height: 100%;
+  /* ✅ CRÍTICO: aspect-ratio como fallback para evitar colapso en producción */
+  /* En build, durante el render inicial o lazy loading, el padre puede no tener altura aún */
+  /* Este aspect-ratio asegura que el contenedor tenga altura propia desde el inicio */
+  aspect-ratio: 16 / 9;
   /* ✅ OPTIMIZADO: Asegurar que ocupe todo el espacio disponible del contenedor padre */
   flex-shrink: 0;
-  /* ✅ REMOVIDO: aspect-ratio redundante (ya está en el padre .card__image-container) */
-  /* El padre ya tiene aspect-ratio: 16 / 9, no necesitamos duplicarlo */
 }
