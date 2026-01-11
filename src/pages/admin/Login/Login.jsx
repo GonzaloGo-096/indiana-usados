@@ -11,7 +11,6 @@ import { LoginForm } from '@components/auth/LoginForm'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@hooks'
 import { AUTH_CONFIG } from '@config/auth'
-import { config } from '@config'
 import styles from './Login.module.css'
 
 const Login = () => {
@@ -74,13 +73,6 @@ const Login = () => {
                 <div className={styles.card}>
                     <div className={styles.cardBody}>
                         <h2 className={styles.title}>Iniciar Sesión</h2>
-                        
-                        {/* ✅ CREDENCIALES SOLO EN DESARROLLO */}
-                        {config.isDevelopment && (
-                            <div className={styles.credentials}>
-                                <p><strong>Desarrollo:</strong> Usuario: indiana-autos | Contraseña: 12345678</p>
-                            </div>
-                        )}
                         
                         {/* Mostrar error general */}
                         {error && (
