@@ -189,6 +189,51 @@
     background: #c82333;
 }
 
+/* ✅ ESTADOS DE CONTENIDO */
+.loadingContent {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: #666;
+}
+
+.errorContent {
+    text-align: center;
+    padding: 50px;
+    color: #dc3545;
+}
+
+.errorContent h3 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+}
+
+.errorContent p {
+    margin: 0 0 20px 0;
+}
+
+.alertWrapper {
+    margin-bottom: 20px;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+}
+
+.loadingIndicator {
+    background: #e3f2fd;
+    border: 1px solid #90caf9;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #1976d2;
+    font-size: 14px;
+    font-weight: 500;
+}
+
 /* ✅ ESTILOS DEL MODAL DE GESTIÓN DE AUTOS */
 .modalOverlay {
     position: fixed;
@@ -196,7 +241,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: #000000;
+    background: rgba(0, 0, 0, 0.75);
     display: flex;
     justify-content: center;
     align-items: center;

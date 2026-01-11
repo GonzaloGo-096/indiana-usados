@@ -5,14 +5,14 @@
  * @version 6.0.0 - Integrado con reducer simplificado para modal de autos
  */
 
-import React, { useReducer, useCallback, useState } from 'react'
+import React, { useReducer, useCallback, useState, useEffect } from 'react'
 import { defaultCarImage as fallbackImage } from '@assets'
 import { useAuth, useVehiclesList } from '@hooks'
 import { useCarMutation } from '@hooks'
 import vehiclesService from '@services/vehiclesApi'
 import { toAdminListItem } from '@mappers'
 import { normalizeDetailToFormInitialData, unwrapDetail } from '@components/admin/mappers/normalizeForForm'
-import { Alert } from '@ui'
+import { Alert, ConfirmModal } from '@ui'
 
 import { useNavigate } from 'react-router-dom'
 import LazyCarForm from '@components/admin/CarForm/LazyCarForm'
@@ -29,14 +29,21 @@ import {
 import styles from './Dashboard.module.css'
 
 const Dashboard = () => {
-    const { logout, isAuthenticated } = useAuth()
+    const { logout } = useAuth()
     const navigate = useNavigate()
     
     // ✅ HOOK UNIFICADO: React Query con cache, retry y abort signal
-    const { vehicles, isLoading, error, refetch } = useVehiclesList(
+    const { vehicles, isLoading, error, refetch, hasNextPage, loadMore, isLoadingMore } = useVehiclesList(
         {}, // sin filtros - Dashboard muestra todos los vehículos
         { pageSize: 50 } // carga 50 vehículos para admin
     )
+    
+    // ✅ CARGAR TODAS LAS PÁGINAS AUTOMÁTICAMENTE PARA EL PANEL ADMINISTRATIVO
+    useEffect(() => {
+        if (!isLoading && hasNextPage && !isLoadingMore) {
+            loadMore()
+        }
+    }, [isLoading, hasNextPage, isLoadingMore, loadMore])
     
     // ✅ HOOK PARA MUTACIONES DE AUTOS (versión simple)
     const { createMutation, updateMutation, deleteMutation } = useCarMutation()
@@ -46,6 +53,15 @@ const Dashboard = () => {
     
     // ✅ ESTADO PARA ERRORES DE ELIMINACIÓN (fuera del modal)
     const [deleteError, setDeleteError] = useState(null)
+    
+    // ✅ ESTADO PARA MENSAJE DE ÉXITO
+    const [successMessage, setSuccessMessage] = useState(null)
+    
+    // ✅ ESTADO PARA MODAL DE CONFIRMACIÓN
+    const [confirmModal, setConfirmModal] = useState({
+        isOpen: false,
+        vehicleId: null
+    })
     
     // ✅ AUTO-LOGOUT: Integrado en useAuth (no necesita hook separado)
 
@@ -99,6 +115,10 @@ const Dashboard = () => {
             refetch()
             handleCloseModal()
             
+            // ✅ MOSTRAR MENSAJE DE ÉXITO
+            setSuccessMessage('Vehículo creado exitosamente')
+            setTimeout(() => setSuccessMessage(null), 4000)
+            
         } catch (error) {
             dispatch(setError(`No se pudo crear el vehículo: ${error.message}`))
         }
@@ -115,22 +135,31 @@ const Dashboard = () => {
             refetch()
             handleCloseModal()
             
+            // ✅ MOSTRAR MENSAJE DE ÉXITO
+            setSuccessMessage('Vehículo actualizado exitosamente')
+            setTimeout(() => setSuccessMessage(null), 4000)
+            
         } catch (error) {
             dispatch(setError(`No se pudo actualizar el vehículo: ${error.message}`))
         }
     }, [refetch, handleCloseModal, dispatch, updateMutation])
 
-    // ✅ MANEJADOR DE ELIMINACIÓN
-    const handleDeleteVehicle = useCallback(async (vehicleId) => {
+    // ✅ MANEJADOR DE ELIMINACIÓN (ABRIR MODAL DE CONFIRMACIÓN)
+    const handleDeleteClick = useCallback((vehicleId) => {
+        setConfirmModal({
+            isOpen: true,
+            vehicleId
+        })
+    }, [])
+    
+    // ✅ MANEJADOR DE CONFIRMACIÓN DE ELIMINACIÓN
+    const handleConfirmDelete = useCallback(async () => {
+        const vehicleId = confirmModal.vehicleId
+        setConfirmModal({ isOpen: false, vehicleId: null })
+        
         try {
             // Limpiar error previo
             setDeleteError(null)
-            
-            // ✅ CONFIRMACIÓN ANTES DE ELIMINAR
-            const confirmed = window.confirm('¿Está seguro de que desea eliminar este vehículo? Esta acción no se puede deshacer.')
-            if (!confirmed) {
-                return
-            }
             
             // ✅ USAR LA MUTATION DIRECTA
             await deleteMutation.mutateAsync(vehicleId)
@@ -138,10 +167,19 @@ const Dashboard = () => {
             // ✅ REFRESCAR LISTA
             refetch()
             
+            // ✅ MOSTRAR MENSAJE DE ÉXITO
+            setSuccessMessage('Vehículo eliminado exitosamente')
+            setTimeout(() => setSuccessMessage(null), 4000)
+            
         } catch (error) {
             setDeleteError(`Error al eliminar: ${error.message}`)
         }
-    }, [refetch, deleteMutation, setDeleteError])
+    }, [confirmModal.vehicleId, deleteMutation, refetch])
+    
+    // ✅ CANCELAR ELIMINACIÓN
+    const handleCancelDelete = useCallback(() => {
+        setConfirmModal({ isOpen: false, vehicleId: null })
+    }, [])
 
 
 
@@ -183,7 +221,7 @@ const Dashboard = () => {
                 </div>
                 
                 <div className={styles.content}>
-                    <div style={{ textAlign: 'center', padding: '50px', fontSize: '18px', color: '#666' }}>
+                    <div className={styles.loadingContent}>
                         Cargando vehículos del servidor...
                     </div>
                 </div>
@@ -208,7 +246,7 @@ const Dashboard = () => {
                 </div>
                 
                 <div className={styles.content}>
-                    <div style={{ textAlign: 'center', padding: '50px', color: '#dc3545' }}>
+                    <div className={styles.errorContent}>
                         <h3>Error al cargar vehículos</h3>
                         <p>{error}</p>
                         <button onClick={refetch} className={styles.addButton}>
@@ -247,9 +285,29 @@ const Dashboard = () => {
                     </button>
                 </div>
                 
+                {/* ✅ INDICADOR DE CARGA DURANTE AUTO-CARGA */}
+                {isLoadingMore && (
+                    <div className={styles.loadingIndicator}>
+                        Cargando todos los vehículos... ({vehicles.length} cargados)
+                    </div>
+                )}
+                
+                {/* ✅ ALERT DE ÉXITO */}
+                {successMessage && (
+                    <div className={styles.alertWrapper}>
+                        <Alert 
+                            variant="success" 
+                            dismissible 
+                            onDismiss={() => setSuccessMessage(null)}
+                        >
+                            {successMessage}
+                        </Alert>
+                    </div>
+                )}
+                
                 {/* ✅ ALERT DE ERROR DE ELIMINACIÓN */}
                 {deleteError && (
-                    <div style={{ marginBottom: '20px' }}>
+                    <div className={styles.alertWrapper}>
                         <Alert 
                             variant="error" 
                             dismissible 
@@ -265,7 +323,7 @@ const Dashboard = () => {
                     <h2>Lista de Vehículos ({vehicles.length})</h2>
                     
                     {vehicles.length === 0 ? (
-                        <div style={{ textAlign: 'center', padding: '30px', color: '#666' }}>
+                        <div className={styles.emptyState}>
                             No hay vehículos disponibles
                         </div>
                     ) : (
@@ -297,12 +355,14 @@ const Dashboard = () => {
                                 <button 
                                     onClick={() => handleOpenEditForm(item._original)} 
                                     className={styles.editButton}
+                                    aria-label="Editar vehículo"
                                 >
                                     Editar
                                 </button>
                                 <button 
-                                    onClick={() => handleDeleteVehicle(item.id)} 
+                                    onClick={() => handleDeleteClick(item.id)} 
                                     className={styles.deleteButton}
+                                    aria-label="Eliminar vehículo"
                                 >
                                     Eliminar
                                 </button>
@@ -349,6 +409,18 @@ const Dashboard = () => {
                     </div>
                 </div>
             )}
+            
+            {/* ✅ MODAL DE CONFIRMACIÓN DE ELIMINACIÓN */}
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                title="Confirmar eliminación"
+                message="¿Está seguro de que desea eliminar este vehículo? Esta acción no se puede deshacer."
+                confirmText="Eliminar"
+                cancelText="Cancelar"
+                variant="danger"
+                onConfirm={handleConfirmDelete}
+                onCancel={handleCancelDelete}
+            />
         </div>
     )
 }

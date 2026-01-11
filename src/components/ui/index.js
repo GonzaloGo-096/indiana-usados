@@ -20,4 +20,5 @@ export { default as HeroImageCarousel } from './HeroImageCarousel'
 // ✅ NUEVOS: Componentes para Code Splitting
 export { LoadingSpinner } from './LoadingSpinner'
 export { ScrollToTop } from './ScrollToTop'
-export { default as WhatsAppContact } from './WhatsAppContact' 
+export { default as WhatsAppContact } from './WhatsAppContact'
+export { ConfirmModal } from './ConfirmModal' 
