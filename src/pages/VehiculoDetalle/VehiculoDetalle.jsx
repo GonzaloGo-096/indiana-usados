@@ -88,8 +88,7 @@ const VehiculoDetalle = () => {
             {/* Botón de volver con preservación de scroll */}
             <div className={styles.backButton}>
                 <button onClick={handleBack} className={styles.backLink}>
-                    <span className={styles.backArrow}>←</span>
-                    <span>Volver a la lista</span>
+                    Lista completa
                 </button>
             </div>
             

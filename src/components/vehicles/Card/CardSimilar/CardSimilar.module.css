@@ -204,6 +204,24 @@
     white-space: nowrap;
 }
 
+/* Versión: Mismo tamaño que modelo, en gris */
+.version_text {
+    --version-font-size: clamp(1.375rem, 4.8vw, 1.625rem); /* ✅ Mismo tamaño que modelo */
+    
+    font-size: var(--version-font-size);
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-condensed);
+    color: var(--color-neutral-500); /* ✅ Gris */
+    line-height: var(--row-line-height);
+    letter-spacing: -0.2px;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: var(--spacing-1); /* ✅ Espacio antes de la versión */
+}
+
 /* FILA 3: Caja, Km, Año - Distribuidos en todo el ancho */
 .container1_row3 {
     --data-margin-top: var(--spacing-3);

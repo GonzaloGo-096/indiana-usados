@@ -33,25 +33,29 @@
 .backLink {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-2);
-  padding: var(--spacing-4) var(--spacing-6); /* ✅ Más altura (spacing-4) y más separación lateral (spacing-6) */
+  justify-content: center;
+  padding: var(--spacing-3) var(--spacing-5); /* ✅ Padding más pequeño */
   margin-top: var(--spacing-4); /* ✅ Margin top */
   margin-left: var(--spacing-4); /* ✅ Margin left */
-  background: var(--color-white);
+  background: transparent;
   color: var(--color-brand-500);
   text-decoration: none;
-  font-size: clamp(0.875rem, 1.5vw, 1rem);
-  font-weight: 600;
-  font-family: var(--font-sans);
-  letter-spacing: 0.02em;
+  font-size: clamp(0.875rem, 1.5vw, 0.9375rem); /* ✅ Fuente un poco más pequeña */
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   border-radius: var(--border-radius-md);
   border: 2px solid var(--color-brand-500);
   cursor: pointer;
-  transition: all var(--transition-fast);
-  box-shadow: var(--shadow-sm);
+  transition: 
+    background-color var(--transition-fast),
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
   width: fit-content;
-  min-width: 200px;
-  justify-content: center;
+  min-width: 180px; /* ✅ Ancho mínimo más pequeño */
+  min-height: 40px; /* ✅ Altura mínima más pequeña */
 }
 
 .backLink:hover {
@@ -59,7 +63,6 @@
   color: var(--color-brand-600);
   border-color: var(--color-brand-600);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
 }
 
 .backLink:active {
@@ -69,12 +72,6 @@
 .backLink:focus-visible {
   outline: 2px solid var(--color-brand-500);
   outline-offset: 2px;
-}
-
-.backArrow {
-  font-size: 1.2em;
-  font-weight: 700;
-  line-height: 1;
 }
 
 /* ===== CONTENIDO PRINCIPAL ===== */
@@ -103,9 +100,10 @@
   }
   
   .backLink {
-    padding: var(--spacing-4) var(--spacing-7); /* ✅ Más altura y separación lateral */
+    padding: var(--spacing-3) var(--spacing-6); /* ✅ Padding más pequeño en tablet */
     margin-top: var(--spacing-5); /* ✅ Más margin top en tablet */
     margin-left: var(--spacing-5); /* ✅ Más margin left en tablet */
+    min-height: 42px; /* ✅ Altura mínima más pequeña */
   }
   
   .content {
@@ -132,10 +130,11 @@
   }
   
   .backLink {
-    padding: var(--spacing-5) var(--spacing-8); /* ✅ Aún más altura y separación en desktop */
+    padding: var(--spacing-3) var(--spacing-6); /* ✅ Padding más pequeño en desktop */
     margin-top: var(--spacing-6); /* ✅ Más margin top en desktop */
     margin-left: var(--spacing-6); /* ✅ Más margin left en desktop */
-    font-size: 1rem;
+    font-size: 0.9375rem; /* ✅ Fuente más pequeña */
+    min-height: 42px; /* ✅ Altura mínima más pequeña */
   }
   
   .content {
@@ -159,11 +158,12 @@
   }
   
   .backLink {
-    padding: var(--spacing-3) var(--spacing-5); /* ✅ Más altura y separación en mobile */
+    padding: var(--spacing-3) var(--spacing-4); /* ✅ Padding más pequeño en mobile */
     margin-top: var(--spacing-3); /* ✅ Margin top en mobile */
     margin-left: var(--spacing-3); /* ✅ Margin left en mobile */
     font-size: 0.875rem;
-    min-width: 160px;
+    min-width: 150px; /* ✅ Ancho mínimo más pequeño */
+    min-height: 38px; /* ✅ Altura mínima más pequeña */
   }
   
   .content {

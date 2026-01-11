@@ -402,7 +402,7 @@
 .mainDataContent {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-2); /* ✅ Más espacio entre label y value */
+    gap: var(--spacing-1); /* ✅ Menos espacio entre label y value */
     align-items: flex-start;
     justify-content: flex-end;
     text-align: left;
@@ -413,7 +413,7 @@
 .mainDataLabelGroup {
     display: flex;
     align-items: center;
-    gap: var(--spacing-3); /* ✅ Más espacio entre ícono y label */
+    gap: var(--spacing-2); /* ✅ Menos espacio entre ícono y label */
     justify-content: flex-start;
 }
 
@@ -428,12 +428,12 @@
 }
 
 .mainDataIcon svg {
-    width: 24px; /* ✅ Íconos más grandes */
-    height: 24px; /* ✅ Íconos más grandes */
+    width: 16px; /* ✅ Íconos más pequeños */
+    height: 16px; /* ✅ Íconos más pequeños */
 }
 
 .mainDataLabel {
-    --label-font-size: clamp(1.125rem, 3vw, 1.5rem); /* ✅ Labels más grandes */
+    --label-font-size: clamp(0.75rem, 2vw, 0.9375rem); /* ✅ Labels más pequeños */
     
     font-size: var(--label-font-size);
     font-weight: var(--font-weight-medium);
@@ -445,7 +445,7 @@
 }
 
 .mainDataValue {
-    --value-font-size: clamp(2.5rem, 6vw, 3.25rem); /* ✅ Valores más grandes */
+    --value-font-size: clamp(1.5rem, 4vw, 2rem); /* ✅ Valores más pequeños */
     
     font-size: var(--value-font-size);
     font-weight: var(--font-weight-light);
@@ -769,12 +769,12 @@
     }
     
     .mainDataValue {
-        --value-font-size: clamp(2.75rem, 7vw, 3.5rem); /* ✅ Más grande en mobile */
+        --value-font-size: clamp(1.75rem, 5vw, 2.25rem); /* ✅ Más pequeño en mobile */
         font-size: var(--value-font-size);
     }
     
     .mainDataLabel {
-        --label-font-size: clamp(1.25rem, 3.5vw, 1.75rem); /* ✅ Más grande en mobile */
+        --label-font-size: clamp(0.875rem, 2.5vw, 1rem); /* ✅ Más pequeño en mobile */
         font-size: var(--label-font-size);
     }
     
@@ -1016,13 +1016,13 @@
         flex: 1 2 0%; /* ✅ El primero cede más espacio en desktop */
     }
     
-    /* ✅ Desktop: Reducir tamaño de valores y labels de Km, Caja, Año */
+    /* ✅ Desktop: Tamaños reducidos de valores y labels de Km, Caja, Año */
     .mainDataValue {
-        --value-font-size: clamp(2rem, 5vw, 2.75rem); /* ✅ Reducido de 2.5-3.25rem a 2-2.75rem */
+        --value-font-size: clamp(1.5rem, 4vw, 2rem); /* ✅ Tamaño reducido */
     }
     
     .mainDataLabel {
-        --label-font-size: clamp(1rem, 2.5vw, 1.25rem); /* ✅ Reducido de 1.125-1.5rem a 1-1.25rem */
+        --label-font-size: clamp(0.75rem, 2vw, 0.9375rem); /* ✅ Tamaño reducido */
     }
     
     .specsRow {

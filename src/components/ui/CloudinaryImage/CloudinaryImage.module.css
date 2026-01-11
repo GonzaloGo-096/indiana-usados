@@ -53,10 +53,18 @@
   overflow: hidden;
   width: 100%;
   height: 100%;
-  /* ✅ CRÍTICO: aspect-ratio como fallback para evitar colapso en producción */
-  /* En build, durante el render inicial o lazy loading, el padre puede no tener altura aún */
-  /* Este aspect-ratio asegura que el contenedor tenga altura propia desde el inicio */
-  aspect-ratio: 16 / 9;
+  
+  /* ✅ REFACTORIZADO: Removido aspect-ratio - ahora depende completamente del padre */
+  /* PROBLEMA ANTERIOR: aspect-ratio en el hijo + height: 100% creaba dependencia circular
+   * - El hijo quería altura basada en su aspect-ratio
+   * - Pero también quería height: 100% del padre
+   * - Si el padre no tenía altura (por lazy loading), ambos colapsaban
+   * 
+   * SOLUCIÓN: El padre (.card__image-container) tiene aspect-ratio: 16/9
+   * El hijo (.imageContainer) solo ocupa 100% de esa altura
+   * Esto elimina la dependencia circular y asegura altura estable */
+  
   /* ✅ OPTIMIZADO: Asegurar que ocupe todo el espacio disponible del contenedor padre */
+  /* El padre ya tiene aspect-ratio, así que siempre tendrá altura */
   flex-shrink: 0;
 }

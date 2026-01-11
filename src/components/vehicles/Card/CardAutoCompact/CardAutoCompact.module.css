@@ -125,6 +125,13 @@
     font-family: 'Barlow Condensed', sans-serif;
 }
 
+.card__version {
+    font-size: 22px; /* ✅ Mismo tamaño que el título */
+    font-weight: 700;
+    color: #6b7280; /* ✅ Gris */
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
 .headerRight {
     flex: 0.4;
     display: flex;
@@ -228,6 +235,7 @@
     .card__body { padding: 18px; }
     .cardHeader { height: 54px; }
     .card__title { font-size: 24px; }
+    .card__version { font-size: 24px; } /* ✅ Mismo tamaño que título */
     .card__price { font-size: 22px; }
     .card__data_container { padding: 8px 0; }
     .card__data_item { padding: 8px 10px; }
@@ -241,6 +249,7 @@
     .card__body { padding: 20px; }
     .cardHeader { height: 64px; }
     .card__title { font-size: 26px; }
+    .card__version { font-size: 26px; } /* ✅ Mismo tamaño que título */
     .card__price { font-size: 24px; }
     .card__data_container { padding: 10px 0; }
     .card__data_item { padding: 8px 10px; }

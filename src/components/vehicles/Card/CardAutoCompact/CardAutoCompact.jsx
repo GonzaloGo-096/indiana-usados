@@ -18,7 +18,8 @@ import {
     formatKilometraje, 
     formatYear, 
     formatCaja,
-    formatBrandModel
+    formatBrandModel,
+    formatValue
 } from '@utils/formatters'
 import styles from './CardAutoCompact.module.css'
 import { CalendarIcon, RouteIcon, GearboxIcon } from '@components/ui/icons'
@@ -47,8 +48,9 @@ export const CardAutoCompact = memo(({ auto }) => {
         kilometers: formatKilometraje(auto.kilometraje || auto.kms),
         year: formatYear(auto.anio || auto.año),
         caja: formatCaja(auto.caja),
-        brandModel: formatBrandModel(auto.marca, auto.modelo)
-    }), [auto.precio, auto.kilometraje, auto.kms, auto.anio, auto.año, auto.caja, auto.marca, auto.modelo])
+        brandModel: formatBrandModel(auto.marca, auto.modelo),
+        version: formatValue(auto.version || '')
+    }), [auto.precio, auto.kilometraje, auto.kms, auto.anio, auto.año, auto.caja, auto.marca, auto.modelo, auto.version])
 
     // ✅ MEMOIZAR ALT TEXT
     const altText = useMemo(() => {
@@ -91,6 +93,9 @@ export const CardAutoCompact = memo(({ auto }) => {
                         <div className={styles['card__title_container']}>
                             <h3 className={styles['card__title']}>
                                 {auto.marca} {auto.modelo}
+                                {formattedData.version && formattedData.version !== '-' && (
+                                    <span className={styles['card__version']}> {formattedData.version}</span>
+                                )}
                             </h3>
                         </div>
                     </div>

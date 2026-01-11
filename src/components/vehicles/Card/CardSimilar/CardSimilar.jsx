@@ -18,7 +18,8 @@ import {
     formatKilometraje, 
     formatYear, 
     formatCaja,
-    formatBrandModel
+    formatBrandModel,
+    formatValue
 } from '@utils/formatters'
 import { logger } from '@utils/logger'
 import styles from './CardSimilar.module.css'
@@ -76,9 +77,10 @@ export const CardSimilar = memo(({ auto }) => {
             kilometers: formatKilometraje(auto.kilometraje || auto.kms),
             year: formatYear(auto.anio || auto.año),
             caja: cajaFormateada,
-            brandModel: formatBrandModel(auto.marca, auto.modelo)
+            brandModel: formatBrandModel(auto.marca, auto.modelo),
+            version: formatValue(auto.version || '')
         }
-    }, [auto.precio, auto.kilometraje, auto.kms, auto.anio, auto.año, auto.caja, auto.marca, auto.modelo])
+    }, [auto.precio, auto.kilometraje, auto.kms, auto.anio, auto.año, auto.caja, auto.marca, auto.modelo, auto.version])
     
     // ✅ Detectar si es "Automática" para aplicar estilos especiales
     const isAutomatica = useMemo(() => {
@@ -133,13 +135,18 @@ export const CardSimilar = memo(({ auto }) => {
             <div className={styles['card__body']}>
                 {/* CONTENEDOR 1: Datos sin logo (más compacto) */}
                 <div className={styles.container1}>
-                    {/* Fila 1: Marca + Modelo */}
+                    {/* Fila 1: Marca + Modelo + Versión */}
                     <div className={styles.container1_row1}>
                         <span className={styles.marca_text}>{auto.marca}</span>
                         <span className={styles.marca_modelo_separator}>|</span>
                         <h3 className={styles.modelo_title}>
                             {auto.modelo}
                         </h3>
+                        {formattedData.version && formattedData.version !== '-' && (
+                            <>
+                                <span className={styles.version_text}>{formattedData.version}</span>
+                            </>
+                        )}
                     </div>
                     
                     {/* Fila 2: Caja, Km, Año */}

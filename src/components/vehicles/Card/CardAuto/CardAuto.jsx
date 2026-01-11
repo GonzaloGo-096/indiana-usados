@@ -13,7 +13,7 @@
  * @version 6.0.0 - Rediseño Premium
  */
 
-import React, { memo, useMemo, useCallback, useEffect, useRef } from 'react'
+import React, { memo, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
     formatPrice, 
@@ -42,21 +42,19 @@ export const CardAuto = memo(({ auto }) => {
     const navigate = useNavigate()
     const { prefetchVehicleDetail } = useVehiclePrefetch()
     
+    // ✅ VALIDAR DATOS DEL VEHÍCULO - Movido antes de hooks para validación temprana
+    // pero todos los hooks deben ejecutarse siempre para cumplir reglas de React
+    const isValidAuto = auto && (auto.id || auto._id)
+    
     // ✅ URL de imagen principal optimizada con useMemo
     const primaryImage = useMemo(() => {
+        if (!auto) return '/auto1.jpg'
         return auto.fotoPrincipal || auto.imagen || '/auto1.jpg'
-    }, [auto.fotoPrincipal, auto.imagen])
-    
-    // ✅ PRELOAD AUTOMÁTICO AL MONTAR - ELIMINADO
-    // El preload ahora se maneja por el IntersectionObserver en usePreloadImages
-    // useEffect(() => {
-    //     if (auto) {
-    //         preloadVehicle(auto)
-    //     }
-    // }, [auto, preloadVehicle])
+    }, [auto])
 
     // ✅ HANDLER: Click en toda la tarjeta para abrir detalle
     const handleCardClick = useCallback(() => {
+        if (!auto) return
         const vehicleId = auto.id || auto._id
         if (!vehicleId) {
             logger.error('ui:card-auto', 'ID del vehículo no válido')
@@ -67,22 +65,29 @@ export const CardAuto = memo(({ auto }) => {
 
     // ✅ OPTIMIZADO: Prefetch al hover (mejora percepción de velocidad)
     const handleMouseEnter = useCallback(() => {
+        if (!auto) return
         const vehicleId = auto.id || auto._id
         if (vehicleId) {
             prefetchVehicleDetail(vehicleId)
         }
     }, [auto, prefetchVehicleDetail])
-    
-    // ✅ VALIDAR DATOS DEL VEHÍCULO
-    if (!auto || (!auto.id && !auto._id)) {
-        return null
-    }
-
-    // Normalizar ID para compatibilidad
-    const vehicleId = auto.id || auto._id
 
     // ✅ MEMOIZAR DATOS FORMATEADOS
     const formattedData = useMemo(() => {
+        if (!auto) {
+            return {
+                price: '',
+                kilometers: '',
+                year: '',
+                caja: '',
+                brandModel: '',
+                version: '',
+                cilindrada: '',
+                HP: '',
+                traccion: ''
+            }
+        }
+        
         const cajaFormateada = formatCaja(auto.caja)
         // ✅ Mostrar "Automática" completo (sin abreviar)
         
@@ -97,7 +102,7 @@ export const CardAuto = memo(({ auto }) => {
             HP: formatHPDisplay(auto.HP || ''),
             traccion: formatValue(auto.traccion || '')
         }
-    }, [auto.precio, auto.kilometraje, auto.kms, auto.anio, auto.año, auto.caja, auto.marca, auto.modelo, auto.version, auto.cilindrada, auto.HP, auto.traccion])
+    }, [auto])
     
     // ✅ Detectar si es "Automática" para aplicar estilos especiales
     const isAutomatica = useMemo(() => {
@@ -107,7 +112,7 @@ export const CardAuto = memo(({ auto }) => {
     // ✅ MEMOIZAR LOGO DE MARCA
     const brandLogo = useMemo(() => {
         return getBrandLogo(auto?.marca || '')
-    }, [auto?.marca])
+    }, [auto])
     
     // ✅ DATOS PRINCIPALES CON ICONOS (Caja, Km, Año)
     const mainData = useMemo(() => [
@@ -118,8 +123,16 @@ export const CardAuto = memo(({ auto }) => {
 
     // ✅ MEMOIZAR ALT TEXT
     const altText = useMemo(() => {
+        if (!formattedData.brandModel || !formattedData.year) {
+            return 'Vehículo'
+        }
         return `${formattedData.brandModel} - ${formattedData.year}`
     }, [formattedData.brandModel, formattedData.year])
+    
+    // ✅ VALIDAR DATOS DEL VEHÍCULO - Early return después de todos los hooks
+    if (!isValidAuto) {
+        return null
+    }
 
     return (
         <div 
@@ -159,13 +172,18 @@ export const CardAuto = memo(({ auto }) => {
                 <div className={styles.container1}>
                     {/* Bloque de datos primero */}
                     <div className={styles.container1_right}>
-                        {/* Fila 1: Marca + Modelo */}
+                        {/* Fila 1: Marca + Modelo + Versión */}
                         <div className={styles.container1_row1}>
                             <span className={styles.marca_text}>{auto.marca}</span>
                             <span className={styles.marca_modelo_separator}>|</span>
                             <h3 className={styles.modelo_title}>
                                 {auto.modelo}
                             </h3>
+                            {formattedData.version && formattedData.version !== '-' && (
+                                <>
+                                    <span className={styles.version_text}>{formattedData.version}</span>
+                                </>
+                            )}
                         </div>
                         
                         {/* Fila 2: Caja, Km, Año (sin separadores) */}

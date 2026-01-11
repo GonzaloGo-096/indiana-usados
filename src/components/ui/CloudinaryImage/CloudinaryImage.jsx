@@ -179,8 +179,11 @@ export const CloudinaryImage = memo(({
     }, 100)
   }
 
-  // ✅ SOLUCIÓN 1: Verificar si la imagen ya está cargada al montar (imágenes cacheadas)
-  // Esto resuelve el problema en producción donde onLoad no se dispara para imágenes en caché
+  // ✅ REFACTORIZADO: Verificación mejorada de imagen cargada
+  // Resuelve problemas en producción donde:
+  // 1. onLoad no se dispara para imágenes en caché
+  // 2. El timing de renderizado es diferente entre dev y build
+  // 3. El DOM puede no estar completamente disponible en el primer render
   useEffect(() => {
     // Solo verificar si estamos usando placeholder (tiene el sistema de fade)
     if (!placeholderSrc || !showPlaceholder) return
@@ -188,8 +191,7 @@ export const CloudinaryImage = memo(({
     // Resetear estado cuando cambia la imagen
     setIsLoaded(false)
     
-    // Usar setTimeout para asegurar que el DOM esté completamente renderizado
-    // Esto es necesario porque el ref puede no estar disponible inmediatamente
+    // Función para verificar si la imagen ya está cargada
     const checkImageLoaded = () => {
       const img = imgRef.current
       if (!img) return false
@@ -205,16 +207,24 @@ export const CloudinaryImage = memo(({
       return false
     }
     
-    // Verificar inmediatamente (por si el ref ya está disponible)
+    // Estrategia de verificación en múltiples fases:
+    // 1. Inmediato: Por si el ref ya está disponible (caso común en dev)
     if (checkImageLoaded()) return
     
-    // Si no está disponible, intentar de nuevo en el siguiente tick
-    // Esto maneja el caso donde el DOM aún no está completamente renderizado
-    const timeoutId = setTimeout(() => {
-      checkImageLoaded()
+    // 2. Próximo tick del event loop: Para casos donde el DOM aún se está renderizando
+    const timeoutId1 = setTimeout(() => {
+      if (checkImageLoaded()) return
+      
+      // 3. Después de un pequeño delay: Para producción donde el timing puede ser diferente
+      // Esto asegura que incluso en builds optimizados/minificados, la verificación funcione
+      setTimeout(() => {
+        checkImageLoaded()
+      }, 50)
     }, 0)
     
-    return () => clearTimeout(timeoutId)
+    return () => {
+      clearTimeout(timeoutId1)
+    }
   }, [placeholderSrc, showPlaceholder, finalPublicId])
 
   // Si no hay publicId, renderizar imagen simple

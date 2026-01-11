@@ -201,7 +201,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                                         <div className={styles.mainDataContent}>
                                             <div className={styles.mainDataLabelGroup}>
                                                 <div className={styles.mainDataIcon}>
-                                                    <IconComponent size={24} color="currentColor" />
+                                                    <IconComponent size={16} color="currentColor" />
                                                 </div>
                                                 <span className={styles.mainDataLabel}>{item.label}</span>
                                             </div>

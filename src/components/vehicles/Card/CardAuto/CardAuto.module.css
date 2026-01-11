@@ -91,42 +91,118 @@
 }
 
 /* ===== CONTENEDOR DE IMAGEN (FOCO PRINCIPAL) ===== */
-/* ✅ EXACTO: Mismo selector que CardSimilar (que SÍ funciona) */
+/**
+ * REFACTORIZADO v9.0.0 - Solución estable para producción
+ * 
+ * CAMBIOS CRÍTICOS:
+ * 
+ * 1. ASPECT-RATIO: Define proporción 16/9 sin depender de padding-top hack
+ *    - Más semántico y mantenible que padding-top: 56.25%
+ *    - Funciona en todos los navegadores modernos
+ *    - Evita layout shift (CLS) porque reserva espacio desde el inicio
+ *    - ✅ NUEVO: min-height explícito como fallback para navegadores antiguos
+ * 
+ * 2. FLEX-SHRINK: 0 - CRÍTICO para producción
+ *    - Previene que flexbox contraiga el contenedor cuando hay restricciones de altura
+ *    - Esencial cuando Cloudinary renderiza wrappers adicionales (placeholder, doble img)
+ *    - Sin esto, el contenedor colapsa a height: 0 en producción con lazy loading
+ * 
+ * 3. CONTAIN: REMOVIDO layout - Solo paint y style
+ *    - ⚠️ contain: layout INTERFIERE con aspect-ratio en producción
+ *    - contain: layout puede prevenir que aspect-ratio calcule correctamente
+ *    - Mantenemos paint y style para optimización sin afectar layout
+ *    - En producción/build, contain: layout puede causar que el contenedor no calcule altura
+ * 
+ * 4. OVERFLOW: hidden - Contiene el zoom y placeholder blur
+ *    - Permite que el zoom en hover no se desborde
+ *    - Contiene el efecto blur del placeholder
+ * 
+ * 5. MIN-HEIGHT: Fallback para asegurar altura mínima
+ *    - Calculado como: width * (9/16) = 360px * 0.5625 = 202.5px
+ *    - Solo se usa si aspect-ratio no está soportado
+ *    - Evita colapso completo en edge cases
+ */
 .card__image-container {
     position: relative;
     overflow: hidden;
     width: 100%;
-    aspect-ratio: 16 / 9; /* ✅ Igual que CardSimilar */
+    
+    /* ✅ PROPORCIÓN FIJA: 16/9 - Sin hacks, solo CSS moderno */
+    aspect-ratio: 16 / 9;
+    
+    /* ✅ FALLBACK: Altura mínima calculada para navegadores sin aspect-ratio */
+    /* Solo se usa si aspect-ratio no está soportado (navegadores muy antiguos) */
+    min-height: calc((100% / 16) * 9);
+    min-height: 202.5px; /* Fallback fijo basado en max-width: 360px de la card */
+    
+    /* ✅ FONDO: Placeholder mientras carga (antes de que aparezca blur) */
     background: var(--color-neutral-50);
     
-    /* ✅ CRÍTICO: Prevenir contracción en flexbox - asegura que aspect-ratio funcione */
-    /* En flexbox column, sin flex-shrink: 0, el contenedor puede colapsar en producción */
-    /* cuando hay wrappers adicionales (placeholder blur, doble img) que no aportan altura */
+    /* ✅ CRÍTICO PRODUCCIÓN: Prevenir contracción en flexbox */
+    /* Sin esto, en build/producción el contenedor puede colapsar cuando:
+     * - Hay wrappers adicionales de Cloudinary (._imageContainer_, ._placeholder_)
+     * - Las imágenes están position: absolute (no aportan altura al layout)
+     * - El lazy loading se ejecuta en timing diferente */
     flex-shrink: 0;
     
-    /* ✅ ESTÁNDAR: Usar contain completo como CardSimilar (que SÍ funciona) */
-    contain: layout style paint;
+    /* ✅ OPTIMIZACIÓN: Solo paint y style (layout REMOVIDO) */
+    /* contain: layout causaba problemas con aspect-ratio en producción */
+    /* Mantenemos optimización de paint/style sin interferir con layout */
+    contain: paint style;
 }
 
-/* ✅ EXACTO: Mismo tratamiento que CardSimilar */
+/**
+ * IMAGEN DENTRO DEL CONTENEDOR
+ * 
+ * Selector específico para la clase aplicada vía className prop de CloudinaryImage
+ * Compatible con wrappers internos de Cloudinary (._imageContainer_, ._image_, ._placeholder_)
+ */
 .card__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
+    
+    /* ✅ TRANSICIÓN: Solo transform (performance - usa GPU) */
+    /* No animamos width/height porque causan reflow costoso */
     transition: transform var(--transition-smooth);
+    
+    /* ✅ Z-INDEX: Asegurar que esté sobre el placeholder */
+    /* Usamos !important solo porque Cloudinary puede inyectar estilos inline */
     z-index: 0 !important;
 }
 
-/* ✅ EXACTO: Mismo selector que CardSimilar (que SÍ funciona) */
+/**
+ * SELECTOR UNIVERSAL: Compatible con wrappers internos de Cloudinary
+ * 
+ * CloudinaryImage renderiza:
+ * - <div className="imageContainer"> (wrapper interno)
+ *   - <img className="placeholder" /> (blur)
+ *   - <img className="image" /> (imagen real)
+ * 
+ * Este selector asegura que ambos elementos respeten el z-index correcto
+ */
 .card__image-container [class*="image"],
 .card__image-container [class*="placeholder"] {
     z-index: 0 !important;
 }
 
-/* Zoom sutil en hover */
+/**
+ * ZOOM SUTIL EN HOVER - Optimizado para performance
+ * 
+ * BUENAS PRÁCTICAS:
+ * 1. Solo transform (no width/height) - Usa aceleración GPU
+ * 2. Scale pequeño (1.04) - Efecto sutil y performante
+ * 3. El overflow: hidden del padre contiene el zoom
+ * 4. will-change se activa solo en hover (mejor que siempre activo)
+ * 
+ * NOTA: will-change se aplica vía CSS en hover, no permanentemente
+ * para evitar overhead cuando la card no está siendo interactuada
+ */
 .card:hover .card__image {
     transform: scale(var(--card-image-zoom));
+    /* ✅ OPTIMIZACIÓN: Activar aceleración GPU solo cuando es necesario */
+    will-change: transform;
 }
 
 /* ===== CUERPO DE LA TARJETA ===== */
@@ -136,6 +212,11 @@
     --body-gap: var(--card-gap-base);
     
     flex: 1;
+    /* ✅ CRÍTICO: min-height: 0 permite que flexbox calcule correctamente */
+    /* Sin esto, los hijos en flexbox pueden no contraerse correctamente */
+    /* Esencial para el cálculo correcto de altura total de la card */
+    min-height: 0;
+    
     display: flex;
     flex-direction: column;
     gap: var(--body-gap);
@@ -294,15 +375,20 @@
 }
 
 .version_text {
-    font-size: clamp(1.125rem, 3.5vw, 1.25rem);
+    --version-font-size: clamp(1.4rem, 4.5vw, 1.65rem); /* ✅ Mismo tamaño que modelo */
+    
+    font-size: var(--version-font-size);
     font-weight: var(--font-weight-semibold);
     font-family: var(--font-condensed);
-    color: var(--color-neutral-500);
+    color: var(--color-neutral-500); /* ✅ Gris */
+    line-height: var(--row-line-height);
+    letter-spacing: -0.2px;
     flex-shrink: 1;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-left: var(--spacing-1); /* ✅ Espacio antes de la versión */
 }
 
 /* FILA 2: Versión (debajo de marca y modelo) */
@@ -333,10 +419,11 @@
     padding-top: 0;
 }
 
-/* Cuando hay "Automática": Padding normal, se adapta al contenido */
-.container1_row3_automatica {
-    /* Sin cambios, usa el padding de cada item */
-}
+/* 
+ * NOTA: .container1_row3_automatica no requiere estilos adicionales
+ * El padding se maneja individualmente en cada .row2_data_item
+ * Si en el futuro se necesita estilo específico para "Automática", agregar aquí
+ */
 
 .row2_data_item {
     --data-item-padding-right: var(--spacing-3);
