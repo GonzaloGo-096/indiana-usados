@@ -9,7 +9,9 @@
  * @author Indiana Usados
  * @version 2.0.0
  */
+import { environment } from '@config'
 
+console.log('ENV CHECK', environment)
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import React from 'react'
 import './App.module.css'
