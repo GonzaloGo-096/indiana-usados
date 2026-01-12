@@ -86,8 +86,8 @@ function ErrorFallback({ error, resetErrorBoundary, variant = 'default' }) {
         {/* Información de contacto */}
         <div className={styles.errorContact}>
           <p>Si el problema persiste:</p>
-          <a href="mailto:soporte@indianausados.com" className={styles.contactLink}>
-            soporte@indianausados.com
+          <a href="mailto:soporte@indiana.com.ar" className={styles.contactLink}>
+            soporte@indiana.com.ar
           </a>
         </div>
       </div>

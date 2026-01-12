@@ -72,7 +72,7 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
     // Memoización de información de contacto
     const finalContactInfo = useMemo(() => {
         const defaultInfo = {
-            email: 'info@indianausados.com',
+            email: 'info@indiana.com.ar',
             whatsapp: '543816295959',
             whatsappMessage: `Hola, me interesa el vehículo ${formatValue(vehicleData?.marca || '')} ${formatValue(vehicleData?.modelo || '')}`
         }

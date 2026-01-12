@@ -78,15 +78,31 @@ const getSiteUrl = () => {
 
 /**
  * Configuración SEO centralizada
+ * 
+ * Negocio: Indiana Peugeot - Concesionaria oficial Peugeot + autos usados multimarca
+ * Ubicación: Tucumán, Argentina
  */
 export const SEO_CONFIG = {
-  siteName: 'Indiana Usados',
+  siteName: 'Indiana Peugeot',
   siteUrl: getSiteUrl(),
-  defaultTitle: 'Indiana Usados - Autos Usados con Garantía en Argentina',
-  defaultDescription: 'Indiana Usados es una concesionaria de autos usados en Argentina. Amplia selección de vehículos usados con garantía, financiamiento y servicio postventa profesional.',
-  defaultKeywords: 'autos usados, concesionaria, vehículos usados, autos usados Argentina, comprar auto usado, garantía autos usados',
+  defaultTitle: 'Indiana Peugeot – Concesionaria Oficial en Tucumán | 0km y Usados',
+  defaultDescription: 'Indiana Peugeot es concesionaria oficial Peugeot en Tucumán. Autos 0km Peugeot y amplia selección de vehículos usados multimarca con garantía, financiamiento y servicio postventa.',
+  defaultKeywords: 'Indiana Peugeot, concesionaria Peugeot Tucumán, autos 0km Peugeot, autos usados Tucumán, concesionaria oficial Peugeot, vehículos usados con garantía',
   defaultImage: '/images/og-image.jpg',
-  twitterHandle: '@indianausados', // Actualizar si tienen cuenta de Twitter
+  twitterHandle: '@indianapeugeot', // Actualizar si tienen cuenta de Twitter
+  
+  // Datos del negocio para Structured Data
+  business: {
+    name: 'Indiana Peugeot',
+    legalName: 'Indiana Peugeot',
+    address: {
+      addressCountry: 'AR',
+      addressLocality: 'Tucumán',
+      addressRegion: 'Tucumán'
+    },
+    brand: 'Peugeot',
+    type: 'AutomotiveBusiness'
+  },
   
   // Configuración de páginas estáticas para sitemap
   staticPages: {

@@ -12,7 +12,8 @@ import { CardDetalle, SimilarVehiclesCarousel, PriceRangeCarousel } from '@vehic
 import { ErrorState } from '@ui'
 import { DetalleSkeleton } from '@shared'
 import { useScrollPosition } from '@hooks'
-import { VehicleSEOHead, SEOHead } from '@components/SEO'
+import { VehicleSEOHead, SEOHead, StructuredData } from '@components/SEO'
+import { SEO_CONFIG } from '@config/seo'
 import styles from './VehiculoDetalle.module.css'
 
 const VehiculoDetalle = () => {
@@ -81,9 +82,77 @@ const VehiculoDetalle = () => {
         )
     }
 
+    // Structured Data: Product para vehículo usado
+    const productSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: `${auto.marca || ''} ${auto.modelo || ''}`.trim(),
+        brand: {
+            '@type': 'Brand',
+            name: auto.marca || ''
+        },
+        description: `${auto.marca || ''} ${auto.modelo || ''} ${auto.anio || ''} usado en venta en Tucumán. ${auto.kilometraje ? `${auto.kilometraje.toLocaleString('es-AR')} km` : ''}${auto.transmision ? `, ${auto.transmision}` : ''}${auto.combustible ? `, ${auto.combustible}` : ''}.`,
+        image: auto.fotoPrincipal || '',
+        url: `${SEO_CONFIG.siteUrl}/vehiculo/${auto.id}`,
+        category: 'Automotive',
+        itemCondition: 'https://schema.org/UsedCondition',
+        offers: {
+            '@type': 'Offer',
+            priceCurrency: 'ARS',
+            price: auto.precio || 0,
+            availability: 'https://schema.org/InStock',
+            url: `${SEO_CONFIG.siteUrl}/vehiculo/${auto.id}`,
+            seller: {
+                '@type': 'AutomotiveBusiness',
+                name: SEO_CONFIG.business.name,
+                address: {
+                    '@type': 'PostalAddress',
+                    addressLocality: SEO_CONFIG.business.address.addressLocality,
+                    addressRegion: SEO_CONFIG.business.address.addressRegion,
+                    addressCountry: SEO_CONFIG.business.address.addressCountry
+                }
+            }
+        },
+        // Propiedades adicionales del vehículo
+        ...(auto.anio && { productionDate: `${auto.anio}` }),
+        ...(auto.kilometraje && { mileageFromOdometer: {
+            '@type': 'QuantitativeValue',
+            value: auto.kilometraje,
+            unitCode: 'KMT'
+        }})
+    }
+
+    // Breadcrumb para detalle
+    const breadcrumbSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Inicio',
+                item: SEO_CONFIG.siteUrl
+            },
+            {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Autos Usados',
+                item: `${SEO_CONFIG.siteUrl}/usados`
+            },
+            {
+                '@type': 'ListItem',
+                position: 3,
+                name: `${auto.marca || ''} ${auto.modelo || ''}`.trim(),
+                item: `${SEO_CONFIG.siteUrl}/vehiculo/${auto.id}`
+            }
+        ]
+    }
+
     return (
         <>
             <VehicleSEOHead vehicle={auto} />
+            <StructuredData schema={productSchema} id="vehicle-product" />
+            <StructuredData schema={breadcrumbSchema} id="vehicle-breadcrumb" />
             <div className={styles.container}>
             {/* Botón de volver con preservación de scroll */}
             <div className={styles.backButton}>

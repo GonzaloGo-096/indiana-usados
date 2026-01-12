@@ -285,19 +285,21 @@ export const useVehicleSEO = (vehicle) => {
  * Hook específico para listado de vehículos
  * 
  * @param {number} vehicleCount - Cantidad de vehículos disponibles
+ * @param {boolean} noindex - Si debe tener noindex (para filtros/paginaciones)
  */
-export const useVehiclesListSEO = (vehicleCount = 0) => {
-  const title = 'Catálogo de Autos Usados'
+export const useVehiclesListSEO = (vehicleCount = 0, noindex = false) => {
+  const title = 'Autos Usados en Tucumán | Concesionaria Multimarca | Indiana Peugeot'
   const description = vehicleCount > 0
-    ? `Explorá nuestro catálogo completo de autos usados. Más de ${vehicleCount} vehículos disponibles con garantía. Filtrá por marca, modelo, precio y más.`
-    : 'Explorá nuestro catálogo completo de autos usados. Amplia selección de vehículos usados con garantía. Filtrá por marca, modelo, precio y más.'
+    ? `Concesionaria de autos usados en Tucumán. Más de ${vehicleCount} vehículos usados multimarca disponibles con garantía. Filtrá por marca, modelo, precio y más.`
+    : 'Concesionaria de autos usados en Tucumán. Amplia selección de vehículos usados multimarca con garantía, financiamiento y servicio postventa profesional.'
 
   return useSEO({
     title,
     description,
-    keywords: 'catálogo autos usados, vehículos usados disponibles, comprar auto usado, autos usados con garantía',
+    keywords: 'autos usados Tucumán, concesionaria autos usados, vehículos usados con garantía, comprar auto usado Tucumán, autos usados multimarca',
     url: '/usados',
-    type: 'website'
+    type: 'website',
+    noindex
   })
 }
 

@@ -17,11 +17,12 @@
 
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { SEOHead } from '@components/SEO'
+import { SEOHead, StructuredData } from '@components/SEO'
 import { getBrandIcon } from '@components/ui/icons'
 import { VersionTabs, VersionContent, VersionCarousel, ModelGallery, FeatureSection, DimensionsSection, ScrollParallaxTransition208, ScrollParallaxTransition2008 } from '@components/ceroKm'
 import { useModeloSelector } from '@hooks/ceroKm'
 import { existeModelo } from '@data/modelos'
+import { SEO_CONFIG } from '@config/seo'
 import styles from './CeroKilometroDetalle.module.css'
 
 const CeroKilometroDetalle = () => {
@@ -57,15 +58,47 @@ const CeroKilometroDetalle = () => {
   // Obtener ícono de marca dinámicamente
   const BrandIcon = getBrandIcon(modelo.marca)
 
+  // Structured Data: Product para modelo Peugeot 0km
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `${modelo.marca} ${modelo.nombre}`,
+    brand: {
+      '@type': 'Brand',
+      name: modelo.marca
+    },
+    description: modelo.seo.description || `Peugeot ${modelo.nombre} 0km disponible en Indiana Peugeot, concesionaria oficial en Tucumán`,
+    image: modelo.heroImage?.url || modelo.src,
+    url: `${SEO_CONFIG.siteUrl}/0km/${autoSlug}`,
+    category: 'Automotive',
+    offers: {
+      '@type': 'Offer',
+      availability: 'https://schema.org/InStock',
+      priceCurrency: 'ARS',
+      url: `${SEO_CONFIG.siteUrl}/0km/${autoSlug}`,
+      seller: {
+        '@type': 'AutomotiveBusiness',
+        name: SEO_CONFIG.business.name,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: SEO_CONFIG.business.address.addressLocality,
+          addressRegion: SEO_CONFIG.business.address.addressRegion,
+          addressCountry: SEO_CONFIG.business.address.addressCountry
+        }
+      }
+    }
+  }
+
   return (
     <>
       <SEOHead
-        title={modelo.seo.title}
-        description={modelo.seo.description}
-        keywords={modelo.seo.keywords}
+        title={`${modelo.marca} ${modelo.nombre} 0km en Tucumán | Concesionaria Oficial | Indiana Peugeot`}
+        description={modelo.seo.description || `Peugeot ${modelo.nombre} 0km disponible en Indiana Peugeot, concesionaria oficial en Tucumán. Financiación disponible.`}
+        keywords={`${modelo.marca} ${modelo.nombre} 0km Tucumán, Peugeot ${modelo.nombre} precio, concesionaria Peugeot ${modelo.nombre}`}
         url={`/0km/${autoSlug}`}
         type="product"
       />
+      <StructuredData schema={productSchema} id="0km-product" />
       
       <div className={styles.page}>
         {/* Hero Image (solo desktop) - Al inicio */}

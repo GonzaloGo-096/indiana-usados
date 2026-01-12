@@ -221,7 +221,8 @@ const generateSitemap = (vehicles = []) => {
   // Configuración de páginas estáticas
   const staticPages = {
     '/': { changefreq: 'daily', priority: '1.0' },
-    '/vehiculos': { changefreq: 'daily', priority: '0.9' },
+    '/0km': { changefreq: 'daily', priority: '0.9' },
+    '/usados': { changefreq: 'daily', priority: '0.9' },
     '/nosotros': { changefreq: 'monthly', priority: '0.6' },
     '/postventa': { changefreq: 'monthly', priority: '0.8' }
   }

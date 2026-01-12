@@ -54,7 +54,8 @@ Disallow: /*?*404*
 # ===== PERMITIR DESPUÉS (más general) =====
 # Páginas públicas principales
 Allow: /
-Allow: /vehiculos
+Allow: /0km
+Allow: /usados
 Allow: /vehiculo/
 Allow: /nosotros
 Allow: /postventa
@@ -76,7 +77,7 @@ User-agent: *
 
 # ===== SITEMAP =====
 # Ubicación del sitemap (se genera dinámicamente)
-Sitemap: https://indianausados.com/sitemap.xml
+Sitemap: https://indiana.com.ar/sitemap.xml
 
 # ===== NOTAS =====
 # - Las rutas /vehiculo/:id son dinámicas y se incluyen en el sitemap

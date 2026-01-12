@@ -41,7 +41,7 @@ export const normalizeImageUrl = (imageUrl, siteUrl = null) => {
   // Si no tenemos siteUrl, usar valor por defecto
   // (la configuración SEO se pasa desde useSEO.js)
   if (!siteUrl) {
-    siteUrl = 'https://indianausados.com'
+    siteUrl = 'https://indiana.com.ar'
   }
   
   // Si es relativa, convertir a absoluta

@@ -42,7 +42,8 @@ import { requestIdle, shouldPreloadOnIdle } from '@utils/preload'
 import { AutosGrid, BrandsCarousel } from '@vehicles'
 import FilterFormSimple from '@vehicles/Filters/FilterFormSimple'
 import SortDropdown from '@vehicles/Filters/SortDropdown'
-import { VehiclesListSEOHead } from '@components/SEO'
+import { VehiclesListSEOHead, StructuredData } from '@components/SEO'
+import { SEO_CONFIG } from '@config/seo'
 import styles from './Vehiculos.module.css'
 
 const Vehiculos = () => {
@@ -187,9 +188,73 @@ const Vehiculos = () => {
         return isLoading || isLoadingMore
     }, [isLoading, isLoadingMore])
 
+    // Detectar si hay filtros activos para aplicar noindex
+    const hasFilters = useMemo(() => {
+        return isFiltered || selectedSort !== null
+    }, [isFiltered, selectedSort])
+
+    // Structured Data: ItemList + BreadcrumbList para /usados
+    const structuredData = useMemo(() => {
+        const itemList = {
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Catálogo de Autos Usados',
+            description: `Amplia selección de vehículos usados multimarca en Tucumán. ${total > 0 ? `Más de ${total} vehículos disponibles` : 'Vehículos usados con garantía'}`,
+            numberOfItems: total,
+            itemListElement: sortedVehicles.slice(0, 10).map((vehicle, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                item: {
+                    '@type': 'Product',
+                    name: `${vehicle.marca || ''} ${vehicle.modelo || ''}`.trim(),
+                    brand: {
+                        '@type': 'Brand',
+                        name: vehicle.marca || ''
+                    },
+                    url: `${SEO_CONFIG.siteUrl}/vehiculo/${vehicle.id}`,
+                    image: vehicle.fotoPrincipal || '',
+                    offers: {
+                        '@type': 'Offer',
+                        priceCurrency: 'ARS',
+                        price: vehicle.precio || 0,
+                        availability: 'https://schema.org/InStock',
+                        itemCondition: 'https://schema.org/UsedCondition'
+                    }
+                }
+            }))
+        }
+
+        const breadcrumb = {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+                {
+                    '@type': 'ListItem',
+                    position: 1,
+                    name: 'Inicio',
+                    item: SEO_CONFIG.siteUrl
+                },
+                {
+                    '@type': 'ListItem',
+                    position: 2,
+                    name: 'Autos Usados',
+                    item: `${SEO_CONFIG.siteUrl}/usados`
+                }
+            ]
+        }
+
+        return { itemList, breadcrumb }
+    }, [sortedVehicles, total])
+
     return (
         <div className={styles.page}>
-            <VehiclesListSEOHead vehicleCount={total} />
+            <VehiclesListSEOHead vehicleCount={total} noindex={hasFilters} />
+            {!hasFilters && (
+                <>
+                    <StructuredData schema={structuredData.itemList} id="usados-itemlist" />
+                    <StructuredData schema={structuredData.breadcrumb} id="usados-breadcrumb" />
+                </>
+            )}
             
             {/* ✅ Título en contenedor independiente */}
             <div className={styles.titleContainer}>

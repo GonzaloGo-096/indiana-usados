@@ -49,7 +49,7 @@ const getSitemapConfig = () => {
     return {
       siteUrl: process.env.VITE_SITE_URL || process.env.VERCEL_URL 
         ? `https://${process.env.VERCEL_URL}` 
-        : 'https://indianausados.com',
+        : 'https://indiana.com.ar',
       staticPages: {
         '/': { changefreq: 'daily', priority: '1.0' },
         '/usados': { changefreq: 'daily', priority: '0.9' },
@@ -68,7 +68,7 @@ const getSitemapConfig = () => {
   // En browser, intentar importar configuración centralizada
   // (fallback si no está disponible)
   return {
-    siteUrl: 'https://indianausados.com',
+    siteUrl: 'https://indiana.com.ar',
     staticPages: {
       '/': { changefreq: 'daily', priority: '1.0' },
       '/usados': { changefreq: 'daily', priority: '0.9' },

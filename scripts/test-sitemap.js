@@ -127,8 +127,8 @@ try {
       { name: 'Tiene XML declaration', test: sitemapContent.includes('<?xml version="1.0"') },
       { name: 'Tiene urlset', test: sitemapContent.includes('<urlset') },
       { name: 'Tiene namespace image', test: sitemapContent.includes('xmlns:image') },
-      { name: 'Tiene URL home', test: sitemapContent.includes('<loc>https://indianausados.com</loc>') },
-      { name: 'Tiene URL /vehiculos', test: sitemapContent.includes('<loc>https://indianausados.com/vehiculos</loc>') },
+      { name: 'Tiene URL home', test: sitemapContent.includes('<loc>https://indiana.com.ar</loc>') },
+      { name: 'Tiene URL /usados', test: sitemapContent.includes('<loc>https://indiana.com.ar/usados</loc>') },
       { name: 'Cierra urlset correctamente', test: sitemapContent.includes('</urlset>') }
     ]
     
@@ -192,15 +192,15 @@ try {
   const { generateSitemap } = generateSitemapModule
   
   // Generar sitemap con datos mock
-  const sitemap = generateSitemap(mockVehicles, { siteUrl: 'https://indianausados.com' })
+  const sitemap = generateSitemap(mockVehicles, { siteUrl: 'https://indiana.com.ar' })
   
   // Validar resultado
   const checks = [
     { name: 'Genera XML válido', test: sitemap.includes('<?xml') && sitemap.includes('</urlset>') },
-    { name: 'Incluye páginas estáticas', test: sitemap.includes('/vehiculos') && sitemap.includes('/nosotros') },
+    { name: 'Incluye páginas estáticas', test: sitemap.includes('/usados') && sitemap.includes('/nosotros') },
     { name: 'Incluye vehículos válidos', test: sitemap.includes('/vehiculo/123') && sitemap.includes('/vehiculo/456') },
     { name: 'Excluye vehículos inválidos', test: !sitemap.includes('/vehiculo/789') },
-    { name: 'Normaliza URLs de imágenes', test: sitemap.includes('https://indianausados.com/images/ford.jpg') },
+    { name: 'Normaliza URLs de imágenes', test: sitemap.includes('https://indiana.com.ar/images/ford.jpg') },
     { name: 'Incluye imágenes', test: sitemap.includes('<image:image>') }
   ]
   
@@ -273,7 +273,7 @@ log.info('Pruebas completadas')
 console.log('\n📝 Notas:')
 log.info('La función serverless solo funciona en Vercel o con vercel dev')
 log.info('Para probar localmente: npm install -g vercel && vercel dev')
-log.info('En producción, el sitemap estará en: https://indianausados.com/sitemap.xml')
+log.info('En producción, el sitemap estará en: https://indiana.com.ar/sitemap.xml')
 console.log('')
 
 

@@ -51,9 +51,10 @@ export const VehicleSEOHead = ({ vehicle }) => {
  * 
  * @param {Object} props
  * @param {number} props.vehicleCount - Cantidad de vehículos
+ * @param {boolean} props.noindex - Si debe tener noindex (para filtros/paginaciones)
  */
-export const VehiclesListSEOHead = ({ vehicleCount = 0 }) => {
-  useVehiclesListSEO(vehicleCount)
+export const VehiclesListSEOHead = ({ vehicleCount = 0, noindex = false }) => {
+  useVehiclesListSEO(vehicleCount, noindex)
   return null
 }
 

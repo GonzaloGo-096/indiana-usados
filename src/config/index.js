@@ -142,7 +142,7 @@ const getFeaturesConfig = () => {
 // ===== CONFIGURACIÓN DE CONTACTO =====
 const getContactConfig = () => {
   return {
-    email: import.meta.env.VITE_CONTACT_EMAIL || 'info@indianausados.com',
+    email: import.meta.env.VITE_CONTACT_EMAIL || 'info@indiana.com.ar',
     whatsapp: import.meta.env.VITE_CONTACT_WHATSAPP || '5491112345678'
   }
 }
