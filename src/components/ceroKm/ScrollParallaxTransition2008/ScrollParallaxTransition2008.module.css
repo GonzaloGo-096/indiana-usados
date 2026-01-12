@@ -1,0 +1,233 @@
+/**
+ * ScrollParallaxTransition2008.module.css - Estilos del efecto parallax premium
+ * 
+ * Sección con altura extendida que permite scroll controlado.
+ * Fondo oscuro que transiciona a blanco, con vehículo desplazándose horizontalmente.
+ * 
+ * @author Indiana Usados
+ * @version 1.0.0
+ */
+
+/* ===== SECTION CONTAINER ===== */
+.transitionSection {
+  position: relative;
+  width: 100%;
+  /* Altura aumentada para dar más espacio al texto y tiempo al auto */
+  height: 90vh; /* Mobile: 90vh (aumentado de 75vh) - Más espacio para texto y título */
+  overflow: hidden; /* Evitar scroll horizontal */
+  /* Aislar cálculos de layout/paint */
+  contain: layout paint;
+}
+
+/* Desktop: altura aumentada para dar más espacio al texto y tiempo al auto */
+@media (min-width: 992px) {
+  .transitionSection {
+    height: 100vh; /* Desktop: 100vh (aumentado de 75vh) - Más espacio para texto y movimiento */
+  }
+}
+
+/* ===== FONDO OSCURO CON GRADIENTE A AZUL ===== */
+.darkBackground {
+  position: absolute;
+  inset: 0;
+  /* Fondo oscuro que transiciona a azul Indiana oscuro con gradiente vertical */
+  background: linear-gradient(
+    to bottom,
+    var(--color-neutral-900) 0%,
+    var(--color-neutral-900) 55%,
+    var(--color-neutral-800) 70%,
+    var(--color-brand-900) 80%,
+    var(--color-brand-800) 90%,
+    var(--color-brand-800) 100%
+  );
+  z-index: 1;
+}
+
+.lightBackground {
+  position: absolute;
+  inset: 0;
+  background: var(--color-brand-800);
+  z-index: 0;
+}
+
+/* ===== CONTENEDOR DEL VEHÍCULO ===== */
+.vehicleWrapper {
+  position: absolute;
+  /* Posición base: el movimiento se controla completamente con transform (no right/left) */
+  right: 0;
+  bottom: 8%;
+  z-index: 2;
+  /* Transform se aplica via inline style desde JS */
+  /* will-change se aplica dinámicamente cuando isActive */
+  pointer-events: none; /* No interceptar clicks */
+}
+
+/* Mobile: acercar auto al texto */
+@media (max-width: 991px) {
+  .vehicleWrapper {
+    bottom: 15%; /* Subir el auto para acercarlo al texto */
+  }
+}
+
+/* Desktop: ajustar posición vertical */
+@media (min-width: 992px) {
+  .vehicleWrapper {
+    bottom: 5%;
+  }
+}
+
+/* ===== IMAGEN DEL VEHÍCULO ===== */
+.vehicleImage {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: none;
+  /* Evitar layout shift - dimensiones reservadas */
+  object-fit: contain;
+  /* Optimización de renderizado */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Mobile: mostrar imagen mobile, ocultar desktop */
+.vehicleImageMobile {
+  display: block;
+  /* Altura reducida para mobile - auto más pequeño */
+  height: 35vh;
+  max-height: 240px;
+  min-height: 180px;
+}
+
+.vehicleImageDesktop {
+  display: none;
+}
+
+/* Desktop: mostrar imagen desktop, ocultar mobile */
+@media (min-width: 992px) {
+  .vehicleImageMobile {
+    display: none;
+  }
+
+  .vehicleImageDesktop {
+    display: block;
+    /* Altura reducida para desktop - auto más pequeño */
+    height: 45vh;
+    max-height: 420px;
+    min-height: 300px;
+  }
+}
+
+
+/* ===== ACCESIBILIDAD ===== */
+@media (prefers-reduced-motion: reduce) {
+  .transitionSection {
+    /* Reducir altura para usuarios que prefieren movimiento reducido */
+    height: 100vh;
+  }
+
+  .vehicleWrapper {
+    /* Desactivar movimiento para usuarios que prefieren movimiento reducido */
+    transform: translate3d(0, 0, 0) !important;
+  }
+}
+
+/* ===== CONTENEDOR DE TEXTO ===== */
+.textContainer {
+  position: relative;
+  z-index: 3;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  text-align: center;
+}
+
+/* Mobile: menos espacio entre contenido y auto */
+@media (max-width: 991px) {
+  .textContainer {
+    padding: 15px 24px 10px 24px; /* Reducido considerablemente para acercar al auto */
+    margin-bottom: -40px; /* Acercar mucho más al auto */
+  }
+  
+  .mainTitle {
+    margin-bottom: 12px; /* Menos espacio entre títulos */
+    font-size: clamp(2rem, 6vw, 3rem); /* Más pequeño en mobile */
+  }
+  
+  .title {
+    margin-bottom: 16px; /* Menos espacio */
+  }
+}
+
+/* Título principal (arriba del título) */
+.mainTitle {
+  margin: 0 0 16px 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  /* Optimización para animación */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+.title {
+  margin: 0 0 24px 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  /* Optimización para animación */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+.text {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(1.125rem, 3vw, 1.25rem);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  /* Optimización para animación */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+/* Desktop: ajustar posición del texto con más espacio */
+@media (min-width: 992px) {
+  .textContainer {
+    padding: 80px 48px;
+    max-width: 800px;
+  }
+
+  .title {
+    margin-bottom: 32px;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  .text {
+    font-size: 1.25rem;
+    line-height: 1.8;
+  }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+/* Aislar la sección para mejorar performance */
+.transitionSection {
+  /* Contener repaints dentro de la sección */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.vehicleWrapper {
+  /* Hardware acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+

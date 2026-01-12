@@ -285,3 +285,4 @@ setTimeout(() => setSuccessMessage(null), 3000)
 
 **Conclusión**: El dashboard es funcional pero necesita mejoras de profesionalismo y UX para ser de nivel empresarial.
 
+
