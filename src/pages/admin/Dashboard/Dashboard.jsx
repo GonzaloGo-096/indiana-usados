@@ -13,6 +13,7 @@ import vehiclesService from '@services/vehiclesApi'
 import { toAdminListItem } from '@mappers'
 import { normalizeDetailToFormInitialData, unwrapDetail } from '@components/admin/mappers/normalizeForForm'
 import { Alert, ConfirmModal } from '@ui'
+import DashboardFilters from '@components/admin/DashboardFilters'
 
 import { useNavigate } from 'react-router-dom'
 import LazyCarForm from '@components/admin/CarForm/LazyCarForm'
@@ -32,9 +33,12 @@ const Dashboard = () => {
     const { logout } = useAuth()
     const navigate = useNavigate()
     
+    // ✅ ESTADO DE FILTROS
+    const [filters, setFilters] = useState({})
+    
     // ✅ HOOK UNIFICADO: React Query con cache, retry y abort signal
     const { vehicles, isLoading, error, refetch, hasNextPage, loadMore, isLoadingMore } = useVehiclesList(
-        {}, // sin filtros - Dashboard muestra todos los vehículos
+        filters, // filtros dinámicos
         { pageSize: 50 } // carga 50 vehículos para admin
     )
     
@@ -318,6 +322,12 @@ const Dashboard = () => {
                     </div>
                 )}
 
+                {/* ✅ FILTROS DEL DASHBOARD */}
+                <DashboardFilters 
+                    filters={filters}
+                    onFiltersChange={setFilters}
+                />
+
                 {/* Vehicles List */}
                 <div className={styles.vehiclesList}>
                     <h2>Lista de Vehículos ({vehicles.length})</h2>
@@ -345,9 +355,23 @@ const Dashboard = () => {
                                     />
                                 </div>
                                 <div className={styles.vehicleDetails}>
-                                    <h3>{item.marca} {item.modelo}</h3>
-                                    <p>Año: {item.anio} | Km: {item.kilometraje.toLocaleString()}</p>
-                                    <p>Precio: ${item.precio.toLocaleString()}</p>
+                                    <div className={styles.vehicleTitle}>
+                                        <h3>{item.marca} {item.modelo}</h3>
+                                    </div>
+                                    <div className={styles.vehicleData}>
+                                        <div className={styles.dataItem}>
+                                            <span className={styles.dataLabel}>Año</span>
+                                            <span className={styles.dataValue}>{item.anio}</span>
+                                        </div>
+                                        <div className={styles.dataItem}>
+                                            <span className={styles.dataLabel}>Kilometraje</span>
+                                            <span className={styles.dataValue}>{item.kilometraje.toLocaleString()} km</span>
+                                        </div>
+                                        <div className={styles.dataItem}>
+                                            <span className={styles.dataLabel}>Precio</span>
+                                            <span className={styles.dataValuePrice}>${item.precio.toLocaleString()}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
