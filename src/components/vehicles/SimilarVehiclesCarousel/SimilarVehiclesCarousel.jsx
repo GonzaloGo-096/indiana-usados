@@ -15,9 +15,10 @@
  * @version 1.0.0
  */
 
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef, useCallback, useState, useEffect } from 'react'
 import { CardSimilar } from '@vehicles'
 import { useSimilarVehicles } from '@hooks'
+import { ChevronIcon } from '@components/ui/icons'
 import styles from './SimilarVehiclesCarousel.module.css'
 
 /**
@@ -39,6 +40,96 @@ const SkeletonCard = () => (
  */
 export const SimilarVehiclesCarousel = ({ currentVehicle }) => {
   const { vehicles, isLoading, isError } = useSimilarVehicles(currentVehicle)
+  const carouselRef = useRef(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false) // ✅ Inicializar en false, se actualizará al cargar
+
+  // ✅ Función para actualizar el estado de las flechas
+  const updateArrowVisibility = useCallback(() => {
+    if (!carouselRef.current) return
+    
+    const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current
+    
+    // Verificar si hay scroll disponible (con tolerancia de 5px para evitar problemas de redondeo)
+    const hasScroll = scrollWidth > clientWidth + 5
+    
+    if (!hasScroll) {
+      // No hay scroll disponible, ocultar ambas flechas
+      setCanScrollLeft(false)
+      setCanScrollRight(false)
+      return
+    }
+    
+    // Hay scroll disponible, verificar posición
+    const isAtStart = scrollLeft <= 5 // Tolerancia de 5px
+    const isAtEnd = Math.abs(scrollLeft + clientWidth - scrollWidth) <= 5 // Tolerancia de 5px
+    
+    setCanScrollLeft(!isAtStart)
+    setCanScrollRight(!isAtEnd)
+  }, [])
+
+  // ✅ Efecto para actualizar visibilidad al cargar y al cambiar vehículos
+  useEffect(() => {
+    if (!isLoading && vehicles && vehicles.length > 0) {
+      // Múltiples intentos para asegurar que el DOM esté renderizado
+      const timer1 = setTimeout(() => {
+        updateArrowVisibility()
+      }, 100)
+      const timer2 = setTimeout(() => {
+        updateArrowVisibility()
+      }, 300)
+      const timer3 = setTimeout(() => {
+        updateArrowVisibility()
+      }, 500)
+      return () => {
+        clearTimeout(timer1)
+        clearTimeout(timer2)
+        clearTimeout(timer3)
+      }
+    }
+  }, [isLoading, vehicles, updateArrowVisibility])
+
+  // ✅ Listener de scroll para actualizar flechas
+  useEffect(() => {
+    const carousel = carouselRef.current
+    if (!carousel) return
+
+    carousel.addEventListener('scroll', updateArrowVisibility)
+    // También actualizar al redimensionar
+    window.addEventListener('resize', updateArrowVisibility)
+
+    return () => {
+      carousel.removeEventListener('scroll', updateArrowVisibility)
+      window.removeEventListener('resize', updateArrowVisibility)
+    }
+  }, [updateArrowVisibility])
+
+  // ✅ Funciones de scroll
+  const scrollLeft = useCallback(() => {
+    if (carouselRef.current) {
+      const cardWidth = carouselRef.current.querySelector(`.${styles.cardWrapper}`)?.offsetWidth || 320
+      // Calcular gap desde el estilo computado
+      const computedStyle = window.getComputedStyle(carouselRef.current)
+      const gap = parseFloat(computedStyle.gap) || 24
+      carouselRef.current.scrollBy({
+        left: -(cardWidth + gap),
+        behavior: 'smooth'
+      })
+    }
+  }, [])
+
+  const scrollRight = useCallback(() => {
+    if (carouselRef.current) {
+      const cardWidth = carouselRef.current.querySelector(`.${styles.cardWrapper}`)?.offsetWidth || 320
+      // Calcular gap desde el estilo computado
+      const computedStyle = window.getComputedStyle(carouselRef.current)
+      const gap = parseFloat(computedStyle.gap) || 24
+      carouselRef.current.scrollBy({
+        left: cardWidth + gap,
+        behavior: 'smooth'
+      })
+    }
+  }, [])
 
   // ✅ No mostrar si no hay vehículos similares
   const shouldShow = useMemo(() => {
@@ -62,7 +153,17 @@ export const SimilarVehiclesCarousel = ({ currentVehicle }) => {
 
         {/* Carrusel horizontal */}
         <div className={styles.carouselWrapper}>
-          <div className={styles.carouselContainer}>
+          {/* Flecha izquierda - Solo desktop y solo si se puede desplazar a la izquierda */}
+          <button
+            className={`${styles.arrowButton} ${!canScrollLeft ? styles.arrowButtonHidden : ''}`}
+            onClick={scrollLeft}
+            aria-label="Desplazar hacia la izquierda"
+            type="button"
+          >
+            <ChevronIcon direction="left" size={24} />
+          </button>
+          
+          <div ref={carouselRef} className={styles.carouselContainer}>
             {isLoading ? (
               // Skeleton loading
               <>
@@ -84,6 +185,16 @@ export const SimilarVehiclesCarousel = ({ currentVehicle }) => {
               ))
             )}
           </div>
+          
+          {/* Flecha derecha - Solo desktop y solo si se puede desplazar a la derecha */}
+          <button
+            className={`${styles.arrowButton} ${styles.arrowButtonRight} ${!canScrollRight ? styles.arrowButtonHidden : ''}`}
+            onClick={scrollRight}
+            aria-label="Desplazar hacia la derecha"
+            type="button"
+          >
+            <ChevronIcon direction="right" size={24} />
+          </button>
         </div>
       </div>
     </section>

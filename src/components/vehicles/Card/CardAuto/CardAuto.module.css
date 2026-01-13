@@ -225,31 +225,35 @@
     justify-content: space-between;
 }
 
-/* ===== CONTENEDOR 1: Logo izquierda + Datos derecha ===== */
+/* ===== CONTENEDOR 1: Logo fijo + Datos con padding ===== */
 .container1 {
     --container-border-opacity: 0.06;
     --container-border-radius-top: var(--border-radius-md);
+    --logo-space: clamp(75px, 21vw, 120px); /* ✅ Espacio reservado para logo (más grande que el logo) */
     
+    position: relative; /* ✅ Para posicionar el logo absolute */
     display: flex;
     flex-direction: row;
-    gap: 0; /* ✅ Sin gap intermedio */
-    width: fit-content; /* ✅ Se adapta al contenido - logo pegado a datos */
+    gap: 0;
+    width: 100%; /* ✅ Ocupa todo el ancho de la card */
     align-items: flex-start;
-    justify-content: flex-start; /* ✅ Todo alineado a flex-start */
+    justify-content: flex-start;
     flex-shrink: 0;
     min-height: 0;
-    border-right: none; /* ✅ Border right eliminado */
+    border-right: none;
     border-radius: var(--container-border-radius-top) var(--container-border-radius-top) 0 0;
 }
 
-/* Logo a la izquierda - Se adapta al contenido */
+/* Logo con posición fija en esquina superior derecha */
 .container1_left {
-    flex: 0 0 auto;
+    position: absolute; /* ✅ Logo fijo, no se mueve */
+    top: var(--spacing-1);
+    right: 0;
+    z-index: 1; /* ✅ Debajo de los datos */
     display: flex;
     align-items: flex-start;
-    justify-content: flex-start; /* ✅ Alineado a flex-start */
-    padding-top: var(--spacing-1);
-    width: fit-content; /* ✅ Se adapta al contenido del logo */
+    justify-content: flex-end;
+    width: fit-content;
     min-width: 0;
 }
 
@@ -288,17 +292,20 @@
     transform: scale(1.02);
 }
 
-/* Bloque de datos a la derecha - Se adapta al contenido */
+/* Bloque de datos con padding para reservar espacio del logo */
 .container1_right {
-    flex: 0 1 auto; /* ✅ No crece más de lo necesario, se adapta al contenido */
-    width: fit-content; /* ✅ Ancho se adapta al contenido horizontalmente */
-    min-width: 220px; /* ✅ Ancho mínimo sutilmente más pequeño */
+    flex: 1 1 auto; /* ✅ Ocupa el espacio disponible */
+    width: 100%; /* ✅ Ocupa todo el ancho disponible */
+    min-width: 0; /* ✅ Permite que se contraiga si es necesario */
     display: flex;
     flex-direction: column;
     gap: 0;
     justify-content: flex-start;
     align-items: flex-start;
-    overflow: visible; /* ✅ Cambiado de hidden a visible para que se vea el contenido */
+    overflow: visible;
+    padding-right: var(--logo-space); /* ✅ Reserva espacio para el logo fijo */
+    position: relative; /* ✅ Para z-index */
+    z-index: 2; /* ✅ Por encima del logo si hay solapamiento */
 }
 
 /* FILA 1: Marca + Modelo - Jerarquía mejorada */
@@ -311,12 +318,14 @@
     justify-content: flex-start;
     gap: var(--row-gap);
     width: 100%;
-    flex-wrap: nowrap;
+    flex-wrap: wrap; /* ✅ Permite que el texto se envuelva si es necesario */
     min-width: 0;
     flex-shrink: 0;
     padding-bottom: 0;
     margin-bottom: 0;
     line-height: var(--row-line-height);
+    position: relative; /* ✅ Para z-index */
+    z-index: 2; /* ✅ Por encima del logo */
 }
 
 /* Marca: Más prominente y con mayor peso */
@@ -329,7 +338,9 @@
     color: var(--color-text-primary);
     letter-spacing: -0.3px;
     flex-shrink: 0;
-    white-space: nowrap;
+    white-space: normal; /* ✅ Permite que se envuelva si es necesario */
+    position: relative;
+    z-index: 2; /* ✅ Por encima del logo */
 }
 
 /* Separador: Más sutil */
@@ -344,6 +355,8 @@
     opacity: var(--separator-opacity);
     padding: 0 calc(var(--spacing-1) * 0.5);
     flex-shrink: 0;
+    position: relative;
+    z-index: 2; /* ✅ Por encima del logo */
 }
 
 .version_separator {
@@ -369,9 +382,11 @@
     text-align: left;
     flex-shrink: 1;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow: visible; /* ✅ Permite que se vea completo */
+    text-overflow: clip; /* ✅ Sin ellipsis */
+    white-space: normal; /* ✅ Permite que se envuelva */
+    position: relative;
+    z-index: 2; /* ✅ Por encima del logo */
 }
 
 .version_text {
@@ -385,10 +400,12 @@
     letter-spacing: -0.2px;
     flex-shrink: 1;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow: visible; /* ✅ Permite que se vea completo */
+    text-overflow: clip; /* ✅ Sin ellipsis */
+    white-space: normal; /* ✅ Permite que se envuelva */
     margin-left: var(--spacing-1); /* ✅ Espacio antes de la versión */
+    position: relative;
+    z-index: 2; /* ✅ Por encima del logo */
 }
 
 /* FILA 2: Versión (debajo de marca y modelo) */

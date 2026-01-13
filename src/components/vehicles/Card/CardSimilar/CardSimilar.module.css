@@ -29,13 +29,13 @@
     --card-hover-lift-mobile: -4px;
     --card-image-zoom: 1.04;
     
-    /* Layout: Ancho adaptable al contenido, no fijo */
+    /* Layout: Ancho fijo para uniformidad */
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: fit-content; /* Adapta al contenido */
+    width: 100%; /* ✅ Ancho fijo para uniformidad */
+    max-width: 320px; /* ✅ Ancho máximo fijo (un poco más pequeño que CardAuto) */
     min-width: 240px; /* Mínimo para mobile */
-    max-width: none; /* Sin máximo, se adapta al contenido */
     
     /* Estilo visual */
     background: var(--color-white);
@@ -150,7 +150,7 @@
     justify-content: flex-start;
     gap: var(--row-gap);
     width: 100%;
-    flex-wrap: nowrap;
+    flex-wrap: wrap; /* ✅ Permite que el texto se envuelva si es necesario */
     min-width: 0;
     flex-shrink: 0;
     padding-bottom: 0;
@@ -168,7 +168,7 @@
     color: var(--color-text-primary);
     letter-spacing: -0.3px;
     flex-shrink: 0;
-    white-space: nowrap;
+    white-space: normal; /* ✅ Permite que se envuelva si es necesario */
 }
 
 /* Separador: Más sutil */
@@ -199,9 +199,9 @@
     text-align: left;
     flex-shrink: 1;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow: visible; /* ✅ Permite que se vea completo */
+    text-overflow: clip; /* ✅ Sin ellipsis */
+    white-space: normal; /* ✅ Permite que se envuelva */
 }
 
 /* Versión: Mismo tamaño que modelo, en gris */
@@ -216,9 +216,9 @@
     letter-spacing: -0.2px;
     flex-shrink: 1;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow: visible; /* ✅ Permite que se vea completo */
+    text-overflow: clip; /* ✅ Sin ellipsis */
+    white-space: normal; /* ✅ Permite que se envuelva */
     margin-left: var(--spacing-1); /* ✅ Espacio antes de la versión */
 }
 
@@ -397,7 +397,8 @@
 @media (max-width: 575px) {
     .card {
         --card-hover-lift: var(--card-hover-lift-mobile);
-        min-width: 220px; /* Más pequeño en mobile */
+        max-width: 280px; /* ✅ Ancho fijo en mobile */
+        min-width: 240px;
     }
     
     .card__body {
@@ -414,7 +415,8 @@
 /* Tablet: Espaciado medio */
 @media (min-width: 576px) {
     .card {
-        min-width: 250px;
+        max-width: 300px; /* ✅ Ancho fijo en tablet */
+        min-width: 280px;
     }
     
     .card__body {
@@ -427,7 +429,8 @@
 /* Desktop: Espaciado generoso */
 @media (min-width: 768px) {
     .card {
-        min-width: 270px;
+        max-width: 320px; /* ✅ Ancho fijo en desktop */
+        min-width: 300px;
     }
     
     .card__body {

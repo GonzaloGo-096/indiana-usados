@@ -9,7 +9,7 @@
  * - Filtra por rango de precio (precio actual ± 1.000.000)
  * - Excluye el vehículo actual de los resultados
  * - No interfiere con los filtros globales (queryKey diferente)
- * - Limitado a 6 vehículos (carrusel)
+ * - Limitado a 5 vehículos (carrusel)
  * 
  * @author Indiana Usados
  * @version 1.0.0
@@ -42,19 +42,22 @@ export const usePriceRangeVehicles = (currentVehicle) => {
   }, [currentPrice, hasValidPrice])
 
   // ✅ Reutilizar el hook existente con filtro de precio
-  const result = useVehiclesList(filters, { pageSize: 8 })
+  // Pedir 6 para asegurar 5 después de excluir el actual
+  const result = useVehiclesList(filters, { pageSize: 6 })
 
-  // ✅ Excluir el vehículo actual de los resultados
+  // ✅ Excluir el vehículo actual de los resultados y limitar a 5 máximo
   const priceRangeVehicles = useMemo(() => {
     if (!currentVehicle) return []
     
     const currentId = currentVehicle.id || currentVehicle._id
-    if (!currentId) return result.vehicles
+    if (!currentId) return result.vehicles.slice(0, 5) // ✅ Limitar a 5 máximo
 
-    return result.vehicles.filter(vehicle => {
+    const filtered = result.vehicles.filter(vehicle => {
       const vehicleId = vehicle.id || vehicle._id
       return vehicleId !== currentId
     })
+    
+    return filtered.slice(0, 5) // ✅ Limitar a 5 máximo después de filtrar
   }, [result.vehicles, currentVehicle])
 
   // ✅ Formatear el rango de precio para mostrar en UI

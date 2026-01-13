@@ -13,7 +13,6 @@
 
 // ===== CARD COMPONENTS =====
 export { CardAuto } from './Card/CardAuto/CardAuto'
-export { CardAutoCompact } from './Card/CardAutoCompact/CardAutoCompact'
 export { CardSimilar } from './Card/CardSimilar'
 
 // ===== LIST COMPONENTS =====

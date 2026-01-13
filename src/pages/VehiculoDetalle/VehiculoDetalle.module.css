@@ -209,7 +209,7 @@
   position: relative;
   text-align: center;
   padding: clamp(48px, 6vw, 64px) clamp(24px, 4vw, 48px);
-  margin: clamp(48px, 6vw, 80px) 0 0;
+  margin: clamp(48px, 6vw, 80px) 0 clamp(60px, 8vw, 80px) 0; /* ✅ Margin-bottom para separación fija */
   max-width: 800px;
   width: 100%;
   background: linear-gradient(
@@ -304,7 +304,7 @@
 
 @media (max-width: 768px) {
   .ctaSection {
-    margin: clamp(32px, 5vw, 48px) 16px 0;
+    margin: clamp(32px, 5vw, 48px) 16px clamp(60px, 8vw, 80px) 16px; /* ✅ Mismo margin-bottom que desktop */
     padding: clamp(32px, 5vw, 48px) clamp(20px, 4vw, 32px);
   }
   

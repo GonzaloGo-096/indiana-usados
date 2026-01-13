@@ -19,10 +19,8 @@ import { formatValue, formatCaja, formatPrice, formatKilometraje, formatCilindra
 import { getBrandLogo } from '@utils/getBrandLogo'
 import { useCarouselImages } from '@hooks'
 import { ImageCarousel } from '@ui/ImageCarousel'
-import { WhatsAppContact } from '@ui'
 import { AnioIcon, KmIcon, CajaIconDetalle } from '@components/ui/icons'
 import { GalleryModal } from '@components/ceroKm/ModelGallery'
-import { PlanesDelAuto } from '../PlanesDelAuto'
 import styles from './CardDetalle.module.css'
 
 /**
@@ -69,16 +67,6 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
         return getBrandLogo(vehicleData?.marca)
     }, [vehicleData?.marca])
     
-    // Memoización de información de contacto
-    const finalContactInfo = useMemo(() => {
-        const defaultInfo = {
-            email: 'info@indiana.com.ar',
-            whatsapp: '543816295959',
-            whatsappMessage: `Hola, me interesa el vehículo ${formatValue(vehicleData?.marca || '')} ${formatValue(vehicleData?.modelo || '')}`
-        }
-        return contactInfo || defaultInfo
-    }, [contactInfo, vehicleData?.marca, vehicleData?.modelo])
-
     // Transformar imágenes al formato que espera GalleryModal
     const galleryImages = useMemo(() => {
         if (!carouselImages || carouselImages.length === 0) return []
@@ -240,20 +228,8 @@ export const CardDetalle = memo(({ auto, contactInfo }) => {
                         </div>
                     </div>
                     
-                    {/* Botón de contacto WhatsApp */}
-                    <div className={styles.contactSection}>
-                        <WhatsAppContact 
-                            text="Consultar este vehículo"
-                            phone={finalContactInfo.whatsapp}
-                            message={finalContactInfo.whatsappMessage}
-                            className={styles.whatsappButton}
-                        />
-                    </div>
                 </div>
             </div>
-            
-            {/* Planes de financiación */}
-            <PlanesDelAuto auto={auto} />
             
             {/* Modal de galería */}
             {galleryImages.length > 0 && (

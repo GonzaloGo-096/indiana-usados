@@ -11,9 +11,9 @@
 /* ===== SECCIÓN PRINCIPAL ===== */
 .section {
   width: 100%;
-  margin-top: var(--spacing-12); /* ✅ Más espacio arriba para separar del carrusel anterior */
+  margin-top: 0; /* ✅ Sin margin-top, la separación viene del contacto */
   padding: var(--spacing-6) 0;
-  background: var(--color-surface);
+  background: var(--color-white); /* ✅ Mismo fondo blanco que la página */
   border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
@@ -54,6 +54,54 @@
   overflow: hidden;
 }
 
+/* ===== FLECHAS DE NAVEGACIÓN (Solo desktop) ===== */
+.arrowButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 8px; /* ✅ Más dentro del carrusel */
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+  display: none; /* ✅ Oculto por defecto (mobile) */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 20; /* ✅ Z-index más alto */
+  color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0.7; /* ✅ Más sutil */
+  padding: 0;
+  margin: 0;
+}
+
+.arrowButton:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.arrowButton:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.arrowButton:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+.arrowButtonRight {
+  left: auto;
+  right: 8px; /* ✅ Más dentro del carrusel */
+}
+
+/* Clase para ocultar flechas - se aplica solo en desktop */
+
 /* ===== CONTENEDOR DE CARRUSEL (scroll horizontal) ===== */
 .carouselContainer {
   display: flex;
@@ -64,27 +112,13 @@
   scroll-snap-type: x mandatory;
   padding: var(--spacing-2) var(--spacing-2) var(--spacing-4) var(--spacing-2);
   
-  /* Ocultar scrollbar pero mantener funcionalidad */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  /* Ocultar scrollbar completamente pero mantener funcionalidad */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
   
-  /* Webkit scrollbar styling */
+  /* Webkit scrollbar - ocultar completamente */
   &::-webkit-scrollbar {
-    height: 8px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-  }
-  
-  &::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
+    display: none; /* Chrome, Safari, Opera */
   }
   
   /* Touch scrolling optimizado para mobile */
@@ -176,7 +210,7 @@
 /* ===== RESPONSIVE: TABLET Y DESKTOP ===== */
 @media (min-width: 768px) {
   .section {
-    margin-top: var(--spacing-14); /* ✅ Más espacio arriba en tablet */
+    margin-top: 0; /* ✅ Sin margin-top, la separación viene del contacto */
     padding: var(--spacing-8) 0;
   }
   
@@ -207,7 +241,7 @@
 
 @media (min-width: 992px) {
   .section {
-    margin-top: var(--spacing-16); /* ✅ Más espacio arriba en desktop */
+    margin-top: 0; /* ✅ Sin margin-top, la separación viene del contacto */
     padding: var(--spacing-10) 0;
   }
   
@@ -217,9 +251,23 @@
   
   .carouselContainer {
     gap: var(--spacing-6);
-    /* En desktop, mostrar scrollbar más visible */
-    scrollbar-width: auto;
-    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+    /* Scrollbar oculta en desktop también */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .carouselContainer::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* ✅ Mostrar flechas solo en desktop */
+  .arrowButton {
+    display: flex !important; /* ✅ Forzar display en desktop */
+  }
+  
+  /* ✅ Ocultar flechas cuando no se puede desplazar */
+  .arrowButtonHidden {
+    display: none !important;
   }
   
   .cardWrapper {
@@ -236,7 +284,7 @@
 /* ===== MOBILE: Ajustes específicos para pantallas pequeñas ===== */
 @media (max-width: 576px) {
   .section {
-    margin-top: var(--spacing-10); /* ✅ Más espacio arriba en mobile */
+    margin-top: 0; /* ✅ Sin margin-top, la separación viene del contacto */
     padding: var(--spacing-4) 0;
   }
   

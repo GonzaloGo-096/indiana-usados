@@ -15,7 +15,6 @@ export { GlobalErrorBoundary, VehiclesErrorBoundary } from '../ErrorBoundary/Mod
 // ===== SKELETONS =====
 export { ListAutosSkeleton } from '../skeletons/ListAutosSkeleton/ListAutosSkeleton'
 export { CardAutoSkeleton } from '../skeletons/ListAutosSkeleton/CardAutoSkeleton'
-export { CardAutoCompactSkeleton } from '../skeletons/ListAutosSkeleton/CardAutoCompactSkeleton'
 export { default as DetalleSkeleton } from '../skeletons/DetalleSkeleton/DetalleSkeleton'
 export { 
   SkeletonGrid, 
