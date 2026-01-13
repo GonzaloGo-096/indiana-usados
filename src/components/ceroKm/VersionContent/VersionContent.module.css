@@ -227,31 +227,18 @@
   flex-shrink: 0;
 }
 
-/* ===== ACTIONS CONTAINER (PDF + WhatsApp + 3D) ===== */
+/* ===== ACTIONS CONTAINER (PDF) ===== */
 .actionsContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  display: flex;
+  justify-content: center; /* ✅ Centrar el botón PDF */
+  align-items: center;
   margin-top: 24px;
   width: 100%;
 }
 
-/* Si solo hay WhatsApp (sin PDF), ocupar todo el ancho */
-.actionsContainer.singleButton {
-  grid-template-columns: 1fr;
-}
-
-/* Asegurar que ambos botones ocupen exactamente 50-50 siempre */
-.actionsContainer .actionButton,
-.actionsContainer .whatsappButton {
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
 /* Botón PDF - Estilo moderno y minimalista */
-.actionButton {
-  width: 100%;
+.actionsContainer .actionButton {
+  width: auto; /* ✅ Ancho automático para centrarse */
   min-width: 0;
   padding: 12px 16px !important;
   font-size: 0.9375rem !important;
@@ -302,54 +289,23 @@
   transform: translateY(-1px);
 }
 
-/* Botón WhatsApp - Estilo con fondo blanco, borde verde WhatsApp */
-.whatsappButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem; /* 8px */
-  padding: 0.75rem 1rem; /* 12px 16px - compacto para 0km */
-  font-size: clamp(0.8125rem, 1.5vw, 0.9375rem); /* 13px - 15px adaptativo */
-  font-weight: 600;
-  font-family: var(--font-poppins); /* Fuente de la sección 0km */
-  line-height: 1;
-  color: var(--color-black, #000000); /* Texto negro */
-  background: var(--color-white); /* Fondo blanco */
-  border: 2px solid #25D366; /* Borde verde WhatsApp oficial */
-  border-radius: var(--border-radius-md); /* 8px */
-  text-decoration: none;
-  cursor: pointer;
-  transition: all var(--transition-fast);
+/* Botón WhatsApp - Usa el componente WhatsAppContact con estilos adaptados */
+.whatsappButtonWrapper .whatsappButton {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
-  text-align: center;
-  overflow: hidden; /* Evitar desbordamiento */
 }
 
-.whatsappButton span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 1;
-  min-width: 0;
+/* Cuando está solo (sin PDF), centrar y limitar ancho máximo */
+.actionsContainer.singleButton .whatsappButtonWrapper {
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.whatsappButton:hover {
-  background: #f0f0f0; /* Fondo gris claro en hover */
-  border-color: #128C7E; /* Borde verde más oscuro en hover */
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
-}
-
-.whatsappButton:active {
-  transform: translateY(0);
-  background: #e5e5e5;
-}
-
-.whatsappButton:focus-visible {
-  outline: 2px solid #25D366;
-  outline-offset: 2px;
+.actionsContainer.singleButton .whatsappButtonWrapper .whatsappButton {
+  width: 100%;
+  max-width: 100%;
 }
 
 .actionIcon {

@@ -49,3 +49,4 @@ export const StructuredData = ({ schema, id = 'structured-data' }) => {
 
 export default StructuredData
 
+

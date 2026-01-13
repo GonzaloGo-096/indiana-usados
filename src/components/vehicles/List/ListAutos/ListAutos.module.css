@@ -155,40 +155,46 @@
     }
 }
 
-/* Tablet: 2 columnas con tamaño fijo (desde 768px) */
-@media (min-width: 768px) {
+/* Tablet: 2 columnas flexibles (desde 768px hasta 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
     .grid {
-        grid-template-columns: repeat(2, 380px);
-        gap: clamp(20px, 5vw, 40px); /* ✅ Gap reducido: De 28-56px a 20-40px */
+        grid-template-columns: repeat(2, minmax(280px, 1fr)); /* ✅ Flexible: mínimo 280px, máximo 1fr */
+        gap: clamp(16px, 3vw, 24px); /* ✅ Gap reducido para tablets */
         justify-content: center;
         padding: 0;
-        max-width: fit-content; /* ✅ Ajustarse al contenido: 2 columnas (760px) + 1 gap (hasta 40px) = ~800px */
-        width: fit-content; /* ✅ Ajustarse al contenido */
+        max-width: 100%; /* ✅ CRÍTICO: No exceder el contenedor */
+        width: 100%; /* ✅ Ocupar ancho disponible */
+        box-sizing: border-box;
     }
 }
 
-/* Desktop: 3 columnas con tamaño fijo (desde 992px) */
+/* Desktop: Grid adaptativo - 2 o 3 columnas según espacio disponible (desde 992px) */
+/* Cálculo: 3 columnas (380px * 3 = 1140px) + 2 gaps (48px * 2 = 96px) + padding (30px) = ~1266px mínimo */
+/* Si el viewport es menor a ~1300px, usar 2 columnas automáticamente */
 @media (min-width: 992px) {
     .grid {
-        grid-template-columns: repeat(3, 380px);
-        gap: clamp(24px, 4vw, 48px); /* ✅ Gap reducido: De 30-60px a 24-48px */
+        /* ✅ Grid adaptativo: automáticamente ajusta entre 2 y 3 columnas según espacio */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 380px));
+        gap: clamp(24px, 4vw, 48px);
         justify-content: center;
         margin: 0 auto;
-        max-width: fit-content; /* ✅ Ajustarse al contenido: 3 columnas (1140px) + 2 gaps (hasta 96px) = ~1236px */
-        width: fit-content; /* ✅ Ajustarse al contenido */
+        max-width: 100%; /* ✅ CRÍTICO: No exceder el contenedor */
+        width: 100%; /* ✅ Ocupar ancho disponible */
+        box-sizing: border-box;
     }
 }
 
-/* Desktop XL: Mantener 3 columnas con tamaño fijo (desde 1200px) */
-@media (min-width: 1200px) {
+/* Desktop grande: Forzar 3 columnas cuando hay espacio suficiente (desde 1300px) */
+/* A partir de 1300px garantizamos que siempre caben 3 columnas cómodamente */
+@media (min-width: 1300px) {
     .grid {
-        grid-template-columns: repeat(3, 380px);
-        gap: clamp(24px, 4vw, 48px); /* ✅ Gap reducido: De 32-64px a 24-48px */
+        grid-template-columns: repeat(3, 380px); /* ✅ Forzar 3 columnas en pantallas grandes */
+        gap: clamp(24px, 4vw, 48px);
         justify-content: center;
         margin: 0 auto;
-        max-width: fit-content; /* ✅ Ajustarse al contenido: 3 columnas (1140px) + 2 gaps (hasta 128px) = ~1268px */
-        width: fit-content; /* ✅ Ajustarse al contenido */
-        padding: 0;
+        max-width: fit-content; /* ✅ Ajustarse al contenido cuando hay espacio */
+        width: fit-content;
+        box-sizing: border-box;
     }
 }
 

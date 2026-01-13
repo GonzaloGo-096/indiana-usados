@@ -3,7 +3,7 @@
  * 
  * Características:
  * - Muestra solo 3 vehículos destacados
- * - Cards compactas sin footer
+ * - Usa CardSimilar (misma card que similares)
  * - Desktop: 3 cards alineadas
  * - Mobile: Scroll horizontal con 1 card completa + 2 asomando
  * - Botón "Ver todos" centrado
@@ -11,15 +11,28 @@
  * - Animación staggered solo para cards reales
  * 
  * @author Indiana Usados
- * @version 4.2.0 - FASE 2: CLS = 0, skeleton con dimensiones idénticas a card real
+ * @version 5.0.0 - Migrado a CardSimilar (misma card que similares)
  */
 
 import { useMemo, useRef, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useVehiclesList } from '@hooks'
-import { CardAutoCompact } from '@vehicles'
-import { CardAutoCompactSkeleton } from '@components/skeletons'
+import { CardSimilar } from '@vehicles'
 import styles from './FeaturedVehicles.module.css'
+
+/**
+ * Skeleton card para loading state (similar a SimilarVehiclesCarousel)
+ */
+const SkeletonCard = () => (
+  <div className={styles.skeletonCard}>
+    <div className={styles.skeletonImage} />
+    <div className={styles.skeletonContent}>
+      <div className={styles.skeletonText} style={{ width: '60%' }} />
+      <div className={styles.skeletonText} style={{ width: '80%' }} />
+      <div className={styles.skeletonText} style={{ width: '50%' }} />
+    </div>
+  </div>
+)
 
 /**
  * Componente FeaturedVehicles
@@ -105,16 +118,16 @@ export const FeaturedVehicles = () => {
                 {/* Cards Container */}
                 <div className={styles.cardsContainer} ref={cardsContainerRef}>
                     {isLoading ? (
-                        // ✅ FASE 2: Skeleton con dimensiones IDÉNTICAS a card real (CLS = 0)
+                        // ✅ Skeleton con dimensiones IDÉNTICAS a card real (CLS = 0)
                         <>
                             <div className={styles.skeletonWrapper}>
-                                <CardAutoCompactSkeleton />
+                                <SkeletonCard />
                             </div>
                             <div className={styles.skeletonWrapper}>
-                                <CardAutoCompactSkeleton />
+                                <SkeletonCard />
                             </div>
                             <div className={styles.skeletonWrapper}>
-                                <CardAutoCompactSkeleton />
+                                <SkeletonCard />
                             </div>
                         </>
                     ) : (
@@ -125,7 +138,7 @@ export const FeaturedVehicles = () => {
                                 className={styles.cardWrapper}
                                 style={{ '--card-index': index }}
                             >
-                                <CardAutoCompact auto={vehicle} />
+                                <CardSimilar auto={vehicle} />
                             </div>
                         ))
                     )}

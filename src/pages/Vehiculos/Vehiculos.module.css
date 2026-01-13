@@ -44,9 +44,12 @@
   padding-left: 15px;
   padding-right: 15px;
   width: 100%;
+  max-width: 100%; /* ✅ CRÍTICO: Asegurar que no exceda el viewport */
+  box-sizing: border-box; /* ✅ Asegurar que padding se incluya en el ancho */
   display: flex;
   flex-direction: column;
   align-items: stretch; /* ✅ Permitir que los hijos ocupen todo el ancho */
+  overflow-x: hidden; /* ✅ Prevención adicional de overflow */
 }
 
 /* Mobile: Asegurar padding uniforme de 15px */
@@ -293,10 +296,11 @@
   margin-right: calc(-50vw + 50%); /* ✅ Breakout technique simétrico */
   margin-bottom: 0; /* ✅ Sin margen negativo */
   width: 100vw; /* ✅ Ancho completo del viewport */
-  max-width: 100vw; /* ✅ Garantía de no exceder viewport */
+  max-width: 100%; /* ✅ CRÍTICO: Usar 100% en lugar de 100vw para evitar overflow por scrollbar */
   padding-left: 15px; /* ✅ Padding izquierdo uniforme de 15px */
   padding-right: 15px; /* ✅ Padding derecho uniforme de 15px */
   overflow-x: hidden; /* ✅ Prevención de overflow */
+  box-sizing: border-box; /* ✅ Asegurar que padding se incluya en el ancho */
 }
 
 /* ===== ESTILOS PARA BANNER DE DATOS MOCK ===== */
@@ -321,10 +325,24 @@
 
 /* ===== RESPONSIVE - MOBILE FIRST ===== */
 
-/* Tablet y arriba (768px+) */
+/* Tablet (769px - 991px) - Dispositivos intermedios */
+@media (min-width: 769px) and (max-width: 991px) {
+  .vehiclesGrid {
+    margin-left: 0; /* ✅ Tablet: Sin breakout, mantener dentro del container */
+    margin-right: 0;
+    width: 100%; /* ✅ Tablet: Ancho relativo al container */
+    max-width: 100%; /* ✅ Tablet: No exceder container */
+    padding-left: 15px; /* ✅ Tablet: Padding uniforme */
+    padding-right: 15px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+}
+
+/* Desktop (992px+) */
 /* ⚠️ BREAKPOINT HARDCODED: Interdependiente con FilterFormSimple.module.css */
 /* Ambos deben usar 769px para mantener sincronización de botones y drawer */
-@media (min-width: 769px) {
+@media (min-width: 992px) {
   .container {
     padding-top: 6px;
     padding-bottom: 0; /* ✅ Padding inferior removido - el espacio lo maneja gridContainer */
@@ -395,10 +413,13 @@
     margin-right: calc(-50vw + 50%);
     margin-bottom: 0; /* ✅ Sin margen negativo - mantener 20px de espacio al footer */
     width: 100vw;
-    max-width: 100vw;
-    padding-left: max(15px, calc((100vw - var(--container-max-width)) / 2 + 15px)); /* ✅ Padding que alinea con el container + 15px */
-    padding-right: max(15px, calc((100vw - var(--container-max-width)) / 2 + 15px)); /* ✅ Padding simétrico + 15px */
+    max-width: 100%; /* ✅ CRÍTICO: Usar 100% en lugar de 100vw para evitar overflow por scrollbar */
+    /* ✅ Padding inteligente: mínimo 15px, máximo limitado para no reducir demasiado el espacio */
+    /* ✅ Fórmula: max(15px mínimo, min(calculo para alinear, 60px máximo)) */
+    padding-left: max(15px, min(calc((100vw - var(--container-max-width)) / 2 + 15px), 60px));
+    padding-right: max(15px, min(calc((100vw - var(--container-max-width)) / 2 + 15px), 60px));
     overflow-x: hidden; /* ✅ Prevención de overflow - solo en este nivel */
+    box-sizing: border-box; /* ✅ Asegurar que padding se incluya en el ancho */
   }
   
   /* ✅ Desktop: Sección del carrusel ya está a todo el ancho (no necesita breakout) */

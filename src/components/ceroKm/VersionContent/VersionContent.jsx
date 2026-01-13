@@ -9,7 +9,7 @@
  */
 
 import React, { memo } from 'react'
-import { getBrandIcon, WhatsAppIcon } from '@components/ui/icons'
+import { getBrandIcon } from '@components/ui/icons'
 import { ColorSelector } from '../ColorSelector'
 import { ModeloSpecs } from '../ModeloSpecs'
 import { PdfDownloadButton } from '../PdfDownloadButton'
@@ -159,11 +159,9 @@ export const VersionContent = memo(({
           </div>
         ) : null}
 
-        {/* Botones de acción: PDF y WhatsApp */}
-        <div className={`${styles.actionsContainer} ${
-          !version.pdf ? styles.singleButton : ''
-        }`}>
-          {version.pdf && (
+        {/* Botón de acción: PDF */}
+        {version.pdf && (
+          <div className={styles.actionsContainer}>
             <PdfDownloadButton
               href={version.pdf.href}
               label={version.pdf.label || 'Ficha Técnica'}
@@ -172,18 +170,8 @@ export const VersionContent = memo(({
               size={version.pdf.size || 'medium'}
               className={styles.actionButton}
             />
-          )}
-          <a
-            href={`https://wa.me/543816295959?text=${encodeURIComponent(`Hola! Me interesa el ${modeloMarca} ${modeloNombre} ${version.nombreCorto}${colorActivo ? ` en color ${colorActivo.label}` : ''}`)}`}
-            className={styles.whatsappButton}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Contactar asesor por WhatsApp"
-          >
-            <WhatsAppIcon size={18} color="#000000" className={styles.actionIcon} />
-            <span>Contactar asesor</span>
-          </a>
-        </div>
+          </div>
+        )}
       </article>
     )
   }
@@ -248,11 +236,9 @@ export const VersionContent = memo(({
             </div>
           ) : null}
 
-          {/* Botones de acción: PDF y WhatsApp */}
-          <div className={`${styles.actionsContainer} ${
-            !version.pdf ? styles.singleButton : ''
-          }`}>
-            {version.pdf && (
+          {/* Botón de acción: PDF */}
+          {version.pdf && (
+            <div className={styles.actionsContainer}>
               <PdfDownloadButton
                 href={version.pdf.href}
                 label={version.pdf.label || 'Ficha Técnica'}
@@ -261,18 +247,8 @@ export const VersionContent = memo(({
                 size={version.pdf.size || 'medium'}
                 className={styles.actionButton}
               />
-            )}
-            <a
-              href={`https://wa.me/543816295959?text=${encodeURIComponent(`Hola! Me interesa el ${modeloMarca} ${modeloNombre} ${version.nombreCorto}${colorActivo ? ` en color ${colorActivo.label}` : ''}`)}`}
-              className={styles.whatsappButton}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Contactar un asesor por WhatsApp"
-            >
-              <WhatsAppIcon size={18} color="#000000" className={styles.actionIcon} />
-              <span>Contactar un asesor</span>
-            </a>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </article>

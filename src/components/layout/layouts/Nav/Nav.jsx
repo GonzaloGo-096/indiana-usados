@@ -40,6 +40,18 @@ const Nav = () => {
     setIs0kmDropdownOpen(false)
   }
 
+  // Prevenir scroll del body cuando el menú está abierto
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isMenuOpen])
+
   // ✅ NUEVO: Funciones de preloading para rutas (definidas primero)
   const handleUsadosPreload = () => {
     preloadRoute('/usados', () => import('@pages/Vehiculos'))
@@ -109,39 +121,41 @@ const Nav = () => {
 
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.container}>
-        <Link 
-          className={styles.brand} 
-          to="/" 
-          onClick={closeMenu}
-          onMouseEnter={handleHomePreload}
-          onMouseLeave={() => cancelPreload('/')}
-        >
-          <img 
-            src="/assets/logos/logos-indiana/indiana-final.webp" 
-            alt="Logo Indiana" 
-            className={styles.logo}
-            width="200"
-            height="80"
-          />
-        </Link>
-        
-        <button 
-          className={styles.mobileMenu}
-          onClick={toggleMenu}
-          aria-label="Toggle navigation"
-          aria-expanded={isMenuOpen}
-        >
-          <span className={styles.hamburger}>
-            <span className={styles.line}></span>
-            <span className={styles.line}></span>
-            <span className={styles.line}></span>
-          </span>
-        </button>
-        
-        <div className={`${styles.nav} ${isMenuOpen ? styles.open : ''}`}>
-          <div className={styles.navList}>
+    <>
+      <nav className={`${styles.navbar} ${isMenuOpen ? styles.navbarMenuOpen : ''}`}>
+        <div className={styles.container}>
+          <Link 
+            className={styles.brand} 
+            to="/" 
+            onClick={closeMenu}
+            onMouseEnter={handleHomePreload}
+            onMouseLeave={() => cancelPreload('/')}
+          >
+            <img 
+              src="/assets/logos/logos-indiana/indiana-final.webp" 
+              alt="Logo Indiana" 
+              className={styles.logo}
+              width="200"
+              height="80"
+            />
+          </Link>
+          
+          <button 
+            className={styles.mobileMenu}
+            onClick={toggleMenu}
+            aria-label="Toggle navigation"
+            aria-expanded={isMenuOpen}
+          >
+            <span className={styles.hamburger}>
+              <span className={styles.line}></span>
+              <span className={styles.line}></span>
+              <span className={styles.line}></span>
+            </span>
+          </button>
+          
+          {/* Menú desktop dentro del nav */}
+          <div className={`${styles.nav} ${styles.navDesktop}`}>
+            <div className={styles.navList}>
             <Link 
               className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`} 
               to="/"
@@ -218,10 +232,93 @@ const Nav = () => {
             >
               Contacto
             </a>
+            </div>
           </div>
         </div>
+      </nav>
+      
+      {/* Menú mobile fuera del nav para cubrir toda la pantalla */}
+      <div className={`${styles.nav} ${styles.navMobile} ${isMenuOpen ? styles.open : ''}`}>
+        <div className={styles.navList}>
+            <Link 
+              className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`} 
+              to="/"
+              aria-current={isActive('/') ? 'page' : undefined}
+              onClick={closeMenu}
+              onMouseEnter={handleHomePreload}
+              onMouseLeave={() => cancelPreload('/')}
+            >
+              Inicio
+            </Link>
+            
+            {/* ✅ Peugeot | 0 KM con dropdown de Planes */}
+            <div 
+              className={styles.dropdown}
+              onMouseEnter={handle0kmMouseEnter}
+              onMouseLeave={handle0kmMouseLeave}
+            >
+              <button
+                className={`${styles.dropdownToggle} ${isActive('/0km') || isActive('/planes') ? styles.active : ''} ${is0kmDropdownOpen ? styles.active : ''}`}
+                onClick={toggle0kmDropdown}
+                aria-expanded={is0kmDropdownOpen}
+                aria-haspopup="true"
+              >
+                Peugeot <span className={styles.navDivider}>|</span> 0 KM
+                <span className={`${styles.dropdownArrow} ${is0kmDropdownOpen ? styles.dropdownArrowOpen : ''}`}>
+                  ▼
+                </span>
+              </button>
+              <div className={`${styles.dropdownMenu} ${is0kmDropdownOpen ? styles.dropdownMenuOpen : ''}`}>
+                <Link 
+                  className={`${styles.dropdownItem} ${isActive('/0km') ? styles.active : ''}`}
+                  to="/0km"
+                  onClick={closeMenu}
+                  onMouseEnter={handle0kmPreload}
+                >
+                  Peugeot <span className={styles.navDivider}>|</span> 0 KM
+                </Link>
+                <Link 
+                  className={`${styles.dropdownItem} ${isActive('/planes') ? styles.active : ''}`}
+                  to="/planes"
+                  onClick={closeMenu}
+                  onMouseEnter={handlePlanesPreload}
+                >
+                  Planes
+                </Link>
+              </div>
+            </div>
+            
+            {/* ✅ Usados | Multimarca */}
+            <Link 
+              className={`${styles.navLink} ${isActive('/usados') ? styles.active : ''}`} 
+              to="/usados"
+              aria-current={isActive('/usados') ? 'page' : undefined}
+              onClick={closeMenu}
+              onMouseEnter={handleUsadosPreload}
+              onMouseLeave={() => cancelPreload('/usados')}
+            >
+              Usados <span className={styles.navDivider}>|</span> Multimarca
+            </Link>
+            <Link 
+              className={`${styles.navLink} ${isActive('/postventa') ? styles.active : ''}`} 
+              to="/postventa"
+              aria-current={isActive('/postventa') ? 'page' : undefined}
+              onClick={closeMenu}
+              onMouseEnter={handlePostventaPreload}
+              onMouseLeave={() => cancelPreload('/postventa')}
+            >
+              Postventa
+            </Link>
+            <a 
+              className={styles.navLink}
+              href="#contacto"
+              onClick={handleScrollToFooter}
+            >
+              Contacto
+            </a>
+        </div>
       </div>
-    </nav>
+    </>
   )
 }
 

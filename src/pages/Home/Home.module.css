@@ -105,24 +105,34 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.375rem 2rem; /* 6px 32px - altura reducida */
-  background: var(--color-brand-600); /* azul más oscuro, como referencia visual */
-  color: var(--color-text-inverse);
-  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg); /* redondeo solo abajo */
+  padding: var(--spacing-3) var(--spacing-5);
+  background: #ffffff; /* ✅ Fondo blanco brillante */
+  color: var(--color-brand-500); /* ✅ Texto azul */
+  border: 2px solid var(--color-brand-500);
+  border-radius: var(--border-radius-md);
   text-decoration: none;
-  text-transform: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(0.875rem, 1.6vw, 1rem); /* ~14–16px */
+  font-weight: var(--font-weight-semibold);
+  font-size: clamp(0.875rem, 2vw, 1rem);
   line-height: 1;
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition: all var(--transition-fast);
   /* El botón ocupa el ancho exacto del contenedor (título) */
   width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08); /* ✅ Sombra más pronunciada para destacar */
 }
 
 .postventaButton:hover {
-  background: var(--color-brand-500); /* estado hover ligeramente más claro */
-  transform: translateY(-1px);
+  background: var(--color-brand-500);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.postventaButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .postventaButton:focus-visible {

@@ -131,3 +131,4 @@ Después de las correcciones:
 - ✅ Rich snippets en resultados de búsqueda (con structured data)
 - ✅ Mejor posicionamiento para búsquedas de "autos usados"
 
+

@@ -42,7 +42,7 @@
   cursor: pointer;
 }
 
-/* ===== Variant: Autocity-inspired (azul/blanco estrictos) ===== */
+/* ===== Variant: Autocity-inspired (gris clarito) ===== */
 .dotAuto {
   /* reset button styles */
   padding: 0;
@@ -54,8 +54,8 @@
 
   width: 8px;
   height: 8px;
-  background: #ffffff; /* blanco */
-  border: 2px solid var(--color-brand-500); /* contorno azul */
+  background: var(--color-neutral-200); /* gris clarito */
+  border: 2px solid var(--color-neutral-300); /* contorno gris clarito */
   opacity: 1;
   transition:
     background-color var(--transition-smooth),
@@ -74,8 +74,8 @@
   width: 24px; /* barra alargada */
   height: 8px;
   border-radius: 999px;
-  background: var(--color-brand-500); /* azul relleno */
-  border: 2px solid var(--color-brand-500); /* mantiene azul */
+  background: var(--color-neutral-400); /* gris un poco más oscuro pero clarito */
+  border: 2px solid var(--color-neutral-400); /* mantiene gris */
   opacity: 1;
 }
 
