@@ -9,8 +9,9 @@ import React, { useReducer, useCallback, useMemo, useEffect, useRef } from 'reac
 import { logger } from '@utils/logger'
 import { FORM_RULES } from '@constants/forms'
 
-// ✅ IMAGEN PREDETERMINADA - Ruta pública (funciona en local y producción)
-const logoChicoDefault = '/images/logo-chico_solid.webp'
+// ✅ IMAGEN PREDETERMINADA - URL de Cloudinary
+const logoChicoDefault = 'https://res.cloudinary.com/drbeomhcu/image/upload/v1766082588/logo-chico_solid_yv8oot.webp'
+const logoChicoPublicId = 'logo-chico_solid_yv8oot'
 
 // ✅ CAMPOS DE IMAGEN (estructura actualizada)
 export const IMAGE_FIELDS = {
@@ -229,7 +230,7 @@ const imageReducer = (state, action) => {
 }
 
 // ✅ FUNCIÓN HELPER: Convierte URL de imagen a File object
-const fetchImageAsFile = async (imageUrl, fileName = 'logo-chico_solid.webp') => {
+const fetchImageAsFile = async (imageUrl, fileName = 'logo-chico_solid_yv8oot.webp') => {
     try {
         logger.debug('image:fetchImageAsFile', 'Iniciando fetch', { imageUrl })
         const response = await fetch(imageUrl)
@@ -289,7 +290,7 @@ export const useImageReducer = (mode, initialData = {}) => {
                 imageUrlType: typeof logoChicoDefault
             })
             
-            const defaultFile = await fetchImageAsFile(logoChicoDefault, 'logo-chico_solid.webp')
+            const defaultFile = await fetchImageAsFile(logoChicoDefault, 'logo-chico_solid_yv8oot.webp')
             
             if (defaultFile) {
                 dispatch({ 
